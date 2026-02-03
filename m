@@ -1,53 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-16544-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FsLMdrDgWmgJgMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16544-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 10:46:02 +0100
+	id SHpUETfLgWl1JwMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 11:17:27 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34A4D70B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 10:46:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BAAD773D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 11:17:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f4zBX3vHQz30M6;
-	Tue, 03 Feb 2026 20:45:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f4ztp4Wtrz30T8;
+	Tue, 03 Feb 2026 21:17:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770111956;
-	cv=none; b=Q9NHypToNgsotThI20xQizar0yWhaS9AfnE+q4vHaJeKTLXaqHyO2faV/HS3PSWirTXQDeSOr/fbxyKurJsu/NNzq+uy8SHANwjI4Xw3Form1csTxB2ZnEiXkb6UYmnFTmKpBIjHLYe0aRsLiGZtrbER5P2ajqO6R8TGvdvYi7WxrO5e+8LQ9jjcpFGbLh9tIxCuS5c96esdaxkYqKOTfL7iH2/+0IQTYmGY0FUsYr3arBe1lEJpiflNwOusqrftzjiWOyVVLRAWh6BJEby/WbajHmRU/oXc9f6ZNpFCqEx8q1zWDaUcQlZfzC2l/1xUt7wIgGRrlfHJqyB5PlAvAA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=94.231.106.210
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770113842;
+	cv=none; b=j6FXjcGmkwNY/u23J134dArLPWuA4GtY5Ql7hWEiiMmz7w+Dmc+5ohsxkW1cWvLIyzMAKC/14kNZYE6Ouqor+wJTMfLVYYnCDCIdRPoTug+Q0qfaBL1B1r9cUxX+7pI7qRFJ6x/1y+UtFPWmdEl5MtN2eZFeknhW1g+uqS+aYno76gCnDcT75sXZHY8cHwIR7bmViAwarACGJSoyE4/Sc8eKb4YPZwNtCTvWgnABLmKP+6ZAGSQJFI4Q3pZPNY2BCLKKcWkNRrC6dcnY+xkDs/ZEIfj89A8ni/PlCkP361SVhJ4Rh5I6rIXtYp2w0Hu3p7L5hDUdm3Pf12YPyTwzDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770111956; c=relaxed/relaxed;
-	bh=reES5J+W+8DrIpUG4yVp96fM0Lx+QH7RckP1uZzjGBM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=RPkfCvzp9hmxrDH6Iw5j7Z40jO21H1yde3osvEiKpyM/qHR5Wpll9Dza4TpfNOmAv5devzOF/Zyo3PV9uBOX5r5V1PP9yMnbtzq1LYhXmMWUlK9/EybdWN6vY/FLyrWHl34+ftpjcHD+EdKWY966b/96ngmq9rOYPCtrJV1Y6DOMLyq9AUXQZoTDIZpFg/2LDx/jsKTLYsCPWmPM6MCJBkqkAbKXMsN9AH4gCpSeiqgJeXMIDbf6UuyjpAOdSqNJ4kxL3mnmKH5CBrOaR/aHkJ6wfWiaJVDWQPYhEqHjiB+cVesAz/gPH3VyJq1GVg42k2RHkgvks7WYIMEofgswxA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=fyO8WkeF; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
+	t=1770113842; c=relaxed/relaxed;
+	bh=bIz4RVwkv6KARy4MwQOhUdd22JeZFr0fFrNF7J4bRPM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OWJmUedcVhDUj0Yrt5AivLU/3PTllsUCpyrL6Rxk3oYGP4fPuVjJ0i4/chVsB/qUh3hQvehfV266tBbvlOp30p6EqKAUYJ1o3WbaBOCoT9xKmgSiWAHqsyax1kw4VewUKPLOJVUC2lEQx7WNdBwABWEiI+N60vKmTNaSK5aaXYYAOVcKZ/k4pP9dKtyOHDvT2o3OXYA122ciSUFbD+RKBHFuQE4kvUsZsAwhf5X3PAvq/rJWGlSzeISXv6FwvyIktF8W/5M8QfmQ9JDicdpSMuOTX14lpV8V7g2Q3QR1g7ZDdABwlotK95E0lNxsws8ffvhIQOJFhX4JWFaD7f7jrw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; dkim=fail header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=lUAE2uVq reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org) smtp.mailfrom=gaisler.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=fyO8WkeF;
+	dkim=fail reason="key not found in DNS" header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=lUAE2uVq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1613 seconds by postgrey-1.37 at boromir; Tue, 03 Feb 2026 20:45:52 AEDT
-Received: from exactco.de (exactco.de [176.9.10.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gaisler.com (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org)
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4zBS3gdxz30GV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 20:45:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=To:References:Message-Id:Content-Transfer-Encoding:Cc:Date:In-Reply-To
-	:From:Subject:Mime-Version:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=reES5J+W+8DrIpUG4yVp96fM0Lx+QH7RckP1uZzjGBM=; b=fyO8WkeF2Ivl6gzbaVHN3HNIcx
-	CrCtg6uBqLcH4OWZ4C2Js8l7tdg9FYtUXlTmvU+NiPE4SAqTBbPeC32PE1Ppk+0Fk0ycVBHXZnLd+
-	SMgKvPo3AxeTWtv7UBPq/LQ8ZSZj3Mwb7R0CvgoEyEORpcj0O/qKGqkP+YocIU9dY64JC18JXoQI1
-	NJbcQchczB8kKEhbU31iVEpxOvWAhiu7iTde3Zcrg1t4SlSeKdbfE/uDRdwWS2++XShYysvmCJ9xS
-	4in4dsCw+LRyHKJWx9af7OSWuivcAcTvRDQsMY1VeY70+BMgBe1P8im/9PZG1mkXTEfBLODcIpyOl
-	sLkdVLqw==;
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4ztl6lJpz30GV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 21:17:17 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4f4ztd00Nsz1FDXZ;
+	Tue,  3 Feb 2026 11:17:13 +0100 (CET)
+Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4f4ztY1CK4z1DHbc;
+	Tue,  3 Feb 2026 11:17:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1770113832;
+	bh=bIz4RVwkv6KARy4MwQOhUdd22JeZFr0fFrNF7J4bRPM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lUAE2uVqAzYhZ1sm97fYuqy+vlFYURoO/ESgRDOLYwoPcj+AJLYcKftxzXr+4y/HX
+	 2YOyDda3zoXt+26+AX8pMM7QHh5T+XJuM4W03HRzJukix5g8rdsb/fjilKm09oxzSx
+	 tBwy+nern6bg1a50/KfLMYddppMeG7txUbC4/AmsAXT1tuu3+smPwBXiUUqokjSpVv
+	 UUsrhLX04O7HNQNLLVmIA6iNk0y72m91fWDt4UXVjn71WutyJfQfTM3K8uFvvtoUBz
+	 jIXUHdgIYTlrZQBjHS4KV4lgMsEWYt8Uw9Kgk+K14XLmF28umAniXCSL8090kqia/S
+	 lC0jknJm/j/RQ==
+Message-ID: <ec965a79-dad8-4358-a8e9-ebc9f330b67b@gaisler.com>
+Date: Tue, 3 Feb 2026 11:17:08 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,268 +66,207 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH V2] modpost: Amend ppc64 save/restfpr symnames for -Os
- build
-From: =?utf-8?Q?Ren=C3=A9_Rebe?= <rene@exactco.de>
-In-Reply-To: <20260203064800.GA701088@ax162>
-Date: Tue, 3 Feb 2026 10:18:52 +0100
-Cc: chleroy@kernel.org,
- linux-kbuild@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com,
- mpe@ellerman.id.au,
- npiggin@gmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <99F903A5-F470-49ED-83B9-22D5963B25F2@exactco.de>
-References: <20251123.131330.407910684435629198.rene@exactco.de>
- <d69d7167-00d1-49c5-90ee-6bc0b7e8295f@kernel.org>
- <20251123.160941.475051668667578407.rene@exactco.de>
- <20251123.162551.979799191208988118.rene@exactco.de>
- <20260203064800.GA701088@ax162>
-To: Nathan Chancellor <nathan@kernel.org>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
+ <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20260124095628.668870-1-rppt@kernel.org>
+ <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
+ <aXj_x5CyUeys7ONM@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <aXj_x5CyUeys7ONM@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.01 / 15.00];
+X-Spamd-Result: default: False [-1.41 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_DKIM_REJECT(1.00)[exactco.de:s=x];
-	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	DMARC_POLICY_SOFTFAIL(0.10)[gaisler.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com];
-	TAGGED_FROM(0.00)[bounces-16544-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[exactco.de];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:linux-kbuild@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:nathan@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[rene@exactco.de,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[exactco.de:-];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.linux.dev,m:linux-m68k@lis
+ ts.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
+	R_DKIM_PERMFAIL(0.00)[gaisler.com:s=simplycom2];
+	FORGED_SENDER(0.00)[andreas@gaisler.com,linuxppc-dev@lists.ozlabs.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16545-lists,linuxppc-dev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linux-foundation.org,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[rene@exactco.de,linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[51];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andreas@gaisler.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[gaisler.com:~];
+	NEURAL_HAM(-0.00)[-0.987];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patreon.com:url,t2linux.com:url,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,system.map:url]
-X-Rspamd-Queue-Id: C34A4D70B5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 71BAAD773D
 X-Rspamd-Action: no action
 
+On 2026-01-27 19:11, Mike Rapoport wrote:
+> On Tue, Jan 27, 2026 at 05:02:39PM +0100, Andreas Larsson wrote:
+>> On 2026-01-24 10:56, Mike Rapoport wrote:
+>>
+>>> Every architecture defines empty_zero_page that way or another, but for the
+>>> most of them it is always a page aligned page in BSS and most definitions
+>>> of ZERO_PAGE do virt_to_page(empty_zero_page).
+>>
+>> Running this in an LDOM on an UltraSparc T4 sparc64, the entire LDOM
+>> hangs after a while during boot.
+>>
+>>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+>>> index c2d19c9a9244..2bd99944176d 100644
+>>> --- a/arch/sparc/mm/init_64.c
+>>> +++ b/arch/sparc/mm/init_64.c
+>>> @@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
+>>>  extern unsigned int sparc_ramdisk_image;
+>>>  extern unsigned int sparc_ramdisk_size;
+>>>  
+>>> -struct page *mem_map_zero __read_mostly;
+>>> -EXPORT_SYMBOL(mem_map_zero);
+>>> -
+>>>  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
+>>>  
+>>>  unsigned long sparc64_kern_pri_context __read_mostly;
+>>> @@ -2506,18 +2503,6 @@ void __init mem_init(void)
+>>>  	 */
+>>>  	register_page_bootmem_info();
+>>>  
+>>> -	/*
+>>> -	 * Set up the zero page, mark it reserved, so that page count
+>>> -	 * is not manipulated when freeing the page from user ptes.
+>>> -	 */
+>>> -	mem_map_zero = alloc_pages(GFP_KERNEL|__GFP_ZERO, 0);
+>>> -	if (mem_map_zero == NULL) {
+>>> -		prom_printf("paging_init: Cannot alloc zero page.\n");
+>>> -		prom_halt();
+>>> -	}
+>>> -	mark_page_reserved(mem_map_zero);
+>>> -
+>>> -
+>>>  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
+>>>  		cheetah_ecache_flush_init();
+>>>  }
+>>
+>> This just removes the mark_page_reserved(mem_map_zero) without 
+>> replacing it with something corresponding to that. Perhaps part
+>> of the problem?
+> 
+> I don't think so, empty_zero_page is in BSS now an it's reserved as a part
+> of the kernel image.
+> 
+> I suspect that virt_to_page() does not work BSS symbols on sparc64. Can you
+> please try with this patch:
+> 
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 74ede706fb32..0578c5172d4e 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -22,6 +22,7 @@
+>  #include <asm/adi.h>
+>  #include <asm/page.h>
+>  #include <asm/processor.h>
+> +#include <asm/vaddrs.h>
+>  
+>  /* The kernel image occupies 0x4000000 to 0x6000000 (4MB --> 96MB).
+>   * The page copy blockops can use 0x6000000 to 0x8000000.
+> @@ -210,6 +211,11 @@ extern unsigned long _PAGE_CACHE;
+>  extern unsigned long pg_iobits;
+>  extern unsigned long _PAGE_ALL_SZ_BITS;
+>  
+> +extern unsigned long kern_base;
+> +#define ZERO_PAGE(vaddr)						   \
+> +	(virt_to_page(empty_zero_page + ((unsigned long)__va(kern_base)) - \
+> +		      ((unsigned long)KERNBASE)))
+> +
+>  /* PFNs are real physical page numbers.  However, mem_map only begins to record
+>   * per-page information starting at pfn_base.  This is to handle systems where
+>   * the first physical page in the machine is at some huge physical address,
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index 2bd99944176d..d2d724ba4f83 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -170,6 +170,8 @@ static void __init read_obp_memory(const char *property,
+>  
+>  /* Kernel physical address base and size in bytes.  */
+>  unsigned long kern_base __read_mostly;
+> +EXPORT_SYMBOL(kern_base);
+> +
+>  unsigned long kern_size __read_mostly;
+>  
+>  /* Initial ramdisk setup */
 Hi,
 
-On 3. Feb 2026, at 07:48, Nathan Chancellor <nathan@kernel.org> wrote:
->=20
-> On Sun, Nov 23, 2025 at 04:25:51PM +0100, Ren=C3=A9 Rebe wrote:
->> Hey,
->>=20
->> On Sun, 23 Nov 2025 16:09:41 +0100 (CET), Ren=C3=A9 Rebe =
-<rene@exactco.de> wrote:
->>=20
->>> On Sun, 23 Nov 2025 15:57:24 +0100, "Christophe Leroy (CS GROUP)" =
-<chleroy@kernel.org> wrote:
->>>=20
->>>> Le 23/11/2025 =C3=A0 13:13, Ren=C3=A9 Rebe a =C3=A9crit :
->>>>> Building a size optimized ppc64 kernel (-Os), gcc emits more FP
->>>>> save/restore symbols, that the linker generates on demand into the
->>>>> .sfpr section. Explicitly allow-list those in =
-scripts/mod/modpost.c,
->>>>> too. They are needed for the amdgpu in-kernel floating point =
-support.
->>>>=20
->>>> Would have been interested to know with which version of GCC the
->>>> problem started.
->>>=20
->>> idk, maybe forever, or at least a decade fo GCC? Most devs probably
->>> don't build size optimized, and addtionally we only use in kernel
->>> floating point for amdgpu since recently? Should I add Fixes: for =
-the
->>> in-kernel FP hash?
->>>=20
->>>> By the way you seem to fix the problem for modules, but does it =
-also
->>>> work when amdgpu is in kernel ? I would have expected a need to add
->>>> functions in arch/powerpc/lib/crtsavres.S as well, just like =
-following
->>>> commits:
->>>>=20
->>>> 8fe9c93e7453 ("powerpc: Add vr save/restore functions")
->>>> 7fca5dc8aa7a ("powerpc: Fix module building for gcc 4.5 and 64 =
-bit")
->>>> da3de6df33f5 ("[POWERPC] Fix -Os kernel builds with newer gcc
->>>> versions")
->>>=20
->>> idk, I avoid linking that big stuff directly into the kernel and =
-would
->>> need to specically test that, too. I guess I go do that now, too, =
-...
->>=20
->> It appears built-in amdgpu FP somehow magically works for me:
->>=20
->> debug-linux:[linux-6.17]# grep DRM.*AMD .config
->> CONFIG_DRM_AMDGPU=3Dy
->> CONFIG_DRM_AMDGPU_SI=3Dy
->> CONFIG_DRM_AMDGPU_CIK=3Dy
->> CONFIG_DRM_AMDGPU_USERPTR=3Dy
->> CONFIG_DRM_AMD_ACP=3Dy
->> CONFIG_DRM_AMD_DC=3Dy
->> CONFIG_DRM_AMD_DC_FP=3Dy
->> CONFIG_DRM_AMD_DC_SI=3Dy
->> ...
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp_ddc.o
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp_log.o
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp_psp.o
->>  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp.o
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp1_execution.o
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp1_transition.o
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp2_execution.o
->>  CC      =
-drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp2_transition.o
->>  AR      drivers/gpu/drm/amd/amdgpu/built-in.a
->>  AR      drivers/gpu/drm/built-in.a
->>  AR      drivers/gpu/built-in.a
->>  AR      drivers/built-in.a
->>  AR      built-in.a
->>  AR      vmlinux.a
->>  LD      vmlinux.o
->>  GEN     modules.builtin.modinfo
->>  GEN     modules.builtin
->>  MODPOST vmlinux.symvers
->>  CC      .vmlinux.export.o
->>  UPD     include/generated/utsversion.h
->>  CC      init/version-timestamp.o
->>  KSYMS   .tmp_vmlinux0.kallsyms.S
->>  AS      .tmp_vmlinux0.kallsyms.o
->>  LD      .tmp_vmlinux1
->>  NM      .tmp_vmlinux1.syms
->>  KSYMS   .tmp_vmlinux1.kallsyms.S
->>  AS      .tmp_vmlinux1.kallsyms.o
->>  LD      .tmp_vmlinux2
->>  NM      .tmp_vmlinux2.syms
->>  KSYMS   .tmp_vmlinux2.kallsyms.S
->>  AS      .tmp_vmlinux2.kallsyms.o
->>  LD      vmlinux.unstripped
->>  NM      System.map
->>  SORTTAB vmlinux.unstripped
->> make[3]: Nothing to be done for 'vmlinux.unstripped'.
->>  OBJCOPY vmlinux
->>=20
->> So I guess the patch is good to go after clarifying which kind of
->> Fixes: to use?
->=20
-> Was this ever picked up or addressed elswhere?
+Unfortunately, that does not help. The LDOM goes down in the same fashion.
 
-Nope, still needs to be applied AFAICS ;-)
+In QEMU, with or without this extra patch, I get this:
 
-Thanks!
+[    3.310674] BUG: Bad page map in process mount  pte:ffffc800016436b0
+[    3.310778] pgd:027dc000 p4d:027dc000 pud:027d8000 pmd:0269a000
+[    3.311686] addr:000001000020a000 vm_flags:00100077 anon_vma:fffff80002688548 mapping:0000000000000000 index:8000105
+[    3.312449] file:(null) fault:0x0 mmap:0x0 mmap_prepare: 0x0 read_folio:0x0
+[    3.313622] CPU: 0 UID: 0 PID: 46 Comm: mount Not tainted 6.19.0-rc5-00269-g28acabacf9b0 #22 VOLUNTARY 
+[    3.314056] Call Trace:
+[    3.314182] [<00000000005e822c>] print_bad_page_map+0x10c/0x260
+[    3.314375] [<00000000005e9f30>] vm_normal_page+0x70/0x80
+[    3.314400] [<00000000005ea5a8>] unmap_page_range+0x4e8/0x13c0
+[    3.314421] [<00000000005eb54c>] unmap_vmas+0x2c/0x120
+[    3.314440] [<00000000005f781c>] exit_mmap+0xdc/0x440
+[    3.314457] [<000000000047193c>] mmput+0x3c/0x100
+[    3.314477] [<0000000000479e94>] do_exit+0x1f4/0xa00
+[    3.314494] [<000000000047a83c>] do_group_exit+0x1c/0xa0
+[    3.314511] [<0000000000489b28>] get_signal+0x8a8/0x8e0
+[    3.314529] [<000000000043be24>] do_notify_resume+0xa4/0x5a0
+[    3.314549] [<0000000000404b48>] __handle_signal+0xc/0x30
+[    3.314687] Disabling lock debugging due to kernel taint
 
-	Ren=C3=A9
-
->>>>> MODPOST Module.symvers
->>>>> ERROR: modpost: "_restfpr_20" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_restfpr_26" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_restfpr_22" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_savegpr1_27" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_savegpr1_25" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_restfpr_28" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_savegpr1_29" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_savefpr_20" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_savefpr_22" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> ERROR: modpost: "_restfpr_15" =
-[drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
->>>>> undefined!
->>>>> WARNING: modpost: suppressed 56 unresolved symbol warnings because
->>>>> there were too many)
->>>>> Signed-off-by: Ren=C3=A9 Rebe <rene@exactco.de>
->>>>> ---
->>>>> V2: description
->>>>> Theoretically for -stable, but no previous commit that broke it.
->>>>=20
->>>> In that case you have to add Cc: stable@vger.kernel.org
->>>> Add indeed it is likely a gcc upgrade that broke it, not a previous
->>>> commit.
->>>=20
->>> Should I then simply use enabling amdgpu dc_fp and in-kernel FP as =
-the
->>> breaking commit for Fixes:?
->>>=20
->>> Thanks!
->>>=20
->>> Ren=C3=A9
->>>=20
->>>>> ---
->>>>>  scripts/mod/modpost.c | 4 ++++
->>>>>  1 file changed, 4 insertions(+)
->>>>> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
->>>>> index 47c8aa2a6939..133dfa16308a 100644
->>>>> --- a/scripts/mod/modpost.c
->>>>> +++ b/scripts/mod/modpost.c
->>>>> @@ -602,6 +602,10 @@ static int ignore_undef_symbol(struct =
-elf_info
->>>>> *info, const char *symname)
->>>>>   /* Special register function linked on all modules during final =
-link of
->>>>>   .ko */
->>>>>   if (strstarts(symname, "_restgpr0_") ||
->>>>>      strstarts(symname, "_savegpr0_") ||
->>>>> +    strstarts(symname, "_restgpr1_") ||
->>>>> +    strstarts(symname, "_savegpr1_") ||
->>>>> +    strstarts(symname, "_restfpr_") ||
->>>>> +    strstarts(symname, "_savefpr_") ||
->>>>>      strstarts(symname, "_restvr_") ||
->>>>>      strstarts(symname, "_savevr_") ||
->>>>>      strcmp(symname, ".TOC.") =3D=3D 0)
->>>>=20
->>>=20
->>> --=20
->>> Ren=C3=A9 Rebe, ExactCODE GmbH, Berlin, Germany
->>> https://exactco.de =E2=80=A2 https://t2linux.com =E2=80=A2 =
-https://patreon.com/renerebe
->>=20
->> --=20
->> Ren=C3=A9 Rebe, ExactCODE GmbH, Berlin, Germany
->> https://exactco.de =E2=80=A2 https://t2linux.com =E2=80=A2 =
-https://patreon.com/renerebe
-
---=20
-https://exactco.de =E2=80=A2 https://t2linux.com =E2=80=A2 =
-https://patreon.com/renerebe
+Cheers,
+Andreas
 
 
