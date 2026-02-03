@@ -1,120 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16546-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EzhCOPagWlBLQMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16546-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 12:24:19 +0100
+	id cHQKG9fngWl0LwMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:19:35 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337ECD8434
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 12:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A89D7D8EAD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:19:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f51Mx00sMz30Sv;
-	Tue, 03 Feb 2026 22:24:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f52bk6WQmz30Sv;
+	Tue, 03 Feb 2026 23:19:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.11
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770117852;
-	cv=fail; b=D4nZFnkzInBj3Rz5KYDPtg7PKDBlcFEkOgPx5Xo6ynyrwfqzl8L6zl+WvYoSNT1xXiwvxHM8xHhN3eiW7fskoq9qaK3GoRs1AACNF753+NaGy4B3uUPhzW9m6Skk/Jba0NEw3xKpWRMOR6HtpszcXgAx3mCdGYJGO5Eg4bF0nwIaC4ESRPDsV4JjgTbrkfelpEwy5mSY2A8ouYpeal2JQyNjL4sTJOkeil666KwitQ7FfA5//BA1zxiuIb5mY9raaGse8hmSHl5+g7fJyFkIY+m64iYX1Q1KyRvoeaVTWc4MzIsdLLAcB5uu8BYWhHS4J0/jm5uA1vKdLssiB23ctA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770117852; c=relaxed/relaxed;
-	bh=cZzJont8xDnOTdIvBU0DSKb+yXDL+QyT7C2o6A5dMxA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DTPJMZCt9HmAgfMaHhW9JlIpJnf8qe4UUKznDfMUWbDYoCOI43v+qZbAg68BkjEM7Kubv3k9ndGQGmHieH2mR+s6DeEBIC12485YCgFoD/OBhuq/CU9aNflKT+aFonRBCQ0lmUuzBcKQZ2xGn1GcDzf+KUZd3tt+qXSTogxXME6G6pVB6jaFOpa0jmaXBY9LNpBYK8ViY3/ouM1CwNYBnFROOkX/1rvrTzBDtXqfLAzSJTR7QvdQEFbZ+TsT3ppo29vXFPgRWYgefLrK91Ibg48wjLxTtJhl9gGa89wMHCf7AKz+FJO4UrgOQU1vYJnJZzunjIFeAcoRiDyGzH4xAQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WfTab9z3; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=przemyslaw.kitszel@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::341"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770121170;
+	cv=none; b=Ra33504bx0fK+P8Fo+Sa9I741DY7qoDzXOPH0MQ3nY6dreVojIESqx7b5DB6tL0wY6Ag5YKUdVdLdtPB28y7u7z5awG8Iz+8AK7mg+TcR/Pg/9M8SNqn/pdB4T3iAuHRVIuNwbLex/7l1EKotYFHznxsTFTtvGMG4QsckJGZF69PwlzSNncaFqwsaa//sngbcE7tHvVs9QioZbupkHaVVYuo+Gfai3VgOyQMLyiqi3h4tPdKjv7PtDJvZ+NLvBISxrXTPHgZzhISDV6H/ek9k/Lls8tjfO16TO0gvf9BaqOzsxXmv+R0uZ/ZEhcOVPDxh8ajhtPm9eLQqppCEKdAMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770121170; c=relaxed/relaxed;
+	bh=c6MzBps8jkAvm9TbR+DQoEBSa7zCEs2ceIfky0NJtjA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z4wQ5bBZhYaJie/TQ4poSDrD7huzAzp7xndV+W923a5I8jaumfnXgZthZwWLdVvpiF/SD7DRATAVAdWdlfY+zgOWS+U7KmA30LygRUSAev2mVtyLin5a1T1mXI45ZZJ4e58ZXuruO/MI1sk7/+0bmtm1r35ROSIRF2Ck/yw2EZbIvyUPCJzFLlPVF0PzcsTLKTGZ96ELtnGVtT9cGq8ldZvKewJz7Aykd+cmQP6r9gMjm1OjJXuRV+tvYxHhds6yUpDBhgaITTsjw8A/OJGbBMGVFH9LO7Oq5JExbD/wwtHKI7issOGKox3j7qCZLQ54bWwCizG4W6HvnnF0ujNaJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SixnCNQo; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WfTab9z3;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SixnCNQo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=przemyslaw.kitszel@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f51Mt4PYfz2xqf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 22:24:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770117851; x=1801653851;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=N4TLCmuuopwx+PVGH6ppkwtcjGFtNVf64urhKrjuMoE=;
-  b=WfTab9z37euoGwpVJUvNH/Z1ZQ8zrc6fLdi0L1+InNNgkXBN/zKNCsGC
-   xdhMV6uMtiN/kbhoz+/8Gn6JG9xQf70bq6WxOXmV97K7pBQCMXzJqpiiQ
-   z46fbY7AnwEmu31Q5jhkS5/p9vtyyJIM61VV8jQXVLazaZbEWaPrHhesM
-   JQVAMgIMGZLOru4BObPT5CmVUDvKTrxlGqQOXj9z+AVOJU2ILwMUBZx7I
-   IxuqLlEnrSVMp9uHrPMiUVBpauYhnh2wzRoBj1loAllqJur8LsJX1ps6b
-   8CWzku1ukBb1HIl00mSbeatVBWZSM10ivWZ/4qs73JhFVKPBH/+yjRmQ3
-   Q==;
-X-CSE-ConnectionGUID: d+PQ0fW4QP68bPNcw0l0Zw==
-X-CSE-MsgGUID: UZYFf4mKQAmaWNTILsLSJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="81914843"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="81914843"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 03:24:05 -0800
-X-CSE-ConnectionGUID: ICzZezk/QZixFWJWVJT0yg==
-X-CSE-MsgGUID: B10z1CXoSt2MwLjzGiVsIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="209113944"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 03:24:05 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 3 Feb 2026 03:24:04 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 3 Feb 2026 03:24:04 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.62) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 3 Feb 2026 03:24:03 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g1+CDRJKoYwRZkjf+wdLq0gDf/4qJLVIbCQ0b/v60lWFtSdKonbIF77qMyh5xQB4kFzlBrfKw4DJyg6Jv2v9WFikVsg3iBwQc7H6X9Es+JaCSM9CZ5ashmBYopnhIWUDrgO80Bc2AUS94KakwK8jZ6Z3oO43osJKclQNRF4eeAaN+MKolBh0s/Q0OXeCQsK6JcUHJanu1oJhXdWQhwfZvWeFWaHue3ZNPCMqdjoWan8J/ZPJeclQAB51YgIL/gtyyAdcMl8JhkU2AZxbw3ytED+eyA9tl9VQJr8UcdheNNYm6kc37tcNMqsZ5+f70xwjpR0/hTuPL1PPzBNW7432yQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cZzJont8xDnOTdIvBU0DSKb+yXDL+QyT7C2o6A5dMxA=;
- b=Tu5mGpPLF63upG0SbL2PfE//kdw2Mu714qsaiDxPeXSh72LJwTpJaPFjoXabSDwcx9U0l7BqEmeMf3k4mAquwyJ9VF7rl4B/Rp/q/g0eSmDV/K/7FlwEYQogRzH+Q+HJRXW6Q0eC+I5VheKkHWn889xj69Y9UY1YbXXFG/zARJ6tiRBrnQ6z/2mTGq1k6z+7+M0WgSJfqk3mbNvi//cloHLmgkMNrQzTjejQhQ2577jD+yGOLRIOEXzwJ42O/qJPq269yal5+Ejmsnq8wXee2EKPQUMLch4XOeDZpnL/IQYXTgVhbELYYP/Vr+thJkeoi4+8olexsZqf20lQJWlBOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB8086.namprd11.prod.outlook.com (2603:10b6:610:190::8)
- by SJ2PR11MB8565.namprd11.prod.outlook.com (2603:10b6:a03:56b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 11:23:56 +0000
-Received: from CH0PR11MB8086.namprd11.prod.outlook.com
- ([fe80::2769:b184:69c6:6eb0]) by CH0PR11MB8086.namprd11.prod.outlook.com
- ([fe80::2769:b184:69c6:6eb0%5]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
- 11:23:56 +0000
-Message-ID: <8f9d14dc-bc48-4545-85b9-dc63dc68fa3a@intel.com>
-Date: Tue, 3 Feb 2026 12:23:49 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI: dpc: Increase pciehp waiting time for DPC recovery
-To: Lukas Wunner <lukas@wunner.de>, LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-CC: Bjorn Helgaas <helgaas@kernel.org>, <mahesh@linux.ibm.com>,
-	<oohall@gmail.com>, <bhelgaas@google.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-References: <20260123202140.GA84703@bhelgaas>
- <3af9f754-d282-485c-a3f2-49a230bfe143@zhaoxin.com>
- <aXydEn_lAbNROQKy@wunner.de>
- <1096398c-e883-4232-91f6-836fc508092d@zhaoxin.com>
- <aYBoP-B2E9fp_4YZ@wunner.de>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <aYBoP-B2E9fp_4YZ@wunner.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0097.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4bb::10) To CH0PR11MB8086.namprd11.prod.outlook.com
- (2603:10b6:610:190::8)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f52bh3BVMz2xQD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 23:19:27 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id 5b1f17b1804b1-482f454be5bso6026675e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 04:19:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1770121163; x=1770725963; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c6MzBps8jkAvm9TbR+DQoEBSa7zCEs2ceIfky0NJtjA=;
+        b=SixnCNQo4oAzDy4dMcTjXF1FvethuKCJE6dnv8A0svDbNUz+ZN6bkv33uQIVmlgVDP
+         LSjGkxv7VwyHLzcW4etvAd3FERa//Zz+cGmeKME5G7qAa4FLvVMvyLd0Y8gXuZWqyXdm
+         MymmsNM3OYpC8IJZfuow8EXQJLeNrz1jgSFrYkLp7lGqKWgUHiPt7/Uz4sL2FgnkqVeu
+         rM3MJQlzVIIaYuGhuWkJZ6iKw7h/7WxtB3KSJcVnEo6UHRpnesDKNLrgOzbxiGfQFDFT
+         MNNAaWQqxezOUOvcqjecw5guT/YMsqyEqnfo98Kcn9wIAJ4271W4eA6JEJKbOVyA0nvU
+         4khQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770121163; x=1770725963;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c6MzBps8jkAvm9TbR+DQoEBSa7zCEs2ceIfky0NJtjA=;
+        b=RxG4SRk5DI20va1I982sfbyvy4nKB3qOZfWjQpLEHhVj4/QWBnOCiN5q0oOkgI7wIR
+         Na7aNccNfBRUShcrmtnqHVPR+6Ds2oyJ5jFWV6tOhBfTW1hc40w2yr5Ty6CBlhjspQbx
+         +ecp4cV8fhZnujJNnMExYOAr1cgGUJRLA6tAgHa9pZ5QU+agaQmy1hv1wDCgrL0IDJCa
+         byTx6xh5aZHbXygKbemejPDPytTjGSJIAKWnV43uTZSbaHE1dAdze121SnDkWLrAiltZ
+         khkZFGlJty4ALuHF3Hz3o+ZxU/9+7ZBov5+0BRxYK0EbNuVtsXBkzQc5KOZmuufqLPm5
+         KcVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUsI9D5meuKwqIk0hIaXcl0wt6ToNHwm6c/ZcsN03pcmXAJ3fWRI8caLOLb/q0mcfegUNJmQLepojpjmM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxYbAkXhgd+KXk1lF1fjVuLO12Js0jaYsSy6qsqBlobaPZ6/L/+
+	Y9Z3yMEZzIBqzs8CgVShW6IbPpz5S8QTknazjgec8utsjoqt+etmyehp8d9AEYkzx7I=
+X-Gm-Gg: AZuq6aLBhf4+G5gJb9AeDkjS1NwAfcbJmNlprhlw0yR24ArIVzUcgu0LIoKLzLIDgHe
+	PPNEnI/h+htlk40mt54P8cMieINC8YuBtmyyCMZSq0JApNFQlwK5rkCcjfpelSmjlIi2ZoCHaVU
+	gHWRp1WfiOQWwCWhtYNDECV+3jSd0R6JJPxtHfif5JXPo+wN/qNsyFqziJ3WNOeJWbU564PWgVC
+	y/Msjn95SuCClz6WHe3qjvqTaCGdC6hs14C/8WIJ/QrKqJt5tQLppg2B2Zpt3FBpIiU+F1qfA77
+	sT8/5DdkNhylHxaTgdnK6QVVA9/OP4yoC8Xl3vYuNXeIVBgrWIIBXdaHuGYRD058cOUco6juQLQ
+	9Egw3+wpW8fmELwdQ2+NjNPGj4JB+ECyKziUTfLxgxrwbDtP6D3p/coFhIIPjDErBD0845hjS28
+	7+y7XoJhvEUM3fXaXZ+Oc1lClmaMB84A==
+X-Received: by 2002:a05:600c:4f4f:b0:47d:6c36:a125 with SMTP id 5b1f17b1804b1-483051553a4mr44296785e9.17.1770121162686;
+        Tue, 03 Feb 2026 04:19:22 -0800 (PST)
+Received: from [10.0.1.22] (109-81-1-107.rct.o2.cz. [109.81.1.107])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483051287cfsm96086105e9.6.2026.02.03.04.19.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 04:19:22 -0800 (PST)
+Message-ID: <fab2af64-e396-45f9-8876-feff4002e04b@suse.com>
+Date: Tue, 3 Feb 2026 13:19:20 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -128,272 +91,720 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB8086:EE_|SJ2PR11MB8565:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d1840a0-af02-48df-8250-08de6316b7b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZmJyYTlQNThTYXdiN1hGa25kWVhwNzVGRHZ1VHdLeDNJTVBFMjNjRTBKOVMv?=
- =?utf-8?B?cUR2WDR1eGo3alJjWGNtTm0wS0xkSW05QmM2Ull2dm1TeHZ5SE4zRU1LSlpu?=
- =?utf-8?B?bCt6MDZ2eWM4NG5Rc1laNXFDVEJjQWhKUFZSZWdPYWhUcTBMZXFFcFpZQ2lD?=
- =?utf-8?B?SU1VOWJyNnowMHdONG5PUXZ2bkh1SkczTm9Ia1UwZCtrRmJLVDZtZitLSnZM?=
- =?utf-8?B?TXM3aEFpM3Vibk5Hd3QrNFhBZnR2MW5weXVhVHRuODkyN2k4VW5iQ2cvcUYz?=
- =?utf-8?B?aG5LNGhHcHNqWXBXUklwZHdtR2wveXQrK2xBdTJiei9pL05Vb0lubkNZNlBi?=
- =?utf-8?B?aE1aWWgzSlVCeXV5RHFQNlhVMklweW1PbE9FUjlodmxmOXB6Qmc4YzBJUmpO?=
- =?utf-8?B?NTFqZUl3cmpIaE1oMEJvSklEbWdHbk5JWkFjUlE0QTBJTTFhZVNBc21TZHdF?=
- =?utf-8?B?Z0FIVkFaVHNnajVTMVBQejl3YjRQbDJQbU5OWDBEdUdEeTZBVzNXdi9TR2dB?=
- =?utf-8?B?L1RQSkJZTThRSTZrdTl4REJGdG8xN1owYlY5NDIySFdGT0t2c04yd2IrSkUz?=
- =?utf-8?B?RksvZEd1ZUhrek5EcmFRbG5QQytOK2pYUzgxVk8rQTNjT3c5d0dpWThqQ2tC?=
- =?utf-8?B?TDZUeHp1bmNocUdaMnhyRGhJYTRDSWN4ZGN5T2hHbHBnRkp3VnYrRldpbW5j?=
- =?utf-8?B?Umg4RHdNMjFtRXFXeVU3Q3VVVmJHYjVNRm5IS1FBVXNuWDJCN0l5L3k5emJY?=
- =?utf-8?B?TVhJVTZYWWRFc1gvMStIMEV3aWsvTWFnS2czVTBjMEp1dEt4bEpzWGZwSkpO?=
- =?utf-8?B?a2QrRlYwdWxxUHBXRjlVdDZiOHRud0FUWWtDaWFoRUE3cGpxWGpobFZGYVBH?=
- =?utf-8?B?UUdsL0tOc3g5bTdzWWFBaDFpZ0N4VXMzb2JOeTRSdUoyZldVd05lWGJ3SmRt?=
- =?utf-8?B?N0hHdkdmSytJWnQva29BemtHRW9BcEIvM05zWEZheGp5cmpicmpHLzBwVkpV?=
- =?utf-8?B?dmY4em1JeW9FOHpKT3N5UDQ5SUNkWnlqemk1Rkk5SHlUcE8vb0N0dmZxQVlQ?=
- =?utf-8?B?RmNqRWQ1Y09NZ2FraERQdEN6VzZOc3c3V3BCL1NDL3ZmSG5haDNaNnYweTM5?=
- =?utf-8?B?UjhQOEIzNnVwWWhjRHlLNk5sMTVhUWZSbFVseEFKTndRWEsvb3lLZTBVbVd6?=
- =?utf-8?B?M21qeWpCbFVXYUtrcGNvTkxWT0d5VmwzVXVQNnRqQnhCR2dUNjdVV0xkQk11?=
- =?utf-8?B?TlNNaEZFNU1VY0xGcDd6eFYxRDFXSnVuVko0OUxadXhCQUpwQ08wdXhOMFY4?=
- =?utf-8?B?WFN6OFQ1UzlTTzZLNXhsS2ozK1NWaWhIZUtYTmYwekk2WVN3bjB1YmJGbnZG?=
- =?utf-8?B?aVZDcGlKRzVOY2RtRDJLUHdLZ2hMSVptT0JvZ2xIK2I3b25LRDNPRHZkRCs5?=
- =?utf-8?B?SllRYW9vbmhYb2lQUEQvZ3p0cng5S1NHMW9odXQrdFZFVGZxdFJuZjlGNWJY?=
- =?utf-8?B?ZGpNNkxuQmgvTHhMT2d1cHlETnlUZC9IaUI0dGMyTGdZVzVaU0k5aytJVWFs?=
- =?utf-8?B?VGdWYndKbk5aUHQvVkFUQzg4ZXg3MGdWOGlUaWJKY2RSWjE0Wkx5OVVqYUhD?=
- =?utf-8?B?akpkTUtvYmx4K3Vxd0J5aTM4eDNMekVRMDRpVzVtYW5uY1ZNbnp1YlFzVWJX?=
- =?utf-8?B?cExXRHIzbDk4am55aEFJWEU1TEVYU1NiZ1UydjlmOGg4YmttaG5VbnRWTW9x?=
- =?utf-8?B?dEQxU2J5ekkvenVaQ1c3YlNQL3BkaUZyb2NoaWs3Qyt3ZFFOZW1mTmk2dVE1?=
- =?utf-8?B?d3FjdGR1a2tYZkVDTE9uZHlaeFhONjBNTkFIWTZrY2tVSDh6SFZuNnVTNFRl?=
- =?utf-8?B?bWNNZnpxRmZoK3lVcFh2bkdUK1dQUGlzZEdvbHVvV2ptNFFuckVsSk5nTmJx?=
- =?utf-8?B?QTRUQlRVczYzUVdrbU8weWNLVnl4Q2pSWThyVFZuaVY4MnNWc1BjWk1KUk51?=
- =?utf-8?B?TGJlUFlNaDBjeHYrYVdkR3hBSWZ5RXNBMml3TXBuYmd3ZS9PeWRNVmhoZWRk?=
- =?utf-8?B?Y0pmemIzT1BiT00wenk1MkdMSlhuR0xiWlcvbGV1RXlMeTZOa1ZBSGpBTkpH?=
- =?utf-8?Q?5O8g=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB8086.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZnAvVDFZZ2pTSXk0bDlOeGg0b3BpWEFSam5LU3c4N0pMODZTZjB6cUR4c1VH?=
- =?utf-8?B?cDdzKzFnbXBFOENGbk42SUkyc2YzOUNKanFURkV2TTQyZUhsRjJvUmFaN1h2?=
- =?utf-8?B?ZkpxYU8wS3l4NmFuT3B3aFFsVDc1YUd1M2c2WVBFL1U1SGsvQ2hacWF3RlBJ?=
- =?utf-8?B?YmN1UkQ5UU5QWW9MbkcxUXM2dnZLM0NLSkpWSk05Y0htUG5FU0pMUTY0Q1pa?=
- =?utf-8?B?RmNiRWlkbkhxSm0wM0ZEb1NnNE90UE5Gdk5mSmhCdmdNNCt2THlWV0VKU2RQ?=
- =?utf-8?B?NUNaNU4zblFiblFGNzRGZktPT05sL2ZtTEZUakl3RFRWdmJEWW5VNkxvanVy?=
- =?utf-8?B?a2o2M0dLSG53N3hqdmZ5WGZYZ3RIYU5CRGNtZXp3bGh2d1BCeDlSQkp5djFO?=
- =?utf-8?B?NzhOY2d0bnJwRUFyY3dLdCtJUjd3SkVya3RVTlVRUTVqYXgvSjNxNUdEa1M2?=
- =?utf-8?B?NmpWWmJWUlJKL1FGcmYvZnoraVduaFQ5My83R2JEdXB6VkJGdkZ0YW9QUHNv?=
- =?utf-8?B?azFxc0VrWFVzbWUxYWtrZkpEeGFRdWVLWWcrcTZiazk0WmZsV256dUdqaXFY?=
- =?utf-8?B?NjlvSTVtZ3d0TWVacTRmY05HV2J3bVY4elJIN0VhR3JrT3JUZXpzU0xtWjJV?=
- =?utf-8?B?SERNQ3hyS2JNR1lZYWtLaytIazE2VmdrWGFPWnNGZ0JiSnRZc2VHWHlESy9Q?=
- =?utf-8?B?a3RxY3VzRGJtWnBST2s0MHdGa1pyU010bVhBV0U4ODdXK1V1c3FveUVQamx1?=
- =?utf-8?B?dFVlUmhhZWFreHN0UE9DeDN0dHhoc3hFelU5NW5zNlpGWG5sQm5TTk54ZzQr?=
- =?utf-8?B?TjloWGNXbUt2WWVWcDZ4NCtaMGVNbTRaV2FnUHlmMUZKWjNYU1lIM2RjbjZ5?=
- =?utf-8?B?L3RtY3ZZcVZBTEVkQ0dpS1MyUmJwRlZVQnViUTMyZWVmWnFEaEkzcHFHekFn?=
- =?utf-8?B?Um9NMjZjZ29QYlZvTVd6REt3Y1dxQ0twR0hsS2FpVUJsZVJDTGcxaDgwcnc2?=
- =?utf-8?B?d3dHaEVsRTdtYm5FTDBRNUpYcEFjWmw5bW5DdkF6Rm0xNGMrU29DSTlIemc2?=
- =?utf-8?B?OEJkMXhXbys4cUcxMzB0S25FWGVSTEp5RXhYU3BoU1NWdFRJMkhvNHdwZmEw?=
- =?utf-8?B?RWdIcFdBcW81c3VyUjNiMzJab3JDSmF6eUJ5TEhac1dTc3J6ZDhkZkJXR2ww?=
- =?utf-8?B?NzBWRURWeUgwWEZJdElVR3A2OGI4NTVyQ2wvUDd1dllRTTMraHl5K29FMVVF?=
- =?utf-8?B?UW02LzlDeStXNTFOUGJZTXNvQmtuVExmcnRVNmgxMHduL3RlQkdCZ2xzOUhU?=
- =?utf-8?B?WXVuMlJjZW1wSUcxZnh1emRzNVc4V0RxSXY3WnVOZVZ6MTdORzE1ai9HNUJq?=
- =?utf-8?B?bW0yMjdBMlVLZVB2SlVLR1REcWM3cEJGRlZJbWtZdm50ano3WkZhRVY0NEVu?=
- =?utf-8?B?QkMxc1lTK21pWUJSSmZKU1dCK0pVWmtNamtHTENTMHBqbStkVFVveGZ2V25V?=
- =?utf-8?B?b1dWakpDbzBuelpCWXd6cG90cWFpS3lUeXlyZFpZNzh3UkRDRlpYTnRYeGx2?=
- =?utf-8?B?eDlyTi9FYWtnTndNZWZVZnF4R1ZIQ2UvM2FRQWE1bmNlSSs4bFhKQUh5Nk8z?=
- =?utf-8?B?TVRpeEhITk95TkM1d21TTmdWUFR4OWQwU21ZMzR0eVM5TkREaER1V3ljaHgz?=
- =?utf-8?B?bmdSdW0zbnc4WHExSHNOVkYzUUFqY3VOZENQcG1YT0hScEtLK3Zkb1pibWRP?=
- =?utf-8?B?NUV4Ym53WC9WTFB4WHhJaGpRNU1Ob2hwa0d4bWNHRkNKcmh6MWFGZjZTZHp5?=
- =?utf-8?B?dk81YjNJY2dPaktSMG1BY2JkRFJRZHBoNnlQYXJ1cDU4UlZ2ODEwcWdDb0hj?=
- =?utf-8?B?cnk5bEU1UXhkOGdCUlBkZVE2b25PMno2NVhhS1NxNHF4dDIrK0VLcHk3aFAz?=
- =?utf-8?B?ZXRUdng1RGtiOFVtSGZ5anBuUkFJVEpWUmJIcTFNRGhJT1lSRWdxWk9xUG1I?=
- =?utf-8?B?Tmhpc3hmazhqSjM4NnZUUDRXQzl4SjNrdVM3dUFtREYwZEpjY3JPOG5ZZjFs?=
- =?utf-8?B?UWV3OHdaWUQrZ2l1em9GU2hucUlteFh4a3JNcVh3NEhjN2VmVVFJUi9OdTNa?=
- =?utf-8?B?bVVJc2hoSlgydUVtSnZWQnJnbndOSU92Y05Kb0JPZnh6OFFaVkp3S3RDWlZE?=
- =?utf-8?B?MndKQlRpd25mV2djYUQ2emR4UzdjMlRPcUM1dUR5MWRSY0RwZmZzQ2NiSnBY?=
- =?utf-8?B?MVBRUDJsb0EwNlozeTF2T1RreElOR2I4STFkeG1rM0I0QmE3M2xWSTh6RDNC?=
- =?utf-8?B?WWQxM3pBRVBUNUx5cmdUR3duWnFzWW5pUnJGYTB2RU5xWHROZXBEMVpud2N0?=
- =?utf-8?Q?0NKE2COa5wFoNxrQ=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d1840a0-af02-48df-8250-08de6316b7b0
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB8086.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 11:23:56.1286
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4ET4k5l29qJ4NiuFemPhTy7+Z4hWo8LIs2CXzC0paCZzQjtcJHIPbElZVKsETLXBnMqv2P05QpiiQaxObO3f3TK+twMZOvwq0/neqIhopno=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8565
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 15/17] module: Introduce hash-based integrity checking
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>,
+ Nicolas Schier <nicolas.schier@linux.dev>, Daniel Gomez
+ <da.gomez@kernel.org>, Aaron Tomlin <atomlin@atomlin.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>,
+ Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+ Xiu Jianfeng <xiujianfeng@huawei.com>,
+ =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
+ Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>,
+ kpcyrd <kpcyrd@archlinux.org>, Christian Heusel <christian@heusel.eu>,
+ =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?= <mcaju95@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-15-0b932db9b56b@weissschuh.net>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260113-module-hashes-v4-15-0b932db9b56b@weissschuh.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16546-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lukas@wunner.de,m:LeoLiu-oc@zhaoxin.com,m:helgaas@kernel.org,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:bhelgaas@google.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:CobeChen@zhaoxin.com,m:TonyWWang@zhaoxin.com,m:ErosZhang@zhaoxin.com,m:anthony.l.nguyen@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[przemyslaw.kitszel@intel.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,gmail.com,google.com,lists.ozlabs.org,vger.kernel.org,zhaoxin.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-16547-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:nicolas.schier@linux.dev,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nsc@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kerne
+ l.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[40];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,linux.dev,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[przemyslaw.kitszel@intel.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 337ECD8434
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[breakpoint.cc:email,suse.com:mid,suse.com:dkim]
+X-Rspamd-Queue-Id: A89D7D8EAD
 X-Rspamd-Action: no action
 
-On 2/2/26 10:02, Lukas Wunner wrote:
-> [cc += Tony, Przemek (ice driver maintainers), start of thread is here:
-> https://lore.kernel.org/all/20260123104034.429060-1-LeoLiu-oc@zhaoxin.com/
-> ]
+On 1/13/26 1:28 PM, Thomas Weißschuh wrote:
+> The current signature-based module integrity checking has some drawbacks
+> in combination with reproducible builds. Either the module signing key
+> is generated at build time, which makes the build unreproducible, or a
+> static signing key is used, which precludes rebuilds by third parties
+> and makes the whole build and packaging process much more complicated.
 > 
+> The goal is to reach bit-for-bit reproducibility. Excluding certain
+> parts of the build output from the reproducibility analysis would be
+> error-prone and force each downstream consumer to introduce new tooling.
+> 
+> Introduce a new mechanism to ensure only well-known modules are loaded
+> by embedding a merkle tree root of all modules built as part of the full
+> kernel build into vmlinux.
+> 
+> Non-builtin modules can be validated as before through signatures.
+> 
+> Normally the .ko module files depend on a fully built vmlinux to be
+> available for modpost validation and BTF generation. With
+> CONFIG_MODULE_HASHES, vmlinux now depends on the modules
+> to build a merkle tree. This introduces a dependency cycle which is
+> impossible to satisfy. Work around this by building the modules during
+> link-vmlinux.sh, after vmlinux is complete enough for modpost and BTF
+> but before the final module hashes are
+> 
+> The PKCS7 format which is used for regular module signatures can not
+> represent Merkle proofs, so a new kind of module signature is
+> introduced. As this signature type is only ever used for builtin
+> modules, no compatibility issues can arise.
 
-thank you for the report, I've asked people working on similar issue to
-take a look also here
+Nit: The description uses the term "builtin modules" in a misleading
+way. Typically, "builtin modules" refers to modules that are linked
+directly into vmlinux. However, this text uses the term to refer to
+loadable modules that are built together with the main kernel image,
+which is something different.
 
-> On Mon, Feb 02, 2026 at 02:00:55PM +0800, LeoLiu-oc wrote:
->> The kernel version I am using is 6.18.6.
-> [...]
->> The complete log of the kernel panic is as follows:
->>
->> [  100.304077][  T843] list_del corruption, ffff8881418b79e8->next is LIST_POISON1 (dead000000000100)
->> [  100.312989][  T843] ------------[ cut here ]------------
->> [  100.318268][  T843] kernel BUG at lib/list_debug.c:56!
->> [  100.323380][  T843] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
->> [  100.329250][  T843] CPU: 7 PID: 843 Comm: irq/27-pciehp Tainted: P    W  OE     ------- ----  6.6.0-32.7.v2505.ky11.x86_64 #1
->> [  100.340793][  T843] Source Version: 71d5b964051132b7772acd935972fca11462bbfe
->> [  100.359228][  T843] RIP: 0010:__list_del_entry_valid_or_report+0x7f/0xc0
->> [  100.365877][  T843] Code: 66 4b a6 e8 c3 43 a9 ff 0f 0b 48 89 fe 48 c7 c7 10 67 4b a6 e8 b2 43 a9 ff 0f 0b 48 89 fe 48 c7 c7 40 67 4b a6 e8 a1 43 a9 ff <0f> 0b 48 89 fe 48 89 ca 48 c7 c7 78 67 4b a6 e8 8d 43 a9 ff 0f 0b
->> [  100.385158][  T843] RSP: 0018:ffffc9000f70fc08 EFLAGS: 00010246
->> [  100.391024][  T843] RAX: 000000000000004e RBX: ffff8881418b79e8 RCX: 0000000000000000
->> [  100.398781][  T843] RDX: 0000000000000000 RSI: ffff8897df5a32c0 RDI: ffff8897df5a32c0
->> [  100.406538][  T843] RBP: ffff8881257f9608 R08: 0000000000000000 R09: 0000000000000003
->> [  100.414294][  T843] R10: ffffc9000f70fa90 R11: ffffffffa6fee508 R12: 0000000000000000
->> [  100.422050][  T843] R13: ffff8881257f9608 R14: ffff888116507c28 R15: ffff888116507c28
->> [  100.429807][  T843] FS:  0000000000000000(0000) GS:ffff8897df580000(0000) knlGS:0000000000000000
->> [  100.438511][  T843] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [  100.444891][  T843] CR2: 00007f9563bac1c0 CR3: 0000000c4be26004 CR4: 0000000000570ee0
->> [  100.452647][  T843] PKRU: 55555554
->> [  100.456017][  T843] Call Trace:
->> [  100.459129][  T843]  <TASK>
->> [  100.461898][  T843]  ice_flow_rem_entry_sync.constprop.0+0x1c/0x90 [ice]
->> [  100.468663][  T843]  ice_flow_rem_entry+0x3d/0x60 [ice]
->> [  100.473925][  T843]  ice_fdir_erase_flow_from_hw.constprop.0+0x9b/0x100 [ice]
->> [  100.481078][  T843]  ice_fdir_rem_flow.constprop.0+0x32/0xb0 [ice]
->> [  100.487284][  T843]  ice_vsi_manage_fdir+0x7b/0xb0 [ice]
->> [  100.492629][  T843]  ice_deinit_features.part.0+0x46/0xc0 [ice]
->> [  100.498571][  T843]  ice_remove+0xcf/0x220 [ice]
->> [  100.503222][  T843]  pci_device_remove+0x3f/0xb0
->> [  100.507798][  T843]  device_release_driver_internal+0x19d/0x220
->> [  100.513667][  T843]  pci_stop_bus_device+0x6c/0x90
->> [  100.518417][  T843]  pci_stop_and_remove_bus_device+0x12/0x20
->> [  100.524110][  T843]  pciehp_unconfigure_device+0x9f/0x160
->> [  100.529463][  T843]  pciehp_disable_slot+0x69/0x130
->> [  100.534296][  T843]  pciehp_handle_presence_or_link_change+0xfc/0x210
->> [  100.540678][  T843]  pciehp_ist+0x204/0x230
->> [  100.544824][  T843]  ? __pfx_irq_thread_fn+0x10/0x10
->> [  100.549747][  T843]  irq_thread_fn+0x20/0x60
->> [  100.553978][  T843]  irq_thread+0xfb/0x1c0
->> [  100.558038][  T843]  ? __pfx_irq_thread_dtor+0x10/0x10
->> [  100.563130][  T843]  ? __pfx_irq_thread+0x10/0x10
->> [  100.567791][  T843]  kthread+0xe5/0x120
->> [  100.571594][  T843]  ? __pfx_kthread+0x10/0x10
->> [  100.575997][  T843]  ret_from_fork+0x17a/0x1a0
->> [  100.580403][  T843]  ? __pfx_kthread+0x10/0x10
->> [  100.584805][  T843]  ret_from_fork_asm+0x1a/0x30
->> [  100.589384][  T843]  </TASK>
->> [  100.592237][  T843] Modules linked in: zxmem(OE) einj amdgpu amdxcp
->> gpu_sched drm_exec drm_buddy nft_fib_inet nft_fib_ipv4 nft_fib_ipv6
->> nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
->> nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 zhaoxin_cputemp
->> nf_defrag_ipv4 zhaoxin_rng snd_hda_codec_hdmi radeon rfkill
->> snd_hda_intel snd_intel_dspcfg irdma i2c_algo_bit snd_intel_sdw_acpi
->> ip_set i40e drm_suballoc_helper nf_tables drm_ttm_helper pcicfg(POE)
->> snd_hda_codec ib_uverbs sunrpc ttm ib_core snd_hda_core
->> drm_display_helper snd_hwdep kvm_intel snd_pcm cec vfat fat
->> drm_kms_helper snd_timer kvm video ice snd psmouse soundcore wmi
->> acpi_cpufreq pcspkr i2c_zhaoxin sg sch_fq_codel drm fuse backlight
->> nfnetlink xfs sd_mod t10_pi sm2_zhaoxin_gmi crct10dif_pclmul
->> crc32_pclmul ahci crc32c_intel libahci r8169 ghash_clmulni_intel libata
->> sha512_ssse3 serio_raw realtek dm_mirror dm_region_hash dm_log
->> dm_multipath dm_mod i2c_dev autofs4
->> [  100.674508][  T843] ---[ end trace 0000000000000000 ]---
->> [  100.709547][  T843] RIP: 0010:__list_del_entry_valid_or_report+0x7f/0xc0
->> [  100.716197][  T843] Code: 66 4b a6 e8 c3 43 a9 ff 0f 0b 48 89 fe 48 c7 c7 10 67 4b a6 e8 b2 43 a9 ff 0f 0b 48 89 fe 48 c7 c7 40 67 4b a6 e8 a1 43 a9 ff <0f> 0b 48 89 fe 48 89 ca 48 c7 c7 78 67 4b a6 e8 8d 43 a9 ff 0f 0b
->> [  100.735491][  T843] RSP: 0018:ffffc9000f70fc08 EFLAGS: 00010246
->> [  100.741367][  T843] RAX: 000000000000004e RBX: ffff8881418b79e8 RCX: 0000000000000000
->> [  100.749137][  T843] RDX: 0000000000000000 RSI: ffff8897df5a32c0 RDI: ffff8897df5a32c0
->> [  100.756909][  T843] RBP: ffff8881257f9608 R08: 0000000000000000 R09: 0000000000000003
->> [  100.764678][  T843] R10: ffffc9000f70fa90 R11: ffffffffa6fee508 R12: 0000000000000000
->> [  100.772448][  T843] R13: ffff8881257f9608 R14: ffff888116507c28 R15: ffff888116507c28
->> [  100.780218][  T843] FS:  0000000000000000(0000) GS:ffff8897df580000(0000) knlGS:0000000000000000
->> [  100.788934][  T843] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [  100.795329][  T843] CR2: 00007f9563bac1c0 CR3: 0000000c4be26004 CR4: 0000000000570ee0
->> [  100.803099][  T843] PKRU: 55555554
->> [  100.806483][  T843] Kernel panic - not syncing: Fatal exception
->> [  100.812794][  T843] Kernel Offset: disabled
->> [  100.821613][  T843] pstore: backend (erst) writing error (-28)
->> [  100.827481][  T843] ---[ end Kernel panic - not syncing: Fatal exception ]---
->>
->> The reason for this kernel panic is that the ice network card driver
->> executed the ice_pci_err_detected() for a longer time than the maximum
->> waiting time allowed by pciehp. After that, the pciehp_ist() will
->> execute the ice network card driver's ice_remove() process. This results
->> in the ice_pci_err_detected() having already deleted the list, while the
->> ice_remove() is still attempting to delete a list that no longer exists.
-> 
-> This is a bug in the ice driver, not in the pciehp or dpc driver.
-> As such, it is not a good argument to support the extension of the
-> timeout.  I'm not against extending the timeout, but the argument
-> that it's necessary to avoid occurrence of a bug is not a good one.
-> 
-> You should first try to unbind the ice driver at runtime to see if
-> there is a general problem in the unbind code path:
-> 
-> echo abcd:ef:gh.i > /sys/bus/pci/drivers/shpchp/unbind
-> 
-> Replace abcd:ef:gh.i with the domain/bus/device/function of the Ethernet
-> card.  The dmesg excerpt you've provided unfortunately does not betray
-> the card's address.
-> 
-> Then try to rebind the driver via the "bind" sysfs attribute.
-> 
-> If this works, the next thing to debug is whether the driver has a
-> problem with surprise removal.  I'm not fully convinced that the
-> crash you're seeing is caused by concurrent execution of
-> ice_pci_err_detected() and ice_remove().  When pciehp unbinds the
-> driver during DPC recovery, the device is likely inaccessible.
-> It's possible that ice_remove() behaves differently for an
-> inaccessible device and that may cause the crash instead of the
-> concurrent execution of ice_pci_err_detected().
-> 
-> It would also be good to understand why DPC recovery of the Ethernet
-> card takes this long.  Does it take a long time to come out of reset?
-> Could the ice driver be changed to allow for faster recovery?
-> 
-> Thanks,
-> 
-> Lukas
+> diff --git a/scripts/modules-merkle-tree.c b/scripts/modules-merkle-tree.c
+> new file mode 100644
+> index 000000000000..a6ec0e21213b
+> --- /dev/null
+> +++ b/scripts/modules-merkle-tree.c
+> @@ -0,0 +1,467 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Compute hashes for modules files and build a merkle tree.
+> + *
+> + * Copyright (C) 2025 Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+> + * Copyright (C) 2025 Thomas Weißschuh <linux@weissschuh.net>
+> + *
+> + */
+> +#define _GNU_SOURCE 1
+> +#include <arpa/inet.h>
+> +#include <err.h>
+> +#include <unistd.h>
+> +#include <fcntl.h>
+> +#include <stdarg.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <stdbool.h>
+> +#include <stdlib.h>
+> +
+> +#include <sys/stat.h>
+> +#include <sys/mman.h>
+> +
+> +#include <openssl/evp.h>
+> +#include <openssl/err.h>
+> +
+> +#include "ssl-common.h"
+> +
+> +static int hash_size;
+> +static EVP_MD_CTX *ctx;
+> +
+> +struct module_signature {
+> +	uint8_t		algo;		/* Public-key crypto algorithm [0] */
+> +	uint8_t		hash;		/* Digest algorithm [0] */
+> +	uint8_t		id_type;	/* Key identifier type [PKEY_ID_PKCS7] */
+> +	uint8_t		signer_len;	/* Length of signer's name [0] */
+> +	uint8_t		key_id_len;	/* Length of key identifier [0] */
+> +	uint8_t		__pad[3];
+> +	uint32_t	sig_len;	/* Length of signature data */
+> +};
+> +
+> +#define PKEY_ID_MERKLE 3
+> +
+> +static const char magic_number[] = "~Module signature appended~\n";
 
+It might make sense to put these common structures into a file under
+scripts/include/ so they can be shared by both scripts/sign-file.c and
+scripts/modules-merkle-tree.c.
+
+> +
+> +struct file_entry {
+> +	char *name;
+> +	unsigned int pos;
+> +	unsigned char hash[EVP_MAX_MD_SIZE];
+> +};
+> +
+> +static struct file_entry *fh_list;
+> +static size_t num_files;
+> +
+> +struct leaf_hash {
+> +	unsigned char hash[EVP_MAX_MD_SIZE];
+> +};
+> +
+> +struct mtree {
+> +	struct leaf_hash **l;
+> +	unsigned int *entries;
+> +	unsigned int levels;
+> +};
+> +
+> +static inline void *xcalloc(size_t n, size_t size)
+> +{
+> +	void *p;
+> +
+> +	p = calloc(n, size);
+> +	if (!p)
+> +		errx(1, "Memory allocation failed");
+> +
+> +	return p;
+> +}
+> +
+> +static void *xmalloc(size_t size)
+> +{
+> +	void *p;
+> +
+> +	p = malloc(size);
+> +	if (!p)
+> +		errx(1, "Memory allocation failed");
+> +
+> +	return p;
+> +}
+> +
+> +static inline void *xreallocarray(void *oldp, size_t n, size_t size)
+> +{
+> +	void *p;
+> +
+> +	p = reallocarray(oldp, n, size);
+> +	if (!p)
+> +		errx(1, "Memory allocation failed");
+> +
+> +	return p;
+> +}
+> +
+> +static inline char *xasprintf(const char *fmt, ...)
+> +{
+> +	va_list ap;
+> +	char *strp;
+> +	int ret;
+> +
+> +	va_start(ap, fmt);
+> +	ret = vasprintf(&strp, fmt, ap);
+> +	va_end(ap);
+> +	if (ret == -1)
+> +		err(1, "Memory allocation failed");
+> +
+> +	return strp;
+> +}
+
+I believe it is preferable to use xmalloc() and related functions from
+scripts/include/xalloc.h, instead of defining your own variants. If
+something is missing in xalloc.h, it can be extended.
+
+> +
+> +static unsigned int get_pow2(unsigned int val)
+> +{
+> +	return 31 - __builtin_clz(val);
+> +}
+> +
+> +static unsigned int roundup_pow2(unsigned int val)
+> +{
+> +	return 1 << (get_pow2(val - 1) + 1);
+> +}
+> +
+> +static unsigned int log2_roundup(unsigned int val)
+> +{
+> +	return get_pow2(roundup_pow2(val));
+> +}
+
+In the edge case when the kernel is built with only one module, the code
+calls log2_roundup(1) -> roundup_pow2(1) -> get_pow2(0) ->
+__builtin_clz(0). The return value of __builtin_clz() is undefined if
+the input is zero.
+
+> +
+> +static void hash_data(void *p, unsigned int pos, size_t size, void *ret_hash)
+> +{
+> +	unsigned char magic = 0x01;
+> +	unsigned int pos_be;
+> +
+> +	pos_be = htonl(pos);
+> +
+> +	ERR(EVP_DigestInit_ex(ctx, NULL, NULL) != 1, "EVP_DigestInit_ex()");
+> +	ERR(EVP_DigestUpdate(ctx, &magic, sizeof(magic)) != 1, "EVP_DigestUpdate(magic)");
+> +	ERR(EVP_DigestUpdate(ctx, &pos_be, sizeof(pos_be)) != 1, "EVP_DigestUpdate(pos)");
+> +	ERR(EVP_DigestUpdate(ctx, p, size) != 1, "EVP_DigestUpdate(data)");
+> +	ERR(EVP_DigestFinal_ex(ctx, ret_hash, NULL) != 1, "EVP_DigestFinal_ex()");
+> +}
+> +
+> +static void hash_entry(void *left, void *right, void *ret_hash)
+> +{
+> +	int hash_size = EVP_MD_CTX_get_size_ex(ctx);
+
+Nit: The local variable hash_size can be removed, as the static variable
+with the same name should hold the same value.
+
+> +	unsigned char magic = 0x02;
+> +
+> +	ERR(EVP_DigestInit_ex(ctx, NULL, NULL) != 1, "EVP_DigestInit_ex()");
+> +	ERR(EVP_DigestUpdate(ctx, &magic, sizeof(magic)) != 1, "EVP_DigestUpdate(magic)");
+> +	ERR(EVP_DigestUpdate(ctx, left, hash_size) != 1, "EVP_DigestUpdate(left)");
+> +	ERR(EVP_DigestUpdate(ctx, right, hash_size) != 1, "EVP_DigestUpdate(right)");
+> +	ERR(EVP_DigestFinal_ex(ctx, ret_hash, NULL) != 1, "EVP_DigestFinal_ex()");
+> +}
+> +
+> +static void hash_file(struct file_entry *fe)
+> +{
+> +	struct stat sb;
+> +	int fd, ret;
+> +	void *mem;
+> +
+> +	fd = open(fe->name, O_RDONLY);
+> +	if (fd < 0)
+> +		err(1, "Failed to open %s", fe->name);
+> +
+> +	ret = fstat(fd, &sb);
+> +	if (ret)
+> +		err(1, "Failed to stat %s", fe->name);
+> +
+> +	mem = mmap(NULL, sb.st_size, PROT_READ, MAP_SHARED, fd, 0);
+> +	close(fd);
+> +
+> +	if (mem == MAP_FAILED)
+> +		err(1, "Failed to mmap %s", fe->name);
+
+Nit: The err() call should be moved immediately after mmap(). In theory,
+the interleaving close() could change the errno value, resulting in
+err() printing a misleading error message.
+
+> +
+> +	hash_data(mem, fe->pos, sb.st_size, fe->hash);
+> +
+> +	munmap(mem, sb.st_size);
+> +}
+> +
+> +static struct mtree *build_merkle(struct file_entry *fh, size_t num)
+> +{
+> +	struct mtree *mt;
+> +	unsigned int le;
+> +
+> +	if (!num)
+> +		return NULL;
+> +
+> +	mt = xmalloc(sizeof(*mt));
+> +	mt->levels = log2_roundup(num);
+> +
+> +	mt->l = xcalloc(sizeof(*mt->l), mt->levels);
+> +
+> +	mt->entries = xcalloc(sizeof(*mt->entries), mt->levels);
+> +	le = num / 2;
+> +	if (num & 1)
+> +		le++;
+> +	mt->entries[0] = le;
+> +	mt->l[0] = xcalloc(sizeof(**mt->l), le);
+> +
+> +	/* First level of pairs */
+> +	for (unsigned int i = 0; i < num; i += 2) {
+> +		if (i == num - 1) {
+> +			/* Odd number of files, no pair. Hash with itself */
+> +			hash_entry(fh[i].hash, fh[i].hash, mt->l[0][i / 2].hash);
+> +		} else {
+> +			hash_entry(fh[i].hash, fh[i + 1].hash, mt->l[0][i / 2].hash);
+> +		}
+> +	}
+> +	for (unsigned int i = 1; i < mt->levels; i++) {
+> +		int odd = 0;
+> +
+> +		if (le & 1) {
+> +			le++;
+> +			odd++;
+> +		}
+> +
+> +		mt->entries[i] = le / 2;
+> +		mt->l[i] = xcalloc(sizeof(**mt->l), le);
+
+l[i] is overallocated. It needs only 'le / 2' entries.
+
+> +
+> +		for (unsigned int n = 0; n < le; n += 2) {
+> +			if (n == le - 2 && odd) {
+> +				/* Odd number of pairs, no pair. Hash with itself */
+> +				hash_entry(mt->l[i - 1][n].hash, mt->l[i - 1][n].hash,
+> +					   mt->l[i][n / 2].hash);
+> +			} else {
+> +				hash_entry(mt->l[i - 1][n].hash, mt->l[i - 1][n + 1].hash,
+> +					   mt->l[i][n / 2].hash);
+> +			}
+> +		}
+> +		le =  mt->entries[i];
+
+Nit: It might be helpful to write both the first-level and other-level
+loops in the same style to make them easier to understand, perhaps by
+clearly separating the number of entries at each level. I suggest
+something like the following:
+
+static struct mtree *build_merkle(struct file_entry *fh, size_t num_files)
+{
+	struct mtree *mt;
+	unsigned int num_cur_le, num_prev_le;
+
+	if (!num_files)
+		return NULL;
+
+	mt = xmalloc(sizeof(*mt));
+	mt->levels = log2_roundup(num_files);
+
+	mt->l = xcalloc(sizeof(*mt->l), mt->levels);
+
+	mt->entries = xcalloc(sizeof(*mt->entries), mt->levels);
+	num_cur_le = (num_files + 1) / 2;
+	mt->entries[0] = num_cur_le;
+	mt->l[0] = xcalloc(sizeof(**mt->l), num_cur_le);
+
+	/* First level of pairs */
+	for (unsigned int i = 0; i < num_files; i += 2) {
+		/* Hash the pair, or the last file with itself if it's odd. */
+		void *right = i + 1 < num_files ? fh[i + 1].hash : fh[i].hash;
+		hash_entry(fh[i].hash, right, mt->l[0][i / 2].hash);
+	}
+
+	for (unsigned int i = 1; i < mt->levels; i++) {
+		num_prev_le = num_cur_le;
+
+		num_cur_le = (num_prev_le + 1) / 2;
+		mt->entries[i] = num_cur_le;
+		mt->l[i] = xcalloc(sizeof(**mt->l), num_cur_le);
+
+		for (unsigned int n = 0; n < num_prev_le; n += 2) {
+			/* Hash the pair, or the last with itself if it's odd. */
+			void *right = n + 1 < num_prev_le ?
+					      mt->l[i - 1][n + 1].hash :
+					      mt->l[i - 1][n].hash;
+			hash_entry(mt->l[i - 1][n].hash, right,
+				   mt->l[i][n / 2].hash);
+		}
+	}
+	return mt;
+}
+
+> +	}
+> +	return mt;
+> +}
+> +
+> +static void free_mtree(struct mtree *mt)
+> +{
+> +	if (!mt)
+> +		return;
+> +
+> +	for (unsigned int i = 0; i < mt->levels; i++)
+> +		free(mt->l[i]);
+> +
+> +	free(mt->l);
+> +	free(mt->entries);
+> +	free(mt);
+> +}
+> +
+> +static void write_be_int(int fd, unsigned int v)
+> +{
+> +	unsigned int be_val = htonl(v);
+> +
+> +	if (write(fd, &be_val, sizeof(be_val)) != sizeof(be_val))
+> +		err(1, "Failed writing to file");
+> +}
+> +
+> +static void write_hash(int fd, const void *h)
+> +{
+> +	ssize_t wr;
+> +
+> +	wr = write(fd, h, hash_size);
+> +	if (wr != hash_size)
+> +		err(1, "Failed writing to file");
+> +}
+
+Nit: This could be
+
+if (write(fd, h, hash_size) != hash_size)
+
+to keep the style of write_be_int() and write_hash() consistent.
+
+> +
+> +static void build_proof(struct mtree *mt, unsigned int n, int fd)
+> +{
+> +	unsigned char cur[EVP_MAX_MD_SIZE];
+> +	unsigned char tmp[EVP_MAX_MD_SIZE];
+> +	struct file_entry *fe, *fe_sib;
+> +
+> +	fe = &fh_list[n];
+> +
+> +	if ((n & 1) == 0) {
+> +		/* No pair, hash with itself */
+> +		if (n + 1 == num_files)
+> +			fe_sib = fe;
+> +		else
+> +			fe_sib = &fh_list[n + 1];
+> +	} else {
+> +		fe_sib = &fh_list[n - 1];
+> +	}
+> +	/* First comes the node position into the file */
+> +	write_be_int(fd, n);
+> +
+> +	if ((n & 1) == 0)
+> +		hash_entry(fe->hash, fe_sib->hash, cur);
+> +	else
+> +		hash_entry(fe_sib->hash, fe->hash, cur);
+> +
+> +	/* Next is the sibling hash, followed by hashes in the tree */
+> +	write_hash(fd, fe_sib->hash);
+> +
+> +	for (unsigned int i = 0; i < mt->levels - 1; i++) {
+> +		n >>= 1;
+> +		if ((n & 1) == 0) {
+> +			void *h;
+> +
+> +			/* No pair, hash with itself */
+> +			if (n + 1 == mt->entries[i])
+> +				h = cur;
+> +			else
+> +				h = mt->l[i][n + 1].hash;
+> +
+> +			hash_entry(cur, h, tmp);
+> +			write_hash(fd, h);
+> +		} else {
+> +			hash_entry(mt->l[i][n - 1].hash, cur, tmp);
+> +			write_hash(fd, mt->l[i][n - 1].hash);
+> +		}
+> +		memcpy(cur, tmp, hash_size);
+> +	}
+> +
+> +	 /* After all that, the end hash should match the root hash */
+> +	if (memcmp(cur, mt->l[mt->levels - 1][0].hash, hash_size))
+> +		errx(1, "hash mismatch");
+> +}
+> +
+> +static void append_module_signature_magic(int fd, unsigned int sig_len)
+> +{
+> +	struct module_signature sig_info = {
+> +		.id_type	= PKEY_ID_MERKLE,
+> +		.sig_len	= htonl(sig_len),
+> +	};
+> +
+> +	if (write(fd, &sig_info, sizeof(sig_info)) < 0)
+> +		err(1, "write(sig_info) failed");
+> +
+> +	if (write(fd, &magic_number, sizeof(magic_number) - 1) < 0)
+> +		err(1, "write(magic_number) failed");
+
+Nit: Checking that the written size exactly matches the size of the
+input data would be safer and consistent with other uses of write() in
+write_be_int() and write_hash(). Additionally, it would be good to make
+the error messages consistent in all cases.
+
+> +}
+> +
+> +static void write_merkle_root(struct mtree *mt, const char *fp)
+> +{
+> +	char buf[1024];
+> +	unsigned int levels;
+> +	unsigned char *h;
+> +	FILE *f;
+> +
+> +	if (mt) {
+> +		levels = mt->levels;
+> +		h = mt->l[mt->levels - 1][0].hash;
+> +	} else {
+> +		levels = 0;
+> +		h = xcalloc(1, hash_size);
+> +	}
+> +
+> +	f = fopen(fp, "w");
+> +	if (!f)
+> +		err(1, "Failed to create %s", buf);
+
+The last parameter to err() should be fp. The buf variable is then
+unused and can be removed.
+
+> +
+> +	fprintf(f, "#include <linux/module_hashes.h>\n\n");
+> +	fprintf(f, "const struct module_hashes_root module_hashes_root __module_hashes_section = {\n");
+> +
+> +	fprintf(f, "\t.levels = %u,\n", levels);
+> +	fprintf(f, "\t.hash = {");
+> +	for (unsigned int i = 0; i < hash_size; i++) {
+> +		char *space = "";
+> +
+> +		if (!(i % 8))
+> +			fprintf(f, "\n\t\t");
+> +
+> +		if ((i + 1) % 8)
+> +			space = " ";
+> +
+> +		fprintf(f, "0x%02x,%s", h[i], space);
+> +	}
+> +	fprintf(f, "\n\t},");
+> +
+> +	fprintf(f, "\n};\n");
+> +	fclose(f);
+
+Is it ok not to check the return values when writing to this output
+file? Other code checks that its output was successful.
+
+> +
+> +	if (!mt)
+> +		free(h);
+> +}
+> +
+> +static char *xstrdup_replace_suffix(const char *str, const char *new_suffix)
+> +{
+> +	const char *current_suffix;
+> +	size_t base_len;
+> +
+> +	current_suffix = strchr(str, '.');
+
+It is safer to use strrchr() in case the module path happens to contain
+a dot.
+
+> +	if (!current_suffix)
+> +		errx(1, "No existing suffix in '%s'", str);
+> +
+> +	base_len = current_suffix - str;
+> +
+> +	return xasprintf("%.*s%s", (int)base_len, str, new_suffix);
+> +}
+> +
+> +static void read_modules_order(const char *fname, const char *suffix)
+> +{
+> +	char line[PATH_MAX];
+
+<limits.h> should be included at the top to provide the definition of
+PATH_MAX.
+
+> +	FILE *in;
+> +
+> +	in = fopen(fname, "r");
+> +	if (!in)
+> +		err(1, "fopen(%s)", fname);
+
+Nit: The error message could be "Failed to open %s" to maintain
+consistency with a similar error in write_merkle_root().
+
+> +
+> +	while (fgets(line, PATH_MAX, in)) {
+> +		struct file_entry *entry;
+> +
+> +		fh_list = xreallocarray(fh_list, num_files + 1, sizeof(*fh_list));
+
+It might be useful to not reallocate this array for each file, although
+I don't immediately see that it contributes any significant time to the
+runtime.
+
+> +		entry = &fh_list[num_files];
+> +
+> +		entry->pos = num_files;
+> +		entry->name = xstrdup_replace_suffix(line, suffix);
+> +		hash_file(entry);
+> +
+> +		num_files++;
+> +	}
+> +
+> +	fclose(in);
+> +}
+> +
+> +static __attribute__((noreturn))
+> +void format(void)
+> +{
+> +	fprintf(stderr,
+> +		"Usage: scripts/modules-merkle-tree <root definition>\n");
+
+The usage string should mention the second parameter, which is the
+module suffix.
+
+> +	exit(2);
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	const EVP_MD *hash_evp;
+> +	struct mtree *mt;
+> +
+> +	if (argc != 3)
+> +		format();
+> +
+> +	hash_evp = EVP_get_digestbyname("sha256");
+> +	ERR(!hash_evp, "EVP_get_digestbyname");
+> +
+> +	ctx = EVP_MD_CTX_new();
+> +	ERR(!ctx, "EVP_MD_CTX_new()");
+> +
+> +	hash_size = EVP_MD_get_size(hash_evp);
+> +	ERR(hash_size <= 0, "EVP_get_digestbyname");
+> +
+> +	if (EVP_DigestInit_ex(ctx, hash_evp, NULL) != 1)
+> +		ERR(1, "EVP_DigestInit_ex()");
+> +
+> +	read_modules_order("modules.order", argv[2]);
+> +
+> +	mt = build_merkle(fh_list, num_files);
+> +	write_merkle_root(mt, argv[1]);
+> +	for (unsigned int i = 0; i < num_files; i++) {
+> +		char *signame;
+> +		int fd;
+> +
+> +		signame = xstrdup_replace_suffix(fh_list[i].name, ".merkle");
+> +
+> +		fd = open(signame, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+> +		if (fd < 0)
+> +			err(1, "Can't create %s", signame);
+> +
+> +		build_proof(mt, i, fd);
+> +		append_module_signature_magic(fd, lseek(fd, 0, SEEK_CUR));
+> +		close(fd);
+
+The return code of close() should be checked, otherwise it is
+meaningless to check the write() calls in
+append_module_signature_magic().
+
+> +	}
+> +
+> +	free_mtree(mt);
+> +	for (unsigned int i = 0; i < num_files; i++)
+> +		free(fh_list[i].name);
+> +	free(fh_list);
+> +
+> +	EVP_MD_CTX_free(ctx);
+> +	return 0;
+> +}
+
+-- 
+Thanks,
+Petr
 
