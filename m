@@ -1,58 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-16528-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16529-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MilIZcSgWkqEAMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16528-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Feb 2026 22:09:43 +0100
+	id MM3fCdBngWl5GAMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16529-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 04:13:20 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A5ED18AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Feb 2026 22:09:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E04D4008
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 04:13:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f4fPs3bSMz2xKx;
-	Tue, 03 Feb 2026 08:09:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f4pTS41rmz30FF;
+	Tue, 03 Feb 2026 14:13:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.78.240
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770066577;
-	cv=none; b=eiJoRqpHSy3zN+tQb0BjN5121JdwTN2ttAeMWE9Vj8lcoK+360PIRFjGOGueXpwSLGC5M74AxCyAscaOD3s/B8QGd2LrwpuENaUzOLqg4/YLyZhEwqvAk5lWl288++Dv2hEvnsmFpbAfUhPGaGrbKWc4gsvyC6FgzCX+a5NalFT590iq7WY3QqSaEIv+pIKlCZWDqDC+9k8ExsxU5vpIRyzdnSVEd69RvwYTXAgvlDj37Td8JwkB6wE5oSp2vDsN40e6xf1xi8+9Ghanyzw1hDtvOY7idOuYVY6KZMiXvS8FRvkl7SXrJ388xkMAlgx9LGuUXUShg3gfWFRSvqKayg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770066577; c=relaxed/relaxed;
-	bh=gNiJ/jl1QYyOrGHHsZeeP54O4O8Pg59etnwrRXvoaLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YSf5XQjDsZ1t9xejYmaA0K8xodto0FGdaXAP/0Wh9pW9Vbk4vwuIhh8PimL8EWGYwf+4+LHQ8hqUXQUU47wDDNWeW2IaPAw3YGbr3BnPZJYWTg49iG2cu2WnpkJCj7S9/PQJrjrYGC0PccioDT4EXXHP68g19wnL64ZtwyvxNexkh5DhX9OZ/PpPVEofhVGLvWr4V1qwLwNYp/GMn+a4RBfjR0gkZeoAtyMIJrzbCf0O42fW5G/6kD9v208HEhDTWSG9cVhvh5Wc49HVkw5iQjfy7jj2W6/j71p/iwmnNbEAvykY1wStDFogQwglg6/5F2ytUCOWVK9eLL6/lGtR7g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c20a::7" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770088396;
+	cv=pass; b=gJILG+c/onQZbCVFEiHufbkqobPfh/Ytl1gZ3oaDwiZYHGK0XTjS4c7+AMMDvcwDsxq+QDzvTo+cl6eor643JH9e9+tb9HcVF42OHYgfYNWZAbyKFLm/6WIhqlUQeXu/qwb6crwegdZdQofsrZAcHvYW1VS/8IrQWKBPMiHXQn5dFBp9LkRbLkQRz6AcjMsQVvjLDlDZhg0GiuZl48MTOeKeuqOuRrnZvoT+fDZRQLeFYr+HVfCn3iNEZXP04LLB3i42bojWrYeUkwy3yt+C9nGLF5AvhXQfMkMmOZXt4yfSKah/e5EhaxmUu4cztCxxbKgQs32nGFBF7gWcYxDbZQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770088396; c=relaxed/relaxed;
+	bh=1DwZVwaw+JLrTAWNJJs8V0U/w37eKhqZWOrigJOCIo0=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=VsFcWXV4wBssiao8xd+2ZuLOrdkbd9ePr3cjjX8jqnIirZ1c6GF9PjuhM8IK27/0n8D7c1N7yQgodrC4z/WWycMi8BJTprDCtY+2bFZOriubMQWEk842Ne8z8rfxCFTFCX5LH+Fu+uSZ3tbgJGePiZzJeBIBptQHW3FiGD4faxYGeL5GTK7sz1fux3m6rfvG4nHp/ZQayhJUTbD3dlo/cAd3qJJeiA5HC/kyO/RNs3TDhle+uBTkE1C2gKpeTe8z0Y7f56k5jC+PqhbJ44cW54SlcE8P2/g4bhcTbBxlkbdbOwf+/54vTFuRSCNJvmJUkuAk9tCfmbDTthFnxgFWGw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=n00mpdxs; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c20a::7; helo=pa4pr04cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=n00mpdxs;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c20a::7; helo=pa4pr04cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4fPq5QXRz2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 08:09:33 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 520912006F69;
-	Mon,  2 Feb 2026 22:09:27 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4B301290DD; Mon,  2 Feb 2026 22:09:27 +0100 (CET)
-Date: Mon, 2 Feb 2026 22:09:27 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com,
-	kbusch@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
-	mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
-	terry.bowman@amd.com, tianruidong@linux.alibaba.com
-Subject: Re: [PATCH v7 2/5] PCI/DPC: Run recovery on device that detected the
- error
-Message-ID: <aYESh4bCE2lzTg2S@wunner.de>
-References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
- <20260124074557.73961-3-xueshuai@linux.alibaba.com>
- <aYCujqZIvxElSsOE@wunner.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4pTQ506lz309y
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 14:13:14 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AXvu7Ur5I3xubEzOUvIKQU+i+NWGd8s2uQgCx7ZglUwa7Z4M9aRZEnRykv7gQ6L0hdD9wPlYObQgvDCFT21+M05Lao37rkaD4zmczCqiZ7xX0SR7josfUNjjRMKmLUIIXLIrnXChi5SF1tM2jfJolHZsc3R9Dqc2uwW51Kh4Dh1IXp44E4zCyVUfQ5oSOWTYZl2cmvq5h9PTJBqPVumf5QZjdok4OCKp8TlKY/CWfH/5nzivQ0BoWar8Vs5uMYuI4EfnOn+dkyUubQxtbwOB5WSAqonj3h3CPtFcF8foH6zhodgh2a1ZQ6OakEb50lH6zTvBlQK3AWIySefUbJtlPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1DwZVwaw+JLrTAWNJJs8V0U/w37eKhqZWOrigJOCIo0=;
+ b=SW//ZnIa5svz0TWTvPNn7ghKUrkYyRqL8ppLor97tana4aT+aaltvW02QgPO9CjP19ZIjEAzS6jZMdlS33O80GvYUqBH1/DAJImQ3DbfpA3IjN7uDwwyJ/8CoXDKyyH0TGD88+EsrIQrS09aHs/dGOC71kwVYBJaOZeUnW6AauCOrSgkmn8ysjepTu6+S7uN0xieK9v8WXjsEatTplxoLIRMr+q/3HU+t/XapSXFDSR0xI8qKr0BPoWb/uul4tvVGU41pWEpVbV0j0VJE74tznjJzPGbE+kd50/3leOwJFXfG4CJhriPlEL1qhXAwVt8BHmZlYpYwO6pz73QYkCJQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1DwZVwaw+JLrTAWNJJs8V0U/w37eKhqZWOrigJOCIo0=;
+ b=n00mpdxspH0VbKPmLf8PiIkcSM8tBDcaqFmYX4NFMbOaU2F7cOc7QXp2Fs0SCiIBqMLlFqq8Pe0yxEIClJJEZCgqb4K+UdzS7VNECfYghiFv/heJ3lbCDomPHcklVnmSDzH6S7XgXPBeMqAJ7At+haJT8WyAZx5IkndcthAu0vCUDAY0nVo37IwC8u8tMqOiyOHboTteguRF9UrXwQwFttPvhmqUN0FeB9e7x20SDqmAgKW2vukSa2zttWCkpM9tswpwSCHx/mejlK42W6ttnjzg5dUQh5pqiQaDzb4aGhefUWmFe5FOeKbgG5bvlh6ZkU2euFR8dqhP3n7D5tvhkg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB7055.eurprd04.prod.outlook.com (2603:10a6:800:123::21)
+ by GV2PR04MB12271.eurprd04.prod.outlook.com (2603:10a6:150:32a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
+ 2026 03:12:44 +0000
+Received: from VI1PR04MB7055.eurprd04.prod.outlook.com
+ ([fe80::d6ab:1538:d868:bf8]) by VI1PR04MB7055.eurprd04.prod.outlook.com
+ ([fe80::d6ab:1538:d868:bf8%7]) with mapi id 15.20.9564.014; Tue, 3 Feb 2026
+ 03:12:44 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	nicoleotsuka@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 0/4] ASoC: fsl_asrc: support the i.MX952 platform
+Date: Tue,  3 Feb 2026 11:13:41 +0800
+Message-Id: <20260203031345.3850533-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0040.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::7) To VI1PR04MB7055.eurprd04.prod.outlook.com
+ (2603:10a6:800:123::21)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,99 +100,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYCujqZIvxElSsOE@wunner.de>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7055:EE_|GV2PR04MB12271:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6b597c2-7836-4e13-2ec2-08de62d218ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|19092799006|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?76ZqpicaolAgCGw3i5knBAtaSQ1KMEE1RPqxOisJoEZuFMvvepa0KmP8Kydu?=
+ =?us-ascii?Q?EOvemsi/u/lUsclW9vg8N1ZtDXssGipyccSGNuY0xuMEosOAln2Nsgztz21d?=
+ =?us-ascii?Q?tjuPDcdkFw5CdQ3AcYDx9x6Epaep9YDt6ltrRIiNxPviAbbUz7ABie8oz9XV?=
+ =?us-ascii?Q?zWfoT5Yms3Gm32LZSFHUiKdWlhGkwvSx1Z/5bpKP+MZcG87fYO4j8mOo1msA?=
+ =?us-ascii?Q?MN+0/qQgGbjmGTPAPghhWE8abv/TKt99539HI6GKjg58wAUUD2JNXO++U3Vu?=
+ =?us-ascii?Q?1zbsmwVwilIQ8jOBOr34FkPKHf02pmY8FTgLg3mof7o1uCqx3xLmJBh+dtvO?=
+ =?us-ascii?Q?gGTKY165huHyNeA8miGWk2fyWEExxKB/2Dc/OdMWSx0+vwKlRNnsMqUakZT1?=
+ =?us-ascii?Q?6Jv5AokbwUhuzUPYq1NqjjUWyaRF7xcGSl2tz7YTnSaLJSKq14xCK78SX2oJ?=
+ =?us-ascii?Q?dGYMHxfWpDbYjMseW/q5XMPwkAbsU+//GLRm1l7xgyWPm/HtDX4wdbgQyGhC?=
+ =?us-ascii?Q?UdaLph3C+jptYmwx7Bm50ZKRQm8zg/Ckt/0T6Ot6J6DnCETBNj/k0Ek9Of07?=
+ =?us-ascii?Q?Wq+G2oZWWinZeG4NMacOwI1Jn5gxOBxQwj8523FZMqDhcWcMA74rs3j6DflR?=
+ =?us-ascii?Q?A0B0L6pmVTMqS4VEFVQ6LDTI5IDiuSsCd31pN4teuw//83M7r6lcFSMKiBAh?=
+ =?us-ascii?Q?WStpA22HopVqAAJUIYCFo2V6fkaU3Tk+SFgNv3y7mJaz2yDN+/rRZV9Ev9nb?=
+ =?us-ascii?Q?vYFOA34OspQ2WOA3s8dwi0eE9F6CxqKrqGZujVbS1+6waqYqVd3Kf6KTVU9W?=
+ =?us-ascii?Q?tthhU2U+zlwuOoPxB2SRc8CHLnDcv0nH2zpmqlFEuDW/8fWl814GtzypxHma?=
+ =?us-ascii?Q?4lzDBaVEYyvAHJQ77/zZuuaFIRQWXQLKyRc2oEE+4gSyVB+2VMwu807Worx6?=
+ =?us-ascii?Q?kYMGy/L04uC2ZXeTz9ZAa8EZ0NrapO8MACxa+jIaV37pRIk548PHH8QRl4sI?=
+ =?us-ascii?Q?JxFTqTJJYcbkpnPpSsNbrgPGE2XCCa32f1Rj4NNVLylOvM2PF3csiN6hs6tr?=
+ =?us-ascii?Q?iug4tEguWLMmqOuOXGLQAea2uY9neSV+MuG13Hico0N4KObxCThQcawYdH0H?=
+ =?us-ascii?Q?xLake3osQALEKv+hJemLz93Zx5uC/J2CkbULnVIizjfdEWGpDPp4s3xjX4yQ?=
+ =?us-ascii?Q?H9fEwaTCehexKLZfTRdW4n22qKAyaxsfgbr9a45MEdROYgRbo1XSlOpMKJYq?=
+ =?us-ascii?Q?nwNhrhOhjwuV+rM5m7JivquZDWOgvkvpC21kUz6txuiY441ZLO1rV3xigumV?=
+ =?us-ascii?Q?NYkL7mJu6kZgaPd0h2PQZoNKxL7SZ8F05CR9sK0g8fx8ZvrBbUNmzg/cX/OF?=
+ =?us-ascii?Q?dM1UrzSCqQSbiZnR+wHKniFWmCyqKzdcrdorBJGxYhMCx2i5123/d6ar2apj?=
+ =?us-ascii?Q?Tv43IdDfUdLsN/Z1VslplDx/6ouvFtnfawwlHDS4FJFqS6QaytExMnStWPHL?=
+ =?us-ascii?Q?P4+4exxJNDQcbJb1pc6TFhkuUx6rHPOdmu92D7sfnD6DdpYfFj9TZ84vrrQA?=
+ =?us-ascii?Q?tH0UkD/dTypbo7XNy0QXQEAZHARwndJJMFlN7wWFMHzBZ1vd7aTbi/NUmbHF?=
+ =?us-ascii?Q?gHl0AflIwkrlYXczCy5ohnQhMWBSgeTJb73LWxg3Z2GK?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7055.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(19092799006)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Bt0CHWQmUUqTjED21+8GKZFsSkn73NoiGo7YhniLzdr5/V/rfWf7J/GrvIhH?=
+ =?us-ascii?Q?b7JKpcTCeP5BAxKoQ6qGrMCdjsDrh5pypKuisKXmIPVar1GJTQrl7WQC3quo?=
+ =?us-ascii?Q?E8L7OST3A+kYzMu9yl0LwufOOarEfk5BIFwXhIJJDyVNDfujMgjW5fTDhXX5?=
+ =?us-ascii?Q?Ka/pgfPaZrdRNap05cpT0u1tQL8ymJFvcOGQz4veF1LKq+zWRdxsEvaanZCx?=
+ =?us-ascii?Q?6zIiWoJ3iMaBcPlBCUZ6aNFtR9NU1YQS57ITr0Lr4EQXe7AFVX+qjaMCDLFy?=
+ =?us-ascii?Q?3kT+twu04J3ZXF/epjKO0SUcPIfwsL4p9fCdyxHMUGrU4JQU1p0c/XaXGtV5?=
+ =?us-ascii?Q?BlH2onhn76nnK356w/GrIbNXgLsd2oeC5kOLmqLuHy2cW0EQxJm0LID02I6t?=
+ =?us-ascii?Q?6mEdyGbITR+qKPzS6PsYyMsqvPEZrewc2Kec10/nz9I6sUT/mS/fPcm1kHu+?=
+ =?us-ascii?Q?YLqfTqLhw8v3RNffD9MlMkuxdpk4QvQQVQbxyJF1ghzTJEH2tYCHwANGel4a?=
+ =?us-ascii?Q?wJZtjcCFO7cqQfva9K8UM6QBuc8ToqWf5ERE16trpugDLAKKF/GD9dmnUwee?=
+ =?us-ascii?Q?bQQLlnwzSIybfWsKnGsWcDymP+6++gTPuHLP+02rMhTCHQaqCS7OIJQmQINB?=
+ =?us-ascii?Q?ICPISC3mx3FXu1jnKj/IM5X7EGCIHS9PBJuz5F2blIt5i4zdm7wc4svr4Ue3?=
+ =?us-ascii?Q?MafJ9eNBl00GRg2of70YKm/3E0MFE5aiTMbnPumfgUdIcSBl79J069BC7Z01?=
+ =?us-ascii?Q?4lLVBeLDXBdhNRD5iO66s61WkM11v+9qFn7A6abKuf61StRB5UtpEA+KHruH?=
+ =?us-ascii?Q?86AHSpBH3K5yyt2E+u8swEXiuCkszrRansphyahcidEHzbpjsdz3SVvqCCdn?=
+ =?us-ascii?Q?RCX3vGcUXGszbUZw9KnOzGML63xWNPHyi+EKuqogWBR6BIQhdcxTlvt9CSVK?=
+ =?us-ascii?Q?eRwEKA420t/IU+g64TdDBEGxfEX+idCtEh1sO5EedTVC7NbPVui4R3vfNJY9?=
+ =?us-ascii?Q?79bBjHkqSL++q81W6K7rBnHb6Vi4pLa9OB3WGBO/4FALEl9lQzB/rvbTY81O?=
+ =?us-ascii?Q?hH4jwT7zDZECOJQWI9FgEE35p1IS/bHPeErXFOFFJl2v9J8YNDjtyMXW0vgO?=
+ =?us-ascii?Q?uRYu287nAKRiiKNkPsFKMA1wEvJfH5SDeaVYt76b/6FkSqti+7zA8A3Sn2Lq?=
+ =?us-ascii?Q?QVICanTsV8WqQ94e1P+rEIYn8AQgA5zRiknmlpHizGt63OT7LZEqHsR3Ed0y?=
+ =?us-ascii?Q?/g4QuM3N4m54AkrzMxvg2fcXVIbh19HHvXK/2CJgSbvPEcBgVQK+EN9oPCgX?=
+ =?us-ascii?Q?eID4Zy3CVt4QV5HgjH0Zk/wjfMOTWMD7w0IQscgMUvBUgc4tBKeSIPsaR1Qo?=
+ =?us-ascii?Q?55KCFtn11gZvEUwJXzhRQxVi6OTOv0t6wzj4A+Fg8kBpd9iyO0EeJLTrbEJk?=
+ =?us-ascii?Q?YdRSouQZ+m9bQHxsRUHY07ZfEU4Xcq0zeUWBveL4qANT5CHPxcL++9DynZWO?=
+ =?us-ascii?Q?iTwLTzz+IowAErB7D74Lvh/18EexRjI9wO2xYoyZ22+CA1VocMqGiznhc3ED?=
+ =?us-ascii?Q?nfoJHoySfrEsoefnUXmPjTQ7EO4Rg1OjcgI2SrJRRh4CIVgwbubBPDAxbxwm?=
+ =?us-ascii?Q?gNjSgKjEj+t9C63zKuhpLM8Q7WFg7gEnYw67peymoiC1mW7jHPAcJhu5Nf7H?=
+ =?us-ascii?Q?yRYcFSqt5jcg6d15vSSIMVwBo1U8X/E+noWVhGy7SnQjGw/Fg44baRWOGF+f?=
+ =?us-ascii?Q?Of986uGRKQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6b597c2-7836-4e13-2ec2-08de62d218ec
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7055.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 03:12:43.9356
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6IzlQMyRd7cc3xV8sLIEnCMJ7QmY91CRL5pfZEyHpSR/Y9HqBC7PeFiY8RmtNMWuJNKcL0dF7xN06Px2IGoxWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12271
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.51 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+X-Spamd-Result: default: False [0.79 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:Jonathan.Cameron@huawei.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-16528-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16529-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,pengutronix.de,vger.kernel.org,lists.linux.dev,lists.infradead.org,perex.cz,suse.com,lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,huawei.com,amd.com,linux.alibaba.com];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	MISSING_XM_UA(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[shengjiu.wang@nxp.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:broonie@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux-sound@vger.kernel.org,m:devicetree@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:nicoleotsuka@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linuxppc-dev@lists.ozlabs.org,m:krzk@kernel.org,m:conor@kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shengjiu.wang@nxp.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 95A5ED18AA
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,nxp.com:mid,nxp.com:dkim]
+X-Rspamd-Queue-Id: 39E04D4008
 X-Rspamd-Action: no action
 
-On Mon, Feb 02, 2026 at 03:02:54PM +0100, Lukas Wunner wrote:
-> You're assuming that the parent of the Requester is always identical
-> to the containing Downstream Port.  But that's not necessarily the case:
-> 
-> E.g., imagine a DPC-capable Root Port with a PCIe switch below
-> whose Downstream Ports are not DPC-capable.  Let's say an Endpoint
-> beneath the PCIe switch sends ERR_FATAL upstream.  AFAICS, your patch
-> will cause pcie_do_recovery() to invoke dpc_reset_link() with the
-> Downstream Port of the PCIe switch as argument.  That function will
-> then happily use pdev->dpc_cap even though it's 0.
+Update dt binding document and update driver to suppot ASRC on i.MX952.
 
-Thinking about this some more, I realized there's another problem:
+Changes in v3:
+- add Reviewed-by from Daniel in patch 1/4
+- swap the patch 2/4 and patch 3/4
+- use regmap_read_poll_timeout in the fsl_asrc_m2m_output_ready()
+- refine the code in asrc_m2m_device_run()
 
-In a scenario like the one I've outlined above, after your change,
-pcie_do_recovery() will only broadcast error_detected (and other
-callbacks) below the downstream port of the PCIe switch -- and not
-to any other devices below the containing Root Port.
+Changes in v2:
+- update commit message for add more infos
+- split original patch 2/3 to two patches: patch 2/4 3/4
+- use size_add() in patch 4/4
 
-However, the DPC-induced Link Down event at the Root Port results
-in a Hot Reset being propagated down the hierarchy to any device
-below the Root Port.  So with your change, the siblings of the
-downstream port on the PCIe switch will no longer be informed of
-the reset and thus are no longer given an opportunity to recover
-after reset.
+Shengjiu Wang (4):
+  ASoC: dt-bindings: fsl,imx-asrc: Add support for i.MX952 platform
+  ASoC: fsl_asrc_m2m: Add option to start ASRC before DMA device for M2M
+  ASoC: fsl_asrc: Add support for i.MX952 platform
+  ASoC: fsl_asrc_dma: allocate memory from dma device
 
-The premise on which this patch is built is false -- that the bridge
-upstream of the error-reporting device is always equal to the
-containing Downstream Port.
+ .../bindings/sound/fsl,imx-asrc.yaml          |  1 +
+ sound/soc/fsl/fsl_asrc.c                      | 39 +++++++++++++++
+ sound/soc/fsl/fsl_asrc.h                      | 18 +++++++
+ sound/soc/fsl/fsl_asrc_common.h               |  4 ++
+ sound/soc/fsl/fsl_asrc_dma.c                  | 48 ++++++++++++++++---
+ sound/soc/fsl/fsl_asrc_m2m.c                  |  8 +++-
+ 6 files changed, 110 insertions(+), 8 deletions(-)
 
-It seems the only reason why you want to pass the reporting device
-to pcie_do_recovery() is that you want to call pcie_clear_device_status()
-and pci_aer_clear_nonfatal_status() with that device.
+-- 
+2.34.1
 
-However as I've said before, those calls are AER-specific and should
-be moved out of pcie_do_recovery() so that it becomes generic and can
-be used by EEH and s390:
-
-https://lore.kernel.org/all/aPYKe1UKKkR7qrt1@wunner.de/
-
-There's another problem:  When a device experiences an error while DPC
-is ongoing (i.e. while the link is down), its ERR_FATAL or ERR_NONFATAL
-Message may not come through.  Still the error bits are set in the
-device's Uncorrectable Error Status register.  So I think what we need to
-do is walk the hierarchy below the containing Downstream Port after the
-link is back up and search for devices with any error bits set,
-then report and clear those errors.  We may do this after first
-examining the device in the DPC Error Source ID register.
-Any additional errors found while walking the hierarchy can then
-be identified as "occurred during DPC recovery".
-
-Thanks,
-
-Lukas
 
