@@ -1,101 +1,98 @@
-Return-Path: <linuxppc-dev+bounces-16540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16542-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHxfFIOwgWn+IgMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 09:23:31 +0100
+	id 0HpZKbaygWmhIwMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16542-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 09:32:54 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613AED62C6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 09:23:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF54D6428
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 09:32:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f4xMM5HB3z30GV;
-	Tue, 03 Feb 2026 19:23:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f4xZB3f9Xz30Lv;
+	Tue, 03 Feb 2026 19:32:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770107007;
-	cv=none; b=HETeJIi/p6R5/OkS3pcErU74Fsk3x5dIUI6WxFRiDOMvlVKsO0QhiySdJ8pkosUl3QIcHbFwCBq08Ox8S0oghA2HAa7FXU6jFXijAQDLVY35ObN33EDbjNY6HcdZQpwK+zdqef53M42ipLXbqdjPPvvKmavuM0i8HNRtFr4NwFL5rh2ycvXXP9ebnleYwr5FbbqaWcWiOFIT5tGVkiCuhzFPp+xZEbwkNFunaKJRQ70tGQgvBBX1d+tKMPZPlj3U8BI0mrs0ymh/lPCyvuhOIhkgDxirWH7HlcagEud68lodzvjKik1Ee3H1Uonbm7sTbTQjoYO3Hjg7hocdRRwQ7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770107007; c=relaxed/relaxed;
-	bh=vv0j3G+SzAoWpK+TUc6fyFah4RU5Ag6+PMWNgWTKGCI=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=ZNwtgIKN9fRiXYE9LdVHdM//+MenZTBfyy3HXmCFl7kHMqFoIICDeoGctBJZNB5qNt1yqfP6PJSrgWa1/BnaCSJrjcXqQo7ynd+Wu6h63ZB+jZFrpOztEjXjAABfTqsDeGHA1yaetdZZnGbNC/lQ5jPaD3ImtFwl3B0Ul1xdsvb4OkCRXLb+JhroRdkdQfuCAaa/QffQXvXIp2DYcI5Idlt04xJYzrqwjiPDkXPB5Bf7TpWhPOtZ+HVNXgmUL9OfkEwokz8YCuhw5NBvkmZyN6yGquWcxX1oiR4WdScCR/hcf2F2QDMunVqtNcSsQmzQ10e6vAurrAQRB1TLUNp3cQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkFghT3C; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkFghT3C; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhowells@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::1236" arc.chain=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770107570;
+	cv=pass; b=JMneVLdAa8rcatznpw3HGE1omZ1CuA0ENnDa9Qo+6a9hQaOT1LiX9NvPn8Yr1+XjeKsYHKfFyjD8fmUBtUcomrSoG99yIpZCQduBoDMJ15cCIuJFRcehXqHZBnsYF9wokof7NIwR42s6MRJz0bdHb5e0WUH6BL+XFeF2paJspC+/UUeLtaoYKoGfTaBO1fBwF/wgkQqRvqyEVo+WUOIOAAyoQBdWnXz+iR9MlX1Rpn03+jm1FxHJ/ebdncn6+BU5bJlX1uIcplbfVg04707chd5U2q/8dlCxnMIHaNhBeSEPpIUSKU8vSiUV6f0TqmQ8fyI+AOaih5jiwntmjtiExQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770107570; c=relaxed/relaxed;
+	bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fwEwP9NhlWDOq9UjC1/G0/qa1ZNU0BC5e/yWbBS3xHbn5xkKcCe50sqFdlcX4BWbcba75r2gtpsASQft3fqeR8iB1WPYPYDB6BgxFbi+1hCkqdfGP6HvTXUc07z1ykOfAU5szv8ckhJm3Tipdvqcqf6i+Ddkavt6dDuWdfxpYdK/Q1E/zLqV+gkINjt87hECY7raotGQAyrEEpV5AduHau5BLH93g9Xaug7h6+PduF6vY7sDn8er1EuBsx3IFKse8xiiRw4RFSm8frQL78O0weObyRvx9OJnQBvrcOn2uDsk45NtOXCEjYIHCFqjwSJSIRNH8OrUN68kaan6X5DMWg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nAbxDQ8U; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1236; helo=mail-dl1-x1236.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkFghT3C;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkFghT3C;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nAbxDQ8U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhowells@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1236; helo=mail-dl1-x1236.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-dl1-x1236.google.com (mail-dl1-x1236.google.com [IPv6:2607:f8b0:4864:20::1236])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4xML39Nwz2xjb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 19:23:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770107000;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vv0j3G+SzAoWpK+TUc6fyFah4RU5Ag6+PMWNgWTKGCI=;
-	b=DkFghT3CuRXY9AmVvR8Kn1wCB3ylS3tC45kKYxjJS1YymCQx7y0rL7SbfzIKAyCkPdaPp6
-	LJ2Ug5OqHRNYke9zU5YFAEviWB6pztF9bJUJTuvtRIDeWq0fyscNli7i19PteOT5qkVR1e
-	RpFLGcDg61T1c5PDxuobH/TwkKQ5+c8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770107000;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vv0j3G+SzAoWpK+TUc6fyFah4RU5Ag6+PMWNgWTKGCI=;
-	b=DkFghT3CuRXY9AmVvR8Kn1wCB3ylS3tC45kKYxjJS1YymCQx7y0rL7SbfzIKAyCkPdaPp6
-	LJ2Ug5OqHRNYke9zU5YFAEviWB6pztF9bJUJTuvtRIDeWq0fyscNli7i19PteOT5qkVR1e
-	RpFLGcDg61T1c5PDxuobH/TwkKQ5+c8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-t1AtFM9yMj2neNRwxj3iQQ-1; Tue,
- 03 Feb 2026 03:23:15 -0500
-X-MC-Unique: t1AtFM9yMj2neNRwxj3iQQ-1
-X-Mimecast-MFC-AGG-ID: t1AtFM9yMj2neNRwxj3iQQ_1770106990
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AB8FB18005B5;
-	Tue,  3 Feb 2026 08:23:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.33.164])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F302119560B2;
-	Tue,  3 Feb 2026 08:22:53 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <8b12f1d28d3859467c3b5f6bc352038ce7627e54.camel@HansenPartnership.com>
-References: <8b12f1d28d3859467c3b5f6bc352038ce7627e54.camel@HansenPartnership.com> <20260131073636.65494-1-mcaju95@gmail.com> <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net> <2316630.1769965788@warthog.procyon.org.uk>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: dhowells@redhat.com,
-    Mihai-Drosi =?utf-8?Q?C=C3=A2ju?= <mcaju95@gmail.com>,
-    linux@weissschuh.net, arnd@arndb.de, arnout@bzzt.net,
-    atomlin@atomlin.com, bigeasy@linutronix.de, chleroy@kernel.org,
-    christian@heusel.eu, corbet@lwn.net, coxu@redhat.com,
-    da.gomez@kernel.org, da.gomez@samsung.com, dmitry.kasatkin@gmail.com,
-    eric.snowberg@oracle.com, f.gruenbichler@proxmox.com,
-    jmorris@namei.org, kpcyrd@archlinux.org, linux-arch@vger.kernel.org,
-    linux-doc@vger.kernel.org, linux-integrity@vger.kernel.org,
-    linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-modules@vger.kernel.org, linux-security-module@vger.kernel.org,
-    linuxppc-dev@lists.ozlabs.org, lkp@intel.com, maddy@linux.ibm.com,
-    mattia@mapreri.org, mcgrof@kernel.org, mpe@ellerman.id.au,
-    nathan@kernel.org, naveen@kernel.org,
-    nicolas.bouchinet@oss.cyber.gouv.fr, nicolas.schier@linux.dev,
-    npiggin@gmail.com, nsc@kernel.org, paul@paul-moore.com,
-    petr.pavlu@suse.com, roberto.sassu@huawei.com,
-    samitolvanen@google.com, serge@hallyn.com, xiujianfeng@huawei.com,
-    zohar@linux.ibm.com
-Subject: Re: [PATCH v4 00/17] module: Introduce hash-based integrity checking
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4xZ90cSMz309S
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 19:32:48 +1100 (AEDT)
+Received: by mail-dl1-x1236.google.com with SMTP id a92af1059eb24-12460a7caa2so8127397c88.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 00:32:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770107566; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gXUb555ww811UABGNDZsJSiCKmaB2NvSV/O7MvHGLQUxkhBpBvCuiJrQuyhwNxe5ah
+         4yCQgVEG/Z0oOD0xmkwiVr+5QrQ2dqiItlHgihG9foIYXaPpum7svVScIKtsilM1iisq
+         j3Rosbxpj7VWEh/0Lg4z4iLTMZ38pYTnv4oWUbmxG5lS3qD0rh6aLMX5GCjaMNZGma4h
+         uBAEifiCfbUNsNXh4wJJjP1f3lXyKrn0b7yXxATnfMQFupIZhRlDKG7qCIvSHM4slHQC
+         PHoMp/PfXRYLt0VKwZJCeF0/1Unq7KtvUM5Xcwcl0JDJCiDJzJvqKFxjRg6YJ/SHVDc1
+         E2Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+        fh=T5RKsLiRPZPaHw/ZuP0BkGGSJhp7fVWOfrgiWM5F0CM=;
+        b=RpmoqzszD5xvtH1bIxobX87ohC8kSh2nMbA1JofKAOm3fWM5K0RCrmv++62HNLuHl9
+         jRJYCiUD2icHNDTxCCr2yjXy5w1XX/00YHJXQ2DjOXU8bEvAkK5xukyCqmPPG/5z3HRP
+         XI+TO8yWVSqG2yswSzo7RO/Z2SFcGKprZ6dXk/JAucKKQi2fZYdYjKoQBxEsgIyBgv0+
+         hklhl55ScI9YANIiwKwkLpCaNMD1hhSfwyqEMLZtSkqvk9hr0IY6XBoZp2iIkt6U/pk7
+         T+Hm/CNZJhOkBxfCZ8fHLdGuVSAYJMcQ0ULzFegFFiOUazzrujrG8w55h3RM2vsEky7q
+         Q1qg==;
+        darn=lists.ozlabs.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770107566; x=1770712366; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+        b=nAbxDQ8UPfOyKLN3bKrxEx56zlRYswhaeZNGxwdkhtE89Dwx9P6sTW/hvV4g6JCa6i
+         nIVN6KY8NM5YdM+9kuchVhPApKP/ToeHW40O6hXTueGXLIauh5/1v2gUfTgNaNFEMreD
+         O1vJ35JEo9IDP9uyWThre2J1fkwKREEocZCasUcxCgDg173JlU6cYwbPX7ri2m1rwayU
+         YALZgfbrdaK8aX9N5m3w5X/AXy3KBMfER/Org8SwuKcKMu0iCPQbRR/y1nyK0DIY2XEJ
+         QEIROV//V5NkdQMqdQKsNLFlrSBiYCFvsjGqHdBd+RYhH566JtBHCItI0XxA20Flv6ea
+         qTxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770107566; x=1770712366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+        b=Y8PNn1ZqYZRhJRg+CAtdNj1do+NyTj99UH/TDj6VkLzLymP7tdcF/LlC+gq+5BgM+P
+         KHDICQHuYXyc1gAeN3vv2+gKPlvxp8FlAUuQldEQhTsf2GeGq14A/mxfRgzzhdajsRIm
+         9/PbMT0MPkWkXIDbvxohY7EU1sER/1PWWhQDITJ6oBOh1LIOJrw21X/niTp8ALNrIzNS
+         7RFzrBPTjVUw0awYTVzKgpw0gnNDfYDT1ugAnuj5+dB8SSZPk8A9lyUSekFwZCGEmNTh
+         laSoT3QEUX/CN546bpX5smF3Xljj6Mbjg7khWXz1pMxSLNUClfgax00ZYf/P49DOwPZe
+         ZWaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAzCodM+RHtnZyXF6dcE+idQOFAdL/lKjHXNhdo/QXXIErnhPikGlwwYQimesJ5tWNbrM1KTGSmeqqyjs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxff1lVvWtsC8ATwdB8w4/NFXWdr4nF33dsM4Q7QqeqGL/nUWNE
+	aI6CJcxCROn1OKx6VFq8LZLJwHponSZbwgC6dAKNLNFhZsyD8jgX0lNcfBYxYAcI/LcxLfLKnEP
+	b0HV0ItmOsenhffEvuPC4nuqPMia5KBY=
+X-Gm-Gg: AZuq6aK6w+qVtb64XZVWBsUUAlCvXx4dXGs87KcJA70pmdkPB7G81DiTgOmiUemQ2qp
+	3pFaMlPIV6kGs43UaCDO2c7it+Jj9xUpqgu/CAPI+iWNu/BpEovMpoyTyzsC5SZlF9N+K//IGrG
+	QhlTraDakWLc+84PaW+/FyL7qV5Z/+xaJtYjbN5+4lVgIDxTE/8ck0ohKS8PAcBaVav4+obX8EN
+	AK9mGQVvYQ7PU2VATorxf26V6aomhAP7IGStrOrvLGPvb9GPMHvGKL1VAtSk5cUUrOq7GKJ7vzR
+	9bwsssKa0PDhps1tFLuEboHA0Q5gBiNoE72f+F9hEIsKgCaKXP7vaK3Alh6WGb1vPsxvWvUqEdB
+	NwU7m9irseA==
+X-Received: by 2002:a05:7022:160b:b0:119:e569:f60d with SMTP id
+ a92af1059eb24-125c0f8c302mr7264388c88.6.1770107566507; Tue, 03 Feb 2026
+ 00:32:46 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,67 +106,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-Date: Tue, 03 Feb 2026 08:22:52 +0000
-Message-ID: <2546011.1770106972@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+References: <20260203031345.3850533-1-shengjiu.wang@nxp.com> <20260203031345.3850533-3-shengjiu.wang@nxp.com>
+In-Reply-To: <20260203031345.3850533-3-shengjiu.wang@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 3 Feb 2026 10:35:27 +0200
+X-Gm-Features: AZwV_Qgw24M2z0kseZy1hei1NjvsOXkgK0vaXVyKxBbNrRS-X0jSjdoVh3qv9-s
+Message-ID: <CAEnQRZAgjyKYZEJ9FVqRsCfzLOqwbRZXahqMMNdJpP54NAQ1PQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] ASoC: fsl_asrc_m2m: Add option to start ASRC
+ before DMA device for M2M
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
+	perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,weissschuh.net,arndb.de,bzzt.net,atomlin.com,linutronix.de,kernel.org,heusel.eu,lwn.net,samsung.com,oracle.com,proxmox.com,namei.org,archlinux.org,vger.kernel.org,lists.ozlabs.org,intel.com,linux.ibm.com,mapreri.org,ellerman.id.au,oss.cyber.gouv.fr,linux.dev,paul-moore.com,suse.com,huawei.com,google.com,hallyn.com];
-	TAGGED_FROM(0.00)[bounces-16540-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16542-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:James.Bottomley@HansenPartnership.com,m:dhowells@redhat.com,m:mcaju95@gmail.com,m:linux@weissschuh.net,m:arnd@arndb.de,m:arnout@bzzt.net,m:atomlin@atomlin.com,m:bigeasy@linutronix.de,m:chleroy@kernel.org,m:christian@heusel.eu,m:corbet@lwn.net,m:coxu@redhat.com,m:da.gomez@kernel.org,m:da.gomez@samsung.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:f.gruenbichler@proxmox.com,m:jmorris@namei.org,m:kpcyrd@archlinux.org,m:linux-arch@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:lkp@intel.com,m:maddy@linux.ibm.com,m:mattia@mapreri.org,m:mcgrof@kernel.org,m:mpe@ellerman.id.au,m:nathan@kernel.org,m:naveen@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:nicolas.schier@linux.dev,m:npiggin@gmail.com,m:nsc@kernel.org,m:paul@paul-moore.com,m:petr.pavlu@suse
- .com,m:roberto.sassu@huawei.com,m:samitolvanen@google.com,m:serge@hallyn.com,m:xiujianfeng@huawei.com,m:zohar@linux.ibm.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[45];
-	FORGED_SENDER(0.00)[dhowells@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER(0.00)[danielbaluta@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[warthog.procyon.org.uk:mid,hansenpartnership.com:email]
-X-Rspamd-Queue-Id: 613AED62C6
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@nxp.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux-sound@vger.kernel.org,m:devicetree@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:nicoleotsuka@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linuxppc-dev@lists.ozlabs.org,m:krzk@kernel.org,m:conor@kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[danielbaluta@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,pengutronix.de,vger.kernel.org,lists.linux.dev,lists.infradead.org,perex.cz,suse.com,lists.ozlabs.org];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 3BF54D6428
 X-Rspamd-Action: no action
 
+On Tue, Feb 3, 2026 at 5:13=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.com=
+> wrote:
+>
+> There is a limitation on i.MX952 that dma request is not cleared at the
+> end of conversion with dma slave mode. Which causes sample is dropped
+> from the input fifo on the second time if dma is triggered before the
+> client device and EDMA may copy wrong data from output fifo as the output
+> fifo is not ready in the beginning.
+>
+> The solution is to trigger asrc before dma on i.MX952, and add delay to
+> wait output data is generated then start the EDMA for output, otherwise
+> the m2m function has noise issues.
+>
+> So add an option to start ASRC first for M2M before ASRC is enabled on
+> i.MX952.
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 
-> > There is another issue too: If you have a static private key that you
-> > use to sign modules (and probably other things), someone will likely
-> > give you a GPL request to get it.
-> 
-> The SFC just lost that exact point in the Vizio trial, so I think
-> you're wrong on this under US law at least.  There's no general ability
-> under GPLv2 to demand long lived signing keys.
-
-Cool :-).  I just know that I've been sent GPL requests for kernel keys.
-
-David
-
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
