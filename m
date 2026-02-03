@@ -1,47 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-16548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGIIB/nsgWkFMAMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:41:29 +0100
+	id 0M0rHTztgWkFMAMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:42:36 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B53D9226
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:41:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84446D925C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:42:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f53503lrGz30T8;
-	Tue, 03 Feb 2026 23:41:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f536K0g00z30T8;
+	Tue, 03 Feb 2026 23:42:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:c010:41de::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770122484;
-	cv=none; b=lR2ORBIIVd5L0E6xUApoFLRMvFYnUKXO/fw9s+Z6x2ZTI0f5VpMDIzeH9VAhGG6i3vjNp64DUJD3OstLuA8KXVWxsyipGr+Wji7EE03ic81D/MKi8uYrYvVN6vPJ0PCmewfACD8bPNEqV0F0D/b8gyHK46BY4+TMfwujCyxhxYOA9Vcz9yqUU79ktrhSM0F80ltoKzJq2ZMc4vQWM5Hip0ATO/8Fj8VGdBk2eMUTjKtYC3+qu6ylrKnNeZRv1+6bY+C6OnRcg2JC1tmuCf7z8u2PfImDWz9GejxtdYo8IEQuxU1wvQAOF9ghvM4JfbVRHSqhN71T9gJZRLDMVQ3yKQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770122553;
+	cv=none; b=RuuwlUvbasoUGWxoBDpb5ywbTUNjLfGDkOmwRIyudxs3Jb0SY70cSjn3lx1oH9GiEzKSbhIjyvXkIwWrlNOGu+lxpRK6zj0qYck956flNtDEUQg1q2vXSizOs5rKMYLr4cc4HZ/LLoP0s4n17JdZ0uAhHlg7CgHAaAm0rcufsoP3n0GxDSZzbnZUnyNEgtD9Lg6IuLfd0JZTgKJVSEMJATy5IO5C2FD0i/+IXHsTXSOqdO9cC84Ym/BW0sCLnyYtiSTislWkwd4YARA4TRuL7wyVCYKyRV3ul3G5UchrYW+MpfI12tUCL2rtnMVMNygUgUAYhBfFQyh20iiAYl35gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770122484; c=relaxed/relaxed;
-	bh=v6GtJdM3kRFSAX33r1Im8CwgeGgdPrlgBD73qxe6vkc=;
+	t=1770122553; c=relaxed/relaxed;
+	bh=irb6E8LSn2ChZallYiRh2EYB/H75YZYoYhTa9Bklsy8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TL4IlaOrVDAu9a83v+SMEUWt4m3WMEvsce0WikinBPo4rcY73ZtLGkZE9oosc8R+OmRxx54gCMOur75uOFpFEHyui6//p/0ioaIj8bNGiOREntvFzWw20fQXt5FQMogOQlO6kZD4+iVzwf7BzQw9M9fE3V9LC0SacEFgypburnYWVSUQlsb5jMRJPqfI7ozWnQEhxUE2Y8WVnLlQEeS5sEy5r0EnaY8kFDzPcor1M7buXS/fgU0E6yrhihVhRNziR3MGP7pqmSANflgvkswCmynxKk8WXLukPlJIZXUsy0LlMxVStLxgW8/BeNCIQMgNUI3XKBlAVB72o78V4Y8loQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=CkgRgfaM; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=TE35pWx/MtLyDOt7nyRiqT2Yarpv+Gc/orpKLrjE2kc3mutuVyOLFkTVTayqmkO5zqWyV8AIyINxvJin5PkUBbdDQyf++6DUDaU21y7+mLFR35HLxW540Tqh7qt0StWcQjHUwXgDM1TYT0tqxO5i6KLAd6dL4P0+NUH5wd3oyakNXnCqYlHO6AmNuaJQRh+u11l5zd536kK0/7Q2gg/oJygGs+9MSvTnLCSeXsqfL5oEPsXHjF7lcY/rLRlim+xmkWGdrkm9UXJPgo61rgl2gmqge9/j96TAk6RoW4SsWCLTakJP8F842xCUfd8C+OkBP+8FJgorO3X44bIFGog3Bg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=VaAFHhJc; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=CkgRgfaM;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=VaAFHhJc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 159537 seconds by postgrey-1.37 at boromir; Tue, 03 Feb 2026 23:41:22 AEDT
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f534y50FTz309S
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 23:41:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f536H6jGpz309S
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 23:42:31 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1770122475;
-	bh=27oXttc/YCfqQLF6/9YmAKAGfCgRZ7XRUWdootutwwU=;
+	s=mail; t=1770122547;
+	bh=+vKlgAoMgxorO8wzZsSKLOlHjUax16wakp+NL76Z0jg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CkgRgfaM7qWLKghTEIx+MJoJL1TSz/puDFT4aA0A47zHSz7qBO38AmiuXDIbwnO+9
-	 jTsm6rRQlV+UI6ps6KvSgRNlGU11st7vBubPuf2xiTrBSvQnmeeWfcacfFSVUoIDIM
-	 58ywalIbcSvDlTUECIKiDn7Rl75oBHolY69QDVA4=
-Date: Tue, 3 Feb 2026 13:41:14 +0100
+	b=VaAFHhJc7RJThp3X+a8KljdNfBU40Qohg4ZbBihrSHkldtnS2mr7PIOYLFNNVh3m4
+	 iwPDIMK7zHXuYYbgAnk2nZqfMp/Kc/PcVHebE1k/b71FBy78nAPYLadtFkiaM5Sf6e
+	 bpmVJeSOu/HMoajP8WRx2JjXQW/CSQtzckT5P31U=
+Date: Tue, 3 Feb 2026 13:42:26 +0100
 From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
 To: Petr Pavlu <petr.pavlu@suse.com>
 Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
@@ -63,11 +62,11 @@ Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
 	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
 	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
 	linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 08/17] module: Deduplicate signature extraction
-Message-ID: <df277beb-3bc2-4941-941e-adb294d34394@t-8ch.de>
+Subject: Re: [PATCH v4 12/17] module: Move signature splitting up
+Message-ID: <2d6b4a2e-b65a-4db2-aa92-2ad80d066516@t-8ch.de>
 References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260113-module-hashes-v4-8-0b932db9b56b@weissschuh.net>
- <52cbbccf-d5b6-4a33-b16a-4a09fe5e64d3@suse.com>
+ <20260113-module-hashes-v4-12-0b932db9b56b@weissschuh.net>
+ <aa92ce4a-d336-4d03-b87d-1c39b1c553da@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,7 +83,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <52cbbccf-d5b6-4a33-b16a-4a09fe5e64d3@suse.com>
+In-Reply-To: <aa92ce4a-d336-4d03-b87d-1c39b1c553da@suse.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
@@ -95,12 +94,12 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[weissschuh.net,quarantine];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[weissschuh.net:s=mail];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16548-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16549-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER(0.00)[linux@weissschuh.net,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[kernel.org,arndb.de,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,linux.dev,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	RCPT_COUNT_TWELVE(0.00)[40];
@@ -123,132 +122,62 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[t-8ch.de:mid]
-X-Rspamd-Queue-Id: 44B53D9226
+X-Rspamd-Queue-Id: 84446D925C
 X-Rspamd-Action: no action
 
-On 2026-01-27 16:20:15+0100, Petr Pavlu wrote:
+On 2026-01-29 15:41:43+0100, Petr Pavlu wrote:
 > On 1/13/26 1:28 PM, Thomas Weißschuh wrote:
-
-(...)
-
-> >  int module_sig_check(struct load_info *info, int flags)
+> > The signature splitting will also be used by CONFIG_MODULE_HASHES.
+> > 
+> > Move it up the callchain, so the result can be reused.
+> > 
+> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> > ---
+> > [...]
+> > diff --git a/kernel/module/main.c b/kernel/module/main.c
+> > index c09b25c0166a..d65bc300a78c 100644
+> > --- a/kernel/module/main.c
+> > +++ b/kernel/module/main.c
+> > @@ -3346,10 +3346,21 @@ static int early_mod_check(struct load_info *info, int flags)
+> >  
+> >  static int module_integrity_check(struct load_info *info, int flags)
 > >  {
-> > -	int err = -ENODATA;
-> > -	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
-> > +	int err;
-> >  	const char *reason;
-> >  	const void *mod = info->hdr;
+> > +	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
+> > +				       MODULE_INIT_IGNORE_VERMAGIC);
 > > +	size_t sig_len;
 > > +	const u8 *sig;
-> >  	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
-> >  				       MODULE_INIT_IGNORE_VERMAGIC);
-> > -	/*
-> > -	 * Do not allow mangled modules as a module with version information
-> > -	 * removed is no longer the module that was signed.
-> > -	 */
-> > -	if (!mangled_module &&
-> > -	    info->len > markerlen &&
-> > -	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
-> > -		/* We truncate the module to discard the signature */
-> > -		info->len -= markerlen;
-> > -		err = mod_verify_sig(mod, info);
+> >  	int err = 0;
+> >  
+> > +	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
+> > +		err = mod_split_sig(info->hdr, &info->len, mangled_module,
+> > +				    &sig_len, &sig, "module");
+> > +		if (err)
+> > +			return err;
+> > +	}
 > > +
-> > +	err = mod_split_sig(info->hdr, &info->len, mangled_module, &sig_len, &sig, "module");
-> > +	if (!err) {
-> > +		err = verify_pkcs7_signature(mod, info->len, sig, sig_len,
-> > +					     VERIFY_USE_SECONDARY_KEYRING,
-> > +					     VERIFYING_MODULE_SIGNATURE,
-> > +					     NULL, NULL);
-> >  		if (!err) {
-> >  			info->sig_ok = true;
-> >  			return 0;
+> >  	if (IS_ENABLED(CONFIG_MODULE_SIG))
+> > -		err = module_sig_check(info, flags);
+> > +		err = module_sig_check(info, sig, sig_len);
+> >  
+> >  	if (err)
+> >  		return err;
 > 
-> The patch looks to modify the behavior when mangled_module is true.
+> I suggest moving the IS_ENABLED(CONFIG_MODULE_SIG) block under the
+> new IS_ENABLED(CONFIG_MODULE_SIG_POLICY) section. I realize that
+> CONFIG_MODULE_SIG implies CONFIG_MODULE_SIG_POLICY, but I believe this
+> change makes it more apparent that this it the case. Otherwise, one
+> might for example wonder if sig_len in the module_sig_check() call can
+> be undefined.
 > 
-> Previously, module_sig_check() didn't attempt to extract the signature
-> in such a case and treated the module as unsigned. The err remained set
-> to -ENODATA and the function subsequently consulted module_sig_check()
-> and security_locked_down() to determine an appropriate result.
+> 	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
+> 		err = mod_split_sig(info->hdr, &info->len, mangled_module,
+> 				    &sig_len, &sig, "module");
+> 		if (err)
+> 			return err;
 > 
-> Newly, module_sig_check() calls mod_split_sig(), which skips the
-> extraction of the marker ("~Module signature appended~\n") from the end
-> of the module and instead attempts to read it as an actual
-> module_signature. The value is then passed to mod_check_sig() which
-> should return -EBADMSG. The error is propagated to module_sig_check()
-> and treated as fatal, without consulting module_sig_check() and
-> security_locked_down().
-> 
-> I think the mangled_module flag should not be passed to mod_split_sig()
-> and it should be handled solely by module_sig_check().
+> 		if (IS_ENABLED(CONFIG_MODULE_SIG))
+> 			err = module_sig_check(info, sig, sig_len);
+> 	}
 
 Ack.
-
-(...)
-
-> > diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
-> > index 3265d744d5ce..a57342d39b07 100644
-> > --- a/security/integrity/ima/ima_modsig.c
-> > +++ b/security/integrity/ima/ima_modsig.c
-> > @@ -40,44 +40,30 @@ struct modsig {
-> >  int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
-> >  		    struct modsig **modsig)
-> >  {
-> > -	const size_t marker_len = strlen(MODULE_SIG_STRING);
-> > -	const struct module_signature *sig;
-> > +	size_t buf_len_sz = buf_len;
-> >  	struct modsig *hdr;
-> >  	size_t sig_len;
-> > -	const void *p;
-> > +	const u8 *sig;
-> >  	int rc;
-> >  
-> > -	if (buf_len <= marker_len + sizeof(*sig))
-> > -		return -ENOENT;
-> > -
-> > -	p = buf + buf_len - marker_len;
-> > -	if (memcmp(p, MODULE_SIG_STRING, marker_len))
-> > -		return -ENOENT;
-> > -
-> > -	buf_len -= marker_len;
-> > -	sig = (const struct module_signature *)(p - sizeof(*sig));
-> > -
-> > -	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
-> > +	rc = mod_split_sig(buf, &buf_len_sz, true, &sig_len, &sig, func_tokens[func]);
-> 
-> Passing mangled=true to mod_split_sig() seems incorrect here. It causes
-> that the function doesn't properly extract the signature marker at the
-> end of the module, no?
-
-Indeed, thanks.
- 
-I am thinking about dropping this patch from the series for now.
-It was meant for IMA modsig compatibility, which is not part of the
-series anymore.
-
-> >  	if (rc)
-> >  		return rc;
-> >  
-> > -	sig_len = be32_to_cpu(sig->sig_len);
-> > -	buf_len -= sig_len + sizeof(*sig);
-> > -
-> >  	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
-> >  	hdr = kzalloc(struct_size(hdr, raw_pkcs7, sig_len), GFP_KERNEL);
-> >  	if (!hdr)
-> >  		return -ENOMEM;
-> >  
-> >  	hdr->raw_pkcs7_len = sig_len;
-> > -	hdr->pkcs7_msg = pkcs7_parse_message(buf + buf_len, sig_len);
-> > +	hdr->pkcs7_msg = pkcs7_parse_message(sig, sig_len);
-> >  	if (IS_ERR(hdr->pkcs7_msg)) {
-> >  		rc = PTR_ERR(hdr->pkcs7_msg);
-> >  		kfree(hdr);
-> >  		return rc;
-> >  	}
-> >  
-> > -	memcpy(hdr->raw_pkcs7, buf + buf_len, sig_len);
-> > +	memcpy(hdr->raw_pkcs7, sig, sig_len);
-> >  
-> >  	/* We don't know the hash algorithm yet. */
-> >  	hdr->hash_algo = HASH_ALGO__LAST;
-> > 
 
