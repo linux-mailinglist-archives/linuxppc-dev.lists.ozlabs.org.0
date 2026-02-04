@@ -1,57 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-16562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16563-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MH76H1OPgmkMWQMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 01:14:11 +0100
+	id eBmPG+CPgmkMWQMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16563-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 01:16:32 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4873BDFF26
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 01:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8125BDFF72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 01:16:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f5LSH3kFtz2yFm;
-	Wed, 04 Feb 2026 11:14:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f5LW065LBz2yFm;
+	Wed, 04 Feb 2026 11:16:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770164047;
-	cv=none; b=dUDppQiyq+/K7LZ0dxUVfNgzjRytq4/HMwhTmZQJzaETG6lKEqAW5zSf5gtLzGmyCX1RhKJDZtXQ4FS4Dz9URWHiHzrswlVuXIG/p1ayL5Yuveib19gF64uAsSRHYIQMEFfaDVobL3q4ldDvbREPQe74K2fdslZ9sw6g9J+UKwZmnI7r2DI7sVY2wUO+g+LXfcnSB7tkmfRjU0O7NkWY++s+6txFfs8yIAABr5Ib10IkyiR0ZdAETNskfA/+yLmUSgTjghR0LKT6ufO52eKRGIM7hG43dQtdIbKnm6UmL7Y05uzqjq1WU6ERyIau0nOcD+IAW6WxpTbx47x76NYs2A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770164188;
+	cv=none; b=GU+Iq0G02sxX5F0QTNZK48TDAKOqOpq61WlqX51rjDXe33aoHOIJ/rho8hkwJlEfdjCv9QnoZEgfkti3cqB5DMqwOHF/sZyjNtPvco7ET7HUmg6SAs/ZSVK75HK3S7IvI9FaTdp3dLpLlPRjGXWFba1duCOzwi2ztNfalXhqI4p1HASg76bgyJh8VMJ0uMHKgvgMd1KOkzZsgOFVE1RVU9y/Tib+mI6XVGPTS6wBWWYw0tikmhmz5D38d7lzh6dPp+KdmAmsOFryTDUbzhtAzSyBaRo1PRHg1ZvrCTwYNmAuOHkn5MbY4ck5PF+zNVGYQ6DoWOLEf/8HjV+41+dp0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770164047; c=relaxed/relaxed;
-	bh=PfNOKX1Fk35pkOLEC0awZ9Kx+9oPmVLsG5sCalOXezY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C0B/q8e4O9Za1sJD2J4HfwnlB5AnYKTc4uBrxR6a5g/NdZLt1TEDkcrvV9hHzIwIkhNYZdUrZxj9gLJPAPKsxMdjwTFUmyFxe9JzBdt2hOgQRJgd0XlL8MJPqRFU7wNdRf9O/34fd541ej/XcKwGmOmknsHj0WFBdyqWvWNk3Tqsfp4fBpdXw3mQgJYHeMftcEJyQ8zqzA2dSrvtFt2QqB9TIo4BbWHa9QfxDcuTQuCW8fN/6wDVK78En6L1Jldx5szKuzZHEt4UUaskzHbq2/xREY0UIDjBAYiF/7O/8HAH+UYMGHBJY2/aV4+EhM3UQ4FhdCN2VoSdKUDkracc/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f5LSF6nwQz2yFY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 11:14:05 +1100 (AEDT)
-Received: from gate.crashing.org (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 6140DeeX3681128;
-	Tue, 3 Feb 2026 18:13:40 -0600
-Received: (from segher@localhost)
-	by gate.crashing.org (8.18.1/8.18.1/Submit) id 6140DZ1W3681124;
-	Tue, 3 Feb 2026 18:13:35 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Tue, 3 Feb 2026 18:13:35 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] powerpc/uaccess: Fix inline assembly for clang build on
- PPC32
-Message-ID: <aYKPL-KME9KnRoA7@gate>
-References: <8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org>
- <20260203221939.059bb903@pumpkin>
+	t=1770164188; c=relaxed/relaxed;
+	bh=p0H2jOeYOiJWZo8ZOwPODjh9sLKY1KfNTp8+M/GopXw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WlHzCpk/ZhmMu3HIGv5qrVsS8+YIg+7Olx4buW12lsPL+iAIqwctIMlV62Z1uTjpB/fWy/lqF3kEj6LGIKCgQfc1FB6qCFMWFJBDeNptIgO7K6zb0PVnR/Qn0qFVHE3T7Ior7mAc+g3XXI1q2lkG5fvCPKrPIUBpnXrdimVlsI6F2DRwdzVkrKwubKPBACo3R1LBeIY26uNudRvfe9z5JRH2D0SEJTu+6i9ISaEpPAgXD20jXsoP0ndF8h/JGQ1DOv4Y48KUJbnJDFHPG09/qrDmWpmXA1h7bQHsWtWfgSaNSu+mbhvhjNh2vecq8umBT/mVan4hSxjA6OACKUwwhg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=im/Shf9V; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=im/Shf9V;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5LW012Vfz2yFY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 11:16:28 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 14170442B9;
+	Wed,  4 Feb 2026 00:16:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFE0C116D0;
+	Wed,  4 Feb 2026 00:16:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770164184;
+	bh=K80kjauj3gB7Jo17QjyW9fAJg5bQlHqWL+gHT3QaFro=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=im/Shf9VnRED7e3BqjPU7hhTcrS51pSwo3vFZMKdMyEGkCCwShiX/ao9QZJgFak7H
+	 DktQyuLhHypAfvQegTSwPDBexF1MvC3EUx92ZHwnLYxTUtdoHzfs+ZPK0yafYujAh7
+	 OS8k1D38dK2XlihAsNaYQAj9kWB1txpfXCPs0KkrDWL5L2gd+9N32bU0a3815IP2XV
+	 bdd2RRBENSuiaS37s8tHvUOwis5pT1RqLN0Z0GqSGwC9/pBILXek+K+PP9PXzuC5cb
+	 /qopjQBBWJfwZpGTjP94qEiCG47OB9MOHmHVwhbolUOlTeHapsdUSz1YVy6uxFt+3l
+	 /E37sJhwCuWCg==
+From: Nathan Chancellor <nathan@kernel.org>
+To: linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ =?utf-8?q?Ren=C3=A9_Rebe?= <rene@exactco.de>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <chleroy@kernel.org>
+In-Reply-To: <20251123.131330.407910684435629198.rene@exactco.de>
+References: <20251123.131330.407910684435629198.rene@exactco.de>
+Subject: Re: [PATCH V2] modpost: Amend ppc64 save/restfpr symnames for -Os
+ build
+Message-Id: <177016418333.1146354.10778952252153726089.b4-ty@kernel.org>
+Date: Tue, 03 Feb 2026 17:16:23 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,111 +73,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203221939.059bb903@pumpkin>
-X-Spam-Status: No, score=-0.0 required=3.0 tests=SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.49 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-16563-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[crashing.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-kbuild@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:rene@exactco.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:chleroy@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:nathan@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:llvm@lists.linux.dev,m:lkp@intel.com,m:davidlaightlinux@gmail.com,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[segher@kernel.crashing.org,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-16562-lists,linuxppc-dev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	HAS_XAW(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[segher@kernel.crashing.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,google.com,vger.kernel.org,lists.ozlabs.org,lists.linux.dev,intel.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 4873BDFF26
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 8125BDFF72
 X-Rspamd-Action: no action
 
-Hi!
-
-On Tue, Feb 03, 2026 at 10:19:39PM +0000, David Laight wrote:
-> On Tue,  3 Feb 2026 08:30:41 +0100
-> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
+On Sun, 23 Nov 2025 13:13:30 +0100, René Rebe wrote:
+> Building a size optimized ppc64 kernel (-Os), gcc emits more FP
+> save/restore symbols, that the linker generates on demand into the
+> .sfpr section. Explicitly allow-list those in scripts/mod/modpost.c,
+> too. They are needed for the amdgpu in-kernel floating point support.
 > 
-> > Test robot reports the following error with clang-16.0.6:
-> > 
-> >    In file included from kernel/rseq.c:75:
-> >    include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
-> >                    unsafe_get_user(offset, &ucs->post_commit_offset, efault);
-> >                    ^
-> >    include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
-> >            arch_unsafe_get_user(x, ptr, local_label);      \
-> >            ^
-> >    arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
-> >            __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
-> >            ^
-> >    arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
-> >            __get_user_size_allowed(x, ptr, size, __gus_retval);    \
-> >            ^
-> >    arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
-> >            case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
-> >                    ^
-> >    arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
-> >                    "       li %1+1,0\n"                    \
-> >                     ^
-> >    <inline asm>:7:5: note: instantiated into assembly here
-> >            li 31+1,0
-> >               ^
-> >    1 error generated.
-> > 
-> > On PPC32, for 64 bits vars a pair of registers is used. Usually the
-> > lower register in the pair is the high part and the higher register is
-> > the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
-> > 
-> > In older kernel code inline assembly was using %1 and %1+1 to represent
-> > 64 bits values. However here it looks like clang uses r31 as high part,
-> > allthough r32 doesn't exist hence the error.
-> > 
-> > Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
-> > let's do the same here.
-> > 
-> > With that change, the build doesn't fail anymore and a disassembly shows
-> > clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
-> > r30/r31:
+> MODPOST Module.symvers
+> ERROR: modpost: "_restfpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_26" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savegpr1_27" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savegpr1_25" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_28" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savegpr1_29" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savefpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savefpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_15" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> WARNING: modpost: suppressed 56 unresolved symbol warnings because there were too many)
 > 
-> Isn't it all horribly worse than that?
-> It only failed because clang picked r31, but if can pick two non-adjacent
-> registers might it not pick any pair.
-> In which case there could easily be a 64bit get_user() that reads an incorrect
-> value and corrupts another register.
-> Find one and you might have a privilege escalation.
+> [...]
 
-I don't think LLVM is that broken, it only has problems for some edge
-cases.  Yes, I might expect too much.  But without proof to the contrary
-let's assume things are okay :-)
+Applied to
 
-And, worrying.  But what can we do against it!  Other than never ever
-use LLVM for anything serious, of course.
+  https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-next
 
+Thanks!
 
-Segher
+[1/1] modpost: Amend ppc64 save/restfpr symnames for -Os build
+      https://git.kernel.org/kbuild/c/3cd9763ce4ad9
+
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped or
+reverted. Patches applied to an "unstable" branch are accepted pending
+wider testing in -next and any post-commit review; they will generally
+be moved to the main branch in a week if no issues are found.
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
