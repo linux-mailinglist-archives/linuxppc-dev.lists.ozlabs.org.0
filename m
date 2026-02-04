@@ -1,74 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-16566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOMEKIe3gmkzZAMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 04:05:43 +0100
+	id CAHUEz7fgmnfdgMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 06:55:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE451E1238
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 04:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F26A1E2238
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 06:55:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f5QGC2Hvgz30Sv;
-	Wed, 04 Feb 2026 14:05:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f5V1k2L5Nz2xJ5;
+	Wed, 04 Feb 2026 16:55:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=82.65.109.163
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770174339;
-	cv=none; b=oxl/uhEFpgf4/SAiEr4hAObkH2bnW/dAHEKoAH6rKudUOssaiDwbCmEsBy/CiC2moY8Kzi5iIdxzN+sFx6sNE83k/ML8vp0LChbbF4d1PnJ+klYx1hyjDmjq38duNprlGLuoOeJTDaJVGqoTMFxNsuPeoQKRpyC/ZjQ9H/IMDlGHE7iYWam8D/4i1LCuKUTrCniDxILzR/NeMd8ob9MlLCWgzUAxd7t6Z0QLOaopAwBB7gJTgi0RGuusMMemUZUWMYRi8OXvjpjtrvOUL5UCmi1cVyke0gv0/nnpt74sNT3h3EWrnq4K+4i1KtfDFNq2As8qHuMdAp6pmx5ylqrq2Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.0.225.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770184506;
+	cv=none; b=Q8W3cUclGC/FFw3h/+Um10KJAXkP+4EZMiadmSe28op+5a39FbCsSSzV404BEZPw7R8HBwHgH9Yf3eKqiDbzQtVvn0dsC6aZqr/r2uqEjKXyuiSslNMk1kINK55Ri6b8bTXsp79Ut5vUQdR5Q3XB8pYtaMfgq6WDT4c1yfKEErhkwh13mTeEYXWlb16xgEU/KTmUDKWhvGhcXfC3bZfYAO/kUYBjCip73jmi8u5f9Rw0s0J2OTBd7sm3VtQ19bkLPY0Zm93yxteYkrfifUWm0ulxi2cRU0KlLg451k1mXjPgZEJAYEItFNSTMv7mBT/j28ABaheQQ8P6YCShwLuISQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770174339; c=relaxed/relaxed;
-	bh=SypkhHay+PuOrMptqU6zOymLJ6SJ/rs5pLhCsJk5GjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jc4QHzzEuqkZ/AZG0OGQHAoYt3mYEwol6qhi/dvZOLwQFjD8vMF76gTXczP85TeWBAUicwK7jNN37rB8SHV/IrU2XrsBxmyxmFmbKjp/EuIFE1WjyjGQ6s1XBl9zgDDvXrRSTFMOIWSNqjO7kgQ1O87ZqvMUctFwGqGx6W9sh1EgN34+82N6EigT3Xnax+cFDCn8iJjtaeAEFY+6Y5PcogYX4KsFJs8Sz27bcWdatMp+HYwxYe27ySKiGria8ru/ymsnCfArP636heWblLXC/gn96ISd1V4o43AGMkbmq3nYxsq6aNDyJoDk9ntlBeeAFX2JJYY/E/CifhS8Jw7tLg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass (client-ip=82.65.109.163; helo=luna.linkmauve.fr; envelope-from=linkmauve@linkmauve.fr; receiver=lists.ozlabs.org) smtp.mailfrom=linkmauve.fr
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linkmauve.fr (client-ip=82.65.109.163; helo=luna.linkmauve.fr; envelope-from=linkmauve@linkmauve.fr; receiver=lists.ozlabs.org)
-Received: from luna.linkmauve.fr (luna.linkmauve.fr [82.65.109.163])
+	t=1770184506; c=relaxed/relaxed;
+	bh=krvWU3RIDCFnaOlsjPiSzDQ5pbtuYU67LBfZYb0ibVA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ohHPdHffJ8oVpfJk5pBcy1ePpB03/R0Osy6BupHX65XmLWiXs9a/GBvKKOJPCwK7h+JFoRvZS4nYsykALmFr1SNXAtvzvjbwLQrqx/tZnrPDvkYDcj014uXqf7AzmltlOXn+dVllcOy3M9YbOJgD0kV8IKQudCmNsybq+E6KAJpCE+F0zo7GYuSU+mFwdWTazIls6vhwQE7xbJgEwVR6Oo/Loz2HFlXnK0ogwW9JRQwlyy/04Dj1RZO+MRMdfTypP2sDhoqOJ0BRR3ktN3t811gBpM4eV1Nuzd29yFdxo+cN1xYUHcwONfLHoVYBFmvR2voJAMf/4WFo7w0QxWZsVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass (client-ip=210.0.225.12; helo=mx1.zhaoxin.com; envelope-from=leoliu-oc@zhaoxin.com; receiver=lists.ozlabs.org) smtp.mailfrom=zhaoxin.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zhaoxin.com (client-ip=210.0.225.12; helo=mx1.zhaoxin.com; envelope-from=leoliu-oc@zhaoxin.com; receiver=lists.ozlabs.org)
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5QG94wl9z2xrk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 14:05:37 +1100 (AEDT)
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id 081FBF43B32; Wed, 04 Feb 2026 04:05:19 +0100 (CET)
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: rust-for-linux@vger.kernel.org
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	llvm@lists.linux.dev,
-	officialTechflashYT@gmail.com,
-	Ash Logan <ash@heyquark.com>,
-	Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
-	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-Subject: [PATCH] rust: Add PowerPC support
-Date: Wed,  4 Feb 2026 04:05:04 +0100
-Message-ID: <20260204030507.8203-1-linkmauve@linkmauve.fr>
-X-Mailer: git-send-email 2.53.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5V1h6sdJz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 16:55:02 +1100 (AEDT)
+X-ASG-Debug-ID: 1770184481-086e2306f656ed0001-v7v7hK
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id phGCJUvNjH60FnHe (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 04 Feb 2026 13:54:41 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 4 Feb
+ 2026 13:54:40 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
+ 15.01.2507.059; Wed, 4 Feb 2026 13:54:40 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from HX007EA1.lan (10.32.64.12) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 4 Feb
+ 2026 11:55:42 +0800
+From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Mahesh J Salgaonkar
+	<mahesh@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, <leoliu-oc@zhaoxin.com>
+CC: Oliver O'Halloran <oohall@gmail.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<CobeChen@zhaoxin.com>, <ErosZhang@zhaoxin.com>, <TonyWWang@zhaoxin.com>
+Subject: [PATCH v2] PCI: dpc: Increase pciehp waiting time for DPC recovery
+Date: Wed, 4 Feb 2026 11:55:42 +0800
+X-ASG-Orig-Subj: [PATCH v2] PCI: dpc: Increase pciehp waiting time for DPC recovery
+Message-ID: <20260204035542.53232-1-LeoLiu-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,176 +70,148 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.32.64.12]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Moderation-Data: 2/4/2026 1:54:39 PM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1770184481
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3433
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.154017
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.99 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.01 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[linkmauve.fr];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[linkmauve@linkmauve.fr,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16566-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FORGED_RECIPIENTS(0.00)[m:rust-for-linux@vger.kernel.org,m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:nathan@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:llvm@lists.linux.dev,m:officialTechflashYT@gmail.com,m:ash@heyquark.com,m:rw-r-r-0644@protonmail.com,m:j.neuschaefer@gmx.net,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:mahesh@linux.ibm.com,m:lukas@wunner.de,m:przemyslaw.kitszel@intel.com,m:leoliu-oc@zhaoxin.com,m:oohall@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:CobeChen@zhaoxin.com,m:ErosZhang@zhaoxin.com,m:TonyWWang@zhaoxin.com,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkmauve@linkmauve.fr,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linkmauve.fr,kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev,heyquark.com,gmx.net];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[zhaoxin.com];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16573-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[LeoLiu-oc@zhaoxin.com,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[gmail.com,lists.ozlabs.org,vger.kernel.org,zhaoxin.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[LeoLiu-oc@zhaoxin.com,linuxppc-dev@lists.ozlabs.org];
+	HAS_XOIP(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
 	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: AE451E1238
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,zhaoxin.com:mid,zhaoxin.com:email]
+X-Rspamd-Queue-Id: F26A1E2238
 X-Rspamd-Action: no action
 
-For now only Big Endian 32-bit PowerPC is supported, as that is the only
-hardware I have.  This has been tested on the Nintendo Wii so far, but I
-plan on also using it on the GameCube, Wii U and Apple G4.
+From: LeoLiu-oc <leoliu-oc@zhaoxin.com>
 
-These changes aren’t the only ones required to get the kernel to compile
-and link on PowerPC, libcore will also have to be changed to not use
-integer division to format u64, u128 and core::time::Duration, otherwise
-__udivdi3() and __umoddi3() will have to be added.  I have tested this
-change by replacing the three implementations with unimplemented!() and
-it linked just fine.
+Commit a97396c6eb13 ("PCI: pciehp: Ignore Link Down/Up caused by DPC")
+amended PCIe hotplug to not bring down the slot upon Data Link Layer State
+Changed events caused by Downstream Port Containment.
 
-Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+Commit c3be50f7547c ("PCI: pciehp: Ignore Presence Detect Changed caused by
+DPC") sought to ignore Presence Detect Changed events occurring as a side
+effect of Downstream Port Containment. These commits await recovery from
+DPC and then clears events which occurred in the meantime.
+
+However, pciehp_ist() waits up to 4 seconds before assuming that DPC
+recovery has failed and disabling the slot. This timeout period is
+insufficient for some PCIe devices.
+
+For example, The execution of the ice_pci_err_detected() in the ice network
+card driver exceeded the maximum waiting time for DPC recovery, causing the
+pciehp_disable_slot() to be executed which is not needed. From the user's
+point of view, you will see that the ice network card may not be usable and
+could even cause more serious errors, such as a kernel panic. kernel panic
+is caused by a race between pciehp_disable_slot() and pcie_do_recovery().
+In practice, we would observe that the ice network card is in an
+unavailable state and a kernel panic.
+
+Therefore, we need to increase the time that pciehp_ist() waits for the DPC
+to recover. For some PCIe devices, the time taken for the error_detected()
+to execute may exceed 16 seconds, but the dpc_reset_link() has not yet been
+executed. In this situation, the Link Down/Up events and Presence Detect
+Changed events that occur during the DPC recovery should also be ignored.
+
+Signed-off-by: LeoLiu-oc <leoliu-oc@zhaoxin.com>
+
 ---
- Documentation/rust/arch-support.rst   |  1 +
- arch/powerpc/Kconfig                  |  1 +
- arch/powerpc/Makefile                 |  2 ++
- arch/powerpc/include/asm/jump_label.h | 16 ++++++++++------
- rust/Makefile                         |  4 +++-
- scripts/generate_rust_target.rs       | 10 ++++++++++
- 6 files changed, 27 insertions(+), 7 deletions(-)
+v2:
+ - Modify and add code comments
+ - Add handling for error_detected() execution exceeding 16s
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 6e6a515d0899..70b9e192a7a0 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -18,6 +18,7 @@ Architecture   Level of support  Constraints
- ``arm``        Maintained        ARMv7 Little Endian only.
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
-+``powerpc``    Maintained        32-bit Big Endian only.
- ``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9537a61ebae0..17db23b82e91 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -283,6 +283,7 @@ config PPC
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
-+	select HAVE_RUST			if PPC32
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index a58b1029592c..9fd82c75dcbd 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,6 +61,8 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
- 
-+KBUILD_RUSTFLAGS += --target=powerpc-unknown-linux-gnu
-+
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
- KBUILD_LDFLAGS	+= -EL
-diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
-index d4eaba459a0e..238f0f625a36 100644
---- a/arch/powerpc/include/asm/jump_label.h
-+++ b/arch/powerpc/include/asm/jump_label.h
-@@ -15,14 +15,18 @@
- #define JUMP_ENTRY_TYPE		stringify_in_c(FTR_ENTRY_LONG)
- #define JUMP_LABEL_NOP_SIZE	4
- 
-+/* This macro is also expanded on the Rust side. */
-+#define ARCH_STATIC_BRANCH_ASM(key, label)		\
-+	"1:\n\t"					\
-+	"nop # arch_static_branch\n\t"			\
-+	".pushsection __jump_table,  \"aw\"\n\t"	\
-+	".long 1b - ., " label " - .\n\t"		\
-+	 JUMP_ENTRY_TYPE key " - .\n\t"			\
-+	 ".popsection \n\t"
-+
- static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
+v1: https://lore.kernel.org/all/20260123104034.429060-1-LeoLiu-oc@zhaoxin.c=
+om/
+---
+ drivers/pci/pcie/dpc.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index fc18349614d7..331d0299af6a 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -103,6 +103,7 @@ static bool dpc_completed(struct pci_dev *pdev)
+ bool pci_dpc_recovered(struct pci_dev *pdev)
  {
--	asm goto("1:\n\t"
--		 "nop # arch_static_branch\n\t"
--		 ".pushsection __jump_table,  \"aw\"\n\t"
--		 ".long 1b - ., %l[l_yes] - .\n\t"
--		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
--		 ".popsection \n\t"
-+	asm goto(ARCH_STATIC_BRANCH_ASM("%c0", "%l[l_yes]")
- 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
- 
- 	return false;
-diff --git a/rust/Makefile b/rust/Makefile
-index 5c0155b83454..377e6fd68524 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -400,13 +400,15 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	-fzero-init-padding-bits=% -mno-fdpic \
--	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
-+	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference \
-+	-ffixed-r2 -mmultiple -mno-readonly-in-sdata
- 
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
- BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
-+BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 38b3416bb979..0054880ba0ea 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -188,6 +188,16 @@ fn main() {
-         panic!("arm uses the builtin rustc target");
-     } else if cfg.has("ARM64") {
-         panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
-+    } else if cfg.has("PPC32") {
-+        ts.push("arch", "powerpc");
-+        ts.push("data-layout", "E-m:e-p:32:32-Fn32-i64:64-n32");
-+        ts.push("features", "+soft-float");
-+        ts.push("llvm-target", "powerpc-unknown-eabi");
-+        if cfg.rustc_version_atleast(1, 91, 0) {
-+            ts.push("target-pointer-width", 32);
-+        } else {
-+            ts.push("target-pointer-width", "32");
-+        }
-     } else if cfg.has("RISCV") {
-         if cfg.has("64BIT") {
-             panic!("64-bit RISC-V uses the builtin rustc riscv64-unknown-none-elf target");
--- 
-2.52.0
+ 	struct pci_host_bridge *host;
++	u16 status;
+=20
+ 	if (!pdev->dpc_cap)
+ 		return false;
+@@ -118,10 +119,22 @@ bool pci_dpc_recovered(struct pci_dev *pdev)
+ 	/*
+ 	 * Need a timeout in case DPC never completes due to failure of
+ 	 * dpc_wait_rp_inactive().  The spec doesn't mandate a time limit,
+-	 * but reports indicate that DPC completes within 4 seconds.
++	 * but reports indicate that DPC completes within 16 seconds.
+ 	 */
+ 	wait_event_timeout(dpc_completed_waitqueue, dpc_completed(pdev),
+-			   msecs_to_jiffies(4000));
++			   msecs_to_jiffies(16000));
++
++	/*
++	 * In some cases, the execution time of report_error_detected()
++	 * exceeded 16 seconds, and dpc_reset_link() was still waiting to
++	 * be executed. This situation should be treated as successful dpc
++	 * recovery.
++	 */
++	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_STATUS, &status);
++	if ((!PCI_POSSIBLE_ERROR(status)) && (status & PCI_EXP_DPC_STATUS_TRIGGER=
+)) {
++		pci_warn(pdev, "DPC: error_detected() callback timed out\n");
++		return true;
++	}
+=20
+ 	return test_and_clear_bit(PCI_DPC_RECOVERED, &pdev->priv_flags);
+ }
+--=20
+2.43.0
 
 
