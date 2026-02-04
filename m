@@ -1,112 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-16607-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16606-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIEWDgnPg2kFugMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16607-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 23:58:17 +0100
+	id trFBC1vKg2m6uQMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16606-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 23:38:19 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEF8ED247
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 23:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DD4ED01F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 23:38:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f5wkD73rcz2yFQ;
-	Thu, 05 Feb 2026 09:58:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f5wH91Stwz2yFY;
+	Thu, 05 Feb 2026 09:38:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::231"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770245892;
-	cv=none; b=ZrCR2/NMx/IlPNymVa/L4WxBlEb/Vbffcio+4Y/ui+1ESjaBzrKGAYqNp9KUqXyDNNaaZjkaWvL7eXDJlbbgbQzif1CNB94KMTQATpQF79d3gI9zVx2T4s2JizuNl4+gEr3Vi2x+F5t+hnqTcBpsCoYtX6BvZyfVX8JDl1DQRggCnXX+PsC7ZsFKOUq0vvrrX+QyXzUTbIX0+SyrZTmLOGdmTWbh2UEze2QvHt9H5HSOMWPd1qKQ9ugQKPDl084GrGf4aO8/qrnOzoG7Oz9S/FIZYqu7CDajgbjufaeVykjBFbIu2XxSXyk1i3cnS9a49NiFbdYBQuW02rMah3QFSQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770244693;
+	cv=none; b=biQFV8XpNmBwVxmzmTVKxTgUQErwlkE2/O1nPJowGVHbRXxohdHRtp+IbyRXWnEhZJmdtpspjQ0UkIy1TOim6on39DEZhpA64XefEFOywPHJodMylWMQslRuWN/ck623jaTrcR/OVQL3lr5SsccVfy+oT6AQue068Pr0tgr+hqNv6w7Li5bP8eF120QjJiRMB834UwQ5+aLdyQm4wq79fpS3tmtBx9vPqbY8pIKLJ1X2uvBE4oB8xlpTj2N7A6LrdG1b5WdsXqOZDTYDET4yaJ5Hf+K4qnREikhEHylhcJ/xXRcRg1npiZ/dEC3Y36agxHlYNoQGNIgH91CVcHLEqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770245892; c=relaxed/relaxed;
-	bh=HXYYAkQIYtgJH8avjMGESEihpdp9UD0EHXLRnPGjhdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abut1HvcjKlicjadGJI+V05JkxMDARaeUTYi8PGIc3sRc5lxIYpPPRO0REc4f+dGrmEjWY0GllbL7GDh2Mz3laasurqdmwehBzLQ6e+3jfiSMYkhhl982ISuOE/wIS0VpzPLbGDJJcsPFvBz8PUIT8ks1mK88BKxEWEfQa6xMjzIALycSmjNQsuw1CmYBrRoFJuW3LgbJk3G1vkPbIXfmXXPGWTU+0i2lzrqm/xuyOJS/6MxyGZQxV2bq/oMhhCK6F89BGV/dXpDX06AGZWlJjFE31PpbU3qDIK1T/6dCfMGd0U3xvYbdkT6jzCud9CU3/fjdbTuGlcTF4wKn5g/Qg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Y5xBmlvb; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::231; helo=mail-oi1-x231.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1770244693; c=relaxed/relaxed;
+	bh=uTO+zsDmVmt1OT+WlYEHMOW+fDbsYgp6I6NFkyHrkvU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R+zhiyhjQtSDUwXqqnoBef9IKLSK0yZcx6bZ7jk/H1Ch3LVGGDWNysmlleLGcS0JftxkDTwla7jldYJhPEzU2c4nhybfwSaQr5225GTFj65XnObocXtbkxodpTKTsG5YhwL9Hzga7XpIGUsFboVLUWkDHuyOQODc97dhB9TQ07e3etn+B+DOEov6gWT6ferGi9e1pDUcqPbO9LhNuclaMQGf8pLaPeTpJtwI7cK2HID3Wf7s4dpJZ3dAvglvZS/jPOqXcwxM1GcxhPHVhcKCaSIrtR1CIXDHO5iCWuI8PMoi5xFhjllwaCtBQmDmM9KCTvLYH9LwayYRzIZdOa+yCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A3dBoGPm; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=wenxiong@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Y5xBmlvb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A3dBoGPm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::231; helo=mail-oi1-x231.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=wenxiong@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5wkC2thmz2xHt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Feb 2026 09:58:10 +1100 (AEDT)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-45f0b597eb4so194432b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 14:58:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770245888; x=1770850688; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HXYYAkQIYtgJH8avjMGESEihpdp9UD0EHXLRnPGjhdU=;
-        b=Y5xBmlvb4s8LB+aLqovn2wfG6cLTU2gqUlDefbyF9GTq1w5biDb9WtIMc91JFw8jAQ
-         H3HmzrFsoR0pDCoLImqt81PhdOFbHTRkwNDSl6XSMTs58Vvc4xwffmCIaPQweBy1qGha
-         lsqr2zO8zHQC1N+Chjv4ACjWnEg9pwJFtx0wmO1JoF5VXD8n19IKCX44+BOpN3EiQjSf
-         WPc/awX2c6VEhWo8QBrp3EEEoL+gFhx26fjSo32ivPNJeiTwBYi9cjsupVFmuN4vRW93
-         6E5FjeLx2BLUGWwvsEN6RHa+Xx68EVVjIdBN+RrPBxYvbtddKBxxXrk5QkCBLgKm9Paf
-         3yDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770245888; x=1770850688;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HXYYAkQIYtgJH8avjMGESEihpdp9UD0EHXLRnPGjhdU=;
-        b=qn2dX8+z93ETn4tyZVhWvml/gq5SAjs4M+Xp+a87i5a2PqJL0eHT+09eJ0HR1JF8aw
-         QVJRpQbqV0GPAUqFVPkKUEXymr6Z48kAR1L8ENE1GNh2NmkHeqiTFuMyvxeHS2ZryCG/
-         Ddj50ZGw1npENIwbjFgeWjyxNplUIXD0lJsqdIetVKAPWaihwyl4ZJ15xAzQpFfQ5TG+
-         CS6xv2Ogd1kTyefOMBhDrI4FQXutDWLtvSFZ7IvNKFXlGQ3bcNZaeDfEJLBA/TcYykHk
-         E30m6VIxTsziMVHk/bzNxZSNqvFsDyJg4/IhzPgtK4zPkQCM8SraelMCZRvhZBhw7Cfm
-         WgQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCETWk6A6P8JeXFoZSsySt5b1jWDl+1AFB/Jgh58lUWggJFleJg88ziCRm4h2Qr1g4mqw6fn9zwcwXYDs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1VJL3qYA9cp/+BNFJMp0UQhS/FFEvvG4zKIzhnCb+Lne04WIM
-	AiU1/dMXQ/QFxG3H+Q3sK+XYO0he/CUQX4AC/zMzUkay9g1Srz7DSH6j
-X-Gm-Gg: AZuq6aLIWhK+I0EpeU8BTDmWRvuP7g7idtfLWyBelr2+jJJztCZ+oEEwvu9iRsAq4WM
-	qRkYk5L4HWYC8kxC04fKxcz7aR+b5hkR+guxon0ixUdBgLY8Y6slw5Tz0+WzS8O9D1tIzWXL2iU
-	BS0MS5eAMAGmc1KtdJjecPk7/cMbaZJ3+lJcYTD9xX5ojTYS7jM9yUKuybNcAbcbZ5Q/qjomMnB
-	jVs529JT4k6hDel+opXptRFJsHlO20QyQWZB+BwyU2Zq/QGLwRr4y6y2zNWH2OpTEueujLmqx/y
-	M1Qx/rERstxfUyitzhF8PW2O6o/ZpU1FuwAMDYHOeLFVUmBw2hNoZLRd46CH2JSpRPj29e2acu0
-	yBJRsaWiNa7VTDZxRaYsQSs2DR+BCE5rzJfFwTILiMCiYbgSmAkotiivdnYS4NzyJN5JA52XEY5
-	DyRc53FYrH3lN7yIsoVChMmerN5bh1rWY45FAez4H5zDK39txQ25i5YT4sOwSHjdBJ
-X-Received: by 2002:a17:90b:2f47:b0:340:c060:4d44 with SMTP id 98e67ed59e1d1-354870f8750mr3428377a91.14.1770238953409;
-        Wed, 04 Feb 2026 13:02:33 -0800 (PST)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.164.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8241d1bd466sm3277977b3a.20.2026.02.04.13.02.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 13:02:33 -0800 (PST)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: linkmauve@linkmauve.fr,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	corbet@lwn.net,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Subject: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
-Date: Thu,  5 Feb 2026 02:31:25 +0530
-Message-ID: <20260204210125.613350-4-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260204210125.613350-1-mkchauras@gmail.com>
-References: <20260204210125.613350-1-mkchauras@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5wH76GRlz2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Feb 2026 09:38:11 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 614FnUQ0020418
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Feb 2026 22:38:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=uTO+zsDmVmt1OT+WlYEHMOW+fDbsYgp6I6NFkyHrk
+	vU=; b=A3dBoGPmHrNhLAEw7kRTVfQe8ILg0XhL1zQZhs7/6DpQgZutuhpyKfgYZ
+	Txf+Ken79I3Va66aMaCEGnlWX18FF5v6R3YqFod/6a2Ozg9yozASQwqsL8TrwBLj
+	B6iL9HXzwZ7qzaQBSvh/upfTjgiN7CF3OkO1Are50mPCmHLDTI5ZpiOTCZFWMeM5
+	3bR7DuLXohKr6QryjzinBAj0P2ccmLrkNvOe+N/ITIfrk6F+5yiJgJZui9tbMijJ
+	JUeAsS15V280TM1zg2xv2teM+kd0yKsJ/tghAV36FzXYgM3t+0/NYwaZN9ULWjQc
+	2dZxdRprjiWqyQ99BKxGjRW2rNPfQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185h1m6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 22:38:08 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 614K0mpb009115
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 4 Feb 2026 22:38:07 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1vey7e17-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 22:38:07 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 614Mc4Xj23331574
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 4 Feb 2026 22:38:05 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B878B58078;
+	Wed,  4 Feb 2026 22:38:04 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2A48D58077;
+	Wed,  4 Feb 2026 22:38:04 +0000 (GMT)
+Received: from ltcrain119-lp4.ltc.tadn.ibm.com (unknown [9.5.7.39])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  4 Feb 2026 22:38:04 +0000 (GMT)
+From: wenxiong@linux.ibm.com
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, haren@linux.ibm.com, tyreld@linux.ibm.com,
+        Wen Xiong <wenxiong@linux.ibm.com>
+Subject: [PATCH V2] error path improvement in dlpar add
+Date: Wed,  4 Feb 2026 16:38:44 -0600
+Message-ID: <20260204223844.11441-1-wenxiong@linux.ibm.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -121,172 +89,272 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=UdxciaSN c=1 sm=1 tr=0 ts=6983ca50 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=WJWy47JjtfI5XqIBqRAA:9
+X-Proofpoint-GUID: SiX7SNamduifgSWnirZfFLCipQffqRzC
+X-Proofpoint-ORIG-GUID: SiX7SNamduifgSWnirZfFLCipQffqRzC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA0MDE3MSBTYWx0ZWRfX+ijm3JKuQujk
+ hzBwRktY0shRCnKHWNbH15n8OIaccjLqBkm11Oyf8fFTpznqCXNIjCw3zUGuAeXDUmvkZ/3ixXP
+ RN0kAuOwT3Taa8s7jxzX9GC+uK9wfDGX9cDeLtltY6KZHQvjeUiGWGvxDKD4EP6xgJosNfeL2SN
+ q28lrVbTarloNCbECCFZ+eVb+6zVSCATBMmcE/TaR0nSJe8xMG99x7z/vYhsHPHiCRFfqtA+k9V
+ aQZXwISBUGfsVAUaCFFhu7t1YrrQlna2Hzx7jjrgQkwtptxvjmOAyGfi74qsCNImdgVi/wIwapw
+ E3N4mEWid8BpIBUuohrVQAQswWI3/A3O2Spllmg+Ed9ApEkKR53kxzzLePdeVlyrQUyOvMxNFFM
+ 6AsbRHFqDKAZQZdL+fzxGJCmlVlgImMlErkA/Iuz350+dKoBBqgsoDuxjkgxdd3S5RaysHtkRF7
+ WVyx7CRfv6Mkpt9qlUA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-04_07,2026-02-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 spamscore=0 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602040171
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:mkchauras@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_TO(0.00)[linkmauve.fr,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-16607-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: CEEF8ED247
+	TAGGED_FROM(0.00)[bounces-16606-lists,linuxppc-dev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,133.3.45.187:email];
+	FROM_NEQ_ENVFROM(0.00)[wenxiong@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 33DD4ED01F
 X-Rspamd-Action: no action
 
-Enabling rust support for ppc64le only.
+From: Wen Xiong <wenxiong@linux.ibm.com>
 
-Tested on powernv9:
+When doing a dlpar adding a device back, expect not loading device driver
+if claiming pci resource failed.
 
-$ uname -rm
-6.19.0-rc8+ ppc64le
+Validating PHB DLPAR capability...yes.
+[ 4928.798012] pci_bus 0187:c0: root bus resource [bus c0-ff]
+[ 4928.798038] pci 0187:c0:00.0: No hypervisor support for SR-IOV on this device, IOV BARs disabled.
+[ 4928.815867] pci 0187:c0:00.0: BAR 0 [mem 0xb0020000-0xb0027fff 64bit]: can't claim; no compatible bridge window
 
-$ sudo modprobe rust_minimal
-[  632.890850] rust_minimal: Rust minimal sample (init)
-[  632.890881] rust_minimal: Am I built-in? false
-[  632.890898] rust_minimal: test_parameter: 1
+---> Expect to exit if claiming resources fails(BAR0)
 
-$ sudo rmmod rust_minimal
-[  648.272832] rust_minimal: My numbers are [72, 108, 200]
-[  648.272873] rust_minimal: Rust minimal sample (exit)
+[ 4928.815899] pci 0187:c0:00.0: ROM [mem 0xb0000000-0xb001ffff]: can't claim; no compatible bridge window
 
-$ sudo modprobe rust_print
-[  843.410391] rust_print: Rust printing macros sample (init)
-[  843.410424] rust_print: Emergency message (level 0) without args
-[  843.410451] rust_print: Alert message (level 1) without args
-[  843.410477] rust_print: Critical message (level 2) without args
-[  843.410503] rust_print: Error message (level 3) without args
-[  843.410530] rust_print: Warning message (level 4) without args
-[  843.410557] rust_print: Notice message (level 5) without args
-[  843.410594] rust_print: Info message (level 6) without args
-[  843.410617] rust_print: A line that is continued without args
-[  843.410646] rust_print: Emergency message (level 0) with args
-[  843.410675] rust_print: Alert message (level 1) with args
-[  843.410691] rust_print: Critical message (level 2) with args
-[  843.410727] rust_print: Error message (level 3) with args
-[  843.410761] rust_print: Warning message (level 4) with args
-[  843.410796] rust_print: Notice message (level 5) with args
-[  843.410821] rust_print: Info message (level 6) with args
-[  843.410854] rust_print: A line that is continued with args
-[  843.410892] rust_print: 1
-[  843.410895] rust_print: "hello, world"
-[  843.410924] rust_print: [samples/rust/rust_print_main.rs:35:5] c = "hello, world"
-[  843.410977] rust_print: Arc<dyn Display> says 42
-[  843.410979] rust_print: Arc<dyn Display> says hello, world
+--->Expect to exit if claiming resources fails(ROM), don't load device
+driver anymore, showed "dlpar add failed"
 
-$ sudo rmmod rust_print
-[  843.411003] rust_print: "hello, world"
-[  888.499935] rust_print: Rust printing macros sample (exit)
+[ 4928.815913] pci 0187:c0:00.0: ROM [mem 0x40000000000-0x4000001ffff]: assigned
+[ 4928.815923] pci 0187:c0:00.0: BAR 0 [mem 0x40800000000-0x40800007fff 64bit]: assigned
+[ 4928.816220] pci 0187:c0:00.0: BAR 0: error updating (0x00000004 != 0xffffffff)
+[ 4928.816364] pci 0187:c0:00.0: BAR 0: error updating (high 0x00060238 != 0xffffffff)
+[ 4928.816839] pci 0187:c0:00.0: ibm,query-pe-dma-windows(53) b00000 8000000 20000187 returned -3, lb=0 ps=0 wn=0
+[ 4928.816855] pci 0187:c0:00.0: spapr_tce_init_table_group: query_ddw failed
+[ 4928.816871] pci 0187:c0:00.0: Adding to iommu group 1
+[ 4928.816952] pci 0187:c0:00.0: of_irq_parse_pci: no interrupt-map found, INTx interrupts not available
+[ 4928.818135] nvme 0187:c0:00.0: ibm,query-pe-dma-windows(53) b00000 8000000 20000187 returned -3, lb=0 ps=0 wn=0
+[ 4928.818284] nvme nvme1: pci function 0187:c0:00.0
+[ 4928.819321] rpaphp: Slot [U78DB.ND0.WZS08E2-P1-C7] registered
+[ 4928.819338] rpadlpar_io: slot PHB 391 added
 
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+With adding error path checking, didn't load the device driver anymore
+if claiming resources failed.
+
+Validating PHB DLPAR capability...yes.
+[  260.414453] PCI host bridge /pci@800000020000187  ranges:
+[  260.414473]  MEM 0x0000040000000000..0x0000040007ffffff -> 0x00000000b8000000
+[  260.414480]  MEM 0x0000040800000000..0x0000040fffffffff -> 0x0006023800000000
+[  260.414915] PCI host bridge to bus 0187:c0
+[  260.414922] pci_bus 0187:c0: root bus resource [mem 0x40000000000-0x40007ffffff] (bus address [0xb8000000-0xbfffffff])
+[  260.414929] pci_bus 0187:c0: root bus resource [mem 0x40800000000-0x40fffffffff 64bit] (bus address [0x6023800000000-0x6023fffffffff])
+[  260.414936] pci_bus 0187:c0: root bus resource [bus c0-ff]
+[  260.414948] pci 0187:c0:00.0: No hypervisor support for SR-IOV on this device, IOV BARs disabled.
+[  260.423439] pci 0187:c0:00.0: BAR 0 [mem 0xb0020000-0xb0027fff 64bit]: can't claim; no compatible bridge window
+[  260.423463] after pci_cliam_Resource=-22   ----> pci_claim_resources fails.
+
+[  260.423471] rpadlpar_io: slot PHB 391 added failed rc=-5  -----> added failed.
+
+Signed-off-by: Wen Xiong <wenxiong@linux.ibm.com>
+Reviewed-by: Haren Myneni <haren@linux.ibm.com>
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 ---
- Documentation/rust/arch-support.rst | 2 +-
- arch/powerpc/Kconfig                | 2 +-
- arch/powerpc/Makefile               | 9 ++++++++-
- rust/Makefile                       | 9 ++++++++-
- 4 files changed, 18 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/pci.h             |  4 ++--
+ arch/powerpc/kernel/pci-common.c           | 23 +++++++++++++++++-----
+ arch/powerpc/kernel/pci-hotplug.c          |  5 ++++-
+ arch/powerpc/platforms/pseries/pci_dlpar.c |  3 ++-
+ drivers/pci/hotplug/rpadlpar_core.c        |  7 ++++++-
+ 5 files changed, 32 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index e26a94808e97..627471ac9238 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -18,7 +18,7 @@ Architecture   Level of support  Constraints
- ``arm``        Maintained        ARMv7 Little Endian only.
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
--``powerpc``    Experimental      32-bit Big Endian only.
-+``powerpc``    Experimental      64-bit Little Endian. 32-bit Big Endian.
- ``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 17db23b82e91..c5dd03713af2 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -283,7 +283,7 @@ config PPC
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
--	select HAVE_RUST			if PPC32
-+	select HAVE_RUST			if PPC32 || (PPC64 && CPU_LITTLE_ENDIAN)
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 9fd82c75dcbd..f93816ddc036 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,7 +61,14 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
+diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+index 46a9c4491ed0..ebeb912a92bf 100644
+--- a/arch/powerpc/include/asm/pci.h
++++ b/arch/powerpc/include/asm/pci.h
+@@ -86,9 +86,9 @@ extern void pci_adjust_legacy_attr(struct pci_bus *bus,
+ 				   enum pci_mmap_state mmap_type);
+ #define HAVE_PCI_LEGACY	1
  
--KBUILD_RUSTFLAGS += --target=powerpc-unknown-linux-gnu
-+ifdef CONFIG_PPC64
-+ifdef CONFIG_CPU_LITTLE_ENDIAN
-+KBUILD_RUSTFLAGS	+= --target=powerpc64le-unknown-linux-gnu
-+endif
-+KBUILD_RUSTFLAGS	+= -Ctarget-feature=-mma,-vsx,-hard-float,-altivec
-+else
-+KBUILD_RUSTFLAGS	+= --target=powerpc-unknown-linux-gnu
-+endif
+-extern void pcibios_claim_one_bus(struct pci_bus *b);
++extern int pcibios_claim_one_bus(struct pci_bus *b);
  
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
-diff --git a/rust/Makefile b/rust/Makefile
-index ae22f2c5f0b3..c3961fd0d9a4 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -392,10 +392,17 @@ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
- BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
--BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+-extern void pcibios_finish_adding_to_bus(struct pci_bus *bus);
++extern int pcibios_finish_adding_to_bus(struct pci_bus *bus);
  
-+ifdef CONFIG_PPC64
-+ifdef CONFIG_CPU_LITTLE_ENDIAN
-+BINDGEN_TARGET_powerpc	:= powerpc64le-linux-gnu
-+endif
-+else
-+BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
-+endif
+ extern void pcibios_resource_survey(void);
+ 
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index eac84d687b53..b16f43c7f02e 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1446,10 +1446,11 @@ void __init pcibios_resource_survey(void)
+  * rest of the code later, for now, keep it as-is as our main
+  * resource allocation function doesn't deal with sub-trees yet.
+  */
+-void pcibios_claim_one_bus(struct pci_bus *bus)
++int pcibios_claim_one_bus(struct pci_bus *bus)
+ {
+ 	struct pci_dev *dev;
+ 	struct pci_bus *child_bus;
++	int ret = 0;
+ 
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+ 		struct resource *r;
+@@ -1462,15 +1463,20 @@ void pcibios_claim_one_bus(struct pci_bus *bus)
+ 			pr_debug("PCI: Claiming %s: Resource %d: %pR\n",
+ 				 pci_name(dev), i, r);
+ 
+-			if (pci_claim_resource(dev, i) == 0)
++			ret = pci_claim_resource(dev, i);
++			if (ret == 0)
+ 				continue;
++			else
++				return ret;
+ 
+ 			pci_claim_bridge_resource(dev, i);
+ 		}
+ 	}
+ 
+ 	list_for_each_entry(child_bus, &bus->children, node)
+-		pcibios_claim_one_bus(child_bus);
++		ret = pcibios_claim_one_bus(child_bus);
 +
- # All warnings are inhibited since GCC builds are very experimental,
- # many GCC warnings are not supported by Clang, they may only appear in
- # some configurations, with new GCC versions, etc.
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pcibios_claim_one_bus);
+ 
+@@ -1481,14 +1487,19 @@ EXPORT_SYMBOL_GPL(pcibios_claim_one_bus);
+  * added to a bus, this include calling it for a PHB that is just
+  * being added
+  */
+-void pcibios_finish_adding_to_bus(struct pci_bus *bus)
++int pcibios_finish_adding_to_bus(struct pci_bus *bus)
+ {
++	int ret = 0;
++
+ 	pr_debug("PCI: Finishing adding to hotplug bus %04x:%02x\n",
+ 		 pci_domain_nr(bus), bus->number);
+ 
+ 	/* Allocate bus and devices resources */
+ 	pcibios_allocate_bus_resources(bus);
+-	pcibios_claim_one_bus(bus);
++	ret = pcibios_claim_one_bus(bus);
++	if (ret)
++		return ret;
++
+ 	if (!pci_has_flag(PCI_PROBE_ONLY)) {
+ 		if (bus->self)
+ 			pci_assign_unassigned_bridge_resources(bus->self);
+@@ -1498,6 +1509,8 @@ void pcibios_finish_adding_to_bus(struct pci_bus *bus)
+ 
+ 	/* Add new devices to global lists.  Register in proc, sysfs. */
+ 	pci_bus_add_devices(bus);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pcibios_finish_adding_to_bus);
+ 
+diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
+index 6f444d0822d8..133ce03fdd82 100644
+--- a/arch/powerpc/kernel/pci-hotplug.c
++++ b/arch/powerpc/kernel/pci-hotplug.c
+@@ -140,6 +140,7 @@ void pci_hp_add_devices(struct pci_bus *bus)
+ 	struct pci_dev *dev;
+ 	struct pci_controller *phb;
+ 	struct device_node *dn = pci_bus_to_OF_node(bus);
++	int ret = 0;
+ 
+ 	if (!dn)
+ 		return;
+@@ -176,6 +177,8 @@ void pci_hp_add_devices(struct pci_bus *bus)
+ 		for_each_pci_bridge(dev, bus)
+ 			max = pci_scan_bridge(bus, dev, max, 1);
+ 	}
+-	pcibios_finish_adding_to_bus(bus);
++	ret = pcibios_finish_adding_to_bus(bus);
++	if (ret)
++		pr_err("Unable to add hotplug pci device!\n");
+ }
+ EXPORT_SYMBOL_GPL(pci_hp_add_devices);
+diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
+index 8c77ec7980de..2b78faba40f6 100644
+--- a/arch/powerpc/platforms/pseries/pci_dlpar.c
++++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
+@@ -58,7 +58,8 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
+ 		pseries_eeh_init_edev_recursive(PCI_DN(dn));
+ 
+ 	pcibios_scan_phb(phb);
+-	pcibios_finish_adding_to_bus(phb->bus);
++	if (pcibios_finish_adding_to_bus(phb->bus))
++		return NULL;
+ 
+ 	return phb;
+ }
+diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
+index 980bb3afd092..4c507dd04fa1 100644
+--- a/drivers/pci/hotplug/rpadlpar_core.c
++++ b/drivers/pci/hotplug/rpadlpar_core.c
+@@ -240,8 +240,10 @@ static int dlpar_add_phb(char *drc_name, struct device_node *dn)
+ 	}
+ 
+ 	phb = init_phb_dynamic(dn);
+-	if (!phb)
++	if (!phb) {
++		pr_err("Unable to add hotplug slot %s\n", drc_name);
+ 		return -EIO;
++	}
+ 
+ 	if (rpaphp_add_slot(dn)) {
+ 		printk(KERN_ERR "%s: unable to add hotplug slot %s\n",
+@@ -311,6 +313,9 @@ int dlpar_add_slot(char *drc_name)
+ 	}
+ 	of_node_put(dn);
+ 
++	if (rc)
++		goto exit;
++
+ 	printk(KERN_INFO "%s: slot %s added\n", DLPAR_MODULE_NAME, drc_name);
+ exit:
+ 	mutex_unlock(&rpadlpar_mutex);
 -- 
-2.52.0
+2.47.3
 
 
