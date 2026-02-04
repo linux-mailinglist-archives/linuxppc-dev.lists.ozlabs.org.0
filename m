@@ -1,96 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-16564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ6PG/ujgmlpXAMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 02:42:19 +0100
+	id GJHSBpurgmnYXwMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 03:14:51 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41E4E07E9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 02:42:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E1FE0BDA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Feb 2026 03:14:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f5NPy27jCz3bTf;
-	Wed, 04 Feb 2026 12:42:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f5P7V5k9Gz30Sv;
+	Wed, 04 Feb 2026 13:14:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::1033" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770169334;
-	cv=pass; b=RQYmtJkaKbu7GkKm9Bvxg4BoS5QLAFcsQ5EIuTuJo9F1jv4Iz/L7bvnwgv6LinHn0UKt5UXHFCbitCgfduPAjIph3Dgpg6Zd54kE4I1WDBfx8k1ynjUAEwJcHVC117+gxpo0Za6mJA/gKxTeYdHAopb6xMwj87Mct9Rqzx+BUyMQNiEetf6Cb8X23zVDLYV5moayIIq5Zrqw4+EOQzk9CvHDY34NWOgtQMLYT9VLD9cxD327Pk9/M1HRaFWWIP667kGtirecdJVv5fPqE+Lb67iuwBeC8GYPMWQqFB6MsIrgRcUqojhGrFMN5zx2ZLeLmWrbd+oG9ysy90ZAMREz8g==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770169334; c=relaxed/relaxed;
-	bh=otKMp5rfnNzFq7n/nTMXUM2adMPBqwrYoSOvEkMyM3M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cQoOtku9y3JgNfjaUaQibuNRchMDVA0mHPLHWN00nUQpbjE3E8DnZy0QxVABVHjrCb0ftO+FCLaioTcejuRoorw/SckKkTV3vgOzWjeVoT/k9mW4hdmwOa3HMb68TgegPfKqD6HzxR6D9KUsLwLKIDYHlP0xTuRB96OJ7mha9wdBJOdndsEisVcDiFnsVTqZkiaROOapHZgK6Ttf8o+0ILpsFbv+ol8SiRXg6YqD23agc60zQQnDujobQja55jE2P87Hpt6b0Gb9eI62iUvLQWRwgc1hMNtPpm2cJ3+JeOosmkI1hatTiFJxccR7ZaNtFYXm531eCnH/bBQ6p/SHew==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TaqRicb3; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TaqRicb3;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.0.225.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770171286;
+	cv=none; b=PjzrZsxashqXSZXApFHRfEhy2lGrh6XAueoZ08BujTHMCKgQE1uceT5o4iPwrdhV+QvOA0Y4o7gBIlmlIZPHw2gd/Nf+mZ+Zg7vjbApbWPtxXdsB/nC+eiRm7wKIj8Al9pBWEyhn7jvHUPB8p1dByo7zhaNb4ZU2wLzBAuNSKH3FOwWSzQbQ/6AzxPNLn7fDOiOjlgkRED5uGBwXghtzLihN+hKMjDuFbCIB1qiA/ppLWgD9nTKcrNZCp6+gPRD18Wx+/Sada3Ewrvz72/HvFN/EqLD4WxuwabukRvdgbxINEci29+UxPgTGckjmolgLRr6NbOwFJnpyrLItt8p/AQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770171286; c=relaxed/relaxed;
+	bh=oSwwdVrJHfYWqFp5RC3DExiDZvzMiKYIbnPGlAr43AY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=GUV8wvb0RlXu1BRtfSnDki3DaigpqPIRD8URd8oyo4S8/t5Gaprq/GKwfyS+VCMORn1VekG5q1ENxbhZc1LliZxdw4RxcoiWI2qNZdEQAzJ9of3PDaTaq+TndbPgNbN44GtRMHmo9M9MCrkGPp27IvroUKpNLiK/pZStA9NQLCM3V/jY6Ro7udKRZB8bw5C3XiMOHdVdo8XgH3zx87bfpxL541UUr2kYsYAzVQTN5/W+LvnlkCK861AM5CkPEwZqbe8RBDelAABVZG8y4rgWDBgnmNxTvLql117UVrVXU2RmicXKkoSodwVeYYuh8xqUeNP16bGZBuBp5FSjE1vFuw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass (client-ip=210.0.225.12; helo=mx1.zhaoxin.com; envelope-from=leoliu-oc@zhaoxin.com; receiver=lists.ozlabs.org) smtp.mailfrom=zhaoxin.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zhaoxin.com (client-ip=210.0.225.12; helo=mx1.zhaoxin.com; envelope-from=leoliu-oc@zhaoxin.com; receiver=lists.ozlabs.org)
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5NPx2FYnz30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 12:42:12 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-3530715386cso4667229a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 17:42:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770169330; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dozW3TytcDWrEKJtg5NEHK/F5gygtfb+6Gg/jd0N3B23Fc3pI+LpW91Z9AIdUsZ58G
-         +E2WnpJOegcZuTCv56IXOgiFWr/C4jOvh27/G7mmCJE3uMJK1UWr39mb6ijNElaUx7wG
-         g8ICg0v4HKZYwa+66wPosysZX5fMA3im3dvG4Sdk9k4BZYVriFWklRy25EXEw6n4suKX
-         RI8swCmTSZQWaXJfuRSRx3r5dHrTToyzobEnnDQTZd+a+fnM/e8i4GxsMYyY3XpSLvUW
-         Sr/7o0JMnCse80pQnqekk6p4+ujNFm2d5K9DtE3SnFRHYWPLpANCanwyhNe2vrcy5rk0
-         iAMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=otKMp5rfnNzFq7n/nTMXUM2adMPBqwrYoSOvEkMyM3M=;
-        fh=B/quyaWWxrMB0NB7TeYuD6kuZTXnWiEgz4KCZZ0jTbc=;
-        b=UlGzgY/fuzVmhwRXTtnlTMT6/jg4VdNyylm19eGKoein2mWVtDPl2RQXQZHW25Qy9W
-         qgP+2nbbd9IVikGv9MNPidfcg7nlDJNDiHM+3t1SymuYKFpmuZ25TbIzTzUtWwXAaZV3
-         Vf0SIML2AVYB6fCfYvhnRcjw++tUkKgfoufFf9iUv/s24tdl/bakisyNUZ5cCZv3E6Wa
-         RSPzV7fPzZa5g+C7gVilL0U7GPC1mbjrm52FA4oRHBTNC7F4iQQMVFeEDonqJypffZfL
-         tUAbkk2s9u6Q336GqM/UUE4CJA+y+XLYrF0cz6o0PGr5d+hZ5kQQ74yv6Yskz9MEKMi3
-         s05Q==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770169330; x=1770774130; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=otKMp5rfnNzFq7n/nTMXUM2adMPBqwrYoSOvEkMyM3M=;
-        b=TaqRicb3PIItg85po/tWQEFdRZR8PYT0eOdOLzEFPx6HSBIc3SzQdn5phus5AGscyV
-         zyuATWY13L3hFh0adw/AUMfKR4Uo+Xc9JokxvxxIHyuPBOF8rF1fYoKsWNeO+c0aLP5Z
-         LoYDaGPlGNoLWZPzFrg4oko5SBPlzgxj+KNuXTFY+S4xM46vOws7pgImGY6ClA1qE4ZK
-         fRF+Q9sWjMcG9ec3EHJdveldE0ZfYS7fncVvcEuiP7Ca5DMDjsl425yrpcA2VK7z5V5P
-         VOBB9vDHhD9PGcFm+9gzZJ1/bTXudHl+zmUegaHms8xAphCissDvDjthbWICjSBbz7+8
-         tLhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770169330; x=1770774130;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=otKMp5rfnNzFq7n/nTMXUM2adMPBqwrYoSOvEkMyM3M=;
-        b=qZaRoINVGAuWxmeJm4TP5v69si/ztUIJoYeIX6jz8NKAvA1IAu5SeOXKL8+4eKt3pm
-         2NUxYwUOPnygBJ1hzYvu5SrQi+YYEqh1eKH22PqbeL2vh+Qi/mtlZhcvWO/Rm/ppzJLJ
-         ITcplo6fSwuq8uY2SbVCTBGIuornIWNsao5ilU/y8llx8zcqFGAblykGOco/MYAFq32S
-         KTuuWKkcn7Pp9noIpvvaHlP8JDAvfT7Zh3LSVztvW0e4czSbsc0u8bYpQ5WPntoEdvNv
-         6br30Pztu9yotxyfAZc7KPA/OrDL0mwmqghpUWx4FGIhSpuYxXGnYGQWIITizJ44E5CE
-         zE5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWCg6I8PlYJCRnMNziiNGcIcMEpCBs07sEDQNZxC5ZIzQSIwS3R1QJxs7d7G67mHT7A9J9uIkO2QpbNM08=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw6e9y1dU3h/4A3DRMEfq8JLOYmfsd1sySzV5+3ebw0qjSy2JTT
-	lKpIDdpJr/RdWEggcH2rbGvB5Goj/sz+x5JX9rcTFsS+V+7By5ZMvL3XfRR83KqLKSV7aeqDGlx
-	soPloGmEyLZG99bnln9VjFFHsjLFjLQk=
-X-Gm-Gg: AZuq6aIcYBcOsYaxzp8DilrgQ9E98gI3HUpbtL1GfO9Qdo0Qxrh2iS8HLq/F2ao3c1F
-	fja9eeLTz9wnGaVcdO2Go4HC1xuJv88X0Ux1Dn0SpVDDr5vq56X3ZcBdy9horoWDZ3GQJPYqgnk
-	jVtpGMDdFNoDKaZBSml8C7gJgDApIAvsVId3zeSPrth/pFo023cOlX3LRvHxIDyJWLxc3/KwrDW
-	vc7jEttcQm/c7wdw0/ns2/avy7QtxAEPYAt3RHkIETSjN27SI0glf30KDRKOL9JgaFoeek=
-X-Received: by 2002:a17:90b:4b8c:b0:352:d168:fc4 with SMTP id
- 98e67ed59e1d1-35487207d86mr997612a91.32.1770169330154; Tue, 03 Feb 2026
- 17:42:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f5P7R4ytnz2xqD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Feb 2026 13:14:39 +1100 (AEDT)
+X-ASG-Debug-ID: 1770171252-086e2306f756850001-v7v7hK
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id G9vEasgIBZXM3HYu (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 04 Feb 2026 10:14:12 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 4 Feb
+ 2026 10:14:11 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
+ 15.01.2507.059; Wed, 4 Feb 2026 10:14:11 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from [10.32.64.12] (10.32.64.12) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 4 Feb
+ 2026 10:10:15 +0800
+Message-ID: <e4ac46d3-321f-4f9d-b327-0e16caabbb96@zhaoxin.com>
+Date: Wed, 4 Feb 2026 10:10:01 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,255 +61,260 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260203031345.3850533-1-shengjiu.wang@nxp.com>
- <20260203031345.3850533-3-shengjiu.wang@nxp.com> <aYI2KZE8/MGQ633A@lizhi-Precision-Tower-5810>
-In-Reply-To: <aYI2KZE8/MGQ633A@lizhi-Precision-Tower-5810>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 4 Feb 2026 09:41:55 +0800
-X-Gm-Features: AZwV_QiSHr0nHk0_0QYvmlQjWNW7hjgw-cP6U7VY4GcjLXalrmxQByJgfsR4Ri0
-Message-ID: <CAA+D8APXwucOLhhnZF7ASPufWyQs4tbxtR46UFdpm=4wRyHOyA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] ASoC: fsl_asrc_m2m: Add option to start ASRC
- before DMA device for M2M
-To: Frank Li <Frank.li@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linuxppc-dev@lists.ozlabs.org
+User-Agent: Mozilla Thunderbird
+From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+Subject: Re: [PATCH] PCI: dpc: Increase pciehp waiting time for DPC recovery
+To: Lukas Wunner <lukas@wunner.de>
+X-ASG-Orig-Subj: Re: [PATCH] PCI: dpc: Increase pciehp waiting time for DPC recovery
+CC: Bjorn Helgaas <helgaas@kernel.org>, <mahesh@linux.ibm.com>,
+	<oohall@gmail.com>, <bhelgaas@google.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>
+References: <20260123202140.GA84703@bhelgaas>
+ <3af9f754-d282-485c-a3f2-49a230bfe143@zhaoxin.com>
+ <aXydEn_lAbNROQKy@wunner.de>
+ <1096398c-e883-4232-91f6-836fc508092d@zhaoxin.com>
+ <aYBoP-B2E9fp_4YZ@wunner.de>
+In-Reply-To: <aYBoP-B2E9fp_4YZ@wunner.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Originating-IP: [10.32.64.12]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Moderation-Data: 2/4/2026 10:14:10 AM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1770171252
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 9074
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.154010
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-1.51 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16564-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:Frank.li@nxp.com,m:shengjiu.wang@nxp.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux-sound@vger.kernel.org,m:devicetree@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:Xiubo.Lee@gmail.com,m:nicoleotsuka@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linuxppc-dev@lists.ozlabs.org,m:krzk@kernel.org,m:conor@kernel.org,m:XiuboLee@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16565-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DMARC_NA(0.00)[zhaoxin.com];
+	FORGED_RECIPIENTS(0.00)[m:lukas@wunner.de,m:helgaas@kernel.org,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:bhelgaas@google.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:CobeChen@zhaoxin.com,m:TonyWWang@zhaoxin.com,m:ErosZhang@zhaoxin.com,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,s:lists@lfdr.de];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,gmail.com,google.com,lists.ozlabs.org,vger.kernel.org,zhaoxin.com,intel.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[nxp.com,gmail.com,kernel.org,pengutronix.de,vger.kernel.org,lists.linux.dev,lists.infradead.org,perex.cz,suse.com,lists.ozlabs.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[LeoLiu-oc@zhaoxin.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[LeoLiu-oc@zhaoxin.com,linuxppc-dev@lists.ozlabs.org];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,mail.gmail.com:mid,nxp.com:email]
-X-Rspamd-Queue-Id: D41E4E07E9
+	HAS_XOIP(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zhaoxin.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 54E1FE0BDA
 X-Rspamd-Action: no action
 
-On Wed, Feb 4, 2026 at 1:53=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Tue, Feb 03, 2026 at 11:13:43AM +0800, Shengjiu Wang wrote:
-> > There is a limitation on i.MX952 that dma request is not cleared at the
-> > end of conversion with dma slave mode. Which causes sample is dropped
-> > from the input fifo on the second time if dma is triggered before the
-> > client device and EDMA may copy wrong data from output fifo as the outp=
-ut
-> > fifo is not ready in the beginning.
-> >
-> > The solution is to trigger asrc before dma on i.MX952, and add delay to
-> > wait output data is generated then start the EDMA for output, otherwise
-> > the m2m function has noise issues.
-> >
-> > So add an option to start ASRC first for M2M before ASRC is enabled on
-> > i.MX952.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/fsl_asrc.c        | 23 +++++++++++++++++++++++
-> >  sound/soc/fsl/fsl_asrc.h        |  4 ++++
-> >  sound/soc/fsl/fsl_asrc_common.h |  4 ++++
-> >  sound/soc/fsl/fsl_asrc_m2m.c    |  8 +++++++-
-> >  4 files changed, 38 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> > index 92fb16f7be45..b6d4f1e09e2e 100644
-> > --- a/sound/soc/fsl/fsl_asrc.c
-> > +++ b/sound/soc/fsl/fsl_asrc.c
-> > @@ -1078,6 +1078,27 @@ static unsigned int fsl_asrc_get_output_fifo_siz=
-e(struct fsl_asrc_pair *pair)
-> >       return val >> ASRFSTi_OUTPUT_FIFO_SHIFT;
-> >  }
-> >
-> > +static bool fsl_asrc_m2m_output_ready(struct fsl_asrc_pair *pair)
-> > +{
-> > +     struct fsl_asrc *asrc =3D pair->asrc;
-> > +     enum asrc_pair_index index =3D pair->index;
-> > +     int retry =3D 1000;
-> > +     u32 val;
-> > +     int ret;
-> > +
-> > +     /* Check output fifo status if it exceeds the watermark. */
-> > +     ret =3D regmap_read_poll_timeout(asrc->regmap, REG_ASRFST(index),=
- val,
-> > +                                    (ASRFSTi_OUTPUT_FIFO_FILL(val) >=
-=3D ASRC_M2M_OUTPUTFIFO_WML) ||
-> > +                                    (--retry =3D=3D 0), 0, USEC_PER_SE=
-C);
->
-> are sure need "retry"? there are timeout, which should be equal to 'retry=
-'.
 
-Yes, "retry" is what I want, timeout is not what I expected.
 
-Best regards
-Shengjiu Wang
+=E5=9C=A8 2026/2/2 17:02, Lukas Wunner =E5=86=99=E9=81=93:
+>=20
+>=20
+> [=E8=BF=99=E5=B0=81=E9=82=AE=E4=BB=B6=E6=9D=A5=E8=87=AA=E5=A4=96=E9=83=A8=
+=E5=8F=91=E4=BB=B6=E4=BA=BA =E8=B0=A8=E9=98=B2=E9=A3=8E=E9=99=A9]
+>=20
+> [cc +=3D Tony, Przemek (ice driver maintainers), start of thread is here:
+> https://lore.kernel.org/all/20260123104034.429060-1-LeoLiu-oc@zhaoxin.com=
+/
+> ]
+>=20
+> On Mon, Feb 02, 2026 at 02:00:55PM +0800, LeoLiu-oc wrote:
+>> The kernel version I am using is 6.18.6.
+> [...]
+>> The complete log of the kernel panic is as follows:
+>>
+>> [  100.304077][  T843] list_del corruption, ffff8881418b79e8->next is LI=
+ST_POISON1 (dead000000000100)
+>> [  100.312989][  T843] ------------[ cut here ]------------
+>> [  100.318268][  T843] kernel BUG at lib/list_debug.c:56!
+>> [  100.323380][  T843] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+>> [  100.329250][  T843] CPU: 7 PID: 843 Comm: irq/27-pciehp Tainted: P   =
+ W  OE     ------- ----  6.6.0-32.7.v2505.ky11.x86_64 #1
+>> [  100.340793][  T843] Source Version: 71d5b964051132b7772acd935972fca11=
+462bbfe
+>> [  100.359228][  T843] RIP: 0010:__list_del_entry_valid_or_report+0x7f/0=
+xc0
+>> [  100.365877][  T843] Code: 66 4b a6 e8 c3 43 a9 ff 0f 0b 48 89 fe 48 c=
+7 c7 10 67 4b a6 e8 b2 43 a9 ff 0f 0b 48 89 fe 48 c7 c7 40 67 4b a6 e8 a1 4=
+3 a9 ff <0f> 0b 48 89 fe 48 89 ca 48 c7 c7 78 67 4b a6 e8 8d 43 a9 ff 0f 0b
+>> [  100.385158][  T843] RSP: 0018:ffffc9000f70fc08 EFLAGS: 00010246
+>> [  100.391024][  T843] RAX: 000000000000004e RBX: ffff8881418b79e8 RCX: =
+0000000000000000
+>> [  100.398781][  T843] RDX: 0000000000000000 RSI: ffff8897df5a32c0 RDI: =
+ffff8897df5a32c0
+>> [  100.406538][  T843] RBP: ffff8881257f9608 R08: 0000000000000000 R09: =
+0000000000000003
+>> [  100.414294][  T843] R10: ffffc9000f70fa90 R11: ffffffffa6fee508 R12: =
+0000000000000000
+>> [  100.422050][  T843] R13: ffff8881257f9608 R14: ffff888116507c28 R15: =
+ffff888116507c28
+>> [  100.429807][  T843] FS:  0000000000000000(0000) GS:ffff8897df580000(0=
+000) knlGS:0000000000000000
+>> [  100.438511][  T843] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [  100.444891][  T843] CR2: 00007f9563bac1c0 CR3: 0000000c4be26004 CR4: =
+0000000000570ee0
+>> [  100.452647][  T843] PKRU: 55555554
+>> [  100.456017][  T843] Call Trace:
+>> [  100.459129][  T843]  <TASK>
+>> [  100.461898][  T843]  ice_flow_rem_entry_sync.constprop.0+0x1c/0x90 [i=
+ce]
+>> [  100.468663][  T843]  ice_flow_rem_entry+0x3d/0x60 [ice]
+>> [  100.473925][  T843]  ice_fdir_erase_flow_from_hw.constprop.0+0x9b/0x1=
+00 [ice]
+>> [  100.481078][  T843]  ice_fdir_rem_flow.constprop.0+0x32/0xb0 [ice]
+>> [  100.487284][  T843]  ice_vsi_manage_fdir+0x7b/0xb0 [ice]
+>> [  100.492629][  T843]  ice_deinit_features.part.0+0x46/0xc0 [ice]
+>> [  100.498571][  T843]  ice_remove+0xcf/0x220 [ice]
+>> [  100.503222][  T843]  pci_device_remove+0x3f/0xb0
+>> [  100.507798][  T843]  device_release_driver_internal+0x19d/0x220
+>> [  100.513667][  T843]  pci_stop_bus_device+0x6c/0x90
+>> [  100.518417][  T843]  pci_stop_and_remove_bus_device+0x12/0x20
+>> [  100.524110][  T843]  pciehp_unconfigure_device+0x9f/0x160
+>> [  100.529463][  T843]  pciehp_disable_slot+0x69/0x130
+>> [  100.534296][  T843]  pciehp_handle_presence_or_link_change+0xfc/0x210
+>> [  100.540678][  T843]  pciehp_ist+0x204/0x230
+>> [  100.544824][  T843]  ? __pfx_irq_thread_fn+0x10/0x10
+>> [  100.549747][  T843]  irq_thread_fn+0x20/0x60
+>> [  100.553978][  T843]  irq_thread+0xfb/0x1c0
+>> [  100.558038][  T843]  ? __pfx_irq_thread_dtor+0x10/0x10
+>> [  100.563130][  T843]  ? __pfx_irq_thread+0x10/0x10
+>> [  100.567791][  T843]  kthread+0xe5/0x120
+>> [  100.571594][  T843]  ? __pfx_kthread+0x10/0x10
+>> [  100.575997][  T843]  ret_from_fork+0x17a/0x1a0
+>> [  100.580403][  T843]  ? __pfx_kthread+0x10/0x10
+>> [  100.584805][  T843]  ret_from_fork_asm+0x1a/0x30
+>> [  100.589384][  T843]  </TASK>
+>> [  100.592237][  T843] Modules linked in: zxmem(OE) einj amdgpu amdxcp
+>> gpu_sched drm_exec drm_buddy nft_fib_inet nft_fib_ipv4 nft_fib_ipv6
+>> nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
+>> nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 zhaoxin_cputemp
+>> nf_defrag_ipv4 zhaoxin_rng snd_hda_codec_hdmi radeon rfkill
+>> snd_hda_intel snd_intel_dspcfg irdma i2c_algo_bit snd_intel_sdw_acpi
+>> ip_set i40e drm_suballoc_helper nf_tables drm_ttm_helper pcicfg(POE)
+>> snd_hda_codec ib_uverbs sunrpc ttm ib_core snd_hda_core
+>> drm_display_helper snd_hwdep kvm_intel snd_pcm cec vfat fat
+>> drm_kms_helper snd_timer kvm video ice snd psmouse soundcore wmi
+>> acpi_cpufreq pcspkr i2c_zhaoxin sg sch_fq_codel drm fuse backlight
+>> nfnetlink xfs sd_mod t10_pi sm2_zhaoxin_gmi crct10dif_pclmul
+>> crc32_pclmul ahci crc32c_intel libahci r8169 ghash_clmulni_intel libata
+>> sha512_ssse3 serio_raw realtek dm_mirror dm_region_hash dm_log
+>> dm_multipath dm_mod i2c_dev autofs4
+>> [  100.674508][  T843] ---[ end trace 0000000000000000 ]---
+>> [  100.709547][  T843] RIP: 0010:__list_del_entry_valid_or_report+0x7f/0=
+xc0
+>> [  100.716197][  T843] Code: 66 4b a6 e8 c3 43 a9 ff 0f 0b 48 89 fe 48 c=
+7 c7 10 67 4b a6 e8 b2 43 a9 ff 0f 0b 48 89 fe 48 c7 c7 40 67 4b a6 e8 a1 4=
+3 a9 ff <0f> 0b 48 89 fe 48 89 ca 48 c7 c7 78 67 4b a6 e8 8d 43 a9 ff 0f 0b
+>> [  100.735491][  T843] RSP: 0018:ffffc9000f70fc08 EFLAGS: 00010246
+>> [  100.741367][  T843] RAX: 000000000000004e RBX: ffff8881418b79e8 RCX: =
+0000000000000000
+>> [  100.749137][  T843] RDX: 0000000000000000 RSI: ffff8897df5a32c0 RDI: =
+ffff8897df5a32c0
+>> [  100.756909][  T843] RBP: ffff8881257f9608 R08: 0000000000000000 R09: =
+0000000000000003
+>> [  100.764678][  T843] R10: ffffc9000f70fa90 R11: ffffffffa6fee508 R12: =
+0000000000000000
+>> [  100.772448][  T843] R13: ffff8881257f9608 R14: ffff888116507c28 R15: =
+ffff888116507c28
+>> [  100.780218][  T843] FS:  0000000000000000(0000) GS:ffff8897df580000(0=
+000) knlGS:0000000000000000
+>> [  100.788934][  T843] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [  100.795329][  T843] CR2: 00007f9563bac1c0 CR3: 0000000c4be26004 CR4: =
+0000000000570ee0
+>> [  100.803099][  T843] PKRU: 55555554
+>> [  100.806483][  T843] Kernel panic - not syncing: Fatal exception
+>> [  100.812794][  T843] Kernel Offset: disabled
+>> [  100.821613][  T843] pstore: backend (erst) writing error (-28)
+>> [  100.827481][  T843] ---[ end Kernel panic - not syncing: Fatal except=
+ion ]---
+>>
+>> The reason for this kernel panic is that the ice network card driver
+>> executed the ice_pci_err_detected() for a longer time than the maximum
+>> waiting time allowed by pciehp. After that, the pciehp_ist() will
+>> execute the ice network card driver's ice_remove() process. This results
+>> in the ice_pci_err_detected() having already deleted the list, while the
+>> ice_remove() is still attempting to delete a list that no longer exists.
+>=20
+> This is a bug in the ice driver, not in the pciehp or dpc driver.
+> As such, it is not a good argument to support the extension of the
+> timeout.  I'm not against extending the timeout, but the argument
+> that it's necessary to avoid occurrence of a bug is not a good one.
+>=20
+> You should first try to unbind the ice driver at runtime to see if
+> there is a general problem in the unbind code path:
+>=20
+> echo abcd:ef:gh.i > /sys/bus/pci/drivers/shpchp/unbind
+>=20
+> Replace abcd:ef:gh.i with the domain/bus/device/function of the Ethernet
+> card.  The dmesg excerpt you've provided unfortunately does not betray
+> the card's address.
+>=20
+> Then try to rebind the driver via the "bind" sysfs attribute.
+>=20
+> If this works, the next thing to debug is whether the driver has a
+> problem with surprise removal.  I'm not fully convinced that the
+> crash you're seeing is caused by concurrent execution of
+> ice_pci_err_detected() and ice_remove().  When pciehp unbinds the
+> driver during DPC recovery, the device is likely inaccessible.
+> It's possible that ice_remove() behaves differently for an
+> inaccessible device and that may cause the crash instead of the
+> concurrent execution of ice_pci_err_detected().
+>=20
+The fundamental cause of this problem lies in the fact that the network
+driver took longer than the maximum time (4 seconds) set by pcie_ist()
+for the DPC to recover when executing ice_pci_err_detected(). This
+forced the execution of pciehp_disable_slot() which should not have been
+executed, while pcie_do_recovery() continued to execute. This situation
+led to a competition between the execution processes of
+pciehp_disable_slot() and pcie_do_recovery(), resulting in the
+unavailability of the device and the possibility of kernel crashes.
 
->
-> Frank
-> > +
-> > +     if (ret || !retry) {
-> > +             pair_warn("output is not ready\n");
-> > +             return false;
-> > +     }
-> > +
-> > +     return true;
-> > +}
-> > +
-> >  static int fsl_asrc_m2m_prepare(struct fsl_asrc_pair *pair)
-> >  {
-> >       struct fsl_asrc_pair_priv *pair_priv =3D pair->private;
-> > @@ -1275,6 +1296,7 @@ static int fsl_asrc_probe(struct platform_device =
-*pdev)
-> >
-> >       asrc_priv->soc =3D of_device_get_match_data(&pdev->dev);
-> >       asrc->use_edma =3D asrc_priv->soc->use_edma;
-> > +     asrc->start_before_dma =3D asrc_priv->soc->start_before_dma;
-> >       asrc->get_dma_channel =3D fsl_asrc_get_dma_channel;
-> >       asrc->request_pair =3D fsl_asrc_request_pair;
-> >       asrc->release_pair =3D fsl_asrc_release_pair;
-> > @@ -1289,6 +1311,7 @@ static int fsl_asrc_probe(struct platform_device =
-*pdev)
-> >       asrc->m2m_get_maxburst =3D fsl_asrc_m2m_get_maxburst;
-> >       asrc->m2m_pair_resume =3D fsl_asrc_m2m_pair_resume;
-> >       asrc->m2m_get_cap =3D fsl_asrc_m2m_get_cap;
-> > +     asrc->m2m_output_ready =3D fsl_asrc_m2m_output_ready;
-> >
-> >       if (of_device_is_compatible(np, "fsl,imx35-asrc")) {
-> >               asrc_priv->clk_map[IN] =3D input_clk_map_imx35;
-> > diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
-> > index 1c492eb237f5..60b6865ca952 100644
-> > --- a/sound/soc/fsl/fsl_asrc.h
-> > +++ b/sound/soc/fsl/fsl_asrc.h
-> > @@ -257,6 +257,8 @@
-> >  #define ASRFSTi_OUTPUT_FIFO_WIDTH    7
-> >  #define ASRFSTi_OUTPUT_FIFO_SHIFT    12
-> >  #define ASRFSTi_OUTPUT_FIFO_MASK     (((1 << ASRFSTi_OUTPUT_FIFO_WIDTH=
-) - 1) << ASRFSTi_OUTPUT_FIFO_SHIFT)
-> > +#define ASRFSTi_OUTPUT_FIFO_FILL(v)  \
-> > +     (((v) & ASRFSTi_OUTPUT_FIFO_MASK) >> ASRFSTi_OUTPUT_FIFO_SHIFT)
-> >  #define ASRFSTi_IAEi_SHIFT           11
-> >  #define ASRFSTi_IAEi_MASK            (1 << ASRFSTi_IAEi_SHIFT)
-> >  #define ASRFSTi_IAEi                 (1 << ASRFSTi_IAEi_SHIFT)
-> > @@ -432,10 +434,12 @@ struct dma_block {
-> >   *
-> >   * @use_edma: using edma as dma device or not
-> >   * @channel_bits: width of ASRCNCR register for each pair
-> > + * @start_before_dma: start asrc before dma
-> >   */
-> >  struct fsl_asrc_soc_data {
-> >       bool use_edma;
-> >       unsigned int channel_bits;
-> > +     bool start_before_dma;
-> >  };
-> >
-> >  /**
-> > diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_c=
-ommon.h
-> > index 0cd595b0f629..c8a1a2b5915d 100644
-> > --- a/sound/soc/fsl/fsl_asrc_common.h
-> > +++ b/sound/soc/fsl/fsl_asrc_common.h
-> > @@ -107,6 +107,7 @@ struct fsl_asrc_pair {
-> >   * @asrc_rate: default sample rate for ASoC Back-Ends
-> >   * @asrc_format: default sample format for ASoC Back-Ends
-> >   * @use_edma: edma is used
-> > + * @start_before_dma: start asrc before dma
-> >   * @get_dma_channel: function pointer
-> >   * @request_pair: function pointer
-> >   * @release_pair: function pointer
-> > @@ -116,6 +117,7 @@ struct fsl_asrc_pair {
-> >   * @m2m_start: function pointer
-> >   * @m2m_unprepare: function pointer
-> >   * @m2m_stop: function pointer
-> > + * @m2m_output_ready: function pointer, check output fifo ready or not
-> >   * @m2m_calc_out_len: function pointer
-> >   * @m2m_get_maxburst: function pointer
-> >   * @m2m_pair_suspend: function pointer
-> > @@ -143,6 +145,7 @@ struct fsl_asrc {
-> >       int asrc_rate;
-> >       snd_pcm_format_t asrc_format;
-> >       bool use_edma;
-> > +     bool start_before_dma;
-> >
-> >       struct dma_chan *(*get_dma_channel)(struct fsl_asrc_pair *pair, b=
-ool dir);
-> >       int (*request_pair)(int channels, struct fsl_asrc_pair *pair);
-> > @@ -154,6 +157,7 @@ struct fsl_asrc {
-> >       int (*m2m_start)(struct fsl_asrc_pair *pair);
-> >       int (*m2m_unprepare)(struct fsl_asrc_pair *pair);
-> >       int (*m2m_stop)(struct fsl_asrc_pair *pair);
-> > +     bool (*m2m_output_ready)(struct fsl_asrc_pair *pair);
-> >
-> >       int (*m2m_calc_out_len)(struct fsl_asrc_pair *pair, int input_buf=
-fer_length);
-> >       int (*m2m_get_maxburst)(u8 dir, struct fsl_asrc_pair *pair);
-> > diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.=
-c
-> > index f46881f71e43..77999526dd9e 100644
-> > --- a/sound/soc/fsl/fsl_asrc_m2m.c
-> > +++ b/sound/soc/fsl/fsl_asrc_m2m.c
-> > @@ -253,15 +253,21 @@ static int asrc_m2m_device_run(struct fsl_asrc_pa=
-ir *pair, struct snd_compr_task
-> >       reinit_completion(&pair->complete[IN]);
-> >       reinit_completion(&pair->complete[OUT]);
-> >
-> > +     if (asrc->start_before_dma)
-> > +             asrc->m2m_start(pair);
-> > +
-> >       /* Submit DMA request */
-> >       dmaengine_submit(pair->desc[IN]);
-> >       dma_async_issue_pending(pair->desc[IN]->chan);
-> >       if (out_dma_len > 0) {
-> > +             if (asrc->start_before_dma && asrc->m2m_output_ready)
-> > +                     asrc->m2m_output_ready(pair);
-> >               dmaengine_submit(pair->desc[OUT]);
-> >               dma_async_issue_pending(pair->desc[OUT]->chan);
-> >       }
-> >
-> > -     asrc->m2m_start(pair);
-> > +     if (!asrc->start_before_dma)
-> > +             asrc->m2m_start(pair);
-> >
-> >       if (!wait_for_completion_interruptible_timeout(&pair->complete[IN=
-], 10 * HZ)) {
-> >               dev_err(dev, "out DMA task timeout\n");
-> > --
-> > 2.34.1
-> >
+> It would also be good to understand why DPC recovery of the Ethernet
+> card takes this long.  Does it take a long time to come out of reset?
+> Could the ice driver be changed to allow for faster recovery?
+>=20
+Based on the current situation, it is observed that the execution of
+ice_pci_err_detected() in the ice network card driver takes a very long
+time, which is intolerable for the synchronization protocol between the
+PCIe hotplug driver and the DPC recovery.
+
+Yours sincerely,
+LeoLiu-oc
+
+> Thanks,
+>=20
+> Lukas
+
 
