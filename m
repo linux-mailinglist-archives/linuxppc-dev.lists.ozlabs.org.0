@@ -1,102 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-16621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QK2mEX+0hGk54wMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 16:17:19 +0100
+	id iMtSCRXThGlo5gMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 18:27:49 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B43F4827
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 16:17:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B416F5E63
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 18:27:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6LRt5TB5z2yFb;
-	Fri, 06 Feb 2026 02:17:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f6PLS5KzRz2yFb;
+	Fri, 06 Feb 2026 04:27:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c205::1" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770304634;
-	cv=pass; b=XwP3XJ5hE8x6qjjdXUcuwr/qXoHTQnCZ7UU7hThArZRPELWsEM12TYVbD1zP4GWkHk+EHV08Nlf1KRQsZ8N7yN1u++cU4nKUdZxo4nvquNTrkk+vb2Sy8Q9d6Hx70P20F3HkzP99XfPHmdiYQmrlncb5WBaLlDO0EKXNvLXHVisTqzUqP3kjaRrvPn2Rr20OxzxT2LSchNjVl9UvBShuQg0NlGdp8wbVRYh0HZYm61Er6ZfZ7cshD9OFymCdSYjU2gj+0VyjGbujZCSNxD4Q6lnwxITmdOZ9V8ZNdH8YWBuEHTEyvVUGMYoZUmdLhqKBY99UqccPxTB4CTbBphXVmg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770304634; c=relaxed/relaxed;
-	bh=TZJ/X+u8U/29vh7fI9M0yehytG9DbTBIQlZW3zGqkqg=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=XJlE9ukCzGCq5U7frFATmhGeXSGW5ipX5XBbcKEn3co6L5io0Ka0pfGOc1ikwiD7eudxBBvnyg/hY9voz5A/VB2PM/3ZsdFfpJqqAoUBtkBVUeIo3aPic+r3Ucvz/XOLD3PAdOsVomJNZnwpvXB/XixlIiJTY/Z1RQ7+Oo2URXeJy6eSZSU4nWkT5mJbIy60r+lhMpKhq1cTjA10WvvmLADgo26x+frJsL/CV3G1IgQpqr/CAOUfyxh+b9lCs95jCWAznGTY+6vQfp7bqpQsyuAG8fKXal4UuXDcSmC6Pl+uagONWgh+P5OKq5qNs+EzmwZWafFLXDO+AISpWDOylg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; dkim=pass (1024-bit key; unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KLJE+NEt; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c205::1; helo=lo3p265cu004.outbound.protection.outlook.com; envelope-from=gary@garyguo.net; receiver=lists.ozlabs.org) smtp.mailfrom=garyguo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::132f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770312464;
+	cv=none; b=izPGc9+PtYRwK+YbMz55w7m9s/7tYSLisDkueOW7OSIcG6qMcbexM8L+CUuyKPRb7SoDpErnlFjK+5RISEHUm/s1aex82pauSGgcmCxPZJcdvH5gF45bSLTUAWJ80W3RhNdB2kw0SRk1pbhZrVcLGpvx6BA3oYaYpc1X2Y7ukP90kSgYnYVLBI9xQFJjhqvS7NSNmg+PoO2uQfjhE8p2pI1JXMzE8hn2zSnEVeJkpv3STtKBJUJN5i+JjlCYoM+EAX6RP2jI5Wa7wRtD5c6A0+zj52iOGB9IISQg9/lv/5xk6EvigGOTF+RhxDRsows0i3/e7UczjWHoH6XuQJK+tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770312464; c=relaxed/relaxed;
+	bh=Tx7GpESeBXhVOZe1lCiVB4TdYsATVnhqG/m2mu3LDKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jceE0sSaoqK5lK0jGLkVR9kViqA7CmB6ISEpflsDLgGkSQSyNZ1vXVcZUWTQC89s9v3N3tiDHCb8U8B7N+moH/meUrTtURu6jhaHU1kBxpGoN3EZm3Q6GRc2LhEGEfKfeEfhI+yOKH7MraP56QBhyTSqVetCOBGk3dENpbtUVfz8zc8VTP4PwbD2lWzkh9ObFWN9Gxelf8coVfPy+1aJ6R42siz+GZsBQKGdYwC9UEdzvakb+5aU3sNhXyhXqCCtpsEXe31iq8AfGN3zQ+2JTAEou3OIsc55axa2k+uwzxeb2Hv8jYOwnyVWLbqzbdx+rscJ4TvYpgF4ekKVvcN74w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Mti68/8/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::132f; helo=mail-dy1-x132f.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KLJE+NEt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Mti68/8/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=garyguo.net (client-ip=2a01:111:f403:c205::1; helo=lo3p265cu004.outbound.protection.outlook.com; envelope-from=gary@garyguo.net; receiver=lists.ozlabs.org)
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c205::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::132f; helo=mail-dy1-x132f.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-dy1-x132f.google.com (mail-dy1-x132f.google.com [IPv6:2607:f8b0:4864:20::132f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6LRs0MTnz2xrk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 02:17:12 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UiXRAqkrOW9T4Ug66PthWY9F71F3CIiqR2PrNogGAbMrDYFd/jbtXCgYPvrrf74f0Qa9oR+EXzEcPpOOuEfs/zLS/mhCwZg4ViNWKuZDNafnhvnv1sskV3uXxGqFL0syCpqn6bmfTVVkZAkEpgtsojirl7oGSZLV0fK3bb2qU7QTiyOEixfIzyF2J4xO5jxsYeo35nw6NGwUtpeVSgJf0tssDw50dJKeU53c7ZVUL5L6F82mTaWGrb0sPg8goUx1UP25HE+siS0B0oCvdnxCYKHok9bcRGgnpk1/d/lQpn0G5GxccEZMEbZNg30HgaQ8B0tXTexFCP6ZOKKELV1krA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TZJ/X+u8U/29vh7fI9M0yehytG9DbTBIQlZW3zGqkqg=;
- b=WtkY3cczBTSXQ4liVpjTubTW3ea3s6xEAMq9eSyNG3Qg8eCZg90vem/9kV42KKwkXcmqe4IhGqGEnrQqtpG6ahVUPZd8sYnBMMqHWk1abaRqaZmR3CsgmySEECh1drAchwRtuWIr1rBcu+jfcc3OFw8kapBBdJ8emOAH5ckmveKUulGoHFrbayambj+ZJj8/fkog+7M6KOEyA4tmuBnIWZVZg5MsY2dTOwjPoxxqQ4koGc4ulNDEYNULLInskNmTqeOEwvNUivvsdTGpnZuiLrmWfyf4lXKIlUAUeDYjbnYnKzJXNqVd3bT5J4mmWqebrxzgBWuM96pOWGpJywT1mQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TZJ/X+u8U/29vh7fI9M0yehytG9DbTBIQlZW3zGqkqg=;
- b=KLJE+NEtC/lxYQjk79RNWRNsVCnHmQscVpg8ur9Oz4uSUZARJPMj2X+ec9B+Xi6uDeSouD2FYR6ChfwIK7y69/6CX/7s5pKcmHss2mXlsQApx728jEOj5EJB3VL8CiRhik1hwkWeUS/Z5BY1Vncco1Y9JGCqe7FVkixzwB0OeEM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB7927.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:205::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.14; Thu, 5 Feb
- 2026 15:16:42 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
- 15:16:41 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Feb 2026 15:16:41 +0000
-Message-Id: <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
-Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write
- functions
-From: "Gary Guo" <gary@garyguo.net>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: "Link Mauve" <linkmauve@linkmauve.fr>, <rust-for-linux@vger.kernel.org>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman"
- <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>, "Christophe
- Leroy (CS GROUP)" <chleroy@kernel.org>, "Srinivas Kandagatla"
- <srini@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, "Eric Biggers" <ebiggers@google.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lyude Paul"
- <lyude@redhat.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Viresh
- Kumar" <viresh.kumar@linaro.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
- <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>, "Roberto
- Van Eeden" <rw-r-r-0644@protonmail.com>,
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-X-Mailer: aerc 0.21.0
-References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
- <20260204040505.8447-2-linkmauve@linkmauve.fr>
- <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
- <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
-In-Reply-To: <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
-X-ClientProxiedBy: LO2P265CA0425.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a0::29) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6PLQ6t8Tz2xQC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 04:27:41 +1100 (AEDT)
+Received: by mail-dy1-x132f.google.com with SMTP id 5a478bee46e88-2b785801c93so1071073eec.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Feb 2026 09:27:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770312459; x=1770917259; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Tx7GpESeBXhVOZe1lCiVB4TdYsATVnhqG/m2mu3LDKs=;
+        b=Mti68/8/avG5fhWX4xIBWWIJY4of0DSKfvSJzkXvUbjmuC1wlyb1bil8E9jfrFlZ0X
+         DpU8X99Cyz/SoTwxWBqQIbI6ELHqI5SwTMiy7WxKiJGrZsunz9LGlchqC6qJgXZjCeYP
+         AaAVf6pBV46Fja6Bt/ECcqY7FzPSTcOS8zDF24KBKMyPAao4DJ6dva0I10aR/8VnjOe2
+         a//BNDLHXgSGEFAoclP/xQGYxtWz7l4utG2lyAjc8PhQnHBESXXf2BwHuoRo4IJ68OU1
+         4mRA9nTkcIPkpP2g7vALqiNnvUTaKVB1UeeSd9SQhjxm5AWBDOThX40RJq9t6Zt+4+2e
+         bWVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770312459; x=1770917259;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tx7GpESeBXhVOZe1lCiVB4TdYsATVnhqG/m2mu3LDKs=;
+        b=AgbhCIvrUlKps2igEQUAGd+7X9VdZuVX0n/oPoPwXPujxPvuJUO3a52XiqHfwt5zam
+         spgEQyVUJ2NAFWXcHAYkdg/q1s7wuOYosnmhrvyD6/CKltDYLRkf/eywIlkShUnPLFBd
+         yRFKEJ15QrI+S/JzV/EDJ/DQNEU8Zsf8JCHn4O6zfcm+CB0OjMM9RVTue2JlHARWVHeI
+         Zjij7NaEyCIDwQ6909FYvFP+iscNBry14LIcze63ubyVo1GGo4ZnuK8YuAGTgFlP/06C
+         q3r/pAcPZZ/SkNgH4ZYHFWQjddGwQD1jXNfTuyrX3pkKU4YwNC+TbbrYXjdO+4u7eUtx
+         To+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXW54PizdWfnWsuIgfbLAq3W0fs+q2sSNqwh+hZancRHq+GAJsrN8JEKGt15V/6ZljLkN5Mxv/RjhPBTJQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywfpiv4YPdszqbsWWu72NNdxRNdfJ5aAsfQPSO1HkOIDwmzB+5D
+	OMgNcoKtHTnbZPFcsyfWQbvlb3YabseMJVbEfbjKAaAeEtGb7pgYvhr/gmkAOQ==
+X-Gm-Gg: AZuq6aLQBmLt5IJBN6lvQHrXKKktqp0YBT2MB5hR4zCeeBBx+VnUOeIVfiyNbyvp4A7
+	pfwTjEvdGS+QvfO7NNHSIvc56cc4aPVjGtS7wCeN6tOP4OSHT1jewWW2ovoMbXnp+/kwJYSkMNO
+	WP2k3sj0YhMM9EhdcnD9w132O5re/lxtvNo4fxfq/4QRET1+S90EhjojPelvcquAHVx2CE0vdG+
+	9UDoRv5BFO/TM4oR0Y8cE+GXnwsrrlX4iDWmHIkZvCLH5nFHCkL6vBE/qtJqtDuvdtBfPB6eskM
+	G7GJy5mut2DVccjD0yV5raREOYHEssrw8AUrfYjViVRfyzkx07hrUL4iubHYVqTI6j7PmnA9MI2
+	um2soDf6X8vg37zY0oq51Ze+UO5jMPm7drLxvPnQ1Xl8Opjbu1JHkJPalV/4P0xPPLe3DRzjE4l
+	vQ+SDL8ER1emVBWUwJrGVXEwVHW5mKrW0HSSLEWMeaFVCDGo3zsrLLHMUw
+X-Received: by 2002:a17:90b:2f90:b0:352:f2a6:334 with SMTP id 98e67ed59e1d1-35487102a6bmr6730739a91.16.1770306131994;
+        Thu, 05 Feb 2026 07:42:11 -0800 (PST)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.167.8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a933898388sm74985365ad.34.2026.02.05.07.42.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 07:42:11 -0800 (PST)
+Date: Thu, 5 Feb 2026 21:12:01 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
+Message-ID: <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260204210125.613350-1-mkchauras@gmail.com>
+ <20260204210125.613350-4-mkchauras@gmail.com>
+ <aYSgjPD5KRcNN0j4@luna>
+ <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,191 +104,205 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7927:EE_
-X-MS-Office365-Filtering-Correlation-Id: d150a84a-82ed-45ac-f922-08de64c990fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U2hwR2lGMTZ0MXl1RFI2VEdzL0YwanRrays5NnZMa3hsa2xUWXFDSDUwa0Yz?=
- =?utf-8?B?cDBxT09BRmZTT2p0L2JBdmZxeGlHOUswbVRpWDh6MWw5TmVvM25HeU5UK1RW?=
- =?utf-8?B?REoxUmttdFl5RDJScW5NakM5Uy9iUGJIT0RjWDRGc0pSYXFyY1VoTGc2cElz?=
- =?utf-8?B?NXpRWElvbktheENJZERZZ2U5RmI2RXBQMHR5QUs1b0lTZ05GQXZNbXZFMHB3?=
- =?utf-8?B?VmZOTWdRRy9rdjZPdkY0MlhZanJjS3VRNmJLUm1nTVlmZ0FITWdVYU9rNm8w?=
- =?utf-8?B?ZTNhaXVVUTN1ZUpFL3ptOUpKY2pBYnh6RG93VDBWZ3h6bitnR3VBeEJiZjcy?=
- =?utf-8?B?RlVQZUN2N1VSWjE4bjBHN3ZqT205anVEeFgzZDY3U0lVVzZkS2JPM2hURCtv?=
- =?utf-8?B?dllPazJhVFloRi9vQlhKUmdkM1YvV2MzT3dXczhEKzNadmhtRnZnQzVLMHZ0?=
- =?utf-8?B?YVdBNGV5TUZzKzRiRENuWHJmN2dYQUFnMFhCdm92UTV3M0lZOGk5R3NEem9k?=
- =?utf-8?B?Y2VQcDY0eE1uL1BpSDJtVUZXeVU1OFNMZk9wczBVWS95angrZG5YN2VSV3Ny?=
- =?utf-8?B?czNHUEdiK0RuY1hla3F5ZWlvWWhNSXR1MExrRUwydG5Bdk9NQU1TQnQzZGhr?=
- =?utf-8?B?RkIraWFxcjVMZzhjalZRUTlsR0hpMjh6Q1FKU2NMc3J0a1NHQ1dTMXlPTXh3?=
- =?utf-8?B?cVgwbGdaQVBGMllwVk9lRTBJZnA1WTl5bEUvUmFlNGZ1MStZeXlkeGZuUWU2?=
- =?utf-8?B?OHpXRTlsNitIMEw1TkROQkFYNEprdUNmQ2FrYjc5UEtsaU5oNCtuMVhIU29z?=
- =?utf-8?B?RXU0dEFzeEVzdGVzNDBTWW5USlQ2SUk4OC9lSW9qQjhubGttYkJOcDlZcmtF?=
- =?utf-8?B?aC94Yjc3Rm9lSmtTcGcyVWJvQkg1ZXVmSVY4Ykt6V2pQM1I4TW9xNFBoTmJS?=
- =?utf-8?B?OVJ0YkJMWEpjSEEvV1IxbWU0dVNNQnZWR3l4QTduVXNRVTdGOWxBeGJYMzNN?=
- =?utf-8?B?NzVBQ210U0hWMFFmcnVwWXNhblZNQU1ZYnlNNUdWU0N5VkI2S0psNDdXL2M1?=
- =?utf-8?B?SUc1bEd3dXNBcmVIeVhHczZoNnFvNldqRzZSM2NjVzRNcytJTk91QmFNeGUz?=
- =?utf-8?B?T2xWcHg5a1hlSUtPeUw4bHYrbE8xRFNwMC9QMEt4UlF0RVVQOG5FNitlKzBP?=
- =?utf-8?B?VkFtbHdHUDNiNTFPSzhMdHo5Mk94RldHUVFSSzZBQlg4aWthNHFRWCtYb1lQ?=
- =?utf-8?B?ZURjMUp4S0I2S2NGaGxjUURGb1lhYnJqMDFuWmZuV1lTcktRbUdubWwwa2xQ?=
- =?utf-8?B?bXpQZXJqUmRSaTBjeFprQ3ZDSXYzZldYbzVBSnlYeVY4TmdPaldJeDJkNHdh?=
- =?utf-8?B?RHF6K3l0ZW9UNmF1djhHNGhiWE9Xbkg0NlBwMXl2UXRXbHViL0NrQmF5eXZG?=
- =?utf-8?B?UGhWUDZsaVhIb1pYcjAvOWhuRFZHdmJGYk45ZVZrbEI3ZysvcTEyKzF4TlFj?=
- =?utf-8?B?VU1VelRpclhDRm1hQmtuS3B1SUJpc1Jqd1lFYm51dzBFaVFPNHNDbnYvRHlC?=
- =?utf-8?B?R3ZvbWlzWVhsR0FKSmJtMEZ4d3Y2OEZ0SGFTNnFxOUlOaDBUWk9PUlpJOTJB?=
- =?utf-8?B?MU8xNmRHQWs1UWNjRkJ6UGhuekYvTUYyOG9BYWFzS0JjMnVvT0dFZFJEN0Zk?=
- =?utf-8?B?eUZ4RnE2bFpIVFRvR2IwR2dtWVN0aHJRTHhrZm94RGN1QW5CSHpJbjMwYmFB?=
- =?utf-8?B?ZkNHY1dkRWpOUzdFQk1UV1JSbkpoWVdsbUg3M1JiVXF2K3JpZkp4dWxHb3NV?=
- =?utf-8?B?a09hSVNYZ0xCTkRZMUl3Zmt2ZGFETHRPb0hsOHlJR29abGM3UW0wcGZwaDFa?=
- =?utf-8?B?M1pRY3d2cUx1a2x2SE5xb2I3dlZUVEUwcnZ2Uk5KNThaZFNMRWMrU0V2S1hQ?=
- =?utf-8?B?OUJ4TVF4TDN5cUFOdW1IYjcyRE80S3JDNmhJQjJ2bnF6WnBpSjZ2SjNXMzQz?=
- =?utf-8?B?QTFRWTVqTmo1cFZLU1NyTTJHd3A2SE4va3dkSVV4UnpyOXU5TG9SMnV3WC9w?=
- =?utf-8?B?c1I0Ti95UGhYaEZPOUtHS2FBK3RTS0JGNitOYno1SDBDT1gwbGZhbWw4UUds?=
- =?utf-8?Q?tY6w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Uy9jNUhqWFlYMDd4WWJ4dDczMDlOZEdLUXRNVjlWbTd1V3BlOS83M0VwcWNQ?=
- =?utf-8?B?V1NHSk1OUmwzTGVWSUdpcThEWWVMeUVEeWpPMXFnZm5od1g5U1BsVFlQR1pQ?=
- =?utf-8?B?eCs3eWRxa2wrNTlMc0ZENml6S3FoWUdFSFkvL25YWDBKeEZ1NjJ2UlNEU2Z6?=
- =?utf-8?B?YUJFMkNDckUwaWVXZUZXZVVtYjFoSVN1VUJKWHRVWXRic3hNdHBEQkJLWStR?=
- =?utf-8?B?VkdHbW9zN1pOVHJ1RGZqcDlaRytJK3ZzYmtucjdqNzV5QVdPQ0RxUWwvdXlJ?=
- =?utf-8?B?NkVhSXZRM1JiazZBTzZCNUpKN0Z6UDErOEI3TlV2a1psS0M0anlHSjcwSTdQ?=
- =?utf-8?B?V0VtSy9GNGtIc0JEenUxdXQ3VTdibmFBNzNXNGpaVXprakYxTHhGRWx1NWxN?=
- =?utf-8?B?cXUzNTJodUFNZXpHT3FKVnJCUTk4Mm94aXZuNjc5SE80ellEbEVWZnJwb21Z?=
- =?utf-8?B?WTR6bjFiZUw0b3RJL2l6K29NOGJvWi82c0hkTTg1TEpoKzNjeG45QjIydFhB?=
- =?utf-8?B?TERXM2ppQkh4ZEUrTWhQTHJTQXo4SkJSVDB6WEYyRFpDV1B3Uk1CdEVhTk5z?=
- =?utf-8?B?MW1wWlc5RmN3Vk5rWlljZXR5aW95M082bHNZYmthNVpZTks3UGtHajRIWE8z?=
- =?utf-8?B?ZFZMeXZEbmlNSEhoSkZXL3A5OS9pbG4zQjNCQnVobXlOU05venVWaVBzZ0V5?=
- =?utf-8?B?L0d1aHk0WW1nWkk4TURmbnp1d09MdVhRMngya1N3Z0J5b04rSTlWOXFETjZ2?=
- =?utf-8?B?emhIN1ZSb0pqRDVQQms0Nmh3ZENzQ3EzK3ExS2VCcWFrS05MbTZxRW50WlBh?=
- =?utf-8?B?cTVVN0JqVkVYWnUzbFJrVk5TQ1BxbHRkeE5Cd01xZCtMMjI3ZDhqWFJVczE5?=
- =?utf-8?B?KzF4Nk41RTEzb2hnRjloNTh6ayt4MW5UYm54RFJrc1JBZ3lZSHVUeUx6SjRN?=
- =?utf-8?B?cTdIZTA5SmFrY1NsVlhHNHMrRWFaeWpVcWhzaFZHOXJNZkhqZHlhd2JpNE95?=
- =?utf-8?B?M1ZhdS9DZTByUG1WRGVPZ3JOUU1qMFl6amgrQ0lwRkJFcEUyeDhwVTMxNlpH?=
- =?utf-8?B?NlhBYmk0MkNHeVIxUXpSaGlnRWs3NkE3bnZVL3ltZmdVVi9NU00wS0R5SlNM?=
- =?utf-8?B?VkhOSEhPZ1pCek1TZGpOV2tGOWp4U05TdGxua3dtRlVIenFLa2R6TlNzRDJa?=
- =?utf-8?B?aENaYkhVcGQ2dktVT0NrRTdWclRkQVpib1VwTkNLV3ZIOWt0SDJUcHRKQTZz?=
- =?utf-8?B?bzNhbjZjUXpkeFlqaWRBTzl1Z0hBanNaNjQzUW1LUk12bmkrVCtRSUhKelBL?=
- =?utf-8?B?ZnZpZ3Z0NE1HMG1KMHdONW5Xei9Pa2NvT2pqOERaY2xnMkZSaWNmeTRFV3pC?=
- =?utf-8?B?QWRldFRhRmd0NjljTkI1VDlhcWVRMHQ1cDZvTUtRNkFrVmtCeFJETHFRK1Vh?=
- =?utf-8?B?aHdsSnpiNDl5eDRxWldTVkRqeEZKai9BQjZZam02ZW90Z2ZtaUwyeXlhTEhN?=
- =?utf-8?B?dDNCNGxCS2NXVndEZ2VmSUpCcUFqWStjMmdMek5sNHZELzgvRlp4QUc5MEF2?=
- =?utf-8?B?M0NCd3pvWlptZWNMTGpLUDJMb1U0UWJXOVBqOHZIdENFN2VxWGF4c2Q2QVZG?=
- =?utf-8?B?Tlh4WlhxWnhqYmtuQ3dDL0FBQlpTUjRhYlNxbDJYVkhlUDI1QXIxZElYaDBD?=
- =?utf-8?B?OVhJTTF5SEtiZ1QxeXdmMUZpZUtjRXlqZ21SbGJFSVAyNnR1cjFGakxBOU0w?=
- =?utf-8?B?K2M3OVNHYi9KNFBqWmdqbmFoR0hOOTkwUzJ6WDFCKzUvdGYyWjJOMTdXT2ll?=
- =?utf-8?B?VGd5NTNOYWhEdm5tS2JvODcrOEVvTXJFQXF0Nm8xU0JUbVNoL2lYRGpYbytT?=
- =?utf-8?B?RWErelJZVVRDVW44Q1E0VTdKYko0UkdKR24zSXh4a1k0RTdpMVdRRG4yYllH?=
- =?utf-8?B?Y00yTDBIUkYrMXI4UkhLYW9SN2xsNWxvNUUxM2N1QlNZcXRBbWl3eXBZbVcv?=
- =?utf-8?B?eVBFSlZWQWI1VElGZ2FRZzNucE53VWZjdndZck9ZcnZpSzYrVi9jZDk2dTAx?=
- =?utf-8?B?bjdkOUtDQWxTNllnVDhLRVR2ei9OSlR1NysvZENZMjk1Vlg4WHQ0ZmZrMURm?=
- =?utf-8?B?VzJXTGp3UGxjdHBucHpPMGJ3d1l2U082WC8wWVdNdHYxVE9XUVJNK3hwMTd1?=
- =?utf-8?B?bThXT1l3a0RqT0RNMERNSFhHdzhmSUgxV01sY1JLcElPdHI2ZWN1bTU2emhz?=
- =?utf-8?B?N1k2S1N3dUZvbW11bVhCZmp4NEVlalZYZTB4T2w2ZEVJRjdiQXpYQ2I1eCtD?=
- =?utf-8?Q?k7NosQKO2LZ4AVSVDx?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d150a84a-82ed-45ac-f922-08de64c990fa
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 15:16:41.7828
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3VW9QEpwV4oVq51qrrt+B5lTXcN9oF6pcmU2kH5FX1LO0fq5JZ7cQ7MQQ7cQGWMdFUY2YUpAZ01w7dRSyVBuDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7927
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
-	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16621-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:daniel.almeida@collabora.com,m:dakr@kernel.org,m:linkmauve@linkmauve.fr,m:rust-for-linux@vger.kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:srini@kernel.org,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:ardb@kernel.org,m:martin.petersen@oracle.com,m:ebiggers@google.com,m:gregkh@linuxfoundation.org,m:lyude@redhat.com,m:lina+kernel@asahilina.net,m:viresh.kumar@linaro.org,m:lorenzo.stoakes@oracle.com,m:tamird@kernel.org,m:fujita.tomonori@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:officialTechflashYT@gmail.com,m:ash@heyquark.com,m:rw-r-r-0644@protonmail.com,m:j.neuschaefer@gmx.net,m:lina@asahilina.net,m:fujitatomonori@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gary@garyguo.net,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-16623-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:venkat88@linux.ibm.com,m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linkmauve.fr,vger.kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,oracle.com,linuxfoundation.org,redhat.com,asahilina.net,linaro.org,lists.ozlabs.org,heyquark.com,gmx.net];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[garyguo.net:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linkmauve.fr,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,kernel];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 80B43F4827
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,linkmauve.fr:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 9B416F5E63
 X-Rspamd-Action: no action
 
-On Thu Feb 5, 2026 at 2:28 PM GMT, Daniel Almeida wrote:
->
->
->> On 4 Feb 2026, at 12:18, Danilo Krummrich <dakr@kernel.org> wrote:
->>=20
->> On Wed Feb 4, 2026 at 5:04 AM CET, Link Mauve wrote:
->>> Another option would be to call u32::swap_bytes() on the data being
->>> read/written, but these helpers make the Rust code as ergonomic as the =
-C
->>> code.
->>>=20
->>> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
->>=20
->> The I/O stuff recently changed quite significantly, please have a look a=
-t the
->> driver-core-next branch [1] in the driver-core tree.
->>=20
->> Also, instead of providing additional *be() methods, we should just crea=
-te a new
->> type io::Endianness and use it to indicate the device endianness when re=
-questing
->> the I/O resource.
->>=20
->> For instance, for your driver we could have
->>=20
->> request.iomap_exclusive_sized::<8>(Endianness::Big)?
->
-> Can we please structure this in a way that LittleEndian is the default?
-> Perhaps using a const generic that is defaulted, or something along these=
- lines.
+On Thu, Feb 05, 2026 at 08:21:31PM +0530, Venkat Rao Bagalkote wrote:
+>=20
+> On 05/02/26 7:22 pm, Link Mauve wrote:
+> > On Thu, Feb 05, 2026 at 02:31:25AM +0530, Mukesh Kumar Chaurasiya (IBM)=
+ wrote:
+> > [=E2=80=A6]
+> > > diff --git a/rust/Makefile b/rust/Makefile
+> > > index ae22f2c5f0b3..c3961fd0d9a4 100644
+> > > --- a/rust/Makefile
+> > > +++ b/rust/Makefile
+> > > @@ -392,10 +392,17 @@ BINDGEN_TARGET_x86	:=3D x86_64-linux-gnu
+> > >   BINDGEN_TARGET_arm64	:=3D aarch64-linux-gnu
+> > >   BINDGEN_TARGET_arm	:=3D arm-linux-gnueabi
+> > >   BINDGEN_TARGET_loongarch	:=3D loongarch64-linux-gnusf
+> > > -BINDGEN_TARGET_powerpc	:=3D powerpc-linux-gnu
+> > >   BINDGEN_TARGET_um	:=3D $(BINDGEN_TARGET_$(SUBARCH))
+> > >   BINDGEN_TARGET		:=3D $(BINDGEN_TARGET_$(SRCARCH))
+> > > +ifdef CONFIG_PPC64
+> > > +ifdef CONFIG_CPU_LITTLE_ENDIAN
+> > > +BINDGEN_TARGET_powerpc	:=3D powerpc64le-linux-gnu
+> > > +endif
+> > > +else
+> > > +BINDGEN_TARGET_powerpc	:=3D powerpc-linux-gnu
+> > > +endif
+> > You define BINDGEN_TARGET_powerpc after BINDGEN_TARGET has been set to
+> > the value of $(BINDGEN_TARGET_$(SRCARCH)), so it is empty and bindgen
+> > then gets passed --target=3D which makes it fail here, with this error
+> > message:
+> > ```
+> > bindgen ../rust/bindings/bindings_helper.h --blocklist-type __kernel_s?=
+size_t --blocklist-type __kernel_ptrdiff_t --opaque-type xregs_state --opaq=
+ue-type desc_struct --opaque-type arch_lbr_state --opaque-type local_apic -=
+-opaque-type alt_instr --opaque-type x86_msi_data --opaque-type x86_msi_add=
+r_lo --opaque-type kunit_try_catch --opaque-type spinlock --no-doc-comments=
+ --blocklist-function __list_.*_report --blocklist-item ARCH_SLAB_MINALIGN =
+--blocklist-item ARCH_KMALLOC_MINALIGN --with-derive-custom-struct .*=3DMay=
+beZeroable --with-derive-custom-union .*=3DMaybeZeroable --rust-target 1.68=
+ --use-core --with-derive-default --ctypes-prefix ffi --no-layout-tests --n=
+o-debug '.*' --enable-function-attribute-detection -o rust/bindings/binding=
+s_generated.rs -- -Wp,-MMD,rust/bindings/.bindings_generated.rs.d -nostdinc=
+ -I../arch/powerpc/include -I./arch/powerpc/include/generated -I../include =
+-I./include -I../arch/powerpc/include/uapi -I./arch/powerpc/include/generat=
+ed/uapi -I../include/uapi -I./include/generated/uapi -include ../include/li=
+nux/compiler-version.h -include ../include/linux/kconfig.h -include ../incl=
+ude/linux/compiler_types.h -D__KERNEL__ -mbig-endian -m32 -I ../arch/powerp=
+c -fmacro-prefix-map=3D../=3D -std=3Dgnu11 -fshort-wchar -funsigned-char -f=
+no-common -fno-PIE -fno-strict-aliasing -msoft-float -mcpu=3Dpowerpc -mno-p=
+refixed -mno-pcrel -mno-altivec -mno-vsx -mno-mma -fno-asynchronous-unwind-=
+tables -mbig-endian -fno-delete-null-pointer-checks -Os -fno-stack-protecto=
+r -fomit-frame-pointer -ftrivial-auto-var-init=3Dzero -fno-strict-overflow =
+-fno-stack-check -fno-builtin-wcslen -Wall -Wextra -Wundef -Werror=3Dimplic=
+it-function-declaration -Werror=3Dimplicit-int -Werror=3Dreturn-type -Werro=
+r=3Dstrict-prototypes -Wno-format-security -Wno-trigraphs -Wno-frame-addres=
+s -Wno-address-of-packed-member -Wmissing-declarations -Wmissing-prototypes=
+ -Wframe-larger-than=3D1280 -Wno-main -Wno-dangling-pointer -Wvla-larger-th=
+an=3D1 -Wno-pointer-sign -Wcast-function-type -Wno-array-bounds -Wno-string=
+op-overflow -Wno-alloc-size-larger-than -Wimplicit-fallthrough=3D5 -Werror=
+=3Ddate-time -Werror=3Dincompatible-pointer-types -Werror=3Ddesignated-init=
+ -Wenum-conversion -Wunused -Wno-unused-but-set-variable -Wno-unused-const-=
+variable -Wno-packed-not-aligned -Wno-format-overflow -Wno-format-truncatio=
+n -Wno-stringop-truncation -Wno-override-init -Wno-missing-field-initialize=
+rs -Wno-type-limits -Wno-shift-negative-value -Wno-maybe-uninitialized -Wno=
+-sign-compare -Wno-unused-parameter -DGCC_PLUGINS -I../rust -Irust -DKBUILD=
+_MODFILE=3D'"rust/bindings_generated"' -DKBUILD_BASENAME=3D'"bindings_gener=
+ated"' -DKBUILD_MODNAME=3D'"bindings_generated"' -D__KBUILD_MODNAME=3Dkmod_=
+bindings_generated -w --target=3D -fno-builtin -D__BINDGEN__ -DMODULE  ; se=
+d -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const /g' rust/bin=
+dings/bindings_generated.rs
+> > error: unsupported option '-mbig-endian' for target ''
+> > error: unsupported option '-mcpu=3D' for target ''
+> > error: unsupported option '-mno-prefixed' for target ''
+> > error: unsupported option '-mno-pcrel' for target ''
+> > error: unsupported option '-mno-altivec' for target ''
+> > error: unsupported option '-mno-vsx' for target ''
+> > error: unsupported option '-mno-mma' for target ''
+> > error: unsupported option '-mbig-endian' for target ''
+> > error: unknown target triple 'unknown'
+> > panicked at bindgen/ir/context.rs:562:15:
+> > libclang error; possible causes include:
+> > - Invalid flag syntax
+> > - Unrecognized flags
+> > - Invalid flag arguments
+> > - File I/O errors
+> > - Host vs. target architecture mismatch
+> > If you encounter an error missing from this list, please file an issue =
+or a PR!
+> > ```
+> >=20
+> > Did this work on PPC64?
+>=20
+> On ppc64le, I am not able to get a successful Rust=E2=80=91enabled build =
+yet.
+> I am consistently hitting bindgen/libclang failures during the prepare
+> phase.
+>=20
+>=20
+> Build Failures:
+>=20
+> error: unsupported option '-mlong-double-128' for target 'unknown'
+> error: unsupported argument 'medium' to option '-mcmodel=3D' for target
+> 'unknown'
+> error: unknown target triple 'unknown'
+> panicked at bindgen-0.72.1/ir/context.rs:562:15:
+> libclang error; possible causes include:
+> - Invalid flag syntax
+> - Unrecognized flags
+> - Invalid flag arguments
+> - File I/O errors
+> - Host vs. target architecture mismatch
+>=20
+> make[2]: *** [rust/Makefile:468: rust/bindings/bindings_generated.rs] Err=
+or
+> 101
+> make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
+>=20
+> make[2]: *** [rust/Makefile:488:
+> rust/bindings/bindings_helpers_generated.rs] Error 101
+> make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.rs'
+>=20
+> make[2]: *** [rust/Makefile:474: rust/uapi/uapi_generated.rs] Error 101
+> make[2]: *** Deleting file 'rust/uapi/uapi_generated.rs'
+>=20
+> make[2]: *** [rust/Makefile:643: rust/core.o] Error 1
+> make[1]: *** [/root/linux/Makefile:1320: prepare] Error 2
+> make: *** [Makefile:248: __sub-make] Error 2
+>=20
+>=20
+> Regards,
+>=20
+> Venkat.
+>=20
+hey,
 
-I think we should have everything default to little endian, and have wrappe=
-r
-types that do big endian which require expicit construction, similar to
-RelaxedMmio in Alex's series.
+use rust version nightly-2026-01-28
 
-Best,
-Gary
+the latest one has some issue. I just raised a bug for the rustc
+here[1].
 
->
->>=20
->> and then let the I/O backend choose the correct accessors based on this.
->>=20
->> I.e. the device is either big or little endian, hence we don't need to p=
-rovide
->> both accessors at the same time.
->>=20
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-c=
-ore.git/log/?h=3Ddriver-core-next
->>=20
+[1] https://github.com/rust-lang/rust/issues/152177
 
+Regards,
+Mukesh
+
+> > > +
+> > >   # All warnings are inhibited since GCC builds are very experimental,
+> > >   # many GCC warnings are not supported by Clang, they may only appea=
+r in
+> > >   # some configurations, with new GCC versions, etc.
+> > > --=20
+> > > 2.52.0
+> > >=20
+> > With this fixed:
+> > Reviewed-by: Link Mauve <linkmauve@linkmauve.fr>
+> > Tested-by: Link Mauve <linkmauve@linkmauve.fr>
+> >=20
 
