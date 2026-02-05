@@ -1,83 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16618-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16619-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCbhNp+uhGk14QMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16618-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 15:52:15 +0100
+	id qPnyC6+vhGk14QMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16619-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 15:56:47 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DADE4F4421
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 15:52:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4730AF44FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Feb 2026 15:56:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6Kv00P6Vz2yFb;
-	Fri, 06 Feb 2026 01:52:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f6L0C4Z3Pz2yFb;
+	Fri, 06 Feb 2026 01:56:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770303131;
-	cv=none; b=ndv2Zwuow32wYP3hMkbB+VlaSZg6yTYeRiEYeBUZdBdY/BAlZfThD3TEvaiOe7+jUbbVeYB5Q77ZjlYpj7uS06PZqu2IqTN9uZDJEJHiFaqrUepBQGhV8+Qcbb7roVxO2KdoZtPkUsYUWWUBfWNXWNKbd6qiX7jXuPnFYlHfdGLqDVUv97/gl8W3VwbucV0OjpiL9Az+fvvLvn7O8EZBMK1VdLP7Tw1TmBlnj1WDgGDPabtl++Rm7HhwrflSk9+9O4sG0iHPMaAYGm5FcdjAcmrcXCaPSGuZ7SwaLoxvHqYNXqr9uteU9gcqUwQnFuJGQdLgLCy+9hRZ6PUe5+ARUQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770303403;
+	cv=none; b=PC27OgwRggIbqsAcvLh5u1wKEZXlS1uf9nO2nWUvi2p4R3aG7eCTQ1q70NbcsMcPYwxW0sfLs9SPCbHyTbYztzO4CbiwRyPrzaRFbP2FI2WK45dYrm9FoXS6qlmX0XUPEJS6Y+NFJhJmRUu7cf12Dc6Z86vWxt+pgZYdplpI+iy/cAhL7B5g9ylykSPEJSGTQ2JNneJmzC4zccfSXUQURt9KLEP4sK89ZdGXe/lhfkXCGRywzrRncyR5eo/LzgjNkg1gTcw4QC5npBOnyBOXaMX/0/38bPPWpOqEzNXGYqQ5PEXwmovofHkBML4+0WN3mQJOD76dBVzNxm3AIZY3WQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770303131; c=relaxed/relaxed;
-	bh=TxacMwtUd/EpNVTPDCr3b2sksE45h6y7u1Pt53OIqPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jcq0bHykFSxh7QQ9ySCHQJ3955O0h4zLpsNnDggMKAb/ibIOHMop8hZvWc3z5sNxdCoYsjI8HDNW7x4BlAVVCUwlrT8InpzKhW4myJTey8mofFlcseWinGLT+DwKn4hQ4JPwEUk3fkho/X01c2FlZvt3WPv/i8dzendffxfeYk1j7+FOLJdeiLn241WrUxCTJFkk2IwN2+XzEoaPNmattnEs4MfBp88j6woQ5BHoM6gASLrAkKYccUfYslbwQSf5CJy47PjJn7/GGORtyAM/6cAf9Tpi1riMuXRFrrAOM4zVIypeL4lkcL5GOM3hgp+0gSndRJ2+tblIqZxe9ggIlg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cArAsybV; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1770303403; c=relaxed/relaxed;
+	bh=C1QVcx89xJLUfn8qHtMTrZdJKubsb+NMK2PGpnfJGaE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=YpRJ24U7dKrTtjM1Me2wJLgM5A1yZIia4UjXUMdQvFoxOMja3kVxpKw/Slu08jEt41aUaLG/GFLFGVPYOgfHBL6VcyH0Hrxlw2RHDYdCz6SsBilT1uTLXxsH0RUEcctouYSzXACAa2Ws3/dU1GrKkICLQKIAWh0ingcanlvDBeUAb4iy6YVzSvzaF32D9eFKV+563zFoAl9UMByPb5vcgKbhpMIfPeyh2hXLG8vmRAw+Zwf8TMSV8y5xhgAR2n4Nx/g7j3bpt4+JBZhTY2ugHyTgepBG6Bv7tYp18CDQtfUSCLFjIE53jfBwoIX7ozBehiWYJNy1IlWpd0kkiKH0bQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sk88o5cv; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cArAsybV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sk88o5cv;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6Ktz0Wcqz2xrk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 01:52:10 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6152ioXH013833;
-	Thu, 5 Feb 2026 14:51:44 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6L0B4fB1z2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 01:56:42 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 615482Q8020399;
+	Thu, 5 Feb 2026 14:56:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TxacMw
-	tUd/EpNVTPDCr3b2sksE45h6y7u1Pt53OIqPA=; b=cArAsybV6QCyd0UR0G1alh
-	izfN2ZwvhUnQkJ+2+XtpxBjXqFcjq83QRQzP1LAdcjPcakFoeNXVK/NMxShm1ZAE
-	Ya+LcKx3d/DlxUQY1CDkdPg5gKtPyEcKczbaTiGHtNeVZfrcU8rtpkHOd909t82X
-	loG8gxi5QI/HgIB75HT7cnv28diFt9BUrqeawqMUIc3xcWr8Cyqm4IFw7kjMkEtF
-	UDterI1BQxKzIKLsK7lOVf45zpxwtHDvV4LgOmxsj9kkxVexjDFtPDyC6XEewsI6
-	sEe031N2HUSfMFMc28rfAs+apmpVaL2vqVPJBz52PU9BhZJ5nd4vunopTjUmEgwg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=C1QVcx
+	89xJLUfn8qHtMTrZdJKubsb+NMK2PGpnfJGaE=; b=sk88o5cvWxFBYMs4NV1YwH
+	Slk029KZmpP1iNiWjLwTrozfOHe0VZQwjG2JM3sf7wl21lmP7vMgn6iOBHCuEmLu
+	ewHAc3oMMsRJ0mNUnNMpgriynBljbFtx3MLei37YwSY7t8kEN9meShC+nvXu215D
+	zKc0aBKdnWIqLR8OI5X7NLEfcUD8Tlaonj0nBvS/A5r7fzaaMqdt7Zu/oI0QA1l3
+	WMBMxC/d811JdCmupJZodbfSvBiYFcmKu34XBTu5o+Z84MBpRbcJhRq0jv+RKuyq
+	H1hqH2alBtIvYpN9/NSC5UD1f6GMqIKc4TXN50AkVGtBQ1gC5IkhUb90cMAfqI/Q
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c1986q94f-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19f6qb07-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Feb 2026 14:51:43 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 615EphdR009674;
-	Thu, 5 Feb 2026 14:51:43 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c1986q94a-1
+	Thu, 05 Feb 2026 14:56:03 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 615EsWZl017604;
+	Thu, 5 Feb 2026 14:56:03 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19f6qb05-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Feb 2026 14:51:43 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 615AoN3W015724;
-	Thu, 5 Feb 2026 14:51:41 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c4gsgthar-1
+	Thu, 05 Feb 2026 14:56:02 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 615CoaO9027353;
+	Thu, 5 Feb 2026 14:56:01 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1xs1hx8h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Feb 2026 14:51:41 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 615EpLXu28443324
+	Thu, 05 Feb 2026 14:56:01 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 615Eu0Bl13173472
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Feb 2026 14:51:21 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 78C655805A;
-	Thu,  5 Feb 2026 14:51:41 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6506658062;
-	Thu,  5 Feb 2026 14:51:33 +0000 (GMT)
-Received: from [9.61.246.105] (unknown [9.61.246.105])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Feb 2026 14:51:33 +0000 (GMT)
-Message-ID: <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
-Date: Thu, 5 Feb 2026 20:21:31 +0530
+	Thu, 5 Feb 2026 14:56:00 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0686158052;
+	Thu,  5 Feb 2026 14:56:00 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C029058050;
+	Thu,  5 Feb 2026 14:55:51 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.246.105])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  5 Feb 2026 14:55:51 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,208 +90,309 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
-To: Link Mauve <linkmauve@linkmauve.fr>,
-        "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Cc: ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
-        bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-        aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
-        corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org,
-        jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org,
-        ardb@kernel.org, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20260204210125.613350-1-mkchauras@gmail.com>
- <20260204210125.613350-4-mkchauras@gmail.com> <aYSgjPD5KRcNN0j4@luna>
-Content-Language: en-GB
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <aYSgjPD5KRcNN0j4@luna>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v5 0/6] powerpc64/bpf: Support tailcalls with subprogs &
+ BPF exceptions
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <20260124075223.6033-1-adubey@linux.ibm.com>
+Date: Thu, 5 Feb 2026 20:25:38 +0530
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        hbathini@linux.ibm.com, sachinpb@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <806FB5EA-F429-406D-8916-CDA12476790A@linux.ibm.com>
+References: <20260124075223.6033-1-adubey@linux.ibm.com>
+To: adubey@linux.ibm.com
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDEwOCBTYWx0ZWRfXz3PhVC72ECBK
- zhm/fVwlA3T1Z0XnkUG46SgVkOuonyNvDOol6EJgT7LgPwTP91cuT9qdnEtuIZeg/5DRNW4BB17
- fLZGOjTMNTCERKVSZVJ4Pieo3+NV+M5KaLJm6HhamecqY6s/ak5f9t4RGpG3p09z/+t549OKTNm
- 4WW6namea3KmxvLW42iUt4MGiVVSjXsqIzyWxU4SAicY7FNACu1O2hsLIV97Ie4IVlFK5f3yuId
- ENdI7SwJ8JZ1OiVszkyIlShPyw3n4rFEsNmJo95gm7Dkoar5YkP00Aeoz0Qaf5LJYBhYLal32QS
- 2v4tfV5scunURnbA2sH08NDiLeu1RCeORC1NEUU5kTsn/H8pRc1iuV0bxdJnr46y/i19p9n/Mc6
- 69MJ4e99KROlGuaDSkmxVtC9k4Zg+aR5/a/mw2qNYYO1TR4Rd7xBWi2ZYTV44y3XhbXaY69d+ff
- JWl5R4fJBLOT1Z8NVMA==
-X-Proofpoint-GUID: TmIaki1Kociz90ArLoqh1sa57plXg0Am
-X-Authority-Analysis: v=2.4 cv=DbAaa/tW c=1 sm=1 tr=0 ts=6984ae7f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-GUID: YfAaPik6j-LOo4NcfkpKN9DtAt3n_Aha
+X-Authority-Analysis: v=2.4 cv=drTWylg4 c=1 sm=1 tr=0 ts=6984af83 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Tx9jBxk8UmNcsKEdj9kA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: Szx1FUN-Sd1pQ3hTZcz9SJ5g_yjp1VaF
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=XfyschVtOzqIvrHFB38A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: wLblhyGenrLrhgE7dKEgdxYLBuM8naH5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDExMiBTYWx0ZWRfX+/aqUuKF+P4x
+ ExXaTUMtHCEbOoekG3RwHkUkicvV52mVFlqiQ7OaopXYSoSDisv1Nj4fOF1KT1r8FQ8gd5jW3AV
+ My2+LcdXb92lYqIoH7UNAQQwa/YX7AVRr0HXoLWh5T+Wohbvs11eqxDvJmQ7+QnmqtgiLTybP+n
+ dCm59GzrE9pg2ML2ZkFT6ujZmq6kaChAvrFBFHLTfuYPpPd+BGH+sqGMipUMTqYfbbW4BffvB35
+ Wmo2Cy3KUWthawCDem9vlrbTWPKNDFQ2tTvxxQWZTlybEF41GV+lmFuc0YyPrtNc7weIBkB/jAD
+ hLGY2XsbAw5ac7CQuVmFRIOyQ13m6XnuKumoIlhJVw93P6xAfknFZqOP8803CzA99vVdtTSetiM
+ ezDUmZIxSPXaS5ZsfuLCL7NuIxxHRPohg+GiUw9AaNeVQqoGcTZE0+5okM1m41qrghX5UvF9W2p
+ e2bgk6oT1v6FbCqX2QQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-05_03,2026-02-05_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 adultscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1011 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2602050108
+ suspectscore=0 clxscore=1011 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602050112
 X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.61 / 15.00];
+X-Spamd-Result: default: False [-0.21 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16618-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linkmauve.fr,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linkmauve@linkmauve.fr,m:mkchauras@gmail.com,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,kernel.org,gmail.com,fb.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:hbathini@linux.ibm.com,m:sachinpb@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:mykolal@fb.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:naveen@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:memxor@gmail.com,m:iii@linux.ibm.com,m:shuah@kernel.org,m:adubey@linux.ibm.com,m:johnfastabend@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16619-lists,linuxppc-dev=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_TWELVE(0.00)[12];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DADE4F4421
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[28]
+X-Rspamd-Queue-Id: 4730AF44FE
 X-Rspamd-Action: no action
 
-DQpPbiAwNS8wMi8yNiA3OjIyIHBtLCBMaW5rIE1hdXZlIHdyb3RlOg0KPiBPbiBUaHUsIEZl
-YiAwNSwgMjAyNiBhdCAwMjozMToyNUFNICswNTMwLCBNdWtlc2ggS3VtYXIgQ2hhdXJhc2l5
-YSAoSUJNKSB3cm90ZToNCj4gW+KApl0NCj4+IGRpZmYgLS1naXQgYS9ydXN0L01ha2VmaWxl
-IGIvcnVzdC9NYWtlZmlsZQ0KPj4gaW5kZXggYWUyMmYyYzVmMGIzLi5jMzk2MWZkMGQ5YTQg
-MTAwNjQ0DQo+PiAtLS0gYS9ydXN0L01ha2VmaWxlDQo+PiArKysgYi9ydXN0L01ha2VmaWxl
-DQo+PiBAQCAtMzkyLDEwICszOTIsMTcgQEAgQklOREdFTl9UQVJHRVRfeDg2CTo9IHg4Nl82
-NC1saW51eC1nbnUNCj4+ICAgQklOREdFTl9UQVJHRVRfYXJtNjQJOj0gYWFyY2g2NC1saW51
-eC1nbnUNCj4+ICAgQklOREdFTl9UQVJHRVRfYXJtCTo9IGFybS1saW51eC1nbnVlYWJpDQo+
-PiAgIEJJTkRHRU5fVEFSR0VUX2xvb25nYXJjaAk6PSBsb29uZ2FyY2g2NC1saW51eC1nbnVz
-Zg0KPj4gLUJJTkRHRU5fVEFSR0VUX3Bvd2VycGMJOj0gcG93ZXJwYy1saW51eC1nbnUNCj4+
-ICAgQklOREdFTl9UQVJHRVRfdW0JOj0gJChCSU5ER0VOX1RBUkdFVF8kKFNVQkFSQ0gpKQ0K
-Pj4gICBCSU5ER0VOX1RBUkdFVAkJOj0gJChCSU5ER0VOX1RBUkdFVF8kKFNSQ0FSQ0gpKQ0K
-Pj4gICANCj4+ICtpZmRlZiBDT05GSUdfUFBDNjQNCj4+ICtpZmRlZiBDT05GSUdfQ1BVX0xJ
-VFRMRV9FTkRJQU4NCj4+ICtCSU5ER0VOX1RBUkdFVF9wb3dlcnBjCTo9IHBvd2VycGM2NGxl
-LWxpbnV4LWdudQ0KPj4gK2VuZGlmDQo+PiArZWxzZQ0KPj4gK0JJTkRHRU5fVEFSR0VUX3Bv
-d2VycGMJOj0gcG93ZXJwYy1saW51eC1nbnUNCj4+ICtlbmRpZg0KPiBZb3UgZGVmaW5lIEJJ
-TkRHRU5fVEFSR0VUX3Bvd2VycGMgYWZ0ZXIgQklOREdFTl9UQVJHRVQgaGFzIGJlZW4gc2V0
-IHRvDQo+IHRoZSB2YWx1ZSBvZiAkKEJJTkRHRU5fVEFSR0VUXyQoU1JDQVJDSCkpLCBzbyBp
-dCBpcyBlbXB0eSBhbmQgYmluZGdlbg0KPiB0aGVuIGdldHMgcGFzc2VkIC0tdGFyZ2V0PSB3
-aGljaCBtYWtlcyBpdCBmYWlsIGhlcmUsIHdpdGggdGhpcyBlcnJvcg0KPiBtZXNzYWdlOg0K
-PiBgYGANCj4gYmluZGdlbiAuLi9ydXN0L2JpbmRpbmdzL2JpbmRpbmdzX2hlbHBlci5oIC0t
-YmxvY2tsaXN0LXR5cGUgX19rZXJuZWxfcz9zaXplX3QgLS1ibG9ja2xpc3QtdHlwZSBfX2tl
-cm5lbF9wdHJkaWZmX3QgLS1vcGFxdWUtdHlwZSB4cmVnc19zdGF0ZSAtLW9wYXF1ZS10eXBl
-IGRlc2Nfc3RydWN0IC0tb3BhcXVlLXR5cGUgYXJjaF9sYnJfc3RhdGUgLS1vcGFxdWUtdHlw
-ZSBsb2NhbF9hcGljIC0tb3BhcXVlLXR5cGUgYWx0X2luc3RyIC0tb3BhcXVlLXR5cGUgeDg2
-X21zaV9kYXRhIC0tb3BhcXVlLXR5cGUgeDg2X21zaV9hZGRyX2xvIC0tb3BhcXVlLXR5cGUg
-a3VuaXRfdHJ5X2NhdGNoIC0tb3BhcXVlLXR5cGUgc3BpbmxvY2sgLS1uby1kb2MtY29tbWVu
-dHMgLS1ibG9ja2xpc3QtZnVuY3Rpb24gX19saXN0Xy4qX3JlcG9ydCAtLWJsb2NrbGlzdC1p
-dGVtIEFSQ0hfU0xBQl9NSU5BTElHTiAtLWJsb2NrbGlzdC1pdGVtIEFSQ0hfS01BTExPQ19N
-SU5BTElHTiAtLXdpdGgtZGVyaXZlLWN1c3RvbS1zdHJ1Y3QgLio9TWF5YmVaZXJvYWJsZSAt
-LXdpdGgtZGVyaXZlLWN1c3RvbS11bmlvbiAuKj1NYXliZVplcm9hYmxlIC0tcnVzdC10YXJn
-ZXQgMS42OCAtLXVzZS1jb3JlIC0td2l0aC1kZXJpdmUtZGVmYXVsdCAtLWN0eXBlcy1wcmVm
-aXggZmZpIC0tbm8tbGF5b3V0LXRlc3RzIC0tbm8tZGVidWcgJy4qJyAtLWVuYWJsZS1mdW5j
-dGlvbi1hdHRyaWJ1dGUtZGV0ZWN0aW9uIC1vIHJ1c3QvYmluZGluZ3MvYmluZGluZ3NfZ2Vu
-ZXJhdGVkLnJzIC0tIC1XcCwtTU1ELHJ1c3QvYmluZGluZ3MvLmJpbmRpbmdzX2dlbmVyYXRl
-ZC5ycy5kIC1ub3N0ZGluYyAtSS4uL2FyY2gvcG93ZXJwYy9pbmNsdWRlIC1JLi9hcmNoL3Bv
-d2VycGMvaW5jbHVkZS9nZW5lcmF0ZWQgLUkuLi9pbmNsdWRlIC1JLi9pbmNsdWRlIC1JLi4v
-YXJjaC9wb3dlcnBjL2luY2x1ZGUvdWFwaSAtSS4vYXJjaC9wb3dlcnBjL2luY2x1ZGUvZ2Vu
-ZXJhdGVkL3VhcGkgLUkuLi9pbmNsdWRlL3VhcGkgLUkuL2luY2x1ZGUvZ2VuZXJhdGVkL3Vh
-cGkgLWluY2x1ZGUgLi4vaW5jbHVkZS9saW51eC9jb21waWxlci12ZXJzaW9uLmggLWluY2x1
-ZGUgLi4vaW5jbHVkZS9saW51eC9rY29uZmlnLmggLWluY2x1ZGUgLi4vaW5jbHVkZS9saW51
-eC9jb21waWxlcl90eXBlcy5oIC1EX19LRVJORUxfXyAtbWJpZy1lbmRpYW4gLW0zMiAtSSAu
-Li9hcmNoL3Bvd2VycGMgLWZtYWNyby1wcmVmaXgtbWFwPS4uLz0gLXN0ZD1nbnUxMSAtZnNo
-b3J0LXdjaGFyIC1mdW5zaWduZWQtY2hhciAtZm5vLWNvbW1vbiAtZm5vLVBJRSAtZm5vLXN0
-cmljdC1hbGlhc2luZyAtbXNvZnQtZmxvYXQgLW1jcHU9cG93ZXJwYyAtbW5vLXByZWZpeGVk
-IC1tbm8tcGNyZWwgLW1uby1hbHRpdmVjIC1tbm8tdnN4IC1tbm8tbW1hIC1mbm8tYXN5bmNo
-cm9ub3VzLXVud2luZC10YWJsZXMgLW1iaWctZW5kaWFuIC1mbm8tZGVsZXRlLW51bGwtcG9p
-bnRlci1jaGVja3MgLU9zIC1mbm8tc3RhY2stcHJvdGVjdG9yIC1mb21pdC1mcmFtZS1wb2lu
-dGVyIC1mdHJpdmlhbC1hdXRvLXZhci1pbml0PXplcm8gLWZuby1zdHJpY3Qtb3ZlcmZsb3cg
-LWZuby1zdGFjay1jaGVjayAtZm5vLWJ1aWx0aW4td2NzbGVuIC1XYWxsIC1XZXh0cmEgLVd1
-bmRlZiAtV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9uLWRlY2xhcmF0aW9uIC1XZXJyb3I9aW1w
-bGljaXQtaW50IC1XZXJyb3I9cmV0dXJuLXR5cGUgLVdlcnJvcj1zdHJpY3QtcHJvdG90eXBl
-cyAtV25vLWZvcm1hdC1zZWN1cml0eSAtV25vLXRyaWdyYXBocyAtV25vLWZyYW1lLWFkZHJl
-c3MgLVduby1hZGRyZXNzLW9mLXBhY2tlZC1tZW1iZXIgLVdtaXNzaW5nLWRlY2xhcmF0aW9u
-cyAtV21pc3NpbmctcHJvdG90eXBlcyAtV2ZyYW1lLWxhcmdlci10aGFuPTEyODAgLVduby1t
-YWluIC1Xbm8tZGFuZ2xpbmctcG9pbnRlciAtV3ZsYS1sYXJnZXItdGhhbj0xIC1Xbm8tcG9p
-bnRlci1zaWduIC1XY2FzdC1mdW5jdGlvbi10eXBlIC1Xbm8tYXJyYXktYm91bmRzIC1Xbm8t
-c3RyaW5nb3Atb3ZlcmZsb3cgLVduby1hbGxvYy1zaXplLWxhcmdlci10aGFuIC1XaW1wbGlj
-aXQtZmFsbHRocm91Z2g9NSAtV2Vycm9yPWRhdGUtdGltZSAtV2Vycm9yPWluY29tcGF0aWJs
-ZS1wb2ludGVyLXR5cGVzIC1XZXJyb3I9ZGVzaWduYXRlZC1pbml0IC1XZW51bS1jb252ZXJz
-aW9uIC1XdW51c2VkIC1Xbm8tdW51c2VkLWJ1dC1zZXQtdmFyaWFibGUgLVduby11bnVzZWQt
-Y29uc3QtdmFyaWFibGUgLVduby1wYWNrZWQtbm90LWFsaWduZWQgLVduby1mb3JtYXQtb3Zl
-cmZsb3cgLVduby1mb3JtYXQtdHJ1bmNhdGlvbiAtV25vLXN0cmluZ29wLXRydW5jYXRpb24g
-LVduby1vdmVycmlkZS1pbml0IC1Xbm8tbWlzc2luZy1maWVsZC1pbml0aWFsaXplcnMgLVdu
-by10eXBlLWxpbWl0cyAtV25vLXNoaWZ0LW5lZ2F0aXZlLXZhbHVlIC1Xbm8tbWF5YmUtdW5p
-bml0aWFsaXplZCAtV25vLXNpZ24tY29tcGFyZSAtV25vLXVudXNlZC1wYXJhbWV0ZXIgLURH
-Q0NfUExVR0lOUyAtSS4uL3J1c3QgLUlydXN0IC1ES0JVSUxEX01PREZJTEU9JyJydXN0L2Jp
-bmRpbmdzX2dlbmVyYXRlZCInIC1ES0JVSUxEX0JBU0VOQU1FPSciYmluZGluZ3NfZ2VuZXJh
-dGVkIicgLURLQlVJTERfTU9ETkFNRT0nImJpbmRpbmdzX2dlbmVyYXRlZCInIC1EX19LQlVJ
-TERfTU9ETkFNRT1rbW9kX2JpbmRpbmdzX2dlbmVyYXRlZCAtdyAtLXRhcmdldD0gLWZuby1i
-dWlsdGluIC1EX19CSU5ER0VOX18gLURNT0RVTEUgIDsgc2VkIC1FaSAncy9wdWIgY29uc3Qg
-UlVTVF9DT05TVF9IRUxQRVJfKFthLXpBLVowLTlfXSopL3B1YiBjb25zdCAvZycgcnVzdC9i
-aW5kaW5ncy9iaW5kaW5nc19nZW5lcmF0ZWQucnMNCj4gZXJyb3I6IHVuc3VwcG9ydGVkIG9w
-dGlvbiAnLW1iaWctZW5kaWFuJyBmb3IgdGFyZ2V0ICcnDQo+IGVycm9yOiB1bnN1cHBvcnRl
-ZCBvcHRpb24gJy1tY3B1PScgZm9yIHRhcmdldCAnJw0KPiBlcnJvcjogdW5zdXBwb3J0ZWQg
-b3B0aW9uICctbW5vLXByZWZpeGVkJyBmb3IgdGFyZ2V0ICcnDQo+IGVycm9yOiB1bnN1cHBv
-cnRlZCBvcHRpb24gJy1tbm8tcGNyZWwnIGZvciB0YXJnZXQgJycNCj4gZXJyb3I6IHVuc3Vw
-cG9ydGVkIG9wdGlvbiAnLW1uby1hbHRpdmVjJyBmb3IgdGFyZ2V0ICcnDQo+IGVycm9yOiB1
-bnN1cHBvcnRlZCBvcHRpb24gJy1tbm8tdnN4JyBmb3IgdGFyZ2V0ICcnDQo+IGVycm9yOiB1
-bnN1cHBvcnRlZCBvcHRpb24gJy1tbm8tbW1hJyBmb3IgdGFyZ2V0ICcnDQo+IGVycm9yOiB1
-bnN1cHBvcnRlZCBvcHRpb24gJy1tYmlnLWVuZGlhbicgZm9yIHRhcmdldCAnJw0KPiBlcnJv
-cjogdW5rbm93biB0YXJnZXQgdHJpcGxlICd1bmtub3duJw0KPiBwYW5pY2tlZCBhdCBiaW5k
-Z2VuL2lyL2NvbnRleHQucnM6NTYyOjE1Og0KPiBsaWJjbGFuZyBlcnJvcjsgcG9zc2libGUg
-Y2F1c2VzIGluY2x1ZGU6DQo+IC0gSW52YWxpZCBmbGFnIHN5bnRheA0KPiAtIFVucmVjb2du
-aXplZCBmbGFncw0KPiAtIEludmFsaWQgZmxhZyBhcmd1bWVudHMNCj4gLSBGaWxlIEkvTyBl
-cnJvcnMNCj4gLSBIb3N0IHZzLiB0YXJnZXQgYXJjaGl0ZWN0dXJlIG1pc21hdGNoDQo+IElm
-IHlvdSBlbmNvdW50ZXIgYW4gZXJyb3IgbWlzc2luZyBmcm9tIHRoaXMgbGlzdCwgcGxlYXNl
-IGZpbGUgYW4gaXNzdWUgb3IgYSBQUiENCj4gYGBgDQo+DQo+IERpZCB0aGlzIHdvcmsgb24g
-UFBDNjQ/DQoNCk9uIHBwYzY0bGUsIEkgYW0gbm90IGFibGUgdG8gZ2V0IGEgc3VjY2Vzc2Z1
-bCBSdXN04oCRZW5hYmxlZCBidWlsZCB5ZXQuDQpJIGFtIGNvbnNpc3RlbnRseSBoaXR0aW5n
-IGJpbmRnZW4vbGliY2xhbmcgZmFpbHVyZXMgZHVyaW5nIHRoZSBwcmVwYXJlIA0KcGhhc2Uu
-DQoNCg0KQnVpbGQgRmFpbHVyZXM6DQoNCmVycm9yOiB1bnN1cHBvcnRlZCBvcHRpb24gJy1t
-bG9uZy1kb3VibGUtMTI4JyBmb3IgdGFyZ2V0ICd1bmtub3duJw0KZXJyb3I6IHVuc3VwcG9y
-dGVkIGFyZ3VtZW50ICdtZWRpdW0nIHRvIG9wdGlvbiAnLW1jbW9kZWw9JyBmb3IgdGFyZ2V0
-IA0KJ3Vua25vd24nDQplcnJvcjogdW5rbm93biB0YXJnZXQgdHJpcGxlICd1bmtub3duJw0K
-cGFuaWNrZWQgYXQgYmluZGdlbi0wLjcyLjEvaXIvY29udGV4dC5yczo1NjI6MTU6DQpsaWJj
-bGFuZyBlcnJvcjsgcG9zc2libGUgY2F1c2VzIGluY2x1ZGU6DQotIEludmFsaWQgZmxhZyBz
-eW50YXgNCi0gVW5yZWNvZ25pemVkIGZsYWdzDQotIEludmFsaWQgZmxhZyBhcmd1bWVudHMN
-Ci0gRmlsZSBJL08gZXJyb3JzDQotIEhvc3QgdnMuIHRhcmdldCBhcmNoaXRlY3R1cmUgbWlz
-bWF0Y2gNCg0KbWFrZVsyXTogKioqIFtydXN0L01ha2VmaWxlOjQ2ODogcnVzdC9iaW5kaW5n
-cy9iaW5kaW5nc19nZW5lcmF0ZWQucnNdIA0KRXJyb3IgMTAxDQptYWtlWzJdOiAqKiogRGVs
-ZXRpbmcgZmlsZSAncnVzdC9iaW5kaW5ncy9iaW5kaW5nc19nZW5lcmF0ZWQucnMnDQoNCm1h
-a2VbMl06ICoqKiBbcnVzdC9NYWtlZmlsZTo0ODg6IA0KcnVzdC9iaW5kaW5ncy9iaW5kaW5n
-c19oZWxwZXJzX2dlbmVyYXRlZC5yc10gRXJyb3IgMTAxDQptYWtlWzJdOiAqKiogRGVsZXRp
-bmcgZmlsZSAncnVzdC9iaW5kaW5ncy9iaW5kaW5nc19oZWxwZXJzX2dlbmVyYXRlZC5ycycN
-Cg0KbWFrZVsyXTogKioqIFtydXN0L01ha2VmaWxlOjQ3NDogcnVzdC91YXBpL3VhcGlfZ2Vu
-ZXJhdGVkLnJzXSBFcnJvciAxMDENCm1ha2VbMl06ICoqKiBEZWxldGluZyBmaWxlICdydXN0
-L3VhcGkvdWFwaV9nZW5lcmF0ZWQucnMnDQoNCm1ha2VbMl06ICoqKiBbcnVzdC9NYWtlZmls
-ZTo2NDM6IHJ1c3QvY29yZS5vXSBFcnJvciAxDQptYWtlWzFdOiAqKiogWy9yb290L2xpbnV4
-L01ha2VmaWxlOjEzMjA6IHByZXBhcmVdIEVycm9yIDINCm1ha2U6ICoqKiBbTWFrZWZpbGU6
-MjQ4OiBfX3N1Yi1tYWtlXSBFcnJvciAyDQoNCg0KUmVnYXJkcywNCg0KVmVua2F0Lg0KDQo+
-PiArDQo+PiAgICMgQWxsIHdhcm5pbmdzIGFyZSBpbmhpYml0ZWQgc2luY2UgR0NDIGJ1aWxk
-cyBhcmUgdmVyeSBleHBlcmltZW50YWwsDQo+PiAgICMgbWFueSBHQ0Mgd2FybmluZ3MgYXJl
-IG5vdCBzdXBwb3J0ZWQgYnkgQ2xhbmcsIHRoZXkgbWF5IG9ubHkgYXBwZWFyIGluDQo+PiAg
-ICMgc29tZSBjb25maWd1cmF0aW9ucywgd2l0aCBuZXcgR0NDIHZlcnNpb25zLCBldGMuDQo+
-PiAtLSANCj4+IDIuNTIuMA0KPj4NCj4gV2l0aCB0aGlzIGZpeGVkOg0KPiBSZXZpZXdlZC1i
-eTogTGluayBNYXV2ZSA8bGlua21hdXZlQGxpbmttYXV2ZS5mcj4NCj4gVGVzdGVkLWJ5OiBM
-aW5rIE1hdXZlIDxsaW5rbWF1dmVAbGlua21hdXZlLmZyPg0KPg0K
+
+
+> On 24 Jan 2026, at 1:22=E2=80=AFPM, adubey@linux.ibm.com wrote:
+>=20
+> From: Abhishek Dubey <adubey@linux.ibm.com>
+>=20
+> This patch series enables support for two BPF JIT features
+> on powerpc64. The first three patches target support for
+> tail calls with subprogram combinations. The first patch
+> supports realignment of tail_call_cnt offset in stack frame.
+> Implementation details are provided in the commit messages.
+>=20
+> The last three patches add support for BPF exceptions. An
+> architecture-specific stack walker is implemented to assist
+> with stack walk during exceptions.
+>=20
+> All selftests related to tailcalls and exceptions are passing:
+>=20
+> # ./test_progs -t tailcalls
+> #442/1   tailcalls/tailcall_1:OK
+> #442/2   tailcalls/tailcall_2:OK
+> #442/3   tailcalls/tailcall_3:OK
+> #442/4   tailcalls/tailcall_4:OK
+> #442/5   tailcalls/tailcall_5:OK
+> #442/6   tailcalls/tailcall_6:OK
+> #442/7   tailcalls/tailcall_bpf2bpf_1:OK
+> #442/8   tailcalls/tailcall_bpf2bpf_2:OK
+> #442/9   tailcalls/tailcall_bpf2bpf_3:OK
+> #442/10  tailcalls/tailcall_bpf2bpf_4:OK
+> #442/11  tailcalls/tailcall_bpf2bpf_5:OK
+> #442/12  tailcalls/tailcall_bpf2bpf_6:OK
+> #442/13  tailcalls/tailcall_bpf2bpf_fentry:OK
+> #442/14  tailcalls/tailcall_bpf2bpf_fexit:OK
+> #442/15  tailcalls/tailcall_bpf2bpf_fentry_fexit:OK
+> #442/16  tailcalls/tailcall_bpf2bpf_fentry_entry:OK
+> #442/17  tailcalls/tailcall_poke:OK
+> #442/18  tailcalls/tailcall_bpf2bpf_hierarchy_1:OK
+> #442/19  tailcalls/tailcall_bpf2bpf_hierarchy_fentry:OK
+> #442/20  tailcalls/tailcall_bpf2bpf_hierarchy_fexit:OK
+> #442/21  tailcalls/tailcall_bpf2bpf_hierarchy_fentry_fexit:OK
+> #442/22  tailcalls/tailcall_bpf2bpf_hierarchy_fentry_entry:OK
+> #442/23  tailcalls/tailcall_bpf2bpf_hierarchy_2:OK
+> #442/24  tailcalls/tailcall_bpf2bpf_hierarchy_3:OK
+> #442/25  tailcalls/tailcall_freplace:OK
+> #442/26  tailcalls/tailcall_bpf2bpf_freplace:OK
+> #442/27  tailcalls/tailcall_failure:OK
+> #442/28  tailcalls/reject_tail_call_spin_lock:OK
+> #442/29  tailcalls/reject_tail_call_rcu_lock:OK
+> #442/30  tailcalls/reject_tail_call_preempt_lock:OK
+> #442/31  tailcalls/reject_tail_call_ref:OK
+> #442     tailcalls:OK
+> Summary: 1/31 PASSED, 0 SKIPPED, 0 FAILED
+>=20
+> # ./test_progs -t exceptions
+> #105/1   exceptions/exception_throw_always_1:OK
+> #105/2   exceptions/exception_throw_always_2:OK
+> #105/3   exceptions/exception_throw_unwind_1:OK
+> #105/4   exceptions/exception_throw_unwind_2:OK
+> #105/5   exceptions/exception_throw_default:OK
+> #105/6   exceptions/exception_throw_default_value:OK
+> #105/7   exceptions/exception_tail_call:OK
+> #105/8   exceptions/exception_ext:OK
+> #105/9   exceptions/exception_ext_mod_cb_runtime:OK
+> #105/10  exceptions/exception_throw_subprog:OK
+> #105/11  exceptions/exception_assert_nz_gfunc:OK
+> #105/12  exceptions/exception_assert_zero_gfunc:OK
+> #105/13  exceptions/exception_assert_neg_gfunc:OK
+> #105/14  exceptions/exception_assert_pos_gfunc:OK
+> #105/15  exceptions/exception_assert_negeq_gfunc:OK
+> #105/16  exceptions/exception_assert_poseq_gfunc:OK
+> #105/17  exceptions/exception_assert_nz_gfunc_with:OK
+> #105/18  exceptions/exception_assert_zero_gfunc_with:OK
+> #105/19  exceptions/exception_assert_neg_gfunc_with:OK
+> #105/20  exceptions/exception_assert_pos_gfunc_with:OK
+> #105/21  exceptions/exception_assert_negeq_gfunc_with:OK
+> #105/22  exceptions/exception_assert_poseq_gfunc_with:OK
+> #105/23  exceptions/exception_bad_assert_nz_gfunc:OK
+> #105/24  exceptions/exception_bad_assert_zero_gfunc:OK
+> #105/25  exceptions/exception_bad_assert_neg_gfunc:OK
+> #105/26  exceptions/exception_bad_assert_pos_gfunc:OK
+> #105/27  exceptions/exception_bad_assert_negeq_gfunc:OK
+> #105/28  exceptions/exception_bad_assert_poseq_gfunc:OK
+> #105/29  exceptions/exception_bad_assert_nz_gfunc_with:OK
+> #105/30  exceptions/exception_bad_assert_zero_gfunc_with:OK
+> #105/31  exceptions/exception_bad_assert_neg_gfunc_with:OK
+> #105/32  exceptions/exception_bad_assert_pos_gfunc_with:OK
+> #105/33  exceptions/exception_bad_assert_negeq_gfunc_with:OK
+> #105/34  exceptions/exception_bad_assert_poseq_gfunc_with:OK
+> #105/35  exceptions/exception_assert_range:OK
+> #105/36  exceptions/exception_assert_range_with:OK
+> #105/37  exceptions/exception_bad_assert_range:OK
+> #105/38  exceptions/exception_bad_assert_range_with:OK
+> #105/39  exceptions/non-throwing fentry -> exception_cb:OK
+> #105/40  exceptions/throwing fentry -> exception_cb:OK
+> #105/41  exceptions/non-throwing fexit -> exception_cb:OK
+> #105/42  exceptions/throwing fexit -> exception_cb:OK
+> #105/43  exceptions/throwing extension (with custom cb) -> =
+exception_cb:OK
+> #105/44  exceptions/throwing extension -> global func in =
+exception_cb:OK
+> #105/45  exceptions/exception_ext_mod_cb_runtime:OK
+> #105/46  exceptions/throwing extension (with custom cb) -> global func =
+in exception_cb:OK
+> #105/47  exceptions/exception_ext:OK
+> #105/48  exceptions/non-throwing fentry -> non-throwing subprog:OK
+> #105/49  exceptions/throwing fentry -> non-throwing subprog:OK
+> #105/50  exceptions/non-throwing fentry -> throwing subprog:OK
+> #105/51  exceptions/throwing fentry -> throwing subprog:OK
+> #105/52  exceptions/non-throwing fexit -> non-throwing subprog:OK
+> #105/53  exceptions/throwing fexit -> non-throwing subprog:OK
+> #105/54  exceptions/non-throwing fexit -> throwing subprog:OK
+> #105/55  exceptions/throwing fexit -> throwing subprog:OK
+> #105/56  exceptions/non-throwing fmod_ret -> non-throwing subprog:OK
+> #105/57  exceptions/non-throwing fmod_ret -> non-throwing global =
+subprog:OK
+> #105/58  exceptions/non-throwing extension -> non-throwing subprog:OK
+> #105/59  exceptions/non-throwing extension -> throwing subprog:OK
+> #105/60  exceptions/non-throwing extension -> non-throwing subprog:OK
+> #105/61  exceptions/non-throwing extension -> throwing global =
+subprog:OK
+> #105/62  exceptions/throwing extension -> throwing global subprog:OK
+> #105/63  exceptions/throwing extension -> non-throwing global =
+subprog:OK
+> #105/64  exceptions/non-throwing extension -> main subprog:OK
+> #105/65  exceptions/throwing extension -> main subprog:OK
+> #105/66  exceptions/reject_exception_cb_type_1:OK
+> #105/67  exceptions/reject_exception_cb_type_2:OK
+> #105/68  exceptions/reject_exception_cb_type_3:OK
+> #105/69  exceptions/reject_exception_cb_type_4:OK
+> #105/70  exceptions/reject_async_callback_throw:OK
+> #105/71  exceptions/reject_with_lock:OK
+> #105/72  exceptions/reject_subprog_with_lock:OK
+> #105/73  exceptions/reject_with_rcu_read_lock:OK
+> #105/74  exceptions/reject_subprog_with_rcu_read_lock:OK
+> #105/75  exceptions/reject_with_rbtree_add_throw:OK
+> #105/76  exceptions/reject_with_reference:OK
+> #105/77  exceptions/reject_with_cb_reference:OK
+> #105/78  exceptions/reject_with_cb:OK
+> #105/79  exceptions/reject_with_subprog_reference:OK
+> #105/80  exceptions/reject_throwing_exception_cb:OK
+> #105/81  exceptions/reject_exception_cb_call_global_func:OK
+> #105/82  exceptions/reject_exception_cb_call_static_func:OK
+> #105/83  exceptions/reject_multiple_exception_cb:OK
+> #105/84  exceptions/reject_exception_throw_cb:OK
+> #105/85  exceptions/reject_exception_throw_cb_diff:OK
+> #105/86  exceptions/reject_set_exception_cb_bad_ret1:OK
+> #105/87  exceptions/reject_set_exception_cb_bad_ret2:OK
+> #105/88  exceptions/check_assert_eq_int_min:OK
+> #105/89  exceptions/check_assert_eq_int_max:OK
+> #105/90  exceptions/check_assert_eq_zero:OK
+> #105/91  exceptions/check_assert_eq_llong_min:OK
+> #105/92  exceptions/check_assert_eq_llong_max:OK
+> #105/93  exceptions/check_assert_lt_pos:OK
+> #105/94  exceptions/check_assert_lt_zero:OK
+> #105/95  exceptions/check_assert_lt_neg:OK
+> #105/96  exceptions/check_assert_le_pos:OK
+> #105/97  exceptions/check_assert_le_zero:OK
+> #105/98  exceptions/check_assert_le_neg:OK
+> #105/99  exceptions/check_assert_gt_pos:OK
+> #105/100 exceptions/check_assert_gt_zero:OK
+> #105/101 exceptions/check_assert_gt_neg:OK
+> #105/102 exceptions/check_assert_ge_pos:OK
+> #105/103 exceptions/check_assert_ge_zero:OK
+> #105/104 exceptions/check_assert_ge_neg:OK
+> #105/105 exceptions/check_assert_range_s64:OK
+> #105/106 exceptions/check_assert_range_u64:OK
+> #105/107 exceptions/check_assert_single_range_s64:OK
+> #105/108 exceptions/check_assert_single_range_u64:OK
+> #105/109 exceptions/check_assert_generic:OK
+> #105/110 exceptions/check_assert_with_return:OK
+> #105     exceptions:OK
+> Summary: 1/110 PASSED, 0 SKIPPED, 0 FAILED
+>=20
+> [v1]: =
+https://lore.kernel.org/all/20260105105212.136645-1-adubey@linux.ibm.com/
+> [v2]: =
+https://lore.kernel.org/all/20260114114450.30405-1-adubey@linux.ibm.com/
+> [v3]: =
+https://lore.kernel.org/all/20260122165716.10508-1-adubey@linux.ibm.com/
+> [v4]: =
+https://lore.kernel.org/all/20260122211854.5508-1-adubey@linux.ibm.com/
+>=20
+> Changes v4->v5:
+> Patch comments and code refactoring
+> Handle exception callback and boundary frame checks
+> Changes v3->v4:
+>        Handle bpf-ci warnings
+> Changes v2->v3:
+>        Added PPC_BCC_CONST_SHORT for short jumps of constant offset
+>        Optimize tailcall allocation for BPF_TRAMP_F_CALL_ORIG flag
+>        New helper for stack size calculation during exceptions
+>        Prologue JIT optimizations during non exception prog case
+> Changes v1->v2:
+>        Move tail_call_cnt to offset 0 in stack frame
+>        Remove trampoline NVR remapping-patch3/6
+>=20
+> Abhishek Dubey (6):
+>  powerpc64/bpf: Moving tail_call_cnt to bottom of frame
+>  powerpc64/bpf: Support tailcalls with subprogs
+>  powerpc64/bpf: Avoid tailcall restore from trampoline
+>  powerpc64/bpf: Add arch_bpf_stack_walk() for BPF JIT
+>  powerpc64/bpf: Support exceptions
+>  powerpc64/bpf: Additional NVR handling for bpf_throw
+>=20
+> arch/powerpc/net/bpf_jit.h        |  16 ++
+> arch/powerpc/net/bpf_jit_comp.c   |  85 +++++++--
+> arch/powerpc/net/bpf_jit_comp64.c | 276 +++++++++++++++++++++++++-----
+> 3 files changed, 315 insertions(+), 62 deletions(-)
+>=20
+> --=20
+> 2.48.1
+>=20
+
+Tested this series, it=E2=80=99s working as expected. Please add below =
+tag.
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+Regards,
+Venkat.=
 
