@@ -1,79 +1,122 @@
-Return-Path: <linuxppc-dev+bounces-16688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16689-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBxFH8cUhmk1JgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 17:20:23 +0100
+	id IDEAJ3kYhmk1JgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16689-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 17:36:09 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C217D1002EA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 17:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6B21005DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 17:36:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6zp942gyz309y;
-	Sat, 07 Feb 2026 03:20:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f708P51Myz309y;
+	Sat, 07 Feb 2026 03:36:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770394817;
-	cv=none; b=ezifaapTj9dOb407fhapztNlScdOZpOmghO9MC3jNllj5uFxh7qkl9X03j9/4OjG6vjI7jxI+YoW/imLcwX7zL0pzh9M1WtWVXphkIDu5CzqxgzBrDi8dWioSlr/KMBxyVpcvKcAYdlSf7HJVJByYddaboXlbbe+sNvhQtpiRHDpsYl2SD0KTazuG/i/DvL4NTKcFD/lz8YSlNsOHpYF52LDv4BNOFs960B500Plttwdf5QyEiE8dq3AP33dxL/xEK7ppwl2jvGWgaqCyNeeid9oxkvf9ggC9CYuMKFnCtgG3zIrPV7U2LmoV8FPWSB1B8Kww1WTq/qB26BY0PIFoA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770395765;
+	cv=none; b=IwiL1Qc+7lZKflDBpUp+hcbTX8eAjH5ItgRQLNWLJqtZAouYAAyNjMElzHnOeqKH3EkSDMBz4y4j3cbbbr/OgA8qrvj7KZsCxfGgA/UMKZKxYjpuMWrhBq+Z3OOENe6oh8FSbrK7n1WMzCGYy59XlPfwiWI1Peo7kaYUYL+CZqLdGTEJU6R422seMVDhdsT1Q9WgWJYAffVYw8EfwFOfCM8ZXIT7CYAjjdkbGxq7aba26Aj4J3E6Ihyfv90sF8TepLLgfdqxhC7e1dWRKQ8BDdDwlYuytVwZry8bi1b1WE/h5WbUFRKwd6pTCEDzTT11TYwc3wxG3PzjyvnttGeetg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770394817; c=relaxed/relaxed;
-	bh=3cJheVdiiM1f/+x4d6u6CwpMEom3AZDSKJn0Rcsw/ek=;
+	t=1770395765; c=relaxed/relaxed;
+	bh=KYHe8zfg/8AIpqNRWXh0NAdUyW2bdq8FFHapTrMjpSk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oLu1RXqBR/CMoT0bVMvsNpD1ByK3Y0xHDAZYJtSzC0+uNYVfNI2iM0CEsSjx/hzb3st20tIGmnrnYRm/Jtkrf9I7cVwKM76vkJB6WUpYqU9gFks0eR2DW++tkmLb7m24ExtU4aRCCaO1cltZF+lecrUkwBCBuOAu8hqSHF+tmTCwDRL07yZjKOeZnM2SOjcZ/cEteEKH7w+xUnHEgrFL9muJK1oFZDNwj613bblH93ANPio2bV30c2mgPBvyPQmETx01qAyzEj/yWz71s7a1qz4781hYIfrwswAes2JsFqJpSWBhXO7B6OacghdMap76jCCiAHKJU6egY8KRzLw2WA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PBfSHASP; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kJsvIaUFExsK7Hf8lrIg09tYtPJx/13oN2OMs85VsQU0+/ERGJuripu90LlbNjcmOIuMugFDElrY0UlEdynqfxxSKlEZ+ApoqI3cxQak5gYW7Ye1bbCTlgvpqCzjqInQetL4bwMMWYn1EMzLSCs+4Tygf+rN7jsFbGY0pZk6U/T93AQp3IbbknDl/Tq4Lh8oT28dbB29V+JpQQOjqWqS8L2UWh/24f9+upSMKU0PjcssPJLSAcIovahztNt/dKwnM8NoC2a8Fvc9Q9Hk4BFaK2eAQ/wp7PvOG7yFG04I43SJVKG0tXa471H1gKB052dkSR2gUgIlvB4VKftX1zU9Tw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aDsgIDsa; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PBfSHASP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aDsgIDsa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6zp65DMhz2xpg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 03:20:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770394815; x=1801930815;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=f0XDwV9tjto381cHBE9tb6ddkN7CanMXtXtA+02cOqU=;
-  b=PBfSHASPi0uAHbz7h4bpmmvJeJ7je7LVH5C+rLHK32jIadPFIoMyk2S2
-   Z14kIpY1vtHuP5h6jbV0ftYtI7hCzZaQk4mGJ3L/mbCmA7i7AQKPZ+b9y
-   RoWWln4en8voHou1t3nCY69IvX4wgKX6U3y0Wi2JQYWN/j8JgEeLFL22f
-   gL0GzBuaJiiMUBGgjpu3y7s7jqKYM60jhqFLIHJgGnUdmcvuDS9jruyeQ
-   jMq+NkBBD0KdOEV6O/611LjMUdNYXBiA9dOMhuhUc/EztZX/7L389Snqg
-   O4SztDy5G0LZPwKHFXwzDJCjOoop2XyGSYphA2QVFx4IZyfHRcOZLKfwn
-   A==;
-X-CSE-ConnectionGUID: 1uO6QmkfQMKy+JiMctEa2g==
-X-CSE-MsgGUID: HjJMHt6gQD+eETQVvO1vuw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="75224967"
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
-   d="scan'208";a="75224967"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 08:20:08 -0800
-X-CSE-ConnectionGUID: eEkGmmJjQXC8p+o7zp96Fw==
-X-CSE-MsgGUID: 8nvw3XAgQKK8jD09amGXiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
-   d="scan'208";a="215085419"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 06 Feb 2026 08:20:05 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1voOYs-00000000ktM-1Zd1;
-	Fri, 06 Feb 2026 16:20:02 +0000
-Date: Sat, 7 Feb 2026 00:19:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-	tiwai@suse.com, linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] ASoC: fsl_xcvr: add bitcount and timestamp controls
-Message-ID: <202602070032.CtJMTCOn-lkp@intel.com>
-References: <20260206084334.483404-3-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f708N0Swvz2xpg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 03:36:03 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5AF51600CB;
+	Fri,  6 Feb 2026 16:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7E4C116C6;
+	Fri,  6 Feb 2026 16:36:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770395761;
+	bh=M4LNx0DUKPh1lCUDhYpFJhkU46B2yI/gi1E3DmfXGKU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aDsgIDsarGZ6CZYnVZ742HWw/UIsFuqAOaRqB0voEN9pV+AbKPAHl7YijT9amMocs
+	 bROAGjI0SCIUSloIS2GzitUKBBOMInPZp0iSXVRUlpOCPjkxr3ZJCh+loUqveSph62
+	 pCXqgt9EIwX/ncrkE32V3IGLIQgAAkmt0tfuixgk+93AMSfxxJT2sb2COyD3E4W4T6
+	 FTYZgLSWp48OYJZwkHE7sjja+Ja1Do0pdZR9g90V6sL0WQ93lMvx+zSkJYYFndOmSe
+	 lb+du3KThhJWnzFsgptfpcwhQt2Yj0UzbtXEVW2AA7eHdq5TPSUjBIRW0XypskauCt
+	 KMDwaZElWn/cA==
+Date: Fri, 6 Feb 2026 17:28:31 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 06/17] kbuild: add stamp file for vmlinux BTF data
+Message-ID: <aYYWr41jImi3byr8@levanger>
+Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-6-0b932db9b56b@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,128 +130,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260206084334.483404-3-shengjiu.wang@nxp.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260113-module-hashes-v4-6-0b932db9b56b@weissschuh.net>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.29 / 15.00];
+X-Spamd-Result: default: False [-0.21 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16688-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_TO(0.00)[nxp.com,gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
-	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@nxp.com,m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-16689-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kernel.org,m:dmitrykasatkin
+ @gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	FORGED_SENDER(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.994];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.850];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,suse.com,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,01.org:url]
-X-Rspamd-Queue-Id: C217D1002EA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 4B6B21005DF
 X-Rspamd-Action: no action
 
-Hi Shengjiu,
+On Tue, Jan 13, 2026 at 01:28:50PM +0100, Thomas Weiﬂschuh wrote:
+> The upcoming module hashes functionality will build the modules in
+> between the generation of the BTF data and the final link of vmlinux.
+> Having a dependency from the modules on vmlinux would make this
+> impossible as it would mean having a cyclic dependency.
+> Break this cyclic dependency by introducing a new target.
+> 
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> ---
+>  scripts/Makefile.modfinal | 4 ++--
+>  scripts/link-vmlinux.sh   | 6 ++++++
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+> 
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on broonie-sound/for-next]
-[also build test ERROR on linus/master v6.19-rc8 next-20260205]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/ASoC-fsl_sai-add-bitcount-and-timestamp-controls/20260206-164423
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-patch link:    https://lore.kernel.org/r/20260206084334.483404-3-shengjiu.wang%40nxp.com
-patch subject: [PATCH 2/2] ASoC: fsl_xcvr: add bitcount and timestamp controls
-config: hexagon-randconfig-002-20260206 (https://download.01.org/0day-ci/archive/20260207/202602070032.CtJMTCOn-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260207/202602070032.CtJMTCOn-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602070032.CtJMTCOn-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> sound/soc/fsl/fsl_xcvr.c:70:46: error: call to undeclared function '__bf_shf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      70 |         SOC_ENUM_SINGLE(FSL_XCVR_TX_DPTH_CNTR_CTRL, __bf_shf(FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC),
-         |                                                     ^
->> sound/soc/fsl/fsl_xcvr.c:70:46: error: initializer element is not a compile-time constant
-      70 |         SOC_ENUM_SINGLE(FSL_XCVR_TX_DPTH_CNTR_CTRL, __bf_shf(FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC),
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      71 |                         ARRAY_SIZE(inc_mode), inc_mode),
-         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/sound/soc.h:215:24: note: expanded from macro 'SOC_ENUM_SINGLE'
-     215 |         SOC_ENUM_DOUBLE(xreg, xshift, xshift, xitems, xtexts)
-         |         ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/sound/soc.h:211:27: note: expanded from macro 'SOC_ENUM_DOUBLE'
-     211 | {       .reg = xreg, .shift_l = xshift_l, .shift_r = xshift_r, \
-         |                                 ^~~~~~~~
-   sound/soc/fsl/fsl_xcvr.c:78:6: error: initializer element is not a compile-time constant
-      78 |                    __bf_shf(FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN), 1, 0),
-         |                    ^
-   sound/soc/fsl/fsl_xcvr.c:81:6: error: initializer element is not a compile-time constant
-      81 |                    __bf_shf(FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC), 1, 0),
-         |                    ^
-   sound/soc/fsl/fsl_xcvr.c:83:6: error: initializer element is not a compile-time constant
-      83 |                    __bf_shf(FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC), 1, 0),
-         |                    ^
-   sound/soc/fsl/fsl_xcvr.c:93:6: error: initializer element is not a compile-time constant
-      93 |                    __bf_shf(FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN), 1, 0),
-         |                    ^
-   sound/soc/fsl/fsl_xcvr.c:96:6: error: initializer element is not a compile-time constant
-      96 |                    __bf_shf(FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC), 1, 0),
-         |                    ^
-   sound/soc/fsl/fsl_xcvr.c:98:6: error: initializer element is not a compile-time constant
-      98 |                    __bf_shf(FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC), 1, 0),
-         |                    ^
->> sound/soc/fsl/fsl_xcvr.c:1133:19: error: invalid application of 'sizeof' to an incomplete type 'const struct snd_kcontrol_new[]'
-    1133 |         .num_controls           = ARRAY_SIZE(fsl_xcvr_timestamp_ctrls),
-         |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/array_size.h:11:32: note: expanded from macro 'ARRAY_SIZE'
-      11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
-         |                                ^~~~~
-   9 errors generated.
-
-
-vim +/__bf_shf +70 sound/soc/fsl/fsl_xcvr.c
-
-    68	
-    69	static const struct soc_enum tstmp_enum[] = {
-  > 70		SOC_ENUM_SINGLE(FSL_XCVR_TX_DPTH_CNTR_CTRL, __bf_shf(FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC),
-    71				ARRAY_SIZE(inc_mode), inc_mode),
-    72		SOC_ENUM_SINGLE(FSL_XCVR_RX_DPTH_CNTR_CTRL, __bf_shf(FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC),
-    73				ARRAY_SIZE(inc_mode), inc_mode),
-    74	};
-    75	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
 
