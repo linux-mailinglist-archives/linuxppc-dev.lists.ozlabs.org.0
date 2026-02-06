@@ -1,72 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-16666-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HGdH9WxhWmbFQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16666-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 10:18:13 +0100
+	id uINRBAYyiWla4AQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 02:01:58 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26712FBEDE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 10:18:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A74C10AC72
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 02:01:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6pR51pCJz2yFc;
-	Fri, 06 Feb 2026 20:18:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f8RH431H3z2yGx;
+	Mon, 09 Feb 2026 12:01:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:c010:41de::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770369489;
-	cv=none; b=IHX+dxFo8WDzAwqQa4W0sPVh4vvLxyga8nDc1BbV0ci5xYfny7KgyBSiIx/mWisZHSphu4xRsGg83Z3WeipHAryUscAArdY3imGrwwXP9BcmWWhsazuvFJKqswOXyOq4BfsedlJFPRQOmO2yEkqukTUOMKdCjYATYC/xKSSPyQ3wqoBGkGwZIPGwMtLcw3ijoMzZO5MErRt5eCCOO697LUxjoBJSdriHFt+Ud1d8Qg1buPAmU4ZEGGqdalbWo2lmymfyHFMj08HKE7LlmvPJ4aHn3GT3BHk3J26mtlvZ8PfEvSOXxgo55AgB/cABD71i0+u6oh4aHzLHz+cNrkFSqw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.0.225.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770598912;
+	cv=none; b=hu+y+M5RMPfAr/0bzGjaWMAv6FrVUneIfC42mTDRpi7i43MMzfOgX9qBaBDCqShbmzBrNEIVGOd60kOyY9GynBL1M2hG5NLIBK9XgZh4FSJGtz2o3zTaHzquvxBg2DACdC6j4bLm0wzbsHz2NUBiXyqvzFilM7vF5GZDoGUT8RH+vOxT1MpTvE1TIeGZI8BwQi6t1Hjy8pgC8MkuREgYXIaqf/T6nVPEQulH4rKC5bB9JuWIpUznN4lzY2Vl0jnaEJJNYGdCCISXsUj5hQst7ha016SmaJpXNgaFvskSADq+4kXLxlnaYgv99Vd3UtxDRbV+VB4/2NHxm0fBqDMxBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770369489; c=relaxed/relaxed;
-	bh=3F3dLJtVFY4IICp+/0ZLK1SF2Vgnl1mVdbUOWKv46n0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hw7SMrOiKvaMHe/n93Eu9CLQnHIkcG35yL9ruiEo68CHVo426K25y5m7ufTIqYh69R3lpjyFX5u27mC0mb/1gvnD/IC4sPuOeRBANjFAefAMI6+63fO/PWJ3jrmiZgweiyZw7TKYs+E/C2KoJDgs84aMAlhR6TkdS7MCIfgs6Drpxh6HuHutS4tj2xb3i7lqqdlPynaatQgyUtuFBiqFsjV6FhIFeftR964S1XpdS4WuuReTCPsvQDlLK8aQHnuJHtzyJSnD6QOn83GbfR7pUemCOfrbiX8ReAPOLmIOD7YTZ8Mic9kjuUxvmTWM7J7M3vJ/+UOAYy3Eit3YafFW+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=P8I512GQ; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=P8I512GQ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+	t=1770598912; c=relaxed/relaxed;
+	bh=69SVmH080kQ0s9pD6WHGHZSpprX+aHodu42uF0Ih4nQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=m8ICPmd3AO+y9KopQ7STR0bFOC6gYY7Nq/lTzcppKQtrD7Zc/EtQGolxYpOaIRcqsjlWnQwQFkaWAvvnv+x74k9ml//z0DSb5P1xbLd+DC8Q2NHzOax0XK6sjlFtxocs2P2M771t7P7jyA8G7siGO6zw6GZK4TojtVEqQNtPcY3SKFC0UTcfnZN0FW/RTqgIthk0mDSvByau6Uo98j+1F5DQdQCR4NiQKFz1wFUcYKJREiMyaKRHKYq6fR7ie74mqXLJ8hvvaOJr2A3w0T4+pHYC9ZH0kNT8d8aXcgp1mcqFC3vB/Ou8kqZIxQbKbtblmiFo+DyCWLHdFCOd14bNTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass (client-ip=210.0.225.12; helo=mx1.zhaoxin.com; envelope-from=leoliu-oc@zhaoxin.com; receiver=lists.ozlabs.org) smtp.mailfrom=zhaoxin.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zhaoxin.com (client-ip=210.0.225.12; helo=mx1.zhaoxin.com; envelope-from=leoliu-oc@zhaoxin.com; receiver=lists.ozlabs.org)
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6pR42CFvz2xWJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 20:18:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1770369482;
-	bh=3lh+T18IbYxtb3gtqLTD6cEKkxOYPIXP9FgcFXhcwNo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P8I512GQdTuSnyyG/lrd0tY92NCxg6hbOdKWE5uC9rEk0Af5xUuBzfxkYiQYnDT74
-	 tZLXGVTtusLO1jNFYwYOYKJdJtCfChhFdJR7MQR+p9C9W/0oAljzpiG/Pc1bKJ4KRG
-	 +L7bhP0R6enz+BHXvbGpLSUPi81SWL48atg2FHZc=
-Date: Fri, 6 Feb 2026 10:18:02 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, 
-	Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Daniel Gomez <da.gomez@kernel.org>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Nicolas Schier <nsc@kernel.org>, 
-	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>, Xiu Jianfeng <xiujianfeng@huawei.com>, 
-	Fabian =?utf-8?Q?Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>, Arnout Engelen <arnout@bzzt.net>, 
-	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>, 
-	Christian Heusel <christian@heusel.eu>, =?utf-8?B?Q8OianU=?= Mihai-Drosi <mcaju95@gmail.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 05/17] module: Switch load_info::len to size_t
-Message-ID: <08d258a3-1710-4d2f-815d-3d16a3dc928b@t-8ch.de>
-References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260113-module-hashes-v4-5-0b932db9b56b@weissschuh.net>
- <ffdafd21-fe7a-44a2-86ec-0e0c2ad4238c@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f8RH30ks4z2xLv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Feb 2026 12:01:49 +1100 (AEDT)
+X-ASG-Debug-ID: 1770598818-086e230ac70afc0001-v7v7hK
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx1.zhaoxin.com with ESMTP id uaI0d5gmSMmYU5Mr (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 09 Feb 2026 09:00:18 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from ZXSHMBX1.zhaoxin.com (10.28.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Mon, 9 Feb
+ 2026 09:00:18 +0800
+Received: from ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85]) by
+ ZXSHMBX1.zhaoxin.com ([fe80::936:f2f9:9efa:3c85%7]) with mapi id
+ 15.01.2507.059; Mon, 9 Feb 2026 09:00:18 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from [10.32.64.12] (10.32.64.12) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Fri, 6 Feb
+ 2026 19:07:52 +0800
+Message-ID: <c1c24812-37aa-48af-922f-2e43c659703c@zhaoxin.com>
+Date: Fri, 6 Feb 2026 19:07:50 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,70 +61,117 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ffdafd21-fe7a-44a2-86ec-0e0c2ad4238c@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] PCI: dpc: Increase pciehp waiting time for DPC
+ recovery
+To: Lukas Wunner <lukas@wunner.de>
+X-ASG-Orig-Subj: Re: [PATCH v2] PCI: dpc: Increase pciehp waiting time for DPC
+ recovery
+CC: Bjorn Helgaas <bhelgaas@google.com>, Mahesh J Salgaonkar
+	<mahesh@linux.ibm.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Oliver O'Halloran <oohall@gmail.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<CobeChen@zhaoxin.com>, <ErosZhang@zhaoxin.com>, <TonyWWang@zhaoxin.com>
+References: <20260204035542.53232-1-LeoLiu-oc@zhaoxin.com>
+ <aYRatwSvUG0yQkHd@wunner.de>
+From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+In-Reply-To: <aYRatwSvUG0yQkHd@wunner.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.32.64.12]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Moderation-Data: 2/9/2026 9:00:17 AM
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1770598818
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://mx2.zhaoxin.com:4443/cgi-mod/mark.cgi
+X-Barracuda-BRTS-Status: 1
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1170
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.154248
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.51 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[weissschuh.net,quarantine];
+	DATE_IN_PAST(1.00)[61];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[weissschuh.net:s=mail];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16666-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER(0.00)[linux@weissschuh.net,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,arndb.de,suse.com,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,linux.dev,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:nicolas.schier@linux.dev,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:nsc@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kernel
- .org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[google.com,linux.ibm.com,intel.com,gmail.com,lists.ozlabs.org,vger.kernel.org,zhaoxin.com];
+	TAGGED_FROM(0.00)[bounces-16716-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[zhaoxin.com];
+	FORGED_RECIPIENTS(0.00)[m:lukas@wunner.de,m:bhelgaas@google.com,m:mahesh@linux.ibm.com,m:przemyslaw.kitszel@intel.com,m:oohall@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:CobeChen@zhaoxin.com,m:ErosZhang@zhaoxin.com,m:TonyWWang@zhaoxin.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[LeoLiu-oc@zhaoxin.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[linux@weissschuh.net,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[weissschuh.net:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 26712FBEDE
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[LeoLiu-oc@zhaoxin.com,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	HAS_XOIP(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	NEURAL_HAM(-0.00)[-0.532];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zhaoxin.com:mid]
+X-Rspamd-Queue-Id: 1A74C10AC72
 X-Rspamd-Action: no action
 
-On 2026-02-06 10:09:12+0100, Christophe Leroy (CS GROUP) wrote:
-> 
-> 
-> Le 13/01/2026 à 13:28, Thomas Weißschuh a écrit :
-> > Switching the types will make some later changes cleaner.
-> > size_t is also the semantically correct type for this field.
-> > 
-> > As both 'size_t' and 'unsigned int' are always the same size, this
-> > should be risk-free.
 
-> Are you sure ?
 
-As mentioned before by David [0], this should have been 'unsigned long'
-instead of 'unsigned int'. Which is also what the diff shows.
+=E5=9C=A8 2026/2/5 16:54, Lukas Wunner =E5=86=99=E9=81=93:
+>=20
+>=20
+> [=E8=BF=99=E5=B0=81=E9=82=AE=E4=BB=B6=E6=9D=A5=E8=87=AA=E5=A4=96=E9=83=A8=
+=E5=8F=91=E4=BB=B6=E4=BA=BA =E8=B0=A8=E9=98=B2=E9=A3=8E=E9=99=A9]
+>=20
+> On Wed, Feb 04, 2026 at 11:55:42AM +0800, LeoLiu-oc wrote:
+>> For example, The execution of the ice_pci_err_detected() in the ice netw=
+ork
+>> card driver exceeded the maximum waiting time for DPC recovery, causing =
+the
+>> pciehp_disable_slot() to be executed which is not needed. From the user'=
+s
+>> point of view, you will see that the ice network card may not be usable =
+and
+>> could even cause more serious errors, such as a kernel panic. kernel pan=
+ic
+>> is caused by a race between pciehp_disable_slot() and pcie_do_recovery()=
+.
+>> In practice, we would observe that the ice network card is in an
+>> unavailable state and a kernel panic.
+>=20
+> Unfortunately v2 was submitted without answering all of the questions
+> and testing all of the things asked for during review:
+>=20
+> https://lore.kernel.org/all/aYBoP-B2E9fp_4YZ@wunner.de/
 
-> Some architectures have size_t as 'unsigned int', some have 'unsigned long',
-> some have 'unsigned long long'
+I have already replied to your concern in the following email. Please
+pay attention to check it
 
-(...)
+https://lore.kernel.org/all/018007dd-68d9-4e16-b605-15d9c77ea13f@zhaoxin.co=
+m/
 
-[0] https://lore.kernel.org/lkml/2919071.1770365933@warthog.procyon.org.uk/
+Yours sincerely,
+LeoLiu-oc
+
 
