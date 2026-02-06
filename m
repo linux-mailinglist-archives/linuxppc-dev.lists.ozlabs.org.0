@@ -1,67 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16701-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PTHKI8/hmnzLAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 20:22:55 +0100
+	id uBIeIeJGhmkhLgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16701-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 20:54:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5069102A9C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 20:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F433102EA6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 20:54:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f73rp0Jmwz30Lv;
-	Sat, 07 Feb 2026 06:22:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f74Xs4Pqgz30Lv;
+	Sat, 07 Feb 2026 06:54:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770405769;
-	cv=none; b=P07f7XfoFf1HqpUz62axkrzqBwDOwo91GTi/uwjErV+r6Ej/KmrpI/zFPedBFUmHxnCtuyCV90ovz1gz813tvRn3cnllivuU7G1lJfyMPip8YGcXMkru/flRH2GtqNZxYbPRlm+9g/U4u+GUyPAPgHgFR9IysGUkshVbiNNPyLGhTZTyPyBniSbwA+L9ubxZT/xTyF8STFEGvAZEcvSlqJNCCpOQCcFuC7QVQFhRmMRcZd0KjzGumVUwiCPs2yJhVL/LA+/lkjhROco69SSRSrZCtKZUKrriSTSKcTKqMAFtndahZmkR35T/VUw+TPkKiFey2Ncc8cPFFAIZ9fSBNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770407645;
+	cv=none; b=C8kEbEuh15TugacOMezqVvc23qe43mCQ7U4uT/YB2PavpOgmHZllCAlo2xifnvLMVMn4Zm/nPJKRw+Eix+7d6SivDdjJ2+DXBLBdtk6fYO3usdFxYhoQ8COx15/RW/0rFO3DwoThELer5sWa6IlPLNDalwWsjtbm5xzd+gf6E3CLSbp0N02erBD8SYa3MiwInh9rl7381YyEezaWshVONAMnf+dJAH7CPLJC5EFvUHrutTDlP8RbvuZVOHKOxi29ROQMR/al9ym+quSs2vXTevbdNddEotgWRPPGUCXzyjdcyPQxgwwCB0OMd9imWXls9WMixJo7KOzt6GORb6jQqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770405769; c=relaxed/relaxed;
-	bh=pQrdhcdv6XYyTqD5OWGtLKx1it+pTil8E6MWWEWD8xI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lXj6Lnz/MAlq5HoKFUX+AAdjz3tSgdKp1fbr8IvdGs0BoQckaXx4+VbeZ3ReouW0Pj0JuYcCClBkoEAndH6nq14tgmPkdeo5Qk7k48/huQDUuNKpFn+ikkF0f87O8A2LVuVdu2VLcTbuUfKotXNYrpG2cZXm1pRFp6LJUnA2jfP+F+6Kr87HpI0w3rSL2Sp6lAWzLfxWuxkRNrGm7VPvcAy8OTLtCne8oe1qp/HRdPXp0ipTdDToU8pMSyT5xA4wNHo8AGPjEdtu9y8qoKRpt79+XTYpxmeB0TLnmeTW/OBICwXBP8fegXfc1FcHREhu5l68DWJOGqHuxemUVx8sEA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=spbrbna5; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1770407645; c=relaxed/relaxed;
+	bh=+I7UAK1IjMD7Bo09lDyMkeUG92zZAlLP2I1S1ovYfGM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k8cQEX8LIC4P8k0jzPyMWlIik+MKYp2nEn5qScvVTxy50yx0nXHIjOSQATP2npeGmMg+kFacUnbJ0o+CWz66iA/KFFFNUV7wseTJHJAKWVgxaR5D7f+j2/qW/Up8ycjgRln6YSvoDhWvnsg8SDYKg5FffKBEQJQ6mymDvs/DkvGn0szmGGYGSKwjKyHBlCKPMKWm5GAJsXoaIznD6gCFKoSo5DwA39njwYnAg8MGzdEoig07+bhyFnfccItVR04Ks5d5u5qy0bli3J5h2kaqax6X2GNFM89xNaVZ1Az8eOyqpH6aQpe9fyxho8cpy7co//Jw5JQOiNbx34W9/KrHIw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HDAa4U/3; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=spbrbna5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HDAa4U/3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f73rn1KR8z30BR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 06:22:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f74Xr0LRBz30FP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 06:54:03 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B26F06001A;
-	Fri,  6 Feb 2026 19:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C917DC116C6;
-	Fri,  6 Feb 2026 19:22:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BFDF43FA9;
+	Fri,  6 Feb 2026 19:54:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1567C116C6;
+	Fri,  6 Feb 2026 19:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770405766;
-	bh=Kx5wCP16pk7aUKUS5Xc0tFB0Vbdh59w+1I8LJqs55U4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=spbrbna5ixWjIiDUfzkYLTPfYSHLqaWM1tapgfHoQuHb0w8yXLKcZ0NuUXaWX09mc
-	 Srkbc+faDpBQkr+3X1x0jaCfz+OkN9DPzefo8+ODZ7+Y9/N6qlbExQws5bVJnS4OBK
-	 sCX/+c15tp23trM6HBpYwDUlzJbHP7gqvGFu8s6cR6AO95wTNCBOeWxs8LgxLD4ZP1
-	 p9mX08kUANVWoTd47pUPFYryWSoNnUNyC8N+t4hv6Ov/0oiOCGcQ8T9+/hitYkUvrr
-	 TDmuTgrhjUdTNn6dyZyGqRhdryecNjbDkgQLC7ooJjmsYT9Splcu+EukfqOpN4kpJ5
-	 ZZFbEM5w9Nd7A==
-Date: Fri, 6 Feb 2026 12:22:44 -0700
-From: Keith Busch <kbusch@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Jonathan Corbet <corbet@lwn.net>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, dcostantino@meta.com, rneu@meta.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH] PCI/AER: Add option to panic on unrecoverable errors
-Message-ID: <aYY_hMZyVp7GZvX2@kbusch-mbp>
-References: <20260206-pci-v1-1-85160f02d956@debian.org>
- <20260206185232.GA70936@bhelgaas>
+	s=k20201202; t=1770407641;
+	bh=zuTx45IAXwCCZxQU6FBP5xFVJffmh2hCgzQapegT9vw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HDAa4U/3FllAHrt8tgmweRCEeXs78x4KO6JSUioK8jcWQVszKIa6U7gxfZvgEYm4h
+	 B6/AHZMLBH6lvH1gSkfgLdfNR3y7acJGFCHc2qJKzo/O84tOuaYpq09pVyenUA/tAX
+	 zdIHeVSiKlEePQDpV2CXOdWDbc1mK4xz5XPFRe061GFSeBSxlLEJncJPl9FPe1Rc8r
+	 axac7GCT2qmxi1Pia/PKTkfZntTavmsr0apQrMS7ZlrL+SwlU69RK+mnWAOjcrHTu+
+	 JB+7IPaxEGFziQFuLXjK3bPnIkxrsSEFaylMjKarxFURKBCTtQQ1jF3KVcFZKWN3it
+	 Zsc202ZRu+bWg==
+Message-ID: <bca0abe3-5b8d-4493-a338-b41322e9e85d@kernel.org>
+Date: Fri, 6 Feb 2026 20:53:55 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,80 +63,141 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206185232.GA70936@bhelgaas>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] powerpc/text-patching: Fix possible stringop-overread
+ compilation error
+To: Kees Cook <kees@kernel.org>, Xie Yuanbin <xieyuanbin1@huawei.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ andy@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+ lilinjie8@huawei.com, liaohua4@huawei.com
+References: <20260205100517.292858-1-xieyuanbin1@huawei.com>
+ <20260205100517.292858-2-xieyuanbin1@huawei.com>
+ <202602061024.111ED487@keescook>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <202602061024.111ED487@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16700-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16701-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org,huawei.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:leitao@debian.org,m:corbet@lwn.net,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:bhelgaas@google.com,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:dcostantino@meta.com,m:rneu@meta.com,m:kernel-team@meta.com,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[debian.org,lwn.net,linux.ibm.com,gmail.com,google.com,vger.kernel.org,lists.ozlabs.org,meta.com];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:kees@kernel.org,m:xieyuanbin1@huawei.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:andy@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:linux-hardening@vger.kernel.org,m:lilinjie8@huawei.com,m:liaohua4@huawei.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[kbusch@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: D5069102A9C
+X-Rspamd-Queue-Id: 5F433102EA6
 X-Rspamd-Action: no action
 
-On Fri, Feb 06, 2026 at 12:52:32PM -0600, Bjorn Helgaas wrote:
-> Just from an overall complexity point of view, I'm a little hesitant
-> to add new kernel parameters because this seems like a very specific
-> case.
+
+
+Le 06/02/2026 à 19:26, Kees Cook a écrit :
+> On Thu, Feb 05, 2026 at 06:05:17PM +0800, Xie Yuanbin wrote:
+>> For strnlen(), if the compiler detects that the maxlen argument exceeds
+>> the valid memory size of the input string object, a compilation error may
+>> occur.
+>>
+>> For lastest linux-next source, changing ppc_kallsyms_lookup_name() to
+>> __always_inline, using default ppc64_defconfig, and setting
+>> CONFIG_EXPERT=y, CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2=n,
+>> CONFIG_CC_OPTIMIZE_FOR_SIZE=y. Then, when using gcc-15 for compilation,
+>> the following error will be triggered:
+>> ```log
+>>    CC      arch/powerpc/kernel/optprobes.o
+>> In file included from ./arch/powerpc/include/asm/kprobes.h:24,
+>>                   from ./include/linux/kprobes.h:31,
+>>                   from arch/powerpc/kernel/optprobes.c:8:
+>> In function ‘ppc_kallsyms_lookup_name’,
+>>      inlined from ‘arch_prepare_optimized_kprobe’ at arch/powerpc/kernel/optprobes.c:209:21:
+>> ./arch/powerpc/include/asm/text-patching.h:232:13: error: ‘strnlen’ specified bound 512 exceeds source size 19 [-Werror=stringop-overread]
+>>    232 |         if (strnlen(name, KSYM_NAME_LEN) >= KSYM_NAME_LEN)
+>>        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> In function ‘ppc_kallsyms_lookup_name’,
+>>      inlined from ‘arch_prepare_optimized_kprobe’ at arch/powerpc/kernel/optprobes.c:210:22:
+>> ./arch/powerpc/include/asm/text-patching.h:232:13: error: ‘strnlen’ specified bound 512 exceeds source size 13 [-Werror=stringop-overread]
+>>    232 |         if (strnlen(name, KSYM_NAME_LEN) >= KSYM_NAME_LEN)
+>>        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> cc1: all warnings being treated as errors
+>> ```
+>>
+>> Refer to the implementation of fortify's strnlen(). If the string length
+>> is a compile-time constant, do not call the strnlen() function.
+>>
+>> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+>> ---
+>>   arch/powerpc/include/asm/text-patching.h | 7 ++++++-
+>>   1 file changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/text-patching.h b/arch/powerpc/include/asm/text-patching.h
+>> index e7f14720f630..ce1b2131980a 100644
+>> --- a/arch/powerpc/include/asm/text-patching.h
+>> +++ b/arch/powerpc/include/asm/text-patching.h
+>> @@ -228,8 +228,13 @@ static inline unsigned long ppc_kallsyms_lookup_name(const char *name)
+>>   	/* check for dot variant */
+>>   	char dot_name[1 + KSYM_NAME_LEN];
+>>   	bool dot_appended = false;
+>> +	size_t n_len = __compiletime_strlen(name);
+>> +	const size_t n_size = __member_size(name);
+>>   
+>> -	if (strnlen(name, KSYM_NAME_LEN) >= KSYM_NAME_LEN)
+>> +	if (n_len == SIZE_MAX || KSYM_NAME_LEN < n_size)
+>> +		n_len = strnlen(name, KSYM_NAME_LEN);
+>> +	
+>> +	if (n_len >= KSYM_NAME_LEN)
+>>   		return 0;
 > 
-> Is there anything we could do to improve the logging to make the issue
-> more recognizable?  I assume you already look for KERN_CRIT, KERN_ERR,
-> etc., but it looks like the current message is just KERN_INFO.  I
-> think we could make a good case for at least KERN_WARNING.
+> Isn't it possible to do this and not need __compiletime_strlen at all?
 > 
-> But I guess you probably want something that's just impossible to
-> ignore.
+> 	n_len = strnlen(name, min(__member_size(name), KSYM_NAME_LEN));
 
-It's not necessarily about improving visibility with a higher alert
-level. It's more that the system can't be trusted to operate correctly
-from here on. Consider an interconnected GPU setup and only one
-experiences an unrecoverable error. We don't want to leave the system
-limping along with this unresolved error as it can't perform anything
-useful. A panic induced reboot is the least bad option to return the
-system to operation, or crashes the system temporally close to failure
-to get logs for the vendor if we're actively debugging.
- 
-> Are there any other similar flags you already use that we could
-> piggy-back on?  E.g., if we raised the level to KERN_WARNING, maybe
-> the existing "panic_on_warn" would be enough?
+ppc_kallsyms_lookup_name() only has two callers and they call it with a 
+built-in string. I think we can do something a lot simpler, something 
+like (untested):
 
-There are many KERN_WARNING messages that don't rise to the level of
-warranting a 'panic' that don't want to enable such an option in
-production. It looks like the panic_on_warn was introduced for developer
-debugging.
+static inline unsigned long __ppc_kallsyms_lookup_name(const char *name)
+{
+	unsigned long addr = kallsyms_lookup_name(name);
 
-I agree the curnent INFO level is too low for the generic unrecovered
-condition, though.
+	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2) && addr)
+		addr = ppc_function_entry((void *)addr);
+
+	return addr;
+}
+
+#ifdef CONFIG_PPC64_ELF_ABI_V1
+#define ppc_kallsyms_lookup_name(x)	__ppc_kallsyms_lookup_name("." ## x);
+#else
+#define ppc_kallsyms_lookup_name(x)	__ppc_kallsyms_lookup_name(x)
+#endif
+
+Christophe
 
