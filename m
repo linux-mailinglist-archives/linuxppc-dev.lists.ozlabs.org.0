@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-16653-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16654-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPyyLvalhWljEgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16653-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:27:34 +0100
+	id oA3COv6lhWljEgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16654-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:27:42 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29442FB791
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:27:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAEAFB7A8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:27:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6nJb2YNTz3bTf;
-	Fri, 06 Feb 2026 19:27:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f6nJf2JNxz3bkL;
+	Fri, 06 Feb 2026 19:27:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770366447;
-	cv=none; b=AMGH47mILkZc1edesrtqAMf9FyE4soxa+u99XIiIL7BF9HSLUbpLJfzovkIXP0likHDeFQADNxjvSt2EodJs2ZreKTFhdgVoZxwV86TfJt4E7AFD9q9r97agP3iC9r5Tlo+zNJKTM1/ooq2Mffg51fi4vx1mZI7uvovbDbFi2AdqXOOI3ULmiLumSpex5+FdbHX0ChdgKIjzkWbFc7+d4GuPAM/+qFd8yqwus1At//7Nb6uS4J0XLhoXtPRFwbp9oRR3NdE9gg/++WnEoAX6xp2+71FAX0sJ+fOthYpbLrL5DC8ReQ2GpWQtYp7sZC7xlLJIP/WZZTt+Ao72qByCLw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770366450;
+	cv=none; b=PCE8xc38ddZXACnKXJr0NtVVYk8qRthEqUnEv1WJ3CBWPMAlZS1JKEa2CCQdQFbBtFD4OVOJ2wsI1gM3zYQ8gWT8BugkwczxPqDqO9sAfFBOmE3ub/QP2eS9cscrrZa+soEP4nFzqdPvqDE4SYTsRvk5olKkbC6xcMGP6+3WBapw/Ej3RrU/NJhA5PmS28IUMexQ/ccKu8FN2i0JoJ/543Nepl+ezQVL7G3FeDtWnfejV0vF9tu1GG/rHwUqRD9AqVRacwBpJMXUQBkmX8dtdUIqs6curLqgcx+VR5gi4S8VUrig9U/yD5OO5dGyRCjas+zixG1qffNyBw+aClj0lQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770366447; c=relaxed/relaxed;
-	bh=gNXXBFxEjNi+ENR3BEFHSQc4zxPksAHW9v9vZpP/EzM=;
+	t=1770366450; c=relaxed/relaxed;
+	bh=zLUomY3J5KL8fcj2/N72sXoQOCJEHD+NYbgfaroByCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JwTYF+/y73IXp6KfiN1hL5uZS3dtuH+K/pCLDCzhcbbrP7D8Qwk+ScpbYHDqmpwYmsKSYqgIsd48EhDXB6olQFELOHDKSZIaGtezpitnApnIQxuW2TIgNh5/F0vRp2f9s8ij0WjOP5DvqvPtMhazXhQkCBSHDyuCuN94GJWaxgl3LfyvmfZAPzVpr84UuolZWc5ildYTKX8VX9/UgqyHEG0avps40j6CFOnwOjA5GbGF5dBRg7G1JqErkosSxmQflYyHYep6Ni7HtFdZbRFPCe9NGkzeHTR+WsB80UlfRZOtdDqO4fIlW5fBFR2ScGDTmKd9EkfoyT8gnPKKWv8xtw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HoCgSWJA; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=IUp1hJiakqaFFTG1jjLgOwVLsegWqQ3RdWUD9uAk0MIvp5jL9TqKDnoTXX1mw+khg6u9L8SbJDmnZZCc0ekwkxIdsOfk69/p4XwCpFOspv6+CiJO476zVAzBK/WrlY8B1p79Aadu+2yUO6Mrip+XLekXYGHoeyy9zbocP9TtMp6KW36dMt1p0/1SNWoovDVzrCHuJ1uewHCYuOH3Tw7ytnnGJMQ4rHcZOE688jOfSs5L/x23bCBI2DVImouCxTS6rym3J0y63CX3WcygeoHuVNOiKez8R3X9BObqsy/+79unMcypwYyvj7GAw15Qjx+F1Nhe2B7jmmidYeEfvjrIwQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vp2PC2gA; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HoCgSWJA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vp2PC2gA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6nJZ4RG8z30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 19:27:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6nJd3HVYz30Sv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 19:27:29 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7DDE060122;
-	Fri,  6 Feb 2026 08:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A422FC116C6;
-	Fri,  6 Feb 2026 08:27:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 21164440A4;
+	Fri,  6 Feb 2026 08:27:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A683C116C6;
+	Fri,  6 Feb 2026 08:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770366444;
-	bh=hFLsbylF6p6A9KUqjQvFLetTNZX+wdgm8GS3pPMp/0Y=;
+	s=k20201202; t=1770366447;
+	bh=8tR/JyMCLrNy8ADtwT4oi7g4gZt3KEWkMvJ5vdKP8xw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HoCgSWJAYnZUO2RoEREhCOmqxkrfsTnico+svE9PZ4e5ZgE6qDRHJUIMkD0SPNv81
-	 sbXDlzaI+E8QDKgXtzNCY5OXB0XjscNWGPd+vslG87ViPT76tsk5tlO/JhYq/TNBjC
-	 LrPVTibxAI15pjfkrloKkB2vOCkhT6M1PoO0iPW5ZIBTOpSSjX7CIblB4NEreb33Fl
-	 F+tFDdZ0O1gA72VaCCrqdlwsKNHVCSxfyZawTZol/9Tvpf/gvQccBwzySk6moMNALo
-	 0cosaWjVJOsjV6oIszz2lukfUjdK/nl+/Kem+5ZwQi29WdJvmt8lt4yM1gMZNHeLOw
-	 H27972wgdI63g==
-Date: Fri, 6 Feb 2026 09:25:30 +0100
+	b=Vp2PC2gA3+pZ8ESxBUwBD4+RlaTlMiWTbYGCtU9uYm1Ny183qPkkM87EeA+70T8t5
+	 uzV1MMT7Q4DQgDpm+2PGiSpvjiaRX74PAbfM7uyoDwXe/rTpGM+QBUrLgiopB4ETsv
+	 OzREwf4AkrZVM4U5Fwepst4YUp4B7s/N9yoWtTC4FkxZ4d+t2EASYBqh5qWYBhyCYA
+	 MqgxuIdsfeNUKg4BKG5poj069tVGi16kfDgOxNwtZo3vQdM2dJkzA18wCblJTwE3eD
+	 9zlsMHbbo+uZN88155eS2nRq2Cc3wjAwD6+dE9uNqkh4pjZEXYLAPQykM4P7Sgealq
+	 gaRO1u7Z225vA==
+Date: Fri, 6 Feb 2026 09:25:37 +0100
 From: Nicolas Schier <nsc@kernel.org>
 To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
 Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
@@ -81,9 +81,8 @@ Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
 	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
 	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 03/17] ima: efi: Drop unnecessary check for
- CONFIG_MODULE_SIG/CONFIG_KEXEC_SIG
-Message-ID: <aYWlevYAZ7Rt24Oo@levanger>
+Subject: Re: [PATCH v4 04/17] module: Make mod_verify_sig() static
+Message-ID: <aYWlgdnHjhVbAlTh@levanger>
 Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
 	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
 	Nathan Chancellor <nathan@kernel.org>,
@@ -117,7 +116,7 @@ Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
 	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
 References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260113-module-hashes-v4-3-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-4-0b932db9b56b@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -134,8 +133,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260113-module-hashes-v4-3-0b932db9b56b@weissschuh.net>
-X-TUID: awWjl2+9zWWD
+In-Reply-To: <20260113-module-hashes-v4-4-0b932db9b56b@weissschuh.net>
+X-TUID: h6XwNhzsR91M
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
@@ -147,12 +146,12 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16653-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16654-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kernel.org,m:dmitrykasatkin
  @gmail.com,s:lists@lfdr.de];
@@ -174,21 +173,19 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email]
-X-Rspamd-Queue-Id: 29442FB791
+X-Rspamd-Queue-Id: EBAEAFB7A8
 X-Rspamd-Action: no action
 
-On Tue, Jan 13, 2026 at 01:28:47PM +0100, Thomas Weiﬂschuh wrote:
-> When configuration settings are disabled the guarded functions are
-> defined as empty stubs, so the check is unnecessary.
-> The specific configuration option for set_module_sig_enforced() is
-> about to change and removing the checks avoids some later churn.
+On Tue, Jan 13, 2026 at 01:28:48PM +0100, Thomas Weiﬂschuh wrote:
+> It is not used outside of signing.c.
 > 
 > Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
 > ---
->  security/integrity/ima/ima_efi.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  kernel/module/internal.h | 1 -
+>  kernel/module/signing.c  | 2 +-
+>  2 files changed, 1 insertion(+), 2 deletions(-)
 > 
 
 Reviewed-by: Nicolas Schier <nsc@kernel.org>
