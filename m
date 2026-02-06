@@ -1,97 +1,124 @@
-Return-Path: <linuxppc-dev+bounces-16662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOClDnWshWkRFAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:55:17 +0100
+	id oGpkE6WshWkRFAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:56:05 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F112FBB10
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:55:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F072FBB28
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 09:56:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6nwc6PKWz2yFc;
-	Fri, 06 Feb 2026 19:55:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f6nxY6D2sz30FF;
+	Fri, 06 Feb 2026 19:56:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::435"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770368112;
-	cv=none; b=nY+7vqkmGy/o3Z6BxC9b3FIBWXsgfcrC3oCa1cdhZRAQhV53n0SbFAU3nvTL8/fLwEUjwaybneX7CxZP3Okge1raEEQh7Q/vDovyXk9rqNVg2fkEESInixWlEXcI0FTRhjxqT2s+3jO4CWQzx85rS6//Arm0PgKkAn4sz7M6mENbmmUzGemndeOElBMLojLWWN8/5uBgk3zuUk3bqhU0yOBNEDIzBUu6+RJDL41WjslXJZREE63m/L/BwycV/OfZU8+lmferOqABSQtWxx+05S1Wgp+CZOJrXOjOeU+EXPlZs56TwzNz8QsjPYYVEjJdvpHJ4WoLNZgQKx9BjE3Z2A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770368161;
+	cv=none; b=F8TUkRJJf8VrenlQHeFvAwW2yy02ryqNqTycEiueqRBFdz5s2u7ChAgIO7WeD6HByhzD6BCQ0wPlhbM6NHCV/6Ij0I3rN2cWIWhzldtAJEWasGB2ccY0pHL2NRYOVXShpYU48RYGmSsBD7jY+8/OLFDClv+1IwaDbZUJUBqquC5JsKx1CNpex+zDFVbXaDrajGGkzXeC2MZowQxy/nIzGEfkYq5QX3InI1wNfMipS4YuClkt4MdJlzNWsT91dGqt7ahdOnQR5N5QZSXd4Lg/rDWt4sapWLa0PD9l52cYcf3BZw/nlahzvGtUylay3LeD0kWs1nlJoIjv5UeXg5eM3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770368112; c=relaxed/relaxed;
-	bh=H4CfwKcayH4xDR1+iMb7IfsfcQiFBuBvxK6Im43iVvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LT4i9WngJ5GL+SRhOjLrV2FDp7TddXRiYxzrSbf7RbtiJrIZDgqLIi5b5vYCsHZUN6Ls5akWn0kWfGma0IWmZ4wNvSQbAeOemZiEAxX3OcFh7y617GwqL/0DqRTr3aUw33eNcmAsbiQZQcLMpzpWR8zhj6Pp1n6KkSfG0offCfIdi5OY5phHbBCMoa2t90TcRBAL4Rz2sA9/9Dyxmj/uMEUCIM4EgACrYVsbSGYkWqJooQltisKTyCoQQh97jlX/huVETErLMGLx1ucT28/7i/UYjSearTyHwT2wND2Kvimn8p2Qv24dFd/+g0GZZWzF3y5bPSTyKFi6aCsTpvqKfg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OBH1zV5p; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=fourier.thomas@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1770368161; c=relaxed/relaxed;
+	bh=jelIi3hGsj+4c04iErzkYD9GT0Uen4BiJWApuWXcVgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RMIQCBSyud/ofQCM7N/2MnEGlRhYm69MxyiqhTX4QARDOb/O7ZcmmIsWt79BSiWHHXPo0f9t7AHWKvFvJnVOVWOvksb9EI97uilNJtKyGSDBNbPL9tvNo6cYERSMj5xOV5z7K7STQwlG+Llz7tbkVkC1TJPDN02w2l+xZxbuHARVrfaaw0xDhp6JeNyqGf5hv3hvjkNiLNaJXxD3I9UBUFTw0M9NUsWOTMPKVZWZONeYzSS+263dddHaiFmazZ5YfP3seDVUS7JLxUOP/ZfMhF69eBsvwavCuv5BVfG3kolmvHybrJQ70LX8LU00ardshp7ubWmjVm7va939KU2LbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CU+cP+w0; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OBH1zV5p;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CU+cP+w0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=fourier.thomas@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6nwb0058z2xWJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 19:55:10 +1100 (AEDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-432dee2b55fso295134f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 00:55:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770368106; x=1770972906; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H4CfwKcayH4xDR1+iMb7IfsfcQiFBuBvxK6Im43iVvY=;
-        b=OBH1zV5pDK0GMd0TGO18lsCsYLjtiRfdEBPKPr+ZzwEf+DEalB1ZQXczuTxkHdgH/f
-         MweSSvul5nydDRsUszPbA2yG0At/qo/w+0opZAsJyIEgSIeDqdU6zHVA2fSM8F+lIexK
-         VHSDiJeohaYVJTjwyOhEWE2F4z+nLN4XmWZVwz7uwEUP+0NXkhwOwL2j/gdsuioiHlLh
-         SG9paWZ1hnfDbh41AYxqbGw6Irj6KgUwf6IoU412g8LN53FMArsDi6V/gMbTiXx1srcu
-         ZMto81tcksmsClXS4NnB6AXdjm6T0C3q9m9RtZljkHyfIL3GK2hg3u96KwKNKLyPJWSj
-         pPNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770368107; x=1770972907;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H4CfwKcayH4xDR1+iMb7IfsfcQiFBuBvxK6Im43iVvY=;
-        b=ZVhpEpqDsGAZIU2rlbUzxxWn7S+X35L6oy7IkmMeMTWP2U3ZgygswkTTyYWGzFb1yJ
-         dZ5l83mbLnq6yHz4ejGb7DT7nstMKpjdYww43eAc4rMHy5kOvum+o3DhO3P99CPuRRKQ
-         z8ZgWcWleIC3mklhojeHuIXHp1n1uUPIpbI98cGvNF4cIl3u2nozrL9eFylxT4ypiNQT
-         gqq0gnG1OXXItHrxbUhuRRJ8aj4gWQrdCyEtVZAB5Ui7SN5w5juKOKUTv27WZXArvQV9
-         WLvzD8iJK+rEzLS8eRtS1w3Jn6lZcsSEA4d4qLj+qP10AtpT4DX6gB6eb9nauZ+X4Vef
-         fQEg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/qL+qqNuJ49P2dzuWb44mVKw2l/xzMuONG+Tg4D59N5tF0LpRVKK3hysvzeoXckIIlJyxwNtLJECV3BA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw0SKAKYAiJRglKwyBzhQUv/XWaBZg94RoYlfhBFoKsjPbvOK49
-	oPE+OKf2a/88UgeXpnBwoUZ+gx6Dh+eKwIqN3Sc1OKHpNv3tWikvjpv5
-X-Gm-Gg: AZuq6aL2WCJPBC/eQ2SDT9WvzPDE1at0JmlcK+SPw9CCBL7b6c8MxBKPYXcU6Tcf6YJ
-	G8IMdFbMRRQCp+BsaQZJ804tRBatKie8r5g362t0VXq6hpXA5ovcVY91fqSyEG9PFNrqkG6WAeH
-	8ZnW+2dg+mD+eiVF2I8WeQkGlSvhKbKOmfyNTKK8uYBZu4JDAswPWlKQZRdGt/Lr9PZgIF287hu
-	JdqxES2haizYUvZWocGh2vQyXVOZN33oGR64Iwu0+jSwhUl9lS0oZb4gpR7ptHPAa6R8C9hFjBO
-	bC5hy7B8Ogu5WEnJE/J4rW0I1C570+MnSg9sK4SCH7BF41uPEPmJikOTRVdbGQTOD3szEQ1TqCE
-	aDMFy1j0zeUbS3lR7fgwhSKvDI1mOMmkqAyiGLwCZcBdfQQj7pG82Mr3is+lx9h2BDKL4QVak0/
-	pbYfdb2JuTJc0bbKG+vVtEGV43FXl/5oPu428517eggh/65DGkIjaw3Cphc7Sa7QWo248Cba4Ej
-	g7LiV3W
-X-Received: by 2002:a05:6000:22c4:b0:431:8f8:7f2a with SMTP id ffacd0b85a97d-4362933ec57mr1767057f8f.1.1770368106350;
-        Fri, 06 Feb 2026 00:55:06 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-213.paris.inria.fr. [128.93.83.213])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-43629744ec6sm4878270f8f.35.2026.02.06.00.55.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 00:55:05 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	stable@vger.kernel.org,
-	Zhao Qiang <qiang.zhao@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net,v2] net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in uhdlc_memclean()
-Date: Fri,  6 Feb 2026 09:53:33 +0100
-Message-ID: <20260206085334.21195-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6nxY07WYz2yFc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Feb 2026 19:56:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 700C940A47;
+	Fri,  6 Feb 2026 08:55:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB60C116C6;
+	Fri,  6 Feb 2026 08:55:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770368159;
+	bh=TUSlCOhrAtGm3RFLHWsHhAz5xYWCAH3aTOWbzoQrEko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CU+cP+w07aDAn1kC18HiM/LUIeZUCnNuHh0PfQQjZjmj3J0A4fhIhk05I3vcnbasd
+	 rNcR+4z2piSJJtZzQRuZKltlh8lIbnQDc7tx+z9+Pj8QKcCl3Y/gKJpBnusjZdTBvW
+	 7QUz3JlqWwj040I5c4Nyw23/DajuxfO/OQltgGyNxuUWczbwHSMYQGS3vSw+BHPIqm
+	 nm2McVRUpJg5wNG2K/L9kZx0wix2DyCr04JIcSh0FtTKv9YYnTDOAYOHxfUNaYnb32
+	 O3K3fvUKrO75FiWXaYvRFpf++ADHPckHazTjaBAIpUzhBH3CkXh8NkSnmWvBZYJZ+/
+	 ebMCmVyMQHjgA==
+Date: Fri, 6 Feb 2026 09:55:50 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 05/17] module: Switch load_info::len to size_t
+Message-ID: <aYWsllH6SIl4Yik4@derry.ads.avm.de>
+Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-5-0b932db9b56b@weissschuh.net>
+ <aYWmkEzjvo9RrzI9@levanger>
+ <8fd4914d-5cff-4030-822c-98c8e76d0e60@t-8ch.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,95 +132,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <8fd4914d-5cff-4030-822c-98c8e76d0e60@t-8ch.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16662-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16663-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[fourierthomas@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kernel.org,m:dmitrykasatkin
+ @gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:fourier.thomas@gmail.com,m:chleroy@kernel.org,m:stable@vger.kernel.org,m:qiang.zhao@nxp.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:fourierthomas@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	FORGED_SENDER(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org,nxp.com,lunn.ch,davemloft.net,google.com,redhat.com,lists.ozlabs.org];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,suse.com,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 5F112FBB10
+X-Rspamd-Queue-Id: 5F072FBB28
 X-Rspamd-Action: no action
 
-The priv->rx_buffer and priv->tx_buffer are alloc'd together as
-contiguous buffers in uhdlc_init() but freed as two buffers in
-uhdlc_memclean().
+On Fri, Feb 06, 2026 at 09:38:07AM +0100, Thomas Weißschuh wrote:
+> On 2026-02-06 09:30:08+0100, Nicolas Schier wrote:
+> > On Tue, Jan 13, 2026 at 01:28:49PM +0100, Thomas Weißschuh wrote:
+> > > Switching the types will make some later changes cleaner.
+> > > size_t is also the semantically correct type for this field.
+> > > 
+> > > As both 'size_t' and 'unsigned int' are always the same size, this
+> > > should be risk-free.
+> > 
+> > include/uapi/asm-generic/posix_types.h states:
+> > | * Most 32 bit architectures use "unsigned int" size_t,
+> > | * and all 64 bit architectures use "unsigned long" size_t.
+> > 
+> > Is that statement wrong?  Or did I mix up the context?
+> 
+> That statement is correct. But as both 'unsigned int' and 'unsigned
+> long' are 32-bit wide on 32-bit Linux platforms they are compatible.
+> 
+> 
+> Thomas
 
-Change the cleanup to only call dma_free_coherent() once on the whole
-buffer.
+sure, thanks!
 
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
-v1->v2:
-  - Cleanup priv->tx_buffer and priv->dma_tx_addr
-  - Fix buffer name in commit message
+Acked-by: Nicolas Schier <nsc@kernel.org>
 
- drivers/net/wan/fsl_ucc_hdlc.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index f999798a5612..dff84731343c 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -790,18 +790,14 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
- 
- 	if (priv->rx_buffer) {
- 		dma_free_coherent(priv->dev,
--				  RX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
-+				  (RX_BD_RING_LEN + TX_BD_RING_LEN) * MAX_RX_BUF_LENGTH,
- 				  priv->rx_buffer, priv->dma_rx_addr);
- 		priv->rx_buffer = NULL;
- 		priv->dma_rx_addr = 0;
--	}
- 
--	if (priv->tx_buffer) {
--		dma_free_coherent(priv->dev,
--				  TX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
--				  priv->tx_buffer, priv->dma_tx_addr);
- 		priv->tx_buffer = NULL;
- 		priv->dma_tx_addr = 0;
-+
- 	}
- }
- 
 -- 
-2.43.0
-
+Nicolas
 
