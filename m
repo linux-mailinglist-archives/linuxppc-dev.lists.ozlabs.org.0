@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16667-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16668-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEY9HX/nhWnCHwQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16667-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 14:07:11 +0100
+	id qBolIunnhWnCHwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16668-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 14:08:57 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF13AFDDAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 14:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E24CFFDDE3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Feb 2026 14:08:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f6vWH0wB0z309y;
-	Sat, 07 Feb 2026 00:07:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f6vYL3SS0z309y;
+	Sat, 07 Feb 2026 00:08:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770383227;
-	cv=none; b=PTsDX2j/Q7QAtEQRSoJIxZYnbk+8HRXVyL2HhWF5sJAA9oLhoDzWM9sQklZfkbRb67/aJKp0aMoy47JkgyV6CCTnC5+u0/2/SUtHAwuDGpEKaEWanCgrnkmtKYbi7tWg5gT4q+/ZRFMY91zDdJ4CTrI3m25r8usGfYvyjYEhfYEzYIJQQVwQkCWZPofqfoVVfEOESzdFBjE4+J38ZgacYPcSF2hXgybr7OE/JoE5nvkGdU0SqPEDqSeg4y0cAc3P3AVEyDGHoWbmqiDNoF35yM982TCziTkejycPwcc/vc8Q+caVOvdjf1k03iU0U/UnbruEzdeLmcn5fhxexfGKNA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770383334;
+	cv=none; b=R9FuzPqLWsKHvz88pYx12WSf5TezRO59hkrZEz17Gzy5eOl0mYfCwwU2w7w8dvHlvD/jHRzzw9dkO4VqeKxJovAJ3k1qEnY9HJh0U+Ihgd9Wi8c0VsTA8wnbCmgGu3PzAVLLe146B+A/aTGyJQbPgsNZhv6x3vd3s/TjXtpJ8vOJg78OzLaZOf0T6CySzYIaTIZYT1RifrGvQjf9+OES51XOk0FDF3nWAGgQ0ZMaplom5K2Oc8QgzFfZP8ZnoYfACCZ8+wbTTVpxlfEul+Y3KTzVFYhcPMdooN13XbcIVgl05ViEG9uDjqKvwawQ4uwGlmU5q18wQaW0Qb63s0JT2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770383227; c=relaxed/relaxed;
-	bh=0BfMXOyX2VSf5FRxfCLm7LvZCe4n0avyjTdWFz/Mn6I=;
+	t=1770383334; c=relaxed/relaxed;
+	bh=wVhzraKz/eb4hRtZ/6XrRCjI9AzeGgsZG0Fb0OBcWOc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YIgmAXs3ir5ah95qrPYvgUinvSevagtb9Ua9bLWEBHp24kWpmJ2HgNGg8xKgjYxVh1yuvyDgddwo9U0uLNJLK1jYAio6PtfM9de3qUL7ntLRx94Q07yikYnxuG5xRfS3YHEIIKkTOlj6/3R955TCrryxFovnDcK0PQxHNlWy0BlGD/0eXXdwAX4tryv18cSTZ3DAGEe0zWoi9KLbpZKLfbSEL/MmwjkihkjQ7ji78cwnyWOvqH7t0w4FsiJ2u4FV6Kv+ROT0cnkSLzSUJUL5CvrQXvtP+8BOEI9Gv4rPj0feFak/kYCgDv4gO6mGZOsBW11f/FFrgoqX0/4yIyjmYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pADlDw8M; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=k23WgiBCaM4BwbWvEUlovrJ56o96a5zqXSDxfMb4jbl5D+XOoG0AdvEDCPEVtOheKxhZdCKn6evr7fjFx5deMuqzec2UH2RL7PnZom1NLSBiKH/sKVsaSWjwLNPyQzvXMAD46dqSTOZA2Q4A9FjTMzHKtS88gqOPo8GHSiz3TSqM2uLLpT7xOd4AfG84mExYLLYKfk0Xf9G5rJ8p06gsiHU0zJWbZ/1WcvPKpINQd0VHp1A5UOCYhUqLJwzVd3y1ofr933eoWWIDaL0Vz0sxsConCqH8Fyw5uJ34FFLjBDpIPb9BeB3OnnAZE8WBiXj8r5hmztronvaKf0sJ+5J1Zw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d9sEWGFi; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pADlDw8M;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d9sEWGFi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6vWF2y8wz2xpg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 00:07:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f6vYK4H39z2xpg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 00:08:53 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6AA843D3E;
-	Fri,  6 Feb 2026 13:07:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D59C116C6;
-	Fri,  6 Feb 2026 13:06:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 73E0060010;
+	Fri,  6 Feb 2026 13:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF11C19422;
+	Fri,  6 Feb 2026 13:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770383222;
-	bh=gjqm/xw+EyLKIgvQKuFWku6zxpUiLlZVezFuLgVUV6I=;
+	s=k20201202; t=1770383330;
+	bh=yQatAuidA98Ax17IPcwzDzo7BEX1JG3THZB2KlSl+JI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pADlDw8M4pf14jpmlIFbIscbYzigwt0Z6gyiUPqPYg4K53sg4tuJNS+Fd8+FfzpvP
-	 C4XWlPplSyj14cXa9UOyziF1zOax7eidmDcttDSh0mjeh/D67t8YdTHpquiybuI+/P
-	 Q4NABcm2YikcvBj0ZVFXg/MYMud+oq8IN8rNdASMAhRBY4xV+KoolGf9pk+V097FMg
-	 EzBd1mN7Vu1V6bMDFMIYJvXLnz1586zJu9OcgL9MTm+6kLK7kQUrdnyfLgd8ZL3Otd
-	 XR/MPyTP6VxLKOchVZSl3jixlqmRd+7Uiwdp721hNeoHeewXT7Xoj99I5dJSjBTylf
-	 cH5uYZEzgAv6w==
-Message-ID: <75a6bc37-e597-46f0-adf8-c8ec8e5e0e4e@kernel.org>
-Date: Fri, 6 Feb 2026 14:06:55 +0100
+	b=d9sEWGFiaaRuc0sRdnQAcuG1352EjsHTlcUcZGWkuztARjNwJJPyYsFnT49xnGmu0
+	 7RHw4Tkuma5AimwbVkiWgqlHShrqnXx8/G7FadMgRziOJSchgxeIt/+2oZYCYuX154
+	 ysHzufYNUs+vgv+HRh/pQNvSxxpX86RNqQAgoFFvpfc02+PO91cogUGWhLTSINmPPx
+	 x9eXbp0TD4j1ScpA2ICUEfIuZEK+I+4IBrX2hp0brX9ZJEDv0Zav3wHtmIBWiLjrnY
+	 yV9VKuehMQ8VweK5VFvGLG5DUYp82+uy11I81WooluYehQahb5lQAYEC1YKZf9zTQw
+	 vDF+s8HaV4ZJQ==
+Message-ID: <ef673543-b03b-47b3-bd40-2540a56b6333@kernel.org>
+Date: Fri, 6 Feb 2026 14:08:42 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/13] Remove device private pages from physical
+Subject: Re: [PATCH v6 00/13] Remove device private pages from physical
  address space
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
@@ -74,8 +74,9 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
  willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
  intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
- jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au
-References: <20260130111050.53670-1-jniethe@nvidia.com>
+ jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ ying.huang@linux.alibaba.com
+References: <20260202113642.59295-1-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,7 +123,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260130111050.53670-1-jniethe@nvidia.com>
+In-Reply-To: <20260202113642.59295-1-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -135,16 +136,16 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16667-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16668-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:jniethe@nvidia.com,m:linux-mm@kvack.org,m:balbirs@nvidia.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:ziy@nvidia.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:lyude@redhat.com,m:dakr@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rcampbell@nvidia.com,m:mpenttil@redhat.com,m:jgg@nvidia.com,m:willy@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:intel-xe@lists.freedesktop.org,m:jgg@ziepe.ca,m:Felix.Kuehling@amd.com,m:jhubbard@nvidia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jniethe@nvidia.com,m:linux-mm@kvack.org,m:balbirs@nvidia.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:ziy@nvidia.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:lyude@redhat.com,m:dakr@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rcampbell@nvidia.com,m:mpenttil@redhat.com,m:jgg@nvidia.com,m:willy@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:intel-xe@lists.freedesktop.org,m:jgg@ziepe.ca,m:Felix.Kuehling@amd.com,m:jhubbard@nvidia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:ying.huang@linux.alibaba.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,oracle.com,redhat.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au];
+	FREEMAIL_CC(0.00)[nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,oracle.com,redhat.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au,linux.alibaba.com];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -158,26 +159,32 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	RCPT_COUNT_TWELVE(0.00)[26];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: BF13AFDDAB
+X-Rspamd-Queue-Id: E24CFFDDE3
 X-Rspamd-Action: no action
 
-> The last patch contains the bulk of the work where we change how we
-> convert between device private pages to device private offsets and then
-> use a new interface for allocating device private pages without the need
-> for reserving physical address space.
-> 
 > By removing the device private pages from the physical address space,
 > this series also opens up the possibility to moving away from tracking
 > device private memory using struct pages in the future. This is
 > desirable as on systems with large amounts of memory these device
 > private struct pages use a signifiant amount of memory and take a
 > significant amount of time to initialize.
+> 
+> Changes in v6
+> -------------
+> - Fix maybe unused in kgd2kfd_init_zone_device()
+> - Replace division by PAGE_SIZE with DIV_ROUND_UP() when setting
+> nr_pages. This mirrors the align up that previously happened in
+> get_free_mem_region()
+> 
+> Note removed previous discussion in the cover letter relating to aarch64
+> and memremap_pages() as this was actually already addressed in commit
+> eeb8fdfcf090 ("arm64: Expose the end of the linear map in PHYSMEM_END").
+> 
 
-I plan to take a look at some things in here soon; still catching up on 
-my overflowing inbox.
+Now that I stumbled over v6, same comment; planning on taking a look soon.
 
 -- 
 Cheers,
