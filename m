@@ -1,97 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-16710-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16711-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJ2dGtgVh2nBTQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16710-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Feb 2026 11:37:12 +0100
+	id G8XDL4rFiGm4vwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16711-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 08 Feb 2026 18:19:06 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75981058C6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Feb 2026 11:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8301098A2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 08 Feb 2026 18:19:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f7S7k5GRGz2ydq;
-	Sat, 07 Feb 2026 21:37:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f8F0t07h5z2yrn;
+	Mon, 09 Feb 2026 04:18:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770460626;
-	cv=none; b=l8yHHKlXN+06ZbFYtA06DMpNTN70qVXWiwaWk1Y0aN5c5CU2/qcMLH8zZAQYK3oqf281Hc91V5a7dDV7ITg3LGxrqk4FeFNYReS80ofEPxDKqwTZjQbQ6NYoYnTsiaEJqwhm7BTq1xXyxUvkNPey3qti2O+uPmBL3HMzemFPYNDW52FDurG8HVaL/7v6I0rxLdP2A0a5F5sq5nlHhCv41jC9W5RWNC8rweQa1WZYn778VfR6K9WXKkEPVnMk1n+YpCbhjst+UtdVZOzdZoKIEByuEClThGL5x09ZuO1KyeoczWxh2QBp6h4SOebZB8shI+m8Ywm/mHMb7lDhXj4B0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770460626; c=relaxed/relaxed;
-	bh=FSUDcBsri7qYzrRkXH9I9k/QM3kDOL2TH7o2w54VR4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HzhcEJidQkAVqbOlDsrb98Ic5RP+TaHF/Qlm0KjYngwOBgRJHOmsoMqQ8SkaIdl6VU1CsJuRC82YfJ5j4bX5PCtxaEe3oCcb1dbGdXdHOfJcCQXJE9q6fPYwx8wLN5Dw3C4UyNp0DmLaGDsU7UxvQYzrYYLlFrg4WgXDwbwzITBXK0vVJRPpaaszgjBExdoHr+TzPmyj/PAn7vD6vlP4a0Po3d81pursRsdrzCNavXg4/+Y9FJwGtn5jYlj0DaeSCzZCOleVA14DdM+39NOxQiQqn5dNxw5PyKrhZcV+cDeuJS+cF+QdcBrhMGeaLWOmOfhzvtIvThP11gYd3uRLjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cfYuL09Y; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=136.143.188.112 arc.chain=zohomail.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770571133;
+	cv=pass; b=jnl1z7GQVy6BCF2KgwbLrbsRDoSgkVw3rTBDpK6PxSw6srIvKtDhcrpdgdPuDuEm4eTkW9zHt13w+xsFj6c2yPh1d7dlsIvjxXzvNNqqiXDD7EbNQW8RqejGtDzK70Wt4Nk2HxTsHYWJ6BFUI0NhFvawARVeczniR/jux0fEJfdMxleeyu2enLQ5Q0MCurxDVmwH0bD9oAUUpEObjU+mday8D088sNDYM63xbN41HRZdWCNYVOUNhPh4SBweBZxhwRVcgqR3lelk5ab8tR+OZf6ZuW5YGvREmnysZiSbq4Np7SmF/2U/0uEdXeB2GU0dLxt3SkQK8knJzdhcv+dJBQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770571133; c=relaxed/relaxed;
+	bh=sicy4xMoxAuHL8RXwWOhV8FvUn+Eu6nJRWh8VCO7q58=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=DRcesPJ69YUYkOoAAasX+QLq6NYQ1j1saa5GK3bXPK0S6EFoZyYbo8vBSsSMg/A3jgjJ4RdFUGNZ+ASKy6CXM7Y4QkCpx5ChBor0ZFIm7uDEMBu+5dMjqOytYY0xINQdG80gl/OTODzR6JJqntnV3OVOmsQHRQf/8WT6zvYXSwwcS0riBUPwTlzkOf1OhffQMHkLIhMpE8VOxixdlsHXczW6nhv4Io77/FmtmEAGmfhOgjBco/0n2u4coKYdVdRZlQStfy/852pNrEoTpNylVZFoA1kX9gIm0TvdNAwDOIdbRGlBJYxguwAIDKPy0AH6rH8ClwXK19q0ervpsQHSNA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com; dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=AzepAojX; dkim-atps=neutral; spf=pass (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=daniel.almeida@collabora.com; receiver=lists.ozlabs.org) smtp.mailfrom=collabora.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cfYuL09Y;
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=AzepAojX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=daniel.almeida@collabora.com; receiver=lists.ozlabs.org)
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f7S7j3vBQz2xWJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Feb 2026 21:37:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B848344328;
-	Sat,  7 Feb 2026 10:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2BFC116D0;
-	Sat,  7 Feb 2026 10:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770460622;
-	bh=5txootZk9XnxQipltUnu1uJG2kCaI77i7XiNzSKLg6I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cfYuL09YPhGMJd7P35kyjr0lAxa/iHu/YfsEkzH8LubrxmisxkzKdBFcs1Y2N2MU2
-	 dvs+BpQiIMu7RNuFgOa2U4lhfkQQMWEApPyUIFI4G5jPDx5SxM7vGgvEgcMaAZR3wb
-	 b5TmWeYHqGOnIP6RUJQS0EZeSOfMx7DmDO3xOwzBoST0J5Zd5mVF9jwQn1yVKcNfBE
-	 uWSTfKP2vKbdUd2LRGCkPloiDZT2rrMv/eHBuetCIurcEWl+GxWXDT1apLvIJsW7lK
-	 ecWz7qUsRKRAGOnHYFNSzWF/NyB7DB8z+ZPDngeTtgHQpWl15K7AQ1eM41lt8lTvb6
-	 U9okHU4kls45Q==
-Date: Sat, 7 Feb 2026 12:36:43 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andreas Larsson <andreas@gaisler.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
-Message-ID: <aYcVu7gs65S1CeST@kernel.org>
-References: <20260124095628.668870-1-rppt@kernel.org>
- <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
- <aXj_x5CyUeys7ONM@kernel.org>
- <ec965a79-dad8-4358-a8e9-ebc9f330b67b@gaisler.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f8F0q48kTz2xHX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Feb 2026 04:18:50 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1770571078; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TjW8QXxKiPuz34T4Ff27H6By7JKuN3j/GdKLMnQezk4UHqxkfRTvmheqHPcxxMMxWd2sSOVSp/gaUKypM6juofHvfP2N52a3nvV40/0fcC7M6XjJF9PZ3W2Jk4qOzIRFvSq3AIC4soJ1mhhF5eLoJJ0ytPaRRo2lVHMGSaSDF0I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770571078; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=sicy4xMoxAuHL8RXwWOhV8FvUn+Eu6nJRWh8VCO7q58=; 
+	b=ficZVusMXoRPFZBEOD/QeVgmgsmDJENvcChOAgxy+b2oXA+mzyJCHSLbTb2qzA+ZfNMQSbodFhaON9hdQNwQ1a6nAPzo9rO9fzznCRwa4PqAt/V6OjunUJAQNMt88M0mMos+/ndiSSGo7JKZXTrWlOFLAFkcsPWUBWez4HyfdIg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770571078;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=sicy4xMoxAuHL8RXwWOhV8FvUn+Eu6nJRWh8VCO7q58=;
+	b=AzepAojXyowkYf1LNyu3FRouaQaoqAP+TfpP/0B2kiHSrU5MRZpAZUngB6KLGCAN
+	7tqQz3p4o4DIAW4qWYOfDPQ0PDXf6voDiK6Pms7jAz6Ezsj/ufn3vwr6d+NzfyMcXNv
+	8Rp6CxcYG8lu1rsH9OSeTYMzQYYqYLWEFhLrLvik=
+Received: by mx.zohomail.com with SMTPS id 1770571074486302.15984943030605;
+	Sun, 8 Feb 2026 09:17:54 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,205 +67,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ec965a79-dad8-4358-a8e9-ebc9f330b67b@gaisler.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 1/4] rust: io: Add big-endian read and write functions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DG7E46M9VINC.3KTNQ1T7USPVO@kernel.org>
+Date: Sun, 8 Feb 2026 14:17:36 -0300
+Cc: Gary Guo <gary@garyguo.net>,
+ Link Mauve <linkmauve@linkmauve.fr>,
+ rust-for-linux@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Srinivas Kandagatla <srini@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Eric Biggers <ebiggers@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Lyude Paul <lyude@redhat.com>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ officialTechflashYT@gmail.com,
+ Ash Logan <ash@heyquark.com>,
+ Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
+ =?utf-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <45A7698F-6AE9-46DA-8CB2-9E09F7223229@collabora.com>
+References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
+ <20260204040505.8447-2-linkmauve@linkmauve.fr>
+ <DG6A0WRA0JZC.SPDT9WEXF92K@kernel.org>
+ <EC479D9E-ADBF-461C-BEA6-06EA2D4FD8A6@collabora.com>
+ <DG74LUHX3NPX.3BLARQEIFG1DD@garyguo.net>
+ <D6227AA2-A727-4F29-B7CD-BE0AAB0A13F1@collabora.com>
+ <DG79GRI3NOLS.3ASMS9RJ80IXM@kernel.org>
+ <DG7DUN9M4YIU.KNRN6FM1K687@garyguo.net>
+ <DG7E46M9VINC.3KTNQ1T7USPVO@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16710-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:andreas@gaisler.com,m:akpm@linux-foundation.org,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.linux.dev,m:linux-m68k
- @lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[rppt@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	TAGGED_FROM(0.00)[bounces-16711-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gary@garyguo.net,m:linkmauve@linkmauve.fr,m:rust-for-linux@vger.kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:srini@kernel.org,m:ojeda@kernel.org,m:boqun@kernel.org,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:ardb@kernel.org,m:martin.petersen@oracle.com,m:ebiggers@google.com,m:gregkh@linuxfoundation.org,m:lyude@redhat.com,m:lina+kernel@asahilina.net,m:viresh.kumar@linaro.org,m:lorenzo.stoakes@oracle.com,m:tamird@kernel.org,m:fujita.tomonori@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:officialTechflashYT@gmail.com,m:ash@heyquark.com,m:rw-r-r-0644@protonmail.com,m:j.neuschaefer@gmx.net,m:dakr@kernel.org,m:lina@asahilina.net,m:fujitatomonori@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[daniel.almeida@collabora.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[garyguo.net,linkmauve.fr,vger.kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,protonmail.com,google.com,umich.edu,oracle.com,linuxfoundation.org,redhat.com,asahilina.net,linaro.org,lists.ozlabs.org,heyquark.com,gmx.net];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[51];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C75981058C6
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[daniel.almeida@collabora.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_RCPT(0.00)[linuxppc-dev,kernel];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	APPLE_MAILER_COMMON(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,collabora.com:mid,collabora.com:dkim]
+X-Rspamd-Queue-Id: 7B8301098A2
 X-Rspamd-Action: no action
 
-On Tue, Feb 03, 2026 at 11:17:08AM +0100, Andreas Larsson wrote:
-> On 2026-01-27 19:11, Mike Rapoport wrote:
-> > On Tue, Jan 27, 2026 at 05:02:39PM +0100, Andreas Larsson wrote:
-> >> On 2026-01-24 10:56, Mike Rapoport wrote:
-> >>
-> >>> Every architecture defines empty_zero_page that way or another, but for the
-> >>> most of them it is always a page aligned page in BSS and most definitions
-> >>> of ZERO_PAGE do virt_to_page(empty_zero_page).
-> >>
-> >> Running this in an LDOM on an UltraSparc T4 sparc64, the entire LDOM
-> >> hangs after a while during boot.
-> >>
-> >>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> >>> index c2d19c9a9244..2bd99944176d 100644
-> >>> --- a/arch/sparc/mm/init_64.c
-> >>> +++ b/arch/sparc/mm/init_64.c
-> >>> @@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
-> >>>  extern unsigned int sparc_ramdisk_image;
-> >>>  extern unsigned int sparc_ramdisk_size;
-> >>>  
-> >>> -struct page *mem_map_zero __read_mostly;
-> >>> -EXPORT_SYMBOL(mem_map_zero);
-> >>> -
-> >>>  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
-> >>>  
-> >>>  unsigned long sparc64_kern_pri_context __read_mostly;
-> >>> @@ -2506,18 +2503,6 @@ void __init mem_init(void)
-> >>>  	 */
-> >>>  	register_page_bootmem_info();
-> >>>  
-> >>> -	/*
-> >>> -	 * Set up the zero page, mark it reserved, so that page count
-> >>> -	 * is not manipulated when freeing the page from user ptes.
-> >>> -	 */
-> >>> -	mem_map_zero = alloc_pages(GFP_KERNEL|__GFP_ZERO, 0);
-> >>> -	if (mem_map_zero == NULL) {
-> >>> -		prom_printf("paging_init: Cannot alloc zero page.\n");
-> >>> -		prom_halt();
-> >>> -	}
-> >>> -	mark_page_reserved(mem_map_zero);
-> >>> -
-> >>> -
-> >>>  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
-> >>>  		cheetah_ecache_flush_init();
-> >>>  }
-> >>
-> >> This just removes the mark_page_reserved(mem_map_zero) without 
-> >> replacing it with something corresponding to that. Perhaps part
-> >> of the problem?
-> > 
-> > I don't think so, empty_zero_page is in BSS now an it's reserved as a part
-> > of the kernel image.
-> > 
-> > I suspect that virt_to_page() does not work BSS symbols on sparc64. Can you
-> > please try with this patch:
-> > 
-> > diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-> > index 74ede706fb32..0578c5172d4e 100644
-> > --- a/arch/sparc/include/asm/pgtable_64.h
-> > +++ b/arch/sparc/include/asm/pgtable_64.h
-> > @@ -22,6 +22,7 @@
-> >  #include <asm/adi.h>
-> >  #include <asm/page.h>
-> >  #include <asm/processor.h>
-> > +#include <asm/vaddrs.h>
-> >  
-> >  /* The kernel image occupies 0x4000000 to 0x6000000 (4MB --> 96MB).
-> >   * The page copy blockops can use 0x6000000 to 0x8000000.
-> > @@ -210,6 +211,11 @@ extern unsigned long _PAGE_CACHE;
-> >  extern unsigned long pg_iobits;
-> >  extern unsigned long _PAGE_ALL_SZ_BITS;
-> >  
-> > +extern unsigned long kern_base;
-> > +#define ZERO_PAGE(vaddr)						   \
-> > +	(virt_to_page(empty_zero_page + ((unsigned long)__va(kern_base)) - \
-> > +		      ((unsigned long)KERNBASE)))
-> > +
-> >  /* PFNs are real physical page numbers.  However, mem_map only begins to record
-> >   * per-page information starting at pfn_base.  This is to handle systems where
-> >   * the first physical page in the machine is at some huge physical address,
-> > diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> > index 2bd99944176d..d2d724ba4f83 100644
-> > --- a/arch/sparc/mm/init_64.c
-> > +++ b/arch/sparc/mm/init_64.c
-> > @@ -170,6 +170,8 @@ static void __init read_obp_memory(const char *property,
-> >  
-> >  /* Kernel physical address base and size in bytes.  */
-> >  unsigned long kern_base __read_mostly;
-> > +EXPORT_SYMBOL(kern_base);
-> > +
-> >  unsigned long kern_size __read_mostly;
-> >  
-> >  /* Initial ramdisk setup */
-> Hi,
-> 
-> Unfortunately, that does not help. The LDOM goes down in the same fashion.
 
-Apparently something is wrong with my pointer arithmetics :/
 
-Can you try this one instead?
+> On 5 Feb 2026, at 19:43, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Thu Feb 5, 2026 at 11:31 PM CET, Gary Guo wrote:
+>> On Thu Feb 5, 2026 at 7:05 PM GMT, Danilo Krummrich wrote:
+>>>  (1) Devices are either little-endian or big-endian. Hence, having =
+to write
+>>>=20
+>>> io.big_endian().write()
+>>>=20
+>>>      is excessive, we always want big-endian for a big-endian =
+device.
+>>=20
+>> You don't need to always write this. You just need to do =
+`big_endian()` once
+>> when you obtain the io, and then keep using `BigEndian<Mmio>` instead =
+of just
+>> `Mmio`, and the rest of code is still `.write()`.
+>=20
+> <snip>
+>=20
+>>>  (2) It is error prone, if you forget to call big_endian() first, it =
+is a bug.
+>>=20
+>> Moot point when `big_endian()` is only done once.
+>=20
+> Well, you need to do it at least once per driver entry point. For DRM =
+IOCTLs for
+> instance you also have to consider that it is always Devres<Mmio>.
+>=20
 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 74ede706fb32..615f460c50af 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -210,6 +210,9 @@ extern unsigned long _PAGE_CACHE;
- extern unsigned long pg_iobits;
- extern unsigned long _PAGE_ALL_SZ_BITS;
- 
-+extern struct page *mem_map_zero;
-+#define ZERO_PAGE(vaddr)	(mem_map_zero)
-+
- /* PFNs are real physical page numbers.  However, mem_map only begins to record
-  * per-page information starting at pfn_base.  This is to handle systems where
-  * the first physical page in the machine is at some huge physical address,
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 2bd99944176d..aa1f9f071fb2 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -177,6 +177,9 @@ extern unsigned long sparc_ramdisk_image64;
- extern unsigned int sparc_ramdisk_image;
- extern unsigned int sparc_ramdisk_size;
- 
-+struct page *mem_map_zero __read_mostly;
-+EXPORT_SYMBOL(mem_map_zero);
-+
- unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
- 
- unsigned long sparc64_kern_pri_context __read_mostly;
-@@ -2495,6 +2498,9 @@ static void __init register_page_bootmem_info(void)
- }
- void __init mem_init(void)
- {
-+	phys_addr_t zero_page_pa = kern_base +
-+		((unsigned long)&empty_zero_page[0] - KERNBASE);
-+
- 	/*
- 	 * Must be done after boot memory is put on freelist, because here we
- 	 * might set fields in deferred struct pages that have not yet been
-@@ -2503,6 +2509,12 @@ void __init mem_init(void)
- 	 */
- 	register_page_bootmem_info();
- 
-+	/*
-+	 * Set up the zero page, mark it reserved, so that page count
-+	 * is not manipulated when freeing the page from user ptes.
-+	 */
-+	mem_map_zero = pfn_to_page(PHYS_PFN(zero_page_pa));
-+
- 	if (tlb_type == cheetah || tlb_type == cheetah_plus)
- 		cheetah_ecache_flush_init();
- }
+Well, this is also the case for relaxed(). I basically made peace with =
+the fact that
 
--- 
-Sincerely yours,
-Mike.
+let mmio =3D mmio.relaxed();
+< use mmio >
+
+is going to be a reality per driver entrypoint, unless I misunderstood?
+
+=E2=80=94 Daniel=
 
