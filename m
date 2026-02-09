@@ -1,113 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16750-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16751-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sD4CN0PyiWnGEgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16750-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 15:42:11 +0100
+	id YPWCLIf4iWn5FAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16751-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 16:08:55 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415F4110BA7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 15:42:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292E61119B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 16:08:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f8nTW4cy9z30T9;
-	Tue, 10 Feb 2026 01:42:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f8p4K655Xz2yGx;
+	Tue, 10 Feb 2026 02:08:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770648127;
-	cv=none; b=VZg4n34orglpwhp7f/LuRSW/eQOTu2+Bhpc6q0LpSYsIEhnXYOEfB4nVJf4HypDcWVsmygc9CB7eveDPdi8I4KK9rJPOz/KCPk0sJAhZXfOzRQDKUDYuBFFeXFtXWAw2QH+xjFQ08AvJSqvX7dQMqQCrROdFPKV9ztGWZc2ZqqI6RoErPuiRzt9Ii7Xzb5ljW3vxkfGA2BwhyjJHz3s/3wRfT6hCApR8p9AhxN5Hf/krA0A5652XGsB4C4zJwBhRFVZQvVAfvYpJbONN0GotLk8geJhHOkwJG3OonLV2cPy4eus17XCKWQF2+h8kw5SyH0erzCKbWHOrHqlpzg3KCg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770649729;
+	cv=none; b=bPoLqn79iI7ayCiyp7wT2vpJwbxb+nUYxS/LmHwubMgIqAJIGgSwIaILSw/q6ukO+IN+GeGBvdXwdX2CbwxWL80J0AVqz/06Aw5bXQIkPb+jGEKAFQopGH+t4eWcZDGGkZfdcz3qVths6ABO0zsVfZuQxysguxEztaU3jTYm9jonYhGfcLn7VtYkZMymrT27x7bFMibnW00ci8uwkJ51Sw8+WBTM2fOO0ZIwv8NZc974elYz0U/p/5Lhy97XdiAvpnv00UxqkCwgY6zCEpeVmG8US8i8cmt3pVmENge+H371Eiq/3j366vbGiKvzQ8QDLjArGdlzVNbRUILtqaRXvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770648127; c=relaxed/relaxed;
-	bh=89UBpLWUVLDz8zCBHHQksmY0ODWLt7f/SYALJIBFUQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A478L2KZPhb8TlaJomYNfngGVo8NJ4BYaRGF2XIdOZnoW1zbuOs47QkBm0H+cqMQ4U1uwY8wHNkBQ9G5GpPwq/4gPCLBvDgAy4K+wEzXsit9n+HqaifqxZ+g7tMld2w63xritdfCMxiPCfFsKVnLTri/8romvzRFaberc8HloAOAHxQMArNku7Ti0tozghr5b9t+LJhV840eLW3cefkOSGCmY3p7WhZMNTNRpMBboijMpfgvzpVECIiBkwm7EyuAjBO6zW3SZzzbliP5W8F4Mzpb3eflFR24it8QPyCBkCsU4R3V/KAMWTi3/6nw69hZwvaNPiAK7fl3ESVrZrXV9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DDgSgdMN; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1770649729; c=relaxed/relaxed;
+	bh=kPUqV2G4Ach91Ih94Oec+zKCJRL1csnjCWzGDZaM6fc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JMY23iFZMolR2DgA0A0yEB/WVye9lqH4kmlkCOhnbjzaA7Azeuz7ZT+A2uff1vZnbOv7mQXaTqqEuy/qJbXj/c57UvaHWKh7qpNG4sc23LNdLQE+koCT/MYpsIGvR6FlfNoAe6i3gcvSJI4g+WgI7eQ6rZCYrwzShdNgHIZGY6Io0iU84/cDdrgcb3w80P5RVQaP4dcCHhk7OPe+d6HG1nUpiPdjH83HXm6w4abvIm+hUrquNrNQQ7PfsaTdrg3NLjrOtnmsBgzovg5WdXhMUht6j096K66p/mC/EhbcgDJi825UAE6GgIIyMcY29PozCS5eGP8rHkEc+9eX8AtP+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hHysNRIg; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DDgSgdMN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hHysNRIg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f8nTV5675z30Lv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 01:42:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f8p4K00cvz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 02:08:48 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 308FB6011E;
-	Mon,  9 Feb 2026 14:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E801C2BCB2;
-	Mon,  9 Feb 2026 14:41:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 95B326011E;
+	Mon,  9 Feb 2026 15:08:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E07C116C6;
+	Mon,  9 Feb 2026 15:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770648123;
-	bh=7cFSZFlwjTUh9dvWnOCSVBRELIfKAznQbQnIrGVc1RU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDgSgdMNcu8MC1lYLmXATQwVlsww827kGX+kQhoP9oBkxEato8f7lCaW7MzSVppYE
-	 vnuhm9TRAGD7I0eZEOf+FdtZ8QO8ZF2WHm0ZXC9xIluaIJEqyJb8X/2UGxGIkN8IIg
-	 UwdgNZMnuG+YBw7wCFKOrhU899+4nYALZbpNrY2eBuP55WLVFxP/KmFG3uCKFZq1al
-	 +PK5CSMtZ3z95edte2A/41O84/sVxmqechk/vFA1tpe66/dp8vA3A5WXjyalGDQ9Tm
-	 McNeIWZeIxMGcXE+cVmPScCvJeKJ54Skywte8/oP/sjxAe9lb1jOUAt2RlWxv20GUY
-	 rNUn6xy6sD5yA==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Michal Simek <monstr@monstr.eu>,
-	Mike Rapoport <rppt@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Will Deacon <will@kernel.org>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	x86@kernel.org
-Subject: [PATCH v2 4/4] mm: cache struct page for empty_zero_page and return it from ZERO_PAGE()
-Date: Mon,  9 Feb 2026 16:40:57 +0200
-Message-ID: <20260209144058.2092871-5-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260209144058.2092871-1-rppt@kernel.org>
-References: <20260209144058.2092871-1-rppt@kernel.org>
+	s=k20201202; t=1770649726;
+	bh=74hxAhJyO+2eTcl7giR1QDsEixnocOOTI/KCVXUN3oc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hHysNRIgE1EgualKU6aPczQKYfw+TDjGY4OatYFD3fS7TYkGD7WEmgWx3geZeHrfv
+	 F1zDDpuaU0nwUv7Ae8xi1oXRUWF9pjvFzqRkh1G83qeRNbE6qwS1sk3FHaw39jYn+r
+	 Nk+PQE+5SnWvARHfBa8QAWdgNoL3wy2mlksHsr/SXlqVp8ketneSvd/HphO2nVp9tE
+	 BCsZzIL9BLqAHeIK57meLHZ0odqx+OpNBfkHnj8PRzutvNrHUWbq5+TlKgLRN2HHQv
+	 huO+HUqNPVA5lqDphasR6vnb5IXL4MN7aVd4+kWDg4t8O5NV52bIkpeW9MtEreTJuG
+	 K04aIwqR6xaWg==
+Message-ID: <0f15b363-a5e5-4a58-89b0-13b5112772b0@kernel.org>
+Date: Mon, 9 Feb 2026 16:08:32 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -121,308 +63,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] mm: rename my_zero_pfn() to zero_pfn()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20260209144058.2092871-1-rppt@kernel.org>
+ <20260209144058.2092871-3-rppt@kernel.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260209144058.2092871-3-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16750-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16751-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[rppt@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:chleroy@kernel.org,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:rppt@kernel.org,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m
- :loongarch@lists.linux.dev,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.linu
+ x.dev,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_GT_50(0.00)[52];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_GT_50(0.00)[53];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 415F4110BA7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 292E61119B1
 X-Rspamd-Action: no action
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-For most architectures every invocation of ZERO_PAGE() does
-virt_to_page(empty_zero_page). But empty_zero_page is in BSS and it is
-enough to get its struct page once at initialization time and then use
-it whenever a zero page should be accessed.
 
-Add yet another __zero_page variable that will be initialized as
-virt_to_page(empty_zero_page) for most architectures in a weak
-arch_setup_zero_pages() function.
+Le 09/02/2026 à 15:40, Mike Rapoport a écrit :
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> my_zero_pfn() is a silly name.
+> 
+> Rename zero_pfn variable to zero_page_pfn and my_zero_pfn() function to
+> zero_pfn().
+> 
+> While on it, move extern declarations of zero_page_pfn outside the
+> functions that use it and add a comment about what ZERO_PAGE is.
 
-For architectures that use colored zero pages (MIPS and s390) rename their
-setup_zero_pages() to arch_setup_zero_pages() and make it global rather
-than static.
+I guess the idea of the extern declaration being inside its only 
+external users was to ensure nobody would start using it directly, hence 
+bypassing the overloadable helpers.
 
-For architectures that cannot use virt_to_page() for BSS (arm64 and
-sparc64) add override of arch_setup_zero_pages().
+Should we at least call the variable __zero_page_pfn instead in order to 
+warn people that using it directly requires care ?
 
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/arm64/include/asm/pgtable.h    |  6 ------
- arch/arm64/mm/init.c                |  5 +++++
- arch/mips/mm/init.c                 | 11 +----------
- arch/s390/mm/init.c                 |  4 +---
- arch/sparc/include/asm/pgtable_64.h |  3 ---
- arch/sparc/mm/init_64.c             | 17 +++++++----------
- include/linux/pgtable.h             | 11 ++++++++---
- mm/mm_init.c                        | 21 +++++++++++++++++----
- 8 files changed, 39 insertions(+), 39 deletions(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 63da07398a30..2c1ec7cc8612 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -106,12 +106,6 @@ static inline void arch_leave_lazy_mmu_mode(void)
- #define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
- 	local_flush_tlb_page_nonotify(vma, address)
- 
--/*
-- * ZERO_PAGE is a global shared page that is always zero: used
-- * for zero-mapped memory areas etc..
-- */
--#define ZERO_PAGE(vaddr)	phys_to_page(__pa_symbol(empty_zero_page))
--
- #define pte_ERROR(e)	\
- 	pr_err("%s:%d: bad pte %016llx.\n", __FILE__, __LINE__, pte_val(e))
- 
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 96711b8578fd..417ec7efe569 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -328,6 +328,11 @@ void __init bootmem_init(void)
- 	memblock_dump_all();
- }
- 
-+void __init arch_setup_zero_pages(void)
-+{
-+	__zero_page = phys_to_page(__pa_symbol(empty_zero_page));
-+}
-+
- void __init arch_mm_preinit(void)
- {
- 	unsigned int flags = SWIOTLB_VERBOSE;
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 4f6449ad02ca..55b25e85122a 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -56,10 +56,7 @@ unsigned long empty_zero_page, zero_page_mask;
- EXPORT_SYMBOL_GPL(empty_zero_page);
- EXPORT_SYMBOL(zero_page_mask);
- 
--/*
-- * Not static inline because used by IP27 special magic initialization code
-- */
--static void __init setup_zero_pages(void)
-+void __init arch_setup_zero_pages(void)
- {
- 	unsigned int order;
- 
-@@ -450,7 +447,6 @@ void __init arch_mm_preinit(void)
- 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
- 
- 	maar_init();
--	setup_zero_pages();	/* Setup zeroed pages.  */
- 	highmem_init();
- 
- #ifdef CONFIG_64BIT
-@@ -461,11 +457,6 @@ void __init arch_mm_preinit(void)
- 				0x80000000 - 4, KCORE_TEXT);
- #endif
- }
--#else  /* CONFIG_NUMA */
--void __init arch_mm_preinit(void)
--{
--	setup_zero_pages();	/* This comes from node 0 */
--}
- #endif /* !CONFIG_NUMA */
- 
- void free_init_pages(const char *what, unsigned long begin, unsigned long end)
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index 3c20475cbee2..1f72efc2a579 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -69,7 +69,7 @@ unsigned long empty_zero_page, zero_page_mask;
- EXPORT_SYMBOL(empty_zero_page);
- EXPORT_SYMBOL(zero_page_mask);
- 
--static void __init setup_zero_pages(void)
-+void __init arch_setup_zero_pages(void)
- {
- 	unsigned long total_pages = memblock_estimated_nr_free_pages();
- 	unsigned int order;
-@@ -159,8 +159,6 @@ void __init arch_mm_preinit(void)
- 	cpumask_set_cpu(0, mm_cpumask(&init_mm));
- 
- 	pv_init();
--
--	setup_zero_pages();	/* Setup zeroed pages. */
- }
- 
- unsigned long memory_block_size_bytes(void)
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 615f460c50af..74ede706fb32 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -210,9 +210,6 @@ extern unsigned long _PAGE_CACHE;
- extern unsigned long pg_iobits;
- extern unsigned long _PAGE_ALL_SZ_BITS;
- 
--extern struct page *mem_map_zero;
--#define ZERO_PAGE(vaddr)	(mem_map_zero)
--
- /* PFNs are real physical page numbers.  However, mem_map only begins to record
-  * per-page information starting at pfn_base.  This is to handle systems where
-  * the first physical page in the machine is at some huge physical address,
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 0cc8de2fea90..707c1df67d79 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
- extern unsigned int sparc_ramdisk_image;
- extern unsigned int sparc_ramdisk_size;
- 
--struct page *mem_map_zero __read_mostly;
--EXPORT_SYMBOL(mem_map_zero);
--
- unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
- 
- unsigned long sparc64_kern_pri_context __read_mostly;
-@@ -2496,11 +2493,17 @@ static void __init register_page_bootmem_info(void)
- 			register_page_bootmem_info_node(NODE_DATA(i));
- #endif
- }
--void __init mem_init(void)
-+
-+void __init arch_setup_zero_pages(void)
- {
- 	phys_addr_t zero_page_pa = kern_base +
- 		((unsigned long)&empty_zero_page[0] - KERNBASE);
- 
-+	__zero_page = phys_to_page(zero_page_pa);
-+}
-+
-+void __init mem_init(void)
-+{
- 	/*
- 	 * Must be done after boot memory is put on freelist, because here we
- 	 * might set fields in deferred struct pages that have not yet been
-@@ -2509,12 +2512,6 @@ void __init mem_init(void)
- 	 */
- 	register_page_bootmem_info();
- 
--	/*
--	 * Set up the zero page, mark it reserved, so that page count
--	 * is not manipulated when freeing the page from user ptes.
--	 */
--	mem_map_zero = pfn_to_page(PHYS_PFN(zero_page_pa));
--
- 	if (tlb_type == cheetah || tlb_type == cheetah_plus)
- 		cheetah_ecache_flush_init();
- }
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 9ba1f03fca54..722df2149d58 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1894,6 +1894,8 @@ static inline void pfnmap_setup_cachemode_pfn(unsigned long pfn, pgprot_t *prot)
-  * For architectures that don't __HAVE_COLOR_ZERO_PAGE the zero page lives in
-  * empty_zero_page in BSS.
-  */
-+void arch_setup_zero_pages(void);
-+
- extern unsigned long zero_page_pfn;
- 
- #ifdef __HAVE_COLOR_ZERO_PAGE
-@@ -1918,10 +1920,13 @@ static inline unsigned long zero_pfn(unsigned long addr)
- }
- 
- extern uint8_t empty_zero_page[PAGE_SIZE];
-+extern struct page *__zero_page;
- 
--#ifndef ZERO_PAGE
--#define ZERO_PAGE(vaddr) ((void)(vaddr),virt_to_page(empty_zero_page))
--#endif
-+static inline struct page *_zero_page(unsigned long addr)
-+{
-+	return __zero_page;
-+}
-+#define ZERO_PAGE(vaddr) _zero_page(vaddr)
- 
- #endif /* __HAVE_COLOR_ZERO_PAGE */
- 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 1eac634ece1a..b08608c1b71d 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -59,7 +59,10 @@ EXPORT_SYMBOL(zero_page_pfn);
- #ifndef __HAVE_COLOR_ZERO_PAGE
- uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
--#endif
-+
-+struct page *__zero_page __ro_after_init;
-+EXPORT_SYMBOL(__zero_page);
-+#endif /* __HAVE_COLOR_ZERO_PAGE */
- 
- #ifdef CONFIG_DEBUG_MEMORY_INIT
- int __meminitdata mminit_loglevel;
-@@ -2675,12 +2678,21 @@ static void __init mem_init_print_info(void)
- 		);
- }
- 
--static int __init init_zero_page_pfn(void)
-+#ifndef __HAVE_COLOR_ZERO_PAGE
-+/*
-+ * architectures that __HAVE_COLOR_ZERO_PAGE must define this function
-+ */
-+void __init __weak arch_setup_zero_pages(void)
-+{
-+	__zero_page = virt_to_page(empty_zero_page);
-+}
-+#endif
-+
-+static void __init init_zero_page_pfn(void)
- {
-+	arch_setup_zero_pages();
- 	zero_page_pfn = page_to_pfn(ZERO_PAGE(0));
--	return 0;
- }
--early_initcall(init_zero_page_pfn);
- 
- void __init __weak arch_mm_preinit(void)
- {
-@@ -2704,6 +2716,7 @@ void __init mm_core_init_early(void)
- void __init mm_core_init(void)
- {
- 	arch_mm_preinit();
-+	init_zero_page_pfn();
- 
- 	/* Initializations relying on SMP setup */
- 	BUILD_BUG_ON(MAX_ZONELISTS > 2);
--- 
-2.51.0
+Christophe
 
 
