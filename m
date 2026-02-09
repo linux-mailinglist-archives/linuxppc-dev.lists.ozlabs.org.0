@@ -1,66 +1,132 @@
-Return-Path: <linuxppc-dev+bounces-16752-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLXKJj77iWkiFQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16752-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 16:20:30 +0100
+	id OMMiMgxHimmAJAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 21:43:56 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AF9111D65
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 16:20:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112C61147E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Feb 2026 21:43:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f8pKl036pz2yGx;
-	Tue, 10 Feb 2026 02:20:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f8xVw3mrBz2yGx;
+	Tue, 10 Feb 2026 07:43:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770650426;
-	cv=none; b=UH1eVgicfADhBc4WdYsFvE5fj/N7/mAwjGq/flb9UpP96cT6rzJq02GqvMazx54PbD0tCflaJagpgd19m81EgFX+res1Nu/A/yMgBLXH1FZUvBbIHirDMZtlOoCy8R4N2WT+gJ0QI7lfaHS46SsfotV0ozWkucp69ZHn1IM91Ydw0au8FPywZVdXitNnhwCVvY4pTXnxq4TIQUVLkxem8hocnqo/Frw4+C7Gt/B9yjSXeyOxa4PjexeDyREz0g055nmMtDw1yB/MI/ymGnbbHmSUeLOnQF5CXzn5h3Z3EmzQCch4ry83Ns+uRF7H2DoZrSIUzMWdY1VOPUAh7YY+xg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770669832;
+	cv=none; b=ITv0bbb+uhIhQfnMHvRPXUHEWxiiu55cM4xXps6bltiGF9uU8iXPyfkUDyN4QEHXS4NgE+4StyOpjEzwXcFfY8Q5TO8BtA4jKfLV3OdbZT/T3KJI/kWFNe5zckV0xx0VxYmkxf0usNEIi+e4oRSRyHqWBo4Gdu03VIsu/Z72DjMgoUI21CoRJh09hW5WflyNI3kliANJLaDGAjuNdXmY7gFdip5aqo6pX6lJL51nVaWGfeORsAqJRtFOEw6WaXU9dsIWonwHrx38j9IiTUS4UlxyN5Q38f4QspSkTDLmK9EU9pPt/zerCraGw6h7S7m4aAe0ajM7pvcjdC9SXTDXEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770650426; c=relaxed/relaxed;
-	bh=rfWUO9yG8BlHLu68q98grtGVw1mlSq+oAV/ahBZOjng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EgUFTUtQVKqJxNLfvxIKaZZte1CxnS0kR2KCDR8bVpMkPvuGUxCffFyy/qEKs8uToUgwhTU7clZoNzBgvDtlQkLo6DJ4Y9IICJpOeKXUgRY8dPPJDxPFmF2yutKMgvdKpjyQfhTP6Doitdq6lbC0fPk+QRdKlqAxHTcprgco1DeSh6vybbiOr+fEsiLXHjZTVtYJLw/OD3EHCQjwOBqc82baOfF6xRAtZboT4jXGPfvKTSKMTD+V8QY9+wrLt5d+I+VvYvvwRUVGHQWDRIGhfMJAL36FDdzr1+tRUZ/CSoCbwkn97p8Htlc23Ho6YdTuOv5TCK+PurlR9C3tZfZguA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HoTdfgkB; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1770669832; c=relaxed/relaxed;
+	bh=dop6p6rsLZKac/t5TeQjfJbjHcYGRmra2zjnHrlmz0E=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=TjBPn8t1M1k1l5Pr3Pbz2k3yZV3o5klkXAEntl95Etkyz1aAAsGPndL+9GSqcq5CH0dWNgu09/CniJCpjwqY8wSnty7/oLew8kT83k7ZRQ3SsAREDb1m7Iuo9HA2nfq62UjsbTaMl9YuHef1i4CTOhNxcEEpGIOOz351j8oCgRq8AEcguKOEeNSGM0xqkI7QGKKDe7P0szNtbOocR+ErpNwh02VFfXxJMJsoJL+wdDb61C7SaJBi9nVCYPEn7E6pMZnIeBM72Vo3DoMaWfZ24lhErD+1wpBGGIFkNhnSFzOeG2cNdFko1mO1dB/DoOHeHY/WVD0W01wNDTpqQQIYHg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tXt5ZzuV; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HoTdfgkB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tXt5ZzuV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f8pKh4dQrz2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 02:20:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770650425; x=1802186425;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nmXJ+jWEo/z81w9oyX9ApAZJkh48iDrBFf9GYDPqlyQ=;
-  b=HoTdfgkB0NDrajBhdzvHL8kqCl7zA1FIs/TaS1N07FPdWzwdH+p4sfiu
-   Dzty6RgiuIXEKZcvWb/9gu4iThE7YIkq+JMGsUTyurmdHS0QplqMs8x1l
-   69I7JpdRG9Or/EAmG0kiuQqFcvDG63asUgABoraw/lpOz+cmDhormL+oi
-   7GbR9aSJuZBKUZgih2gK+ECU9eKXsHQb5PFunUhMRrg9B7ZJIDTqD3+Ej
-   xQLGuTjCOfecx2mQluTxYDWdJukXj0T/yAV2V03+LVCCPJ8qhsrqNsYse
-   h7KDaDeb7vMp496Ocbr5mX9c79zQrT/cPRGls+7GpPCfEjd+KND8MCJA/
-   g==;
-X-CSE-ConnectionGUID: rqe+/CrmRyuJJEGVxID1mA==
-X-CSE-MsgGUID: bpH8vyeHSv+mphWVzNim1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="70778609"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
-   d="scan'208";a="70778609"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 07:20:11 -0800
-X-CSE-ConnectionGUID: 582YU2ENSaqF3h08Xvh3Lw==
-X-CSE-MsgGUID: 4CBRhAj3Qym7tVxCsKPGyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
-   d="scan'208";a="216136252"
-Received: from dwesterg-mobl1.amr.corp.intel.com (HELO [10.125.111.231]) ([10.125.111.231])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 07:20:10 -0800
-Message-ID: <8224204a-42f5-4b83-b4c2-ee976f711d18@intel.com>
-Date: Mon, 9 Feb 2026 07:20:09 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f8xVt73bHz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 07:43:50 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619HKqDO883546;
+	Mon, 9 Feb 2026 20:43:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=dop6p6
+	rsLZKac/t5TeQjfJbjHcYGRmra2zjnHrlmz0E=; b=tXt5ZzuV3+5JXRaWSz9tDa
+	QC6QZNurjqjxngLuSU7Td7b+kuQPXdq6I7ydsO/3slOeWxP8EtRrCgf/mCgbaDAk
+	067Q3pJ49VfR9ZQM7irZ4CVDCttaeuF9BFiJSFaG5w519Xf4lXFWpNQfuVoA+Ozm
+	/6BB98tjaF6b5tqr8bLO5jTtB+HoUjxDOkIXHsyAvH6z2Sh11xlNBCv3UeE2NNA0
+	Ukn8mlzjnuKF5MKWbbp19/J/ULp1D7aUWhRgi87P3pNsspl1FjNGgDTw1JC+cqXo
+	6LyJBUjHdo+8aA/F8NvJh0HH10WQfUf4jxImct3BSSow0YfbDQVUVgzyq5FSjYQQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696u96fr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Feb 2026 20:43:13 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 619ISMot012616;
+	Mon, 9 Feb 2026 20:43:12 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6h7k6ja8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Feb 2026 20:43:12 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 619KhBL265012132
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Feb 2026 20:43:11 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D41F25805D;
+	Mon,  9 Feb 2026 20:43:10 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16A9558055;
+	Mon,  9 Feb 2026 20:43:09 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.108.92])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Feb 2026 20:43:09 +0000 (GMT)
+Message-ID: <66f9d13875e81a965984e2a661e992a3fe43c516.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/3] integrity: Make arch_ima_get_secureboot
+ integrity-wide
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Coiby Xu <coxu@redhat.com>, linux-integrity@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Egorenkov	
+ <egorenar@linux.ibm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Dave Hansen	
+ <dave.hansen@intel.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Madhavan
+ Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin	 <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger	
+ <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov
+ <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86
+ ARCHITECTURE (32-BIT AND 64-BIT)"	 <x86@kernel.org>,
+        "H. Peter Anvin"
+ <hpa@zytor.com>,
+        Dmitry Kasatkin	 <dmitry.kasatkin@gmail.com>,
+        Eric
+ Snowberg <eric.snowberg@oracle.com>,
+        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn"	 <serge@hallyn.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        open list	
+ <linux-kernel@vger.kernel.org>,
+        "open list:LINUX FOR POWERPC (32-BIT AND
+ 64-BIT)" <linuxppc-dev@lists.ozlabs.org>,
+        "open list:S390 ARCHITECTURE"
+ <linux-s390@vger.kernel.org>,
+        "open list:EXTENSIBLE FIRMWARE INTERFACE
+ (EFI)"	 <linux-efi@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM"	
+ <linux-security-module@vger.kernel.org>,
+        "open
+ list:KEYS/KEYRINGS_INTEGRITY"	 <keyrings@vger.kernel.org>
+In-Reply-To: <20260203041434.872784-2-coxu@redhat.com>
+References: <20260203041434.872784-1-coxu@redhat.com>
+	 <20260203041434.872784-2-coxu@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Feb 2026 15:43:08 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,136 +140,181 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] arch, mm: consolidate empty_zero_page
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20260209144058.2092871-1-rppt@kernel.org>
- <20260209144058.2092871-4-rppt@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260209144058.2092871-4-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=KZnfcAYD c=1 sm=1 tr=0 ts=698a46e2 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=i0EeH86SAAAA:8 a=20KFwNOVAAAA:8 a=4cj3x1ySzUcWov3_WBgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE2NyBTYWx0ZWRfX8NzdX8SjuD/z
+ Jr6LoY8ySh8S2uljRfOdx3N6Y3IZkgvwOvV3vQ+MBs1IeAtCvNusu0RQligiYQ+OBLf92h6a+Q4
+ s+tteIdVwupKFPapl7+ybHOa9dYBmVixKW368DUjb0UhC1/QlNRB/dvb2eWG9mO6lOGDZJWVS/e
+ CyyEZdfMTE3fRMYSYNDXsQzAj5T/r210A4ZJvVuMAm1t5sQd+VW+hq7E3oON/pcJ1qk9NRTDI0z
+ k4iWPmA3gQxZZ1osSzKF/0WmU7RmDRwXLUNGyzUy5DvxwDLO+YRDz9IkdBSznR9qvF8kPGQpuJI
+ P5arwaGKksQkJc+uoOWXO7ZNb6MEz6BPUrTosOsTr3oYuKLkrkOC1PTEQ6yck6aFZfXH/OOdg+n
+ BKRyuo7qOvIOIMda8QPQEK+WfsvptoSJQxaxeBTGRgYSzO7sO7SbQRhSneTExGmyXbIH0nQh+Y1
+ vYmYuM5hpCdClYTI1yg==
+X-Proofpoint-ORIG-GUID: qFeWjB0THaoEJqNN4oNEEH-uukJg8mvI
+X-Proofpoint-GUID: EW8OSGEJoKAL3MfAfS-L_UR2r-2UpTiB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-09_01,2026-02-09_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ clxscore=1011 suspectscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602090167
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-16753-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16752-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:chleroy@kernel.org,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m
- :loongarch@lists.linux.dev,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dave.hansen@intel.com,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email];
+	FORGED_SENDER(0.00)[zohar@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[33];
+	FORGED_RECIPIENTS(0.00)[m:coxu@redhat.com,m:linux-integrity@vger.kernel.org,m:hca@linux.ibm.com,m:egorenar@linux.ibm.com,m:ardb@kernel.org,m:dave.hansen@intel.com,m:roberto.sassu@huawei.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:jarkko@kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:linux-efi@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:keyrings@vger.kernel.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,intel.com,huawei.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,oracle.com,paul-moore.com,namei.org,hallyn.com,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_GT_50(0.00)[53];
+	FROM_NEQ_ENVFROM(0.00)[zohar@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: A7AF9111D65
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 112C61147E3
 X-Rspamd-Action: no action
 
-On 2/9/26 06:40, Mike Rapoport wrote:
->  arch/x86/include/asm/pgtable.h            |  8 --------
->  arch/x86/kernel/head_32.S                 |  4 ----
->  arch/x86/kernel/head_64.S                 |  7 -------
+On Tue, 2026-02-03 at 12:14 +0800, Coiby Xu wrote:
+> EVM and other LSMs need the ability to query the secure boot status of
+> the system, without directly calling the IMA arch_ima_get_secureboot
+> function. Refactor the secure boot status check into a general function
+> named arch_get_secureboot.
+>=20
+> Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
+> Suggested-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Signed-off-by: Coiby Xu <coxu@redhat.com>
 
-Thanks for doing this, Mike. This is definitely one of those cross-arch
-warts that's been there forever. It's great to see it cleaned up.
+Thanks, Coiby.  Other than unnecessarily splitting a line, the patch set lo=
+oks
+good.  As soon as the open window closes, I'll queue these patches for linu=
+x-
+next.
 
-For the x86 bits:
+> diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/im=
+a_efi.c
+> index 138029bfcce1..27521d665d33 100644
+> --- a/security/integrity/ima/ima_efi.c
+> +++ b/security/integrity/ima/ima_efi.c
+> @@ -2,52 +2,9 @@
+>  /*
+>   * Copyright (C) 2018 IBM Corporation
+>   */
+> -#include <linux/efi.h>
+>  #include <linux/module.h>
+>  #include <linux/ima.h>
+> -#include <asm/efi.h>
+> -
+> -#ifndef arch_ima_efi_boot_mode
+> -#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
+> -#endif
+> -
+> -static enum efi_secureboot_mode get_sb_mode(void)
+> -{
+> -	enum efi_secureboot_mode mode;
+> -
+> -	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
+> -		pr_info("ima: secureboot mode unknown, no efi\n");
+> -		return efi_secureboot_mode_unknown;
+> -	}
+> -
+> -	mode =3D efi_get_secureboot_mode(efi.get_variable);
+> -	if (mode =3D=3D efi_secureboot_mode_disabled)
+> -		pr_info("ima: secureboot mode disabled\n");
+> -	else if (mode =3D=3D efi_secureboot_mode_unknown)
+> -		pr_info("ima: secureboot mode unknown\n");
+> -	else
+> -		pr_info("ima: secureboot mode enabled\n");
+> -	return mode;
+> -}
+> -
+> -bool arch_ima_get_secureboot(void)
+> -{
+> -	static enum efi_secureboot_mode sb_mode;
+> -	static bool initialized;
+> -
+> -	if (!initialized && efi_enabled(EFI_BOOT)) {
+> -		sb_mode =3D arch_ima_efi_boot_mode;
+> -
+> -		if (sb_mode =3D=3D efi_secureboot_mode_unset)
+> -			sb_mode =3D get_sb_mode();
+> -		initialized =3D true;
+> -	}
+> -
+> -	if (sb_mode =3D=3D efi_secureboot_mode_enabled)
+> -		return true;
+> -	else
+> -		return false;
+> -}
+> +#include <linux/secure_boot.h>
+> =20
+>  /* secureboot arch rules */
+>  static const char * const sb_arch_rules[] =3D {
+> @@ -67,7 +24,8 @@ static const char * const sb_arch_rules[] =3D {
+> =20
+>  const char * const *arch_get_ima_policy(void)
+>  {
+> -	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
+> +	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) &&
+> +	    arch_get_secureboot()) {
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+No need to split the line here or below.
+
+
+>  		if (IS_ENABLED(CONFIG_MODULE_SIG))
+>  			set_module_sig_enforced();
+>  		if (IS_ENABLED(CONFIG_KEXEC_SIG))
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/i=
+ma_main.c
+> index 5770cf691912..6d093ac82a45 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -949,8 +949,8 @@ static int ima_load_data(enum kernel_load_data_id id,=
+ bool contents)
+> =20
+>  	switch (id) {
+>  	case LOADING_KEXEC_IMAGE:
+> -		if (IS_ENABLED(CONFIG_KEXEC_SIG)
+> -		    && arch_ima_get_secureboot()) {
+> +		if (IS_ENABLED(CONFIG_KEXEC_SIG) &&
+> +		    arch_get_secureboot()) {
+
+=3D=3D=3D>
+
+Mimi
+
+>  			pr_err("impossible to appraise a kernel image without a file descript=
+or; try using kexec_file_load syscall.\n");
+>  			return -EACCES;
+>  		}
 
