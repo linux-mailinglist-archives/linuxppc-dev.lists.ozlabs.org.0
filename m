@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-16789-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PUOIxehi2l1XQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16789-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 22:20:23 +0100
+	id CHEmHzmki2ktXgAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 22:33:45 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93D211F5E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 22:20:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8864A11F6E4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 22:33:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f9ZGX4f97z2xJF;
-	Wed, 11 Feb 2026 08:20:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f9ZYx5WN5z2xJF;
+	Wed, 11 Feb 2026 08:33:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770758420;
-	cv=none; b=a42loS+M0mimMdyroLtLnfvOoqA99u6Pf88eZt5+Q7M04JHmMv+GS28Y95cjXV0Dqqh5vCqD79aSfJ2Ool+i/Dex9OgoZRXYqFPzd7e9QWupSQKG4oVRxrcZPsDQWLJP2sdNZqbVUqFfiZ4DYFUoOfbbFgNU2x8FKdwEQdUjXYTvUH2y14mwAwB5dTs3ickgELpPK3KpuJwJYB3D+mf7aqPaua+1/wqSxKumy8CdC31LU1M1AZJGPly13o4PO5IXlaf+1MqJnsO89kB3MAB/7fRRH6tRVTmQXnUeYBqKrCHiU0IlG5jGRjeDgPwySHyLFe0kg6uWDuopicRsinU2JA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770759221;
+	cv=none; b=KzTzygSGZOozwVrNRWw8YlCYc7AELxm0io8ppIrW67ZrmGZl2YE0z97wujinpcIWoIBfT7Z7tyNZjl+JUhTKTXUF9TvnC/fH2w9i/UVCKblBiNsQYmwE1Lw+FrBYQGfmcDZOwzXGGKBUJmrV2Jr5Vj/LnoOF3Y1mj+nUa4maoP+PJYDY5FnCTe1YgNaiMDhr9pH2OCapdLkanJeiHu6t4HqNyJqDDz9OI2kOLOb2+2s/gSpl503JUHHNLsZDwPIrKYOFdldOydghXtreBwqPTMOPBzmLlybCN7/VXygC+Ft0LNCTpYQYkCo3VIxvnzsGNaOhBCtBOY+iCSI1pjp1bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770758420; c=relaxed/relaxed;
-	bh=s5E5iGHrWPwlv1TaHmRYDt3L56YpfhHi32qzo5ZNZx8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BmmB+F/JuKMMa0DSATR/v0TqwbUjOy9PznXRP4mYaU2JlK2MCi19neZBB2WEx6DHXNRNMlANXtMhrJTI5MUZxp0vTzsDiYbYvjhI7W5dm/mCpXAk9MfGm205XxFi9xbkTV5LsP8+fnSiUw44jSX+Bn0SY5A8Bc2ps6fsEHi887pJKi7pC5zPQn65HtTQIjz1BkeOJdzLOwRypwFAv3Y5UvVKXvOUYknehlddGvgZ3D9tCfoiEX49fHSIOd9+reCVw9Leuq1zzQLU3GkwFipJ7SZK9HMyYmoiw2eL3PV5RaiCCCUlwZ2xgDyRNN9hTcQkQWlQmAjkq4oS8/tsklEDzg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jBuuKgGy; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1770759221; c=relaxed/relaxed;
+	bh=gOjzdhNqDCzlqL6IKdDVn8zD1GsK68U6ZlRyi3k1UHA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SDdJSXj4NJXZwO2PF57ZhbCyP5gObyCnRP0V7ut3LWpzFS5XfQkhzns5Ppu+pZnuhq6sDq6ET/fkrvw3YYOpw3vY/P2m9eTLBE3Uiz45XmXUGCmUsHx1OJn6iofvwJiveZcgGJLfnECvSiXLHVjiP+p3EKt1+3CT//A9NG5O8XyQl0qpJa8usWF/Cz71vEb0CD0HvlaZTKxu7RlCCcxZPbvaPPkDEOlHSn5wBeXEOFpS6U8cgGiW6Mwz7vXlYPBGdiAJO1KRZSfjRo8S6Z3tpi6lJo7RdJWWMTHfclzP3nqFned8gIDK80SiCo6lYIt9VujkCHOiq0UUiHkJIxR/tg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CXlV7bKy; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jBuuKgGy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CXlV7bKy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9ZGR70qZz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Feb 2026 08:20:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9ZYx0bWJz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Feb 2026 08:33:40 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CD8B44022;
-	Tue, 10 Feb 2026 21:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAE8C116C6;
-	Tue, 10 Feb 2026 21:20:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57C5443D64;
+	Tue, 10 Feb 2026 21:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C47DC116C6;
+	Tue, 10 Feb 2026 21:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770758413;
-	bh=0bpA5wvvJckbZhDqQnp7IZzgogiw3mVzH8eI7Up3uuI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jBuuKgGySempnJ7d5N/SbfM1cX3JZ5cQPXT3/T9MvLDMRq6+ZBqPfpyKCHut3usbO
-	 ziYE/CIT/mG39+RVOUlNBOPiXqrPtfy3ZGEa9RZE40lsxsfaub8jQKp/5aML6Ou/+a
-	 QckbFDJxMY3G9BW5Y9d0OMPjou8SC0MvF1SPLTE58G9ht3WpRs2O5glbFqs9T9f2ql
-	 TdIdouM/m5MW4Uou5JDcZgu2L0nPRy4nmDDoZXH1lAAs/wp7LObWZyQcFQSG0PSufd
-	 ulXFuFboSEjIGD2qrSRHDd1Js2XEHY6Xjlc1kFPYh4pyd/1DNqXhG3f+qHGpr9qE1U
-	 uZqeU7ZEUC+WQ==
-Date: Tue, 10 Feb 2026 14:20:07 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org,
-	kees@kernel.org, naveen@kernel.org, jpoimboe@kernel.org,
-	peterz@infradead.org, npiggin@gmail.com, maddy@linux.ibm.com,
-	segher@kernel.crashing.org, christophe.leroy@csgroup.eu,
-	mingo@kernel.org, mpe@ellerman.id.au, nsc@kernel.org
-Subject: Re: [RFC PATCH v3 6/6] powerpc: Enable build-time feature fixup
- processing by default
-Message-ID: <20260210212007.GA1148627@ax162>
-References: <20260209084820.57298-1-sv@linux.ibm.com>
- <20260209084820.57298-7-sv@linux.ibm.com>
+	s=k20201202; t=1770759219;
+	bh=R6LL7radRbHZVM7ek9wngXsonsoiKaEW/OY9SShZ5eg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=CXlV7bKyxc8bB30zTAlF1dBIM5dbPgFmainXv5At1nT0HKVNiFSAR6674wSDvMHgh
+	 fQUbkny4TFSF/qByH8agsuZBnwEU2UkNi4KbC4HN5XLaxBl1lOiMLUgX4Z5vAmyPwW
+	 Ds3Q1pbEHZ3ftKP9i2Fq6LU60h0S2a6jMHDyG4lCDAiV45vamLnxM5vMMzJjR5iVPK
+	 izaGOVo7e3M8nbYRh/0l1gI0CJ7cHIMLo9cCIBEBKv+8TsArLhRLPCMVGHRR4Uf0EM
+	 lJTtl5OG7yzq5iSURDFVykBnzox2Il+bz0u+jF9U3VkQfN11VFXL1ayLf4h5xo70LY
+	 e7HY0XPCLTQ4Q==
+From: Mark Brown <broonie@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Ziyi Guo <n7l8m4@u.northwestern.edu>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260210185714.556385-1-n7l8m4@u.northwestern.edu>
+References: <20260210185714.556385-1-n7l8m4@u.northwestern.edu>
+Subject: Re: [PATCH v2] ASoC: fsl_xcvr: Revert fix missing lock in
+ fsl_xcvr_mode_put()
+Message-Id: <177075921678.419952.11304606547745968754.b4-ty@kernel.org>
+Date: Tue, 10 Feb 2026 21:33:36 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,87 +75,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209084820.57298-7-sv@linux.ibm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16790-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[broonie@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_RECIPIENTS(0.00)[m:sv@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:masahiroy@kernel.org,m:kees@kernel.org,m:naveen@kernel.org,m:jpoimboe@kernel.org,m:peterz@infradead.org,m:npiggin@gmail.com,m:maddy@linux.ibm.com,m:segher@kernel.crashing.org,m:christophe.leroy@csgroup.eu,m:mingo@kernel.org,m:mpe@ellerman.id.au,m:nsc@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:alexander.stein@ew.tq-group.com,m:n7l8m4@u.northwestern.edu,m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16789-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,kernel.org,infradead.org,gmail.com,linux.ibm.com,kernel.crashing.org,csgroup.eu,ellerman.id.au];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[gmail.com,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,sourceware.org:url]
-X-Rspamd-Queue-Id: C93D211F5E9
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 8864A11F6E4
 X-Rspamd-Action: no action
 
-On Mon, Feb 09, 2026 at 02:18:20PM +0530, Sathvika Vasireddy wrote:
-> diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-> index e3dd7fc62f20..3d2a203b8908 100644
-> --- a/scripts/Makefile.vmlinux
-> +++ b/scripts/Makefile.vmlinux
-> @@ -88,6 +88,11 @@ remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel*' '!.rel*.dyn'
->  # https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c12d9fa2afe7abcbe407a00e15719e1a1350c2a7
->  remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel.*'
->  
-> +# --emit-relocs produces .rela.* sections needed by objtool --ftr-fixup;
-> +# strip them from vmlinux after fixup processing is complete.
-> +remove-section-$(CONFIG_HAVE_OBJTOOL_FTR_FIXUP)    += '.rel*' '!.rel*.dyn'
-> +remove-section-$(CONFIG_HAVE_OBJTOOL_FTR_FIXUP)    += '.rel.*'
+On Tue, 10 Feb 2026 18:57:14 +0000, Ziyi Guo wrote:
+> This reverts commit f51424872760 ("ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()").
+> 
+> The original patch attempted to acquire the card->controls_rwsem lock in
+> fsl_xcvr_mode_put(). However, this function is called from the upper ALSA
+> core function snd_ctl_elem_write(), which already holds the write lock on
+> controls_rwsem for the whole put operation. So there is no need to simply
+> hold the lock for fsl_xcvr_activate_ctl() again.
+> 
+> [...]
 
-Rather than duplicating the remove-section values from
-CONFIG_ARCH_VMLINUX_NEEDS_RELOCS, I would like to see them combined with
-something like:
+Applied to
 
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index fcae1e432d9a..f70c3a36aee2 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -81,11 +81,15 @@ endif
- # vmlinux
- # ---------------------------------------------------------------------------
- 
-+# These configurations require vmlinux.unstripped to be linked with
-+# '--emit-relocs', which need to be stripped from the final vmlinux.
-+uses-emit-relocs := $(or $(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS),$(CONFIG_HAVE_OBJTOOL_FTR_FIXUP))
-+
- remove-section-y                                   := .modinfo
--remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel*' '!.rel*.dyn'
-+remove-section-$(uses-emit-relocs)                 += '.rel*' '!.rel*.dyn'
- # for compatibility with binutils < 2.32
- # https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c12d9fa2afe7abcbe407a00e15719e1a1350c2a7
--remove-section-$(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS) += '.rel.*'
-+remove-section-$(uses-emit-relocs)                 += '.rel.*'
- 
- remove-symbols := -w --strip-unneeded-symbol='__mod_device_table__*'
- 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: fsl_xcvr: Revert fix missing lock in fsl_xcvr_mode_put()
+      commit: 9f16d96e1222391a6b996a1b676bec14fb91e3b2
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
