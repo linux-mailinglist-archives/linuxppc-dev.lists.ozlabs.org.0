@@ -1,79 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-16761-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKnkNVbYimmDOQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16761-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 08:03:50 +0100
+	id IODVEE7Eimm9NgAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 06:38:22 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D545117A15
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 08:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD44117225
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Feb 2026 06:38:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f9CG936y7z30FF;
-	Tue, 10 Feb 2026 18:03:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f99MZ6f2Nz30BR;
+	Tue, 10 Feb 2026 16:38:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::92a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770707025;
-	cv=none; b=VmkrLwGmIN6nRT4Miw40rvSMZR2A3IkmrrDFWvbMUC8smWCy8XOccnHw8tjQB6Qlh4VO+NWgV3IPVk0fLbIZEMYN7FIocqmYKUjYkDgSyNLc0S3KjVN7GfKWGkK0HEx/4aTGj2GIjIKkTYcl+TEJqCsarcrrUL/KZH+1rssrzXeLibO5eus8QpSvb/ZteHS77ogsvEEFKV/9lJb2j6N464a2qX9D+QwQrUY885T03ZEfSyjLnLo/Py9nYj8jcUOGxpBU1pt5zdOZmI2DbsTGqT1k/GpmSGrm+GbJRroOUn8AJ0fXUyMOyv4j38RteIeqmy4Fhc5mzEEUobcrL8h2Fg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::431"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770701898;
+	cv=none; b=KxRHw3tmJWnu5UG3DN648LoZvgxysGhyJumU4t4SWW26VpYgc3tCIaRT0m1cyA7/9FBMovYoSCsD3E0C1ILMvYnGlfDK2ACGJ7C26bDxvLREj2Dy3NIql57naPyqETuBX9U2w3NrrZI5cGm9ouo9Adu/pRIlPxOZRNgKX3TRIjF0ry+sN49rKnlst7hdnOx2d9Ug3anIxm69EI50VQAomECHSpF3YSzn4KWfxmOjkGXAWcON/J9fUrPrdPYsJvPaVZ8Cyf/Zwnr+qpnTaUDjAi3k32gmn+N8gNlGLZE4OGMyOhCGC7ErAQmSvEcDs6fuOkFKrXBDcRY/N33pNo1nhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770707025; c=relaxed/relaxed;
-	bh=GFHY+kwDQdh2yEHJCYn420Oxm2P8lL33JJQBtOkv6/g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=csGGPe9OvCEMmb/dLTjhVJHLFw6C6XiwijNZn08Nv8uX7d1BezSpYrLAlL4KueLHa3j1sryw7/uwCGzupWmWFldlHzm+Jk9YR0eYNL4n95y+2tLUn+DglChaPBDz32/whJIo/rzoYEvjqatu8NkFe9moZ2SzbIBQUpICtMKOsuSzr5c6Kug1TvGKYnpdU7j2nmmnKxJ4wMj/i2tVs5dnT0eQ9At19tl/9Ak7R6y3P9uhjrigwmgJHblXIkvkGL/Cq3+YKlmEkYxfiqmHIYkmxHuoZAKJtQmZKV1uJKXfjT1W2Z88RE0gydKbmfAGV930Tn+Wm/+JqChcm825FWkb6Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dQNUOjDy; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::92a; helo=mail-ua1-x92a.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1770701898; c=relaxed/relaxed;
+	bh=GWQDA/EkiuOrnzzQZpTgk67yZSDsyGvnGU0WBzxGHSc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fna559TN4A23sbtOoY4m+c2O883/wThjzG0PgzbDCwxUtk/OLiHGnBWMxhIbG2NXeTT396CWGQ8+3DVJ7c24GxHqFtHivjJZakFc9GDhiLK1G44loGwHs/7BFAbhQoIekikl2aWEHfC4autM/5cjdmLD25n77oJljj+yqTM9sAPcF8WtGSqeba2r1hDkLD6ymw/znvoN7GqQUW0u4AiLPTNrJdbakvAHMYqLYwi4hHh7RMLQXbbUzy7OOv45Eudxm1pGbvrTxAOC59++CDU5VT0iDBgIevEODCryc5tdbjELaTTmLaiMgvYauJCcKAgFVf0K28YmAvjdG0r3DcRMUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=br0mb9hE; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dQNUOjDy;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=br0mb9hE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::92a; helo=mail-ua1-x92a.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9CG807NQz309N
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 18:03:43 +1100 (AEDT)
-Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-9489d087bcfso322848241.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Feb 2026 23:03:43 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f99MY6WXQz309N
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 16:38:16 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-8230c839409so398728b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Feb 2026 21:38:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770707020; x=1771311820; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GFHY+kwDQdh2yEHJCYn420Oxm2P8lL33JJQBtOkv6/g=;
-        b=dQNUOjDyd7OZF0+NvTMDK8lPapSUyGxuYZZ4hdhqIpXtnMcRV7+kKHpfaY1r0J8QN6
-         ZM1iDTUqrKUwaePoSl6NbCN867nFcoDHIYBcFRgWRKA5PwZfMiHHGhfPXjTTTM2pQ9Hz
-         5c1U7DIpAUK7EicpvCKWbLU4mewe0lps/MfQrn/d+m03aR9IdTxecdgu1+bQh+pRclLr
-         UIFvXQ4vXS8pUJqFO/u2bFy8uOA7iY9C4B2HxqcjzAmRDCpTDFd8IXk3i6JR9/FV+Avz
-         zBMVrhB9UmfxqyKEL7rhlyB4Guu+nQiy0n3ZuY/QSX4posXIyrfMA97235n+qIegssGW
-         QhNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770707020; x=1771311820;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770701895; x=1771306695; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GFHY+kwDQdh2yEHJCYn420Oxm2P8lL33JJQBtOkv6/g=;
-        b=SEACJUweHw30nHbN+DpAGUXf7xuRc9xnBMM7wT9FYKrSNeMr9eMieB8x08iKhYYGU+
-         xMPM8utyX87Css6gBd/uUZP/KGKguQn0wpWrILGYa/+Mtmd+Ig0cPfTYxJQ3tiK00SWr
-         bxYRIko/1kL3KnCrkUpIc36PukEtPDaD/lUiNqhjHN8Dtb4USRA99MlEoEhazI8CLCxB
-         WlKd4G5zBjfJ+MBK/8SsotkDMjLDe6DD6mCeNPNSJvyIVhlC8Otm6rbasP8Ydvghvm8+
-         kYprEnuaaCXR/TmyeMrsAzjQ4kpqdRobKjqVFZQ6InrJmEBIB8EgQ+rM1tCgw2NZD1Fr
-         gucg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5fh8MH8L22kQUMjOYiDIxcNVfCpW8AyHjmE10KD2WcAL478KFzA6aJyEB6/1C1LshxACoQxSW8ZmUkv4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyE70lyro9Jgp9DrWW0pwQ2ITGSmJytSp+YRbFDoWNxUQmts4oX
-	trLnTAAVvp5hijUR6EjWDIfyCSbeEZrqujZR/oUAl8FjLLcRpXjzJB2HUNKHDw==
-X-Gm-Gg: AZuq6aIj6GtgGHBwCy2+sFxkrmY8ypKSY5xlOHc0M3YWeklRnmtMx+Dn4qJBmXndl8o
-	AyE+DuOeXK/IsWGd6q8vdfOsFQdpslMY7eHL20i8x/pP1342t4c9Gz+IR/eT1ZVcoEiSDtT92wA
-	de2K90zegSX2DOCe52kjn4AwaE0DpQHV4UgIdZ0VLZ3iCTATtdQL0R5CSy/AXskt2IlDCUx6TFc
-	ShC+yYyjANMBRdcb6u61BchMPGBCd4zwAlQjPwYmEicQ/9xBMpN3BGrnHMLyx5RRjfTtJ/pqF6I
-	HSS/U3yTwWNqZJZ4+QCwofGdqa4VNPHyz48u56hDwjMMeya8/QSJakXSGgqioX9tP9CgGD8jqmi
-	EnUTkHoV6SZBuF6OluroGViZZUsbjWFNPJLgkF0AYZgP5+YoTSOa1oVopcBQgfEqJpkRlztdE9K
-	hz+n0bXmdqlzPJcvxVWLZYzar1t66rYnCWIh9shA76UgmSAxb2kNYdB2PH7Og8e1iPWXvkFfJHZ
-	NofwJ7A3A==
-X-Received: by 2002:a05:6a00:770f:b0:823:b6b:4850 with SMTP id d2e1a72fcca58-824416f8d24mr11637215b3a.44.1770701888061;
-        Mon, 09 Feb 2026 21:38:08 -0800 (PST)
+        bh=GWQDA/EkiuOrnzzQZpTgk67yZSDsyGvnGU0WBzxGHSc=;
+        b=br0mb9hEv2fgrbZ0OtM/bf1Fy/5wRnn+Dsn5sXIC1uv2v80z49NSWuGs00O7EwhAZo
+         K8fTgRPrDL9xr2Yp+YuNPeNqtlsOpIMvaBb+E4gi1g6MQYq2eItFO9FnJtXeHeO5VwNU
+         fpdhZa3ToM2+AcmxqJVEgXil1oRL1MzSRSTkIdIMGwYmbW+nH2dTuxVyn4QWC/BGt6UR
+         sznsHwpToJiwbyRYJhhPbn+OxHKpSIS7eMlNyrAYzu92oObRVm6FnoRZjeMJCWqQswje
+         zDyti6zV1JD8ZTkRQTHz1RQCodIL1/qTUa9caiSFRcXzb19MRwPoXv+4Z0FzJjqxjO5p
+         zJ8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770701895; x=1771306695;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GWQDA/EkiuOrnzzQZpTgk67yZSDsyGvnGU0WBzxGHSc=;
+        b=DOg9CSQc2KLcg+VL7tiNTD3v5aoCgJ2RD0ry1yz6P3A3kXYF9bmcRrfGrbV6Fxiv3V
+         7gCLcDP/xTAlmA2Gl21TcpbhnsyEk4TdS+57QSaAw2F/YnepDlIAa8F8nNCcei0ypnuH
+         y9bogaZP1PSz5ooleDsZslC1WgO/VC6gHFrRhSH7EHoG9jKVClY3+QvR6l72JkcKOXDO
+         U/pQUnyDBb7M+x9c4NHSW2+64/1AkJOa7oubyPHk0M5YMS8H7x2P5DjBD7sTG6FNiKgT
+         Imd6zALuukAE1qoR61d0dcciXq2bMhile1H13hvtK7tAOnJjhTg8vhc879+15AeyS3Hg
+         XyEg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9pGu3IH3ZHafWwPcEFQK4jNtmiB25597cwA+6MKBuWcP+Wvx9JEpxXSZJUh9rfXX7bBS8Rl5iQ7pkOv4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzlm4mEqCe0liDKQQC0IAs85nJ5lgaLLVcOMtKvlsH7ZsfYploD
+	BbZhVHWkh06l9MV37mTGeWZCgtY4Pwa2ktpslc+tXtyiydZl8mbNmn5r
+X-Gm-Gg: AZuq6aLpTY5HmuwqHSM9YmTEhcWWBtnffyOpa9+I4QYbvozPhE8WGhn1WuuNqcUOXqO
+	pTtksl2jRMGJC6eldBCyKh4jKgfEsY95kdEbtQTBX3DTq+FIJxXXeJHpYi3H4VVsVhR556nPug1
+	ReBc93VJNlxKO7No2zFSUPLnSsp4IEDu6uvXg8p1rH1Yu5sq5yrKbE+VKlKhSgCWpR3CJCLUIN9
+	OTay0jjW+1+7UBpUkyYKDEL0f9sS0/osaFvzkIb7CbQDzSFapGyjYIkqA71UaEpVx9kZO0ikUQa
+	3hAhPxUv+TLr9hopO7OYzF5czupWrqM3SRCs9eL+mMpACSrRBjePC6jlpdVjEpcKtgkPwjKmJPx
+	u4Y9ayZU7LhleC5CmvXRT3lxNuogyWf6/g9oGEgg/soOz60J1PmzLa8W6+Y07tSzwdDb2h9Jvb1
+	8s8hpLCyx+SffzpydkY7/TzwRrsLxdwBQ0ibpn/vXmZc1QGlttHoIs/EUeCC5wnJdYe2AcgMA=
+X-Received: by 2002:a05:6a00:414e:b0:81e:8e66:38d9 with SMTP id d2e1a72fcca58-82441632ce9mr12934398b3a.17.1770701894709;
+        Mon, 09 Feb 2026 21:38:14 -0800 (PST)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.in.ibm.com ([129.41.58.2])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8245b62d773sm7529056b3a.36.2026.02.09.21.38.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8245b62d773sm7529056b3a.36.2026.02.09.21.38.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 21:38:07 -0800 (PST)
+        Mon, 09 Feb 2026 21:38:14 -0800 (PST)
 From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
 To: linkmauve@linkmauve.fr,
 	ojeda@kernel.org,
@@ -100,10 +101,12 @@ To: linkmauve@linkmauve.fr,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
 Cc: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Subject: [PATCH V5 0/3] Rust support for powerpc
-Date: Tue, 10 Feb 2026 11:07:53 +0530
-Message-ID: <20260210053756.2088302-1-mkchauras@gmail.com>
+Subject: [PATCH V5 1/3] powerpc/jump_label: adjust inline asm to be consistent
+Date: Tue, 10 Feb 2026 11:07:54 +0530
+Message-ID: <20260210053756.2088302-2-mkchauras@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260210053756.2088302-1-mkchauras@gmail.com>
+References: <20260210053756.2088302-1-mkchauras@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -117,98 +120,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.29 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS(0.00)[m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:mkchauras@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-16761-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[linkmauve.fr,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16759-lists,linuxppc-dev=lfdr.de];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 6D545117A15
+	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 5BD44117225
 X-Rspamd-Action: no action
 
-Enable experimental rust support for ppc64le and ppc32be. The patch for
-ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been 
-merged over it. ppc32 needs some toolchain fixes mentioned in the patch 
-`rust: Add PowerPC support` and the discussion for that is done here[1]. 
+Added support for a new macro ARCH_STATIC_BRANCH_ASM in powerpc
+to avoid duplication of inline asm between C and Rust. This is
+inline with commit aecaf181651c '("jump_label: adjust inline asm to be consistent")'
 
-This has been tested on powernv9 hardware and power10 pseries qemu. I
-I request Link to test the ppc32 part as i don't have a hardware to test
-it out. 
-
-[1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
-[2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
-
-Changelog:
-V4 -> V5:
-- Removed a nested ifdef from PPC64 for Little endian toolchain
-V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com/ 
-
-V3 -> V4:
-- Co-developed-by header added in patch 1
-V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
-
-V2 -> V3:
-- Splited HAVE_RUST in 2 lines
-- BINDGEN_TARGET_powerpc initialized before assigning the same to
-  BINDGEN_TARGET
-V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
-
-V1 -> V2:
-- jump label fix for rust has been moved to a separate patch
-- PPC32 support has been taken
-- rust support has been marked experimental
-- target.json dependency has been removed
-- HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
-
-
-Link Mauve (1):
-  rust: Add PowerPC support
-
-Mukesh Kumar Chaurasiya (IBM) (2):
-  powerpc/jump_label: adjust inline asm to be consistent
-  powerpc: Enable Rust for ppc64le
-
- Documentation/rust/arch-support.rst   |  1 +
- arch/powerpc/Kconfig                  |  2 ++
- arch/powerpc/Makefile                 |  9 +++++++++
+Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+---
  arch/powerpc/include/asm/jump_label.h | 23 +++++++++++++----------
- rust/Makefile                         | 10 +++++++++-
- 5 files changed, 34 insertions(+), 11 deletions(-)
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
+index d4eaba459a0e..a6b211502bfe 100644
+--- a/arch/powerpc/include/asm/jump_label.h
++++ b/arch/powerpc/include/asm/jump_label.h
+@@ -15,14 +15,20 @@
+ #define JUMP_ENTRY_TYPE		stringify_in_c(FTR_ENTRY_LONG)
+ #define JUMP_LABEL_NOP_SIZE	4
+ 
++#define JUMP_TABLE_ENTRY(key, label)			\
++	".pushsection __jump_table,  \"aw\"	\n\t"	\
++	".long 1b - ., " label " - .		\n\t"	\
++	JUMP_ENTRY_TYPE key " - .		\n\t"	\
++	".popsection 				\n\t"
++
++#define ARCH_STATIC_BRANCH_ASM(key, label)		\
++	"1:	nop				\n\t"	\
++	JUMP_TABLE_ENTRY(key,label)
++
+ static __always_inline bool arch_static_branch(struct static_key *key, bool branch)
+ {
+-	asm goto("1:\n\t"
+-		 "nop # arch_static_branch\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++	asm goto(
++		 ARCH_STATIC_BRANCH_ASM("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+ 	return false;
+@@ -34,10 +40,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ {
+ 	asm goto("1:\n\t"
+ 		 "b %l[l_yes] # arch_static_branch_jump\n\t"
+-		 ".pushsection __jump_table,  \"aw\"\n\t"
+-		 ".long 1b - ., %l[l_yes] - .\n\t"
+-		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
+-		 ".popsection \n\t"
++		 JUMP_TABLE_ENTRY("%c0", "%l[l_yes]")
+ 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
+ 
+ 	return false;
 -- 
 2.53.0
 
