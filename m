@@ -1,85 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-16793-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJgWIUn6i2njeAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16793-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 04:40:57 +0100
+	id KA33D8gAjGlgegAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 05:08:40 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96180121094
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 04:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2621211F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 05:08:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f9kjc6NMjz2xlk;
-	Wed, 11 Feb 2026 14:40:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f9lKb53fNz2xlk;
+	Wed, 11 Feb 2026 15:08:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770781252;
-	cv=none; b=Zwc4cWwhxx/LJGCkpAsDLZA98cAJsyuGz81V9tMySbBY7H4LD3mBZ8dTazYBCBYixz0jWvWoHD8tUYF0QGeNqqWis7pG7t2e5OC5xVZtkMY3BQO8VxFD2zdTCPyqNeylRSvBVe99GdhRfJm4Aeu/jUYmxFwpdanxZ9xJ7ANLKKHuGWIQPIVAVrxsMKuoF0XP4Rq37C5NMnvzmOnTvsERNOVJzHhJHzYfyiyTxfRayH8etgmcMlXdEB8Pew8nrJkRKCwOa8We6wiWqgsiSZ97rhcTjZft0OJe8Ks5/pLm//4BX2Ph46FC5UEBG+YRpn8+8wefmTwH0HgD7XnSFaVTBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::531"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770782915;
+	cv=none; b=eDA62xPSPLbHoDF6psrB7tKQSPZH3pEVeV7ELde7ScBLf523JuiJSX05wqtJ2lECAdr9NFs3DNS3KR4BqK9VOpRaqxKtioZkpFqTgcmFLp5QZiDiNBGYlvL6D3SHSFJcQEadS3whMCbKj90Bhjp0dtVYykwMRTnVE+Uqr6IghW9AugWfz41ygDgsg8a/4+thh9k+MWwgy8Y81p+IInUZjN/LtlAAYG4m3BxslBbGuARGH6YbgILsC6XcCu8O4YmLGFHrqfVWPKELFuJpPi3fxKDIbItQQM6r0ur6j6iHJtC7uJjRrvEZpjb4o/TD1G8w7Ah4kIbEBNj58vqYlfNGWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770781252; c=relaxed/relaxed;
-	bh=B7DOpjMHcDmq5D3vVdYPupJ9INvt1gOBUArAP89WU/Y=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Uah2F2EjNa1mroHolWKKjnOYVQNcxxkXziJINpdJtlO/acWUR+H5+L34r8GFZbHewfdSFNl4634gJL7K989bCpyselVoR1Hp6sNXgnjpnGyUjexUiLIXuJeQLoz6tQTvrWoO/+x6bTYDCEVpvszg2L/emcp5oBGqDSgIYKn90TO9U7KWp0/nlHqHzGkaXf2eLaEQH1kTCM1/gDhMFpFWSWEpv74hevHB0ZmQvpPyMPEA0FDhSP6nBBmPxtg6XqLXZyZMRvdTpPkCmSTLMdD6eduvJ6yD24+UzR38KfHe3Dq2wU6b2Fqc+TOO3i0EomoOo6+cOdScjX0rZLFUfKkzgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m91kbfvq; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1770782915; c=relaxed/relaxed;
+	bh=D2eMYc+39p5sjw2VZLfFJ4kKNtq8lBxRgNa5raKSCaw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=nPPegbNS04iD/ZwUxPoL/6SZ42rWFPqzPsRMK/jMDJoOGMbcMNeUoN6hy07z11ACSNe2oV3e7U6rCYdN//QEHW4HnH12M5dKucSGPynFj42UwvpuOIwlKUZlf1K+SFX2hXVqUwN56adyFW8iHbmwZ8H3gk9zN7o7dGE4ifTdd7jFm57s3WPpP9KEbK/BNwG3a1zjuoivjP8kJXWDQMH5ihSwoUo4qqv8VctLEBauGWhqWka88CkIFhlyIIUOtZtb0iPyp/tkhA9rSAwvFlqTEp07lnKLoSkyrv72tKFOq/SGk/of+1Cc32va+TgJJvKsSjFCpAgFNw+Ingi/00CrEg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ROEcnX3D; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m91kbfvq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ROEcnX3D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9kjb2mHmz2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Feb 2026 14:40:50 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-2aaf91bbcd9so18362395ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 19:40:50 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9lKZ1NVWz2xd6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Feb 2026 15:08:32 +1100 (AEDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-c6788f3db37so582477a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Feb 2026 20:08:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770781248; x=1771386048; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1770782910; x=1771387710; darn=lists.ozlabs.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=B7DOpjMHcDmq5D3vVdYPupJ9INvt1gOBUArAP89WU/Y=;
-        b=m91kbfvqL9s9RhUbh84tXdqG4twJQa7MVIIEMdYwx28t0cfFwgoD3f/o3to+GCsf2S
-         NsH1KKBHHzhviF0SawyjYSqMsEIG2SQBUvjRFk7izyz5Uy/LnOf1M8wIBnsKnXyatgeB
-         8ghoIbP2oytci800xPjUExg7JaMExQPGxXDdf2v18D7Ha0FK9me5vX8x2Ao2UIZMViVj
-         diq35DLrjdbh9M3gCNC+jRS2E8+XS7tz1gcw5Svl86AWe64gf6pAVUlwLtgCKNeC5jX4
-         W5EaLArOt7kysxDb0mVM4AxBHP33WbiCQJmszFJQJNP/m6/lHxxAy/yPdxcUUGXhenGB
-         pXsw==
+        bh=D2eMYc+39p5sjw2VZLfFJ4kKNtq8lBxRgNa5raKSCaw=;
+        b=ROEcnX3DJGbtvulfPo9VAwVUhxNEU5rTcbJcpuBqkZgdpFW/ScOan7yVW6fJKWVUI/
+         O823pYzru9sIlV+AE8j910S5cUEBCJAeUfwvCQJV6QVIqSMZEslcHR0A4ZHnNg4w1BoY
+         YF2MhwvYCoW+d4qlztfK51MqsSQePI1iSCHWXzBjRK8XFwkmD55Ku+/hOewSBPzD2GPE
+         PL7h21eTVAG9iPvSkWBSZqhh7wYENmIGHOfuDU7FyWZneX6eORH4KFA/I71heWVC7dyr
+         Ci+aJpkzcRRnZEnlXpUBBeffDFUegbvU3R3JkKPnmGThBJpJUcBkpidXDVYSs/8zTUPE
+         zSFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770781248; x=1771386048;
+        d=1e100.net; s=20230601; t=1770782910; x=1771387710;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B7DOpjMHcDmq5D3vVdYPupJ9INvt1gOBUArAP89WU/Y=;
-        b=FT5/blqKzMHMGStTxcxXNhW0Vx9h6ZYOnOQ47oyUuYcmXmXVSivMGWz2Hq1E80Vlsr
-         OdMpcnzPp7Kkgjnkdqc8uzgntGCt5MmR6gw5lqKmVpKLEFm2++KHpbUtTGSOEZjE9foB
-         OJhIgIKT31wUXz70pVSE8ILOnQlz9EZ8ElsCRi31FxRcrO8MigO0rXjUQGebN2fCJ5tZ
-         BPkLkJkwrbNHidWYfraG1wWNWCQ/V4QlesNv1IaNQp1kILLG2Q8XTkPC98WG1p4LX/GB
-         0L1Z4vL+XHsKAqG2elOv0jpllQEUIp2YfXu1FzxQYUyW5QM7J6ppUIhuGq6WZUjxq8GE
-         YZYA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9ZgCX13di/hMCxXPhnuO/LwczHf0pjTIVjjE11Kmn7fgu2y33qnKKAQ8fLShr9icFw/ncndg5tsE3R6E=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzxVvz+/3Udi6xZlyoqYvvcFqPiqx2NIGZr5gngvcVL3mJRMoka
-	mCjVm3fXyOslXZxGa8MlydJvDVdg9qxg0SYQIRKCrImLsEC4oqb/05fB
-X-Gm-Gg: AZuq6aJ9DlX3pARVpkERlOXRBsHLRQvS25nNq3Fv4Cxl+aggxpyFW/4sY1bM1NsdMH9
-	C8otR0e9GW03Msjbp+2MDcawSeNt8e+TCiGDF4yLy0RHsg9pVzGHFpUTiVoH6XLAzMxp+L7Em3P
-	iP3NxpUeuAHXxVd3dydI27L2Hw++6kLr6UhPEB5N55P0owxzZiz44iKGndYhNy9NBsPbFWrmeF8
-	DWt8C1SkfCPZPXidYtqXVRgUvyezkBMNzgIWojym7CQwpefDuvnVDdXsJ5RLKKAhZJOrqUBHMsu
-	H5hgE7aT+6KwoB6ywFTAYPMsVeFqWa52tikJrzyrHB/OWx0DUbSdME+YJSn9haHe5JHzeku9NAb
-	BwOd9+du+CD27IC5FLILohRQbqUSxfhU/344mQWeLdKJtdn9Wz3CyxUoToCzGymWq1FaoD/bR6V
-	kcrw9En5JE2iPBMWA2x4tLdctEjn4=
-X-Received: by 2002:a17:903:298e:b0:2aa:e7f3:faf9 with SMTP id d9443c01a7336-2ab27f37d22mr13647925ad.31.1770781248440;
-        Tue, 10 Feb 2026 19:40:48 -0800 (PST)
+        bh=D2eMYc+39p5sjw2VZLfFJ4kKNtq8lBxRgNa5raKSCaw=;
+        b=JXQAYwujSyJHfKjql1sKGPe90/MtxKX2iacWSsXV83WySkUskVIbiP5FdTddgxElN8
+         ydy5P+KJ8PF6xo1dkxU//Dnnc2NMCcTK6ltbPfVa97YO8BdP01PqSRKR5vYQt+HgWev7
+         DH7mJlY2WOcRd3Ig5sXpSGQsX3cUHZ+Ql4Ov/p3HvlCupFPZ/dXP/HrczmZtrxypUa41
+         kiTu4kZvvNuOKdhOZNeuUXdMV3VBxv1gjRTTqed/xjm+shajSX1X7c9LZVYjaaxfgybF
+         x00gYrLgkRiRvjlVJYHmv4MFHXOiX3s3Z0OzyeRR1K4L+6N6vnig/0VRl2dQmoiWuezn
+         52tg==
+X-Forwarded-Encrypted: i=1; AJvYcCV1ZSGf2GRn72np1uOIbeEAbL0IgwsaWCiOdqx2i9n/gb/84f1D+PH1uV5Nwzn528A71fQEakzzQSQ5XtQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwliGrPsx7pbidO8eFJ9oTcmKaWXJu7HR+WPY2qa3l+BTNw1HRi
+	ZsEMpcQYXvDOmVxp7t8zLBv+Sx73+p/KLvt3K/yw+jcrO2TnnABM0W40
+X-Gm-Gg: AZuq6aKhETUFubUnE70A4M/cAk25gYceP4qEBGz6OGiRd45rhuntX1d1Eqgw/sAqxS8
+	NvcgSmGsBVpe52LoLRmCqDn+iXMJkWhC6yC9jgPBDVI7161iqb6TgreG81bP1qTnbtoDbEfQd61
+	Jxtpy6QENMDxfJu1SSX262Qo+oHOrQNYKQ/+4rbXLyvJOVXgAa1TJ4BUWmceubMNqjiBfQ/wQ9Q
+	kmG1gmRAPxenS+NGbmWLjMUSaveYLSjsXZeyYu/rwQmtccD+OKw9VTY8Ue8rtpldI+VW5/Yh23Q
+	Gv/N95S3Regall8/ML7kaZeGdvN46ZotAtUOhAzSVxzdCV8nqQ9DCuBjKWaVwRURSBqsqR7rbu1
+	K28DO1qS/GLK3BpYvyb/zDmgA5sJ8I8tFsuGzdZcx1sdk93PTsAnDHrvm5x6E9P4K1tILW2Ro3r
+	LLtLpESDUwedHLm3Mj
+X-Received: by 2002:a05:6a20:c995:b0:38b:ee34:24f4 with SMTP id adf61e73a8af0-393acf8d036mr17280014637.15.1770782909791;
+        Tue, 10 Feb 2026 20:08:29 -0800 (PST)
 Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e3bd3b2sm507040b3a.22.2026.02.10.19.40.43
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e7d5e7csm568794b3a.33.2026.02.10.20.08.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 19:40:47 -0800 (PST)
+        Tue, 10 Feb 2026 20:08:29 -0800 (PST)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan he <bhe@redhat.com>, Jinjie Ruan <ruanjinjie@huawei.com>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Shivang Upadhyay <shivangu@linux.ibm.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/crash: sort crash memory ranges before preparing elfcorehdr
-In-Reply-To: <20260210120803.433978-1-sourabhjain@linux.ibm.com>
-Date: Wed, 11 Feb 2026 09:05:20 +0530
-Message-ID: <875x840x6v.ritesh.list@gmail.com>
-References: <20260210120803.433978-1-sourabhjain@linux.ibm.com>
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, surenb@google.com
+Subject: Re: [PATCH 1/1] mm: replace vma_start_write() with vma_start_write_killable()
+In-Reply-To: <20260209220849.2126486-1-surenb@google.com>
+Date: Wed, 11 Feb 2026 09:25:51 +0530
+Message-ID: <874ino0w8o.ritesh.list@gmail.com>
+References: <20260209220849.2126486-1-surenb@google.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
@@ -97,27 +97,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [-0.21 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:ruanjinjie@huawei.com,m:hbathini@linux.ibm.com,m:maddy@linux.ibm.com,m:mahesh@linux.ibm.com,m:mpe@ellerman.id.au,m:shivangu@linux.ibm.com,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16794-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16793-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:surenb@google.com,m:akpm@linux-foundation.org,m:willy@infradead.org,m:david@kernel.org,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:vbabka@suse.cz,m:jannh@google.com,m:rppt@kernel.org,m:mhocko@suse.com,m:pfalcato@suse.de,m:kees@kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[infradead.org,kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,oracle.com,redhat.com,arm.com,linux.dev,suse.cz,google.com,suse.com,suse.de,linux.ibm.com,ellerman.id.au,kvack.org,lists.ozlabs.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
@@ -125,108 +127,74 @@ X-Spamd-Result: default: False [-1.71 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,ellerman.id.au:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 96180121094
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email]
+X-Rspamd-Queue-Id: 9C2621211F7
 X-Rspamd-Action: no action
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+Suren Baghdasaryan <surenb@google.com> writes:
 
-> During a memory hot-remove event, the elfcorehdr is rebuilt to exclude
-> the removed memory. While updating the crash memory ranges for this
-> operation, the crash memory ranges array can become unsorted. This
-> happens because remove_mem_range() may split a memory range into two
-> parts and append the higher-address part as a separate range at the end
-> of the array.
+> Now that we have vma_start_write_killable() we can replace most of the
+> vma_start_write() calls with it, improving reaction time to the kill
+> signal.
 >
-> So far, no issues have been observed due to the unsorted crash memory
-> ranges. However, this could lead to problems once crash memory range
-> removal is handled by generic code, as introduced in the upcoming
-> patches in this series.
-
-Do you have the link of the discussion, to where you have pointed about,
-what sort of problems this unsorted memory ranges might bring up with
-the new patch series?
-
-
+> There are several places which are left untouched by this patch:
 >
-> Currently, powerpc uses a platform-specific function,
-> remove_mem_range(), to exclude hot-removed memory from the crash memory
-> ranges. This function performs the same task as the generic
-> crash_exclude_mem_range() in crash_core.c. The generic helper also
-> ensures that the crash memory ranges remain sorted. So remove the
-> redundant powerpc-specific implementation and instead call
-> crash_exclude_mem_range_guarded() (which internally calls
-> crash_exclude_mem_range()) to exclude the hot-removed memory ranges.
+> 1. free_pgtables() because function should free page tables even if a
+> fatal signal is pending.
 >
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Baoquan he <bhe@redhat.com>
-> Cc: Jinjie Ruan <ruanjinjie@huawei.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> 2. userfaultd code, where some paths calling vma_start_write() can
+> handle EINTR and some can't without a deeper code refactoring.
+>
+> 3. vm_flags_{set|mod|clear} require refactoring that involves moving
+> vma_start_write() out of these functions and replacing it with
+> vma_assert_write_locked(), then callers of these functions should
+> lock the vma themselves using vma_start_write_killable() whenever
+> possible.
+>
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
+>  include/linux/mempolicy.h          |  5 +-
+>  mm/khugepaged.c                    |  5 +-
+>  mm/madvise.c                       |  4 +-
+>  mm/memory.c                        |  2 +
+>  mm/mempolicy.c                     | 23 ++++++--
+>  mm/mlock.c                         | 20 +++++--
+>  mm/mprotect.c                      |  4 +-
+>  mm/mremap.c                        |  4 +-
+>  mm/pagewalk.c                      | 20 +++++--
+>  mm/vma.c                           | 94 +++++++++++++++++++++---------
+>  mm/vma_exec.c                      |  6 +-
+>  12 files changed, 139 insertions(+), 53 deletions(-)
 >
-> Requesting this patch to part of the below patch series.
-> https://lore.kernel.org/all/20260209095931.2813152-1-ruanjinjie@huawei.com/
->
-> ---
->  arch/powerpc/include/asm/kexec_ranges.h |  4 +-
->  arch/powerpc/kexec/crash.c              |  5 +-
->  arch/powerpc/kexec/ranges.c             | 87 +------------------------
->  3 files changed, 7 insertions(+), 89 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-> index 14055896cbcb..ad95e3792d10 100644
-> --- a/arch/powerpc/include/asm/kexec_ranges.h
-> +++ b/arch/powerpc/include/asm/kexec_ranges.h
-> @@ -7,7 +7,9 @@
->  void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
->  struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
->  int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-> -int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-> +int crash_exclude_mem_range_guarded(struct crash_mem **mem_ranges,
-> +				    unsigned long long mstart,
-> +				    unsigned long long mend);
->  int get_exclude_memory_ranges(struct crash_mem **mem_ranges);
->  int get_reserved_memory_ranges(struct crash_mem **mem_ranges);
->  int get_crash_memory_ranges(struct crash_mem **mem_ranges);
-> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-> index a325c1c02f96..31462e8415ff 100644
-> --- a/arch/powerpc/kexec/crash.c
-> +++ b/arch/powerpc/kexec/crash.c
-> @@ -431,7 +431,7 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
->  	struct crash_mem *cmem = NULL;
->  	struct kexec_segment *ksegment;
->  	void *ptr, *mem, *elfbuf = NULL;
-> -	unsigned long elfsz, memsz, base_addr, size;
-> +	unsigned long elfsz, memsz, base_addr, size, end;
->  
->  	ksegment = &image->segment[image->elfcorehdr_index];
->  	mem = (void *) ksegment->mem;
-> @@ -450,7 +450,8 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
->  	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
->  		base_addr = PFN_PHYS(mn->start_pfn);
->  		size = mn->nr_pages * PAGE_SIZE;
-> -		ret = remove_mem_range(&cmem, base_addr, size);
-> +		end = base_addr - size - 1;
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 7cf9310de0ec..69750edcf8d5 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+>  			ret = H_STATE;
+>  			break;
+>  		}
+> -		vma_start_write(vma);
+> +		if (vma_start_write_killable(vma)) {
+> +			ret = H_STATE;
+> +			break;
+> +		}
+>  		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
+>  		vm_flags = vma->vm_flags;
+>  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
 
 
-end should be "base_addr + size - 1", isn't it?
+The above change w.r.t. powerpc error handling in function
+kvmppc_memslot_page_merge() looks good to me. 
 
-
-> +		ret = crash_exclude_mem_range_guarded(&cmem, base_addr, end);
->  		if (ret) {
->  			pr_err("Failed to remove hot-unplugged memory from crash memory ranges\n");
->  			goto out;
+Please feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
 
 -ritesh
 
