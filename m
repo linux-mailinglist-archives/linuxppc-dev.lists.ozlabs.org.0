@@ -1,78 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-16813-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKo6NLe2jGnlsQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16813-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 18:04:55 +0100
+	id oHyvBie3jGnlsQAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 18:06:47 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F9E12666F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 18:04:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 348B81266AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 18:06:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fB4YH5c0rz2yFc;
-	Thu, 12 Feb 2026 04:04:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fB4bQ0Vpxz2yFc;
+	Thu, 12 Feb 2026 04:06:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.20
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770829491;
-	cv=none; b=aLMDfBaX1FP5Q79h3qF1+L1+maEtnrmE6XLZC40ROWGNFe1PKPLn3aBqgkIeEmGVZnuGMwbaKwR+TwOwTAHPcJXn8fXlm4rDAAGCgzUWlZsuA19CxZ8OTDnoNahP28mBs44NlZBxlgeYG6c3NY9dmW3kvxUokDuR5BoWukgAHDdNcO6tUXVaSsLWYeYsbaLaK9euGasfTkhPIywRyPtWPb5vHZ6AseJwyyszgYEKyiKz/wSshF56Z0IfD5nkXzzCC/XFF4C7bSC6SNKdoqpe7HCTy0TvOuDq6DhgCC+ALxg51uVfyaACbohtejpIq8A99YwpnEU2cbd9FeLuGNpwdQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770829601;
+	cv=none; b=jP4OHkNdoP2ti/mGhLSNrej7ZqKAgNH+s9VnozKzPvg0lK1kpucmp9jwk0W3s9iWlQN6ASm4C1xQ7CDJ8od2OTTun2WVYY3jA77L/7uOdAbCCRud+qIC7Jlmwdidh1s2snu1gSnyXSixiO7AIPjn7piDFLpzl9MdN+PXHZwnPBKscNzdEPszt25DIIhUu1WfjjA+VeCynaVP4a5plBhlNbvczUT7nvrAXUXj2omCxqDGWU1rm2jTT7tmyctqBWxSFu1pfxHgyQ6IxQecmOBNntgnz4rmBfJaARqlIZNZYwV6P99/JQ/4jPKPgeU/wKgauYiwDOG8zk6dp/yIdbLr9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770829491; c=relaxed/relaxed;
-	bh=tD0IENaw86NNXGjNZi9OStX1ZDnsXELl2jMoSAHgc/s=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=lM9hX3WsRRIlTQGW8uqcfSDjuVOHkoyhL5thArgQkxk6yjHwINlBD5JRZZmH3PZr60q1caWMe8XNb5kjZn1R8jOgqA/AIRh2bRXIveQ6fRh8lJaN18+fuicJ1MA0pK5Gzw4E8lmOsulqUffInuvpiqj5+FHVgAEoYEFqqqKjCd3S9aleuJZsaW+X+YXR0BwHs310QPnLSxB/xc04nRnfZRif9mEgT7VzvrQPaufY7vvYad/sSblYwwVZMrdaeebokVwmp4sXAdWjJBilK2/eOKq1ylleXtVjS5PE8UhdOQlOIln9zB5Kd29ellNQwur4ycrE6oh+YwD59ab313TcDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CxV80ECm; dkim-atps=neutral; spf=pass (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1770829601; c=relaxed/relaxed;
+	bh=vRlShR3ts5OXCk40UTT625FNcWZ6fOxmrLZRL5NDsZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o1yrKKnzl9z/i0Kr0XUc1YT8wxs+yxUlCgNcngwD6k/EgW6RHx65AlVIirVXrYGaPmbB0B53viujwY4N9hRYHeGIJsIGnqKO+m7jzmZqhRTQML/Y+ovKElEPfsgRUFGwu3kht7NQWhSoM7S2Qh1FluxiTS/uWez6szHYjvptj6K7sBGJJYdZXgqYtU7mWo1DWAQ0f+RvwKK64bXr03wP/7mfa+6B6iaQrUWVyJzNRzzqQns81yss599nen9lAs9mcqjjI7DiBY9qEx1VHmx3WjX495fomYmZoPSUgZfRp1lU3oi6PVTS8ceSXYiFSFh5vZFxGRtm71wBlx8vWO/HBA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O8ABi0LK; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CxV80ECm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O8ABi0LK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fB4YD6R5Lz2xlM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 04:04:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770829490; x=1802365490;
-  h=date:from:to:cc:subject:message-id;
-  bh=PwCB4MAy8iplHdKGVkYZGwgSsIpGfGzdtvlxh6a5Cdk=;
-  b=CxV80ECm0tRxKQY9oxW9txHNsiLdV0vj9F6gAyn/VUWcElXaWYv0RCnp
-   fdY6SNMvaumLt1BNtZd3LT9bAjF6ixCcJvzbPecEjj2XYT3IUg+TPH3hQ
-   nQhC7zms8wwVw+tiZ8bkfw125a1QLT1Ib/1QLZ4DCy2Tw2FJpyUxDfsET
-   e5DvSsCW1epcWcBGHd0k2sO3uuta1Eqk6RlS4c3FJSrX/tVV6h8cdiPfo
-   vt6Om1PZz9iHXVUBiPKn9AX6Joce/fE5x00bEW4Viyg1u4PvDYhYhkpQw
-   05E2On07//Am9jZAlquaR3wiyHhQWTWn82oo1jKRVZibQn0cH558Ui2Ff
-   g==;
-X-CSE-ConnectionGUID: x7WEDEC7TL+gWFgHmFzd5w==
-X-CSE-MsgGUID: +bORF/cuRVOOswc/qzarMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71697484"
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="71697484"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 09:04:42 -0800
-X-CSE-ConnectionGUID: wbZKdemwSUiJdwV6Cngt3A==
-X-CSE-MsgGUID: mjJkGVO/RNqRGtl545LbDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="211341691"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 11 Feb 2026 09:04:40 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vqDdm-00000000qBk-0y78;
-	Wed, 11 Feb 2026 17:04:38 +0000
-Date: Thu, 12 Feb 2026 01:04:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 274bab1e7720e120cd42a2283f2a09b5f8ef0b6e
-Message-ID: <202602120106.dVWn9Fw8-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fB4bN6c93z2xlM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 04:06:40 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 47B5E415F5;
+	Wed, 11 Feb 2026 17:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86123C4CEF7;
+	Wed, 11 Feb 2026 17:06:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770829597;
+	bh=5/mcrSaCWXevZn1xgFspCk2VjAB+ct0uw/F/l3YfssY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O8ABi0LKTGRSUMbyeePfqYveaQYS7/lOY6vUIAjF9bVpzymxlrB2p4uh5qeDycVdp
+	 zs4QlwBI53WPcEqrBRldR2pBSi0c8Wl51P8SUivtGAERRWZd/BtFNUh9DEeOQYxxRg
+	 W6nwoIA4YEloJYgXhSxafmNq2F5I3XDJLZMEJtH0ADrB1q3LPhNYpoSL+g4aMFqckk
+	 59TZyy/OHLpDf6SsHGepNFEIyU0tQEBDI92cD4+xXvgKbZetpxykOlQU0y3vZau+tW
+	 4S5SyBVonmHN8nHaa4f/iPJEijb4sLIBfxbIX96dX6idHQKF4YP+8RfQJGRC4G0IcT
+	 VlDzPQkjPyoGw==
+Date: Wed, 11 Feb 2026 18:06:33 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Xin Zhao <jackzxcui1989@163.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Mel Gorman <mgorman@suse.de>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linux-s390@vger.kernel.org, Jan Kiszka <jan.kiszka@siemens.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linux-pm@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [PATCH 00/15 v2] tick/sched: Refactor idle cputime accounting
+Message-ID: <aYy3GTXDwZFM3VLy@localhost.localdomain>
+References: <20260206142245.58987-1-frederic@kernel.org>
+ <f5f7cc0e-81c1-49c4-9bfa-61b111c69ae2@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,276 +95,242 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f5f7cc0e-81c1-49c4-9bfa-61b111c69ae2@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:maddy@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16814-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16813-lists,linuxppc-dev=lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FORGED_RECIPIENTS(0.00)[m:sshegde@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:kbingham@kernel.org,m:mingo@redhat.com,m:jackzxcui1989@163.com,m:joelagnelf@nvidia.com,m:neeraj.upadhyay@kernel.org,m:svens@linux.ibm.com,m:boqun.feng@gmail.com,m:mgorman@suse.de,m:dietmar.eggemann@arm.com,m:bsegall@google.com,m:mpe@ellerman.id.au,m:rafael@kernel.org,m:paulmck@kernel.org,m:anna-maria@linutronix.de,m:agordeev@linux.ibm.com,m:maddy@linux.ibm.com,m:linux-s390@vger.kernel.org,m:jan.kiszka@siemens.com,m:juri.lelli@redhat.com,m:chleroy@kernel.org,m:linux-pm@vger.kernel.org,m:urezki@gmail.com,m:peterz@infradead.org,m:rostedt@goodmis.org,m:tglx@linutronix.de,m:npiggin@gmail.com,m:hca@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:borntraeger@linux.ibm.com,m:vschneid@redhat.com,m:viresh.kumar@linaro.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,linaro.org,kernel.org,redhat.com,163.com,nvidia.com,gmail.com,suse.de,arm.com,google.com,ellerman.id.au,linutronix.de,siemens.com,infradead.org,goodmis.org,lists.ozlabs.org];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 79F9E12666F
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 348B81266AC
 X-Rspamd-Action: no action
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 274bab1e7720e120cd42a2283f2a09b5f8ef0b6e  Automatic merge of 'next' into merge (2026-02-11 07:54)
+Le Wed, Feb 11, 2026 at 07:13:45PM +0530, Shrikanth Hegde a écrit :
+> Hi Frederic,
+> Gave this series a spin on the same system as v1.
+> 
+> On 2/6/26 7:52 PM, Frederic Weisbecker wrote:
+> > Hi,
+> > 
+> > After the issue reported here:
+> > 
+> >          https://lore.kernel.org/all/20251210083135.3993562-1-jackzxcui1989@163.com/
+> > 
+> > It occurs that the idle cputime accounting is a big mess that
+> > accumulates within two concurrent statistics, each having their own
+> > shortcomings:
+> > 
+> > * The accounting for online CPUs which is based on the delta between
+> >    tick_nohz_start_idle() and tick_nohz_stop_idle().
+> > 
+> >    Pros:
+> >         - Works when the tick is off
+> > 
+> >         - Has nsecs granularity
+> > 
+> >    Cons:
+> >         - Account idle steal time but doesn't substract it from idle
+> >           cputime.
+> > 
+> >         - Assumes CONFIG_IRQ_TIME_ACCOUNTING by not accounting IRQs but
+> >           the IRQ time is simply ignored when
+> >           CONFIG_IRQ_TIME_ACCOUNTING=n
+> > 
+> >         - The windows between 1) idle task scheduling and the first call
+> >           to tick_nohz_start_idle() and 2) idle task between the last
+> >           tick_nohz_stop_idle() and the rest of the idle time are
+> >           blindspots wrt. cputime accounting (though mostly insignificant
+> >           amount)
+> > 
+> >         - Relies on private fields outside of kernel stats, with specific
+> >           accessors.
+> > 
+> > * The accounting for offline CPUs which is based on ticks and the
+> >    jiffies delta during which the tick was stopped.
+> > 
+> >    Pros:
+> >         - Handles steal time correctly
+> > 
+> >         - Handle CONFIG_IRQ_TIME_ACCOUNTING=y and
+> >           CONFIG_IRQ_TIME_ACCOUNTING=n correctly.
+> > 
+> >         - Handles the whole idle task
+> > 
+> >         - Accounts directly to kernel stats, without midlayer accumulator.
+> > 
+> >     Cons:
+> >         - Doesn't elapse when the tick is off, which doesn't make it
+> >           suitable for online CPUs.
+> > 
+> >         - Has TICK_NSEC granularity (jiffies)
+> > 
+> >         - Needs to track the dyntick-idle ticks that were accounted and
+> >           substract them from the total jiffies time spent while the tick
+> >           was stopped. This is an ugly workaround.
+> > 
+> > Having two different accounting for a single context is not the only
+> > problem: since those accountings are of different natures, it is
+> > possible to observe the global idle time going backward after a CPU goes
+> > offline, as reported by Xin Zhao.
+> > 
+> > Clean up the situation with introducing a hybrid approach that stays
+> > coherent, fixes the backward jumps and works for both online and offline
+> > CPUs:
+> > 
+> > * Tick based or native vtime accounting operate before the tick is
+> >    stopped and resumes once the tick is restarted.
+> > 
+> > * When the idle loop starts, switch to dynticks-idle accounting as is
+> >    done currently, except that the statistics accumulate directly to the
+> >    relevant kernel stat fields.
+> > 
+> > * Private dyntick cputime accounting fields are removed.
+> > 
+> > * Works on both online and offline case.
+> > 
+> > * Move most of the relevant code to the common sched/cputime subsystem
+> > 
+> > * Handle CONFIG_IRQ_TIME_ACCOUNTING=n correctly such that the
+> >    dynticks-idle accounting still elapses while on IRQs.
+> > 
+> > * Correctly substract idle steal cputime from idle time
+> > 
+> > Changes since v1:
+> > 
+> > - Fix deadlock involving double seq count lock on idle
+> > 
+> > - Fix build breakage on powerpc
+> > 
+> > - Fix build breakage on s390 (Heiko)
+> > 
+> > - Fix broken sysfs s390 idle time file (Heiko)
+> > 
+> > - Convert most ktime usage here into u64 (Peterz)
+> > 
+> > - Add missing (or too implicit) <linux/sched/clock.h> (Peterz)
+> > 
+> > - Fix whole idle time acccounting breakage due to missing TS_FLAG_ set
+> >    on idle entry (Shrikanth Hegde)
+> > 
+> > git://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
+> > 	timers/core-v2
+> > 
+> > HEAD: 21458b98c80a0567d48131240317b7b73ba34c3c
+> > Thanks,
+> > 	Frederic
+> 
+> idle and runtime utilization with mpstat while running stress-ng looks
+> correct now.
+> 
+> However, when running hackbench I am noticing the below data. hackbench shows
+> severe regressions.
+> 
+> base: tip/master at 9c61ebbdb587a3950072700ab74a9310afe3ad73.
+> (nit: patch 7 is already part of tip. so skipped applying it)
+> +-----------------------------------------------+-------+---------+-----------+
+> | Test                                          | base  | +series | % Diff    |
+> +-----------------------------------------------+-------+---------+-----------+
+> | HackBench Process 10 groups                   |  2.23 |  3.05   |   -36.77%  |
+> | HackBench Process 20 groups                   |  4.17 |  5.82   |   -39.57%  |
+> | HackBench Process 30 groups                   |  6.04 |  8.49   |   -40.56%  |
+> | HackBench Process 40 groups                   |  7.90 | 11.10   |   -40.51%  |
+> | HackBench thread 10                           |  2.44 |  3.36   |   -37.70%  |
+> | HackBench thread 20                           |  4.57 |  6.35   |   -38.95%  |
+> | HackBench Process(Pipe) 10                    |  1.76 |  2.29   |   -30.11%  |
+> | HackBench Process(Pipe) 20                    |  3.49 |  4.76   |   -36.39%  |
+> | HackBench Process(Pipe) 30                    |  5.21 |  7.13   |   -36.85%  |
+> | HackBench Process(Pipe) 40                    |  6.89 |  9.31   |   -35.12%  |
+> | HackBench thread(Pipe) 10                     |  1.91 |  2.50   |   -30.89%  |
+> | HackBench thread(Pipe) 20                     |  3.74 |  5.16   |   -37.97%  |
+> +-----------------------------------------------+-------+---------+-----------+
+> 
+> I have these in .config and I don't have nohz_full or isolated cpus.
+> 
+> CONFIG_TICK_ONESHOT=y
+> CONFIG_NO_HZ_COMMON=y
+> # CONFIG_HZ_PERIODIC is not set
+> # CONFIG_NO_HZ_IDLE is not set
+> CONFIG_NO_HZ_FULL=y
+> 
+> # CPU/Task time and stats accounting
+> #
+> CONFIG_VIRT_CPU_ACCOUNTING=y
+> CONFIG_VIRT_CPU_ACCOUNTING_GEN=y
+> CONFIG_IRQ_TIME_ACCOUNTING=y
+> CONFIG_HAVE_SCHED_AVG_IRQ=y
+> 
+> I did a git bisect and below is what it says.
+> 
+> git bisect start
+> # status: waiting for both good and bad commits
+> # bad: [6821315886a3b5267ea31d29dba26fd34647fbbc] sched/cputime: Handle dyntick-idle steal time correctly
+> git bisect bad 6821315886a3b5267ea31d29dba26fd34647fbbc
+> # status: waiting for good commit(s), bad commit known
+> # good: [9c61ebbdb587a3950072700ab74a9310afe3ad73] Merge branch into tip/master: 'x86/sev'
+> git bisect good 9c61ebbdb587a3950072700ab74a9310afe3ad73
+> # good: [dc8bb3c84d162f7d9aa6becf9f8392474f92655a] tick/sched: Remove nohz disabled special case in cputime fetch
+> git bisect good dc8bb3c84d162f7d9aa6becf9f8392474f92655a
+> # good: [5070a778a581cd668f5d717f85fb22b078d8c20c] tick/sched: Account tickless idle cputime only when tick is stopped
+> git bisect good 5070a778a581cd668f5d717f85fb22b078d8c20c
+> # bad: [1e0ccc25a9a74b188b239c4de716fde279adbf8e] sched/cputime: Provide get_cpu_[idle|iowait]_time_us() off-case
+> git bisect bad 1e0ccc25a9a74b188b239c4de716fde279adbf8e
+> # bad: [ee7c735b76071000d401869fc2883c451ee3fa61] tick/sched: Consolidate idle time fetching APIs
+> git bisect bad ee7c735b76071000d401869fc2883c451ee3fa61
+> # first bad commit: [ee7c735b76071000d401869fc2883c451ee3fa61] tick/sched:
+> Consolidate idle time fetching APIs
 
-elapsed time: 870m
+I see. Can you try this? (or fetch timers/core-v3 from my tree)
+Perhaps that mistake had some impact on cpufreq.
 
-configs tested: 222
-configs skipped: 4
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index 057fdc00dbc6..08550a6d9469 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -524,7 +524,7 @@ static u64 get_cpu_sleep_time_us(int cpu, enum cpu_usage_stat idx,
+ 	do_div(res, NSEC_PER_USEC);
+ 
+ 	if (last_update_time)
+-		*last_update_time = res;
++		*last_update_time = ktime_to_us(now);
+ 
+ 	return res;
+ }
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-22
-arc                              allyesconfig    gcc-15.2.0
-arc                          axs103_defconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260211    gcc-8.5.0
-arc                   randconfig-002-20260211    gcc-8.5.0
-arm                               allnoconfig    clang-22
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    gcc-15.2.0
-arm                            hisi_defconfig    gcc-15.2.0
-arm                       multi_v4t_defconfig    gcc-15.2.0
-arm                   randconfig-001-20260211    gcc-8.5.0
-arm                   randconfig-002-20260211    gcc-8.5.0
-arm                   randconfig-003-20260211    gcc-8.5.0
-arm                   randconfig-004-20260211    gcc-8.5.0
-arm64                            allmodconfig    clang-19
-arm64                            allmodconfig    clang-22
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260211    gcc-15.2.0
-arm64                 randconfig-002-20260211    gcc-15.2.0
-arm64                 randconfig-003-20260211    gcc-15.2.0
-arm64                 randconfig-004-20260211    gcc-15.2.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260211    gcc-15.2.0
-csky                  randconfig-002-20260211    gcc-15.2.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-22
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260211    clang-22
-hexagon               randconfig-002-20260211    clang-22
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386        buildonly-randconfig-001-20260211    clang-20
-i386        buildonly-randconfig-002-20260211    clang-20
-i386        buildonly-randconfig-003-20260211    clang-20
-i386        buildonly-randconfig-004-20260211    clang-20
-i386        buildonly-randconfig-005-20260211    clang-20
-i386        buildonly-randconfig-006-20260211    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260211    gcc-14
-i386                  randconfig-002-20260211    gcc-14
-i386                  randconfig-003-20260211    gcc-14
-i386                  randconfig-004-20260211    gcc-14
-i386                  randconfig-005-20260211    gcc-14
-i386                  randconfig-006-20260211    gcc-14
-i386                  randconfig-007-20260211    gcc-14
-i386                  randconfig-011-20260211    clang-20
-i386                  randconfig-012-20260211    clang-20
-i386                  randconfig-013-20260211    clang-20
-i386                  randconfig-014-20260211    clang-20
-i386                  randconfig-015-20260211    clang-20
-i386                  randconfig-016-20260211    clang-20
-i386                  randconfig-017-20260211    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                        allmodconfig    clang-22
-loongarch                         allnoconfig    clang-22
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch                loongson32_defconfig    gcc-15.2.0
-loongarch             randconfig-001-20260211    clang-22
-loongarch             randconfig-002-20260211    clang-22
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                             allyesconfig    gcc-15.2.0
-m68k                          atari_defconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-m68k                        m5307c3_defconfig    gcc-15.2.0
-m68k                            mac_defconfig    gcc-15.2.0
-m68k                            q40_defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-microblaze                      mmu_defconfig    gcc-15.2.0
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                  cavium_octeon_defconfig    gcc-15.2.0
-mips                        maltaup_defconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-22
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260211    clang-22
-nios2                 randconfig-002-20260211    clang-22
-openrisc                         alldefconfig    gcc-15.2.0
-openrisc                         allmodconfig    clang-22
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-openrisc                    or1ksim_defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260211    clang-22
-parisc                randconfig-001-20260211    gcc-14.3.0
-parisc                randconfig-002-20260211    clang-22
-parisc                randconfig-002-20260211    gcc-15.2.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                        icon_defconfig    gcc-15.2.0
-powerpc                 linkstation_defconfig    gcc-15.2.0
-powerpc               randconfig-001-20260211    clang-16
-powerpc               randconfig-001-20260211    clang-22
-powerpc               randconfig-002-20260211    clang-22
-powerpc                     sequoia_defconfig    gcc-15.2.0
-powerpc64             randconfig-001-20260211    clang-17
-powerpc64             randconfig-001-20260211    clang-22
-powerpc64             randconfig-002-20260211    clang-22
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260211    gcc-13.4.0
-riscv                 randconfig-002-20260211    gcc-13.4.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260211    gcc-13.4.0
-s390                  randconfig-002-20260211    gcc-13.4.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-22
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                         ecovec24_defconfig    gcc-15.2.0
-sh                 kfr2r09-romimage_defconfig    gcc-15.2.0
-sh                    randconfig-001-20260211    gcc-13.4.0
-sh                    randconfig-002-20260211    gcc-13.4.0
-sh                          rsk7264_defconfig    gcc-15.2.0
-sh                   rts7751r2dplus_defconfig    gcc-15.2.0
-sh                        sh7757lcr_defconfig    gcc-15.2.0
-sh                             shx3_defconfig    gcc-15.2.0
-sparc                             allnoconfig    clang-22
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260211    gcc-13.4.0
-sparc                 randconfig-002-20260211    gcc-13.4.0
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260211    gcc-13.4.0
-sparc64               randconfig-002-20260211    gcc-13.4.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260211    gcc-13.4.0
-um                    randconfig-002-20260211    gcc-13.4.0
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260211    gcc-12
-x86_64      buildonly-randconfig-002-20260211    gcc-12
-x86_64      buildonly-randconfig-003-20260211    gcc-12
-x86_64      buildonly-randconfig-004-20260211    gcc-12
-x86_64      buildonly-randconfig-005-20260211    gcc-12
-x86_64      buildonly-randconfig-006-20260211    gcc-12
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260211    clang-20
-x86_64                randconfig-002-20260211    clang-20
-x86_64                randconfig-003-20260211    clang-20
-x86_64                randconfig-004-20260211    clang-20
-x86_64                randconfig-005-20260211    clang-20
-x86_64                randconfig-006-20260211    clang-20
-x86_64                randconfig-011-20260211    gcc-14
-x86_64                randconfig-012-20260211    gcc-14
-x86_64                randconfig-013-20260211    gcc-12
-x86_64                randconfig-013-20260211    gcc-14
-x86_64                randconfig-014-20260211    clang-20
-x86_64                randconfig-014-20260211    gcc-14
-x86_64                randconfig-015-20260211    gcc-14
-x86_64                randconfig-016-20260211    gcc-14
-x86_64                randconfig-071-20260211    clang-20
-x86_64                randconfig-072-20260211    clang-20
-x86_64                randconfig-073-20260211    clang-20
-x86_64                randconfig-074-20260211    clang-20
-x86_64                randconfig-075-20260211    clang-20
-x86_64                randconfig-076-20260211    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-22
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-22
-xtensa                  cadence_csp_defconfig    gcc-15.2.0
-xtensa                randconfig-001-20260211    gcc-13.4.0
-xtensa                randconfig-002-20260211    gcc-13.4.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
