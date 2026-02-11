@@ -1,65 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16810-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KtDKoF6jGkcpgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 13:48:01 +0100
+	id SC/5AlWDjGl/qAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16810-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 14:25:41 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C911712481F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 13:48:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76814124B86
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 14:25:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f9yrt2ytjz2yFc;
-	Wed, 11 Feb 2026 23:47:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f9zhH0Wkzz2yFc;
+	Thu, 12 Feb 2026 00:25:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770814078;
-	cv=none; b=aioQTJHDO1NSoYdFUOBYcXp581RutCTS1NYkxuHinLr+MJDps4wIm7On9eiqlUt+L8WpVoafPoeo3rhkUh6p+GYX/Crq2lsrH+CW9J5IC2iECw2MSZt08siULgkIRYBuZzCObHLV1EKjKQAQp2a86XpCkMYuXB7XkV8LvXBoXky8xIBPXCMpYvna8ulv3pN2hLfxebghYuVswUSz/Sy64Cbi0fwm+mNkgjFfa7VLwO0QpbHtSWBUBdbBHMHnGfZQ9j6av21eGhdeew76NdiM9kLhpH6mvZ5T2EArMr772N7OAlCcAZOrbGqGcV2IZ9ZDiJE9dqmJepqo0GJO4OZoNA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770816334;
+	cv=none; b=gu7UHcXNi32tMcX6VnL3JQaOiHQXkIEuuublR2Q9AjGBjmlCbIlQf+NqGZD7bJj9XuwR0OB5eDJDZ1hBxTfr52Lko2gHub5EdnqVppR4fbaT6h4dgHtyBcIH5hBIKNDvPcj0vz3tjbq9zpC075OxgkL8gACGHszFC3qOHEvf3U+i9KkCpUw89LQ7Z7i7cEBl4tBpB1/zYtrughIn4jelXLJPltY/rz3KpQl6rV/+CiOjm/iUFXVLKCY9orpbPP99J/bnmHX1sy4CZ71fEqqodh2P5aqefspgLGXdylcQEEyrOHvE/r5YwwCrFhwzJDvMs0OmyCjkbsofMojIbfWWsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770814078; c=relaxed/relaxed;
-	bh=G5PYZMNjLjCkB/3J1uvIOFYqNefpUtlIsBo/LElDi20=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NDqrNBJ7fGWiz0GRiZemFw2KKXg3AdBrW4axiH5h+S1A3EAjQOGG2enBLFsB226nAjx57WJaiFyx0EN4IY0lW29yzTG+pf7sXti8xPTjpV/N0H5vCERV7SgOfVqjQ1hPz3MjTDcbPt5Cwpm7dRootM7Kfzjy7Xu3DCbs+OUbGoFuPAv43NAYkSHl3RO4TdCXzk4OiZaj4eplHhFKxup3ljiJSHiuRBil51vthGvls8RJq484XrKU7lsBKVgAWjNMn8Ua7U+OTMvOKGxoeQMBXnwYHrb00IOFLLOl9qxtheFJl72s/qZliw59Lmh90JTuzg4RCBtmtnwk7+n/XJMpDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=YqYhJFgd; dkim-atps=neutral; spf=pass (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	t=1770816334; c=relaxed/relaxed;
+	bh=0PIwUSQnjigR7OzC+8/roaEtOWyhHvSG2Ks4ERE2LUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z1dli0mpOfAkYTugIt1VlLkSlSZXDuvE1dsug8EADSKxcxuEKl+kxpNI6ibVx3pryVxR9mDvKo91RMSr/gda0M0ISOuJJzUhF1kOxXG+I4xLwpVAmR4jYkY7YuKP6h1q3kodsxq+rSfUoJG+Fs+1VOi43IbumMUCDAWkSlfxT/TCd6gWsEvJ+8tYDITTy0VxNqTpALyuP+bD9NocBfH5AZaSTCL9zJbuuMNBh4V+9oRItwNvb7u3MwBdYVVQcgCHKOSxOO6zxXgiC/ScX9xRWdXc5uFiISxZoPWP/hNIzHohZv/xYVYJTQAQZwkC+WbQhRtyGozSJeToYCOO884P8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IY1BLjfx; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=YqYhJFgd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IY1BLjfx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9yrr6zJQz2xlM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Feb 2026 23:47:56 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770814072; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=G5PYZMNjLjCkB/3J1uvIOFYqNefpUtlIsBo/LElDi20=;
-	b=YqYhJFgdV7DOCXZc4EIsZQVISfbp3q+dR1KdbgJyQVEZnKIRMpUvHq/hGGpf96SKxPxCo8fDYMvy2X+H9FrRvx0dXmyHs/YfMT5y5chd0oMSmjSlf/Lr388F2Ap7zkZ2r77hDcAtO0t9kwyfqOoRjJ86zrZ8+gpKBszTbuPrdlA=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wz1H63b_1770814068 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Feb 2026 20:47:49 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	bhelgaas@google.com,
-	kbusch@kernel.org,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	lukas@wunner.de
-Cc: mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	xueshuai@linux.alibaba.com,
-	Jonathan.Cameron@huawei.com,
-	terry.bowman@amd.com,
-	tianruidong@linux.alibaba.com,
-	zhuo.song@linux.alibaba.com,
-	oliver.yang@linux.alibaba.com
-Subject: [PATCH v3] PCI/AER: Only clear error bits in PCIe Device Status register
-Date: Wed, 11 Feb 2026 20:46:24 +0800
-Message-Id: <20260211124624.49656-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f9zhF5Kt2z2xlM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 00:25:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CAC5E43842;
+	Wed, 11 Feb 2026 13:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A817C4CEF7;
+	Wed, 11 Feb 2026 13:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770816330;
+	bh=8bP6jIC/KRpZ5dRqDOGx3ic6z30NOvMZ0jo3/v/qgNo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IY1BLjfxsgjinT3MEUNF7AFOKffzITdIZjopxTyKR6rQR70TxHPeohVo/zmDu3S+D
+	 jGJg75qVkd9JA5PGyzxeLus7oPrLKFJZ48dP8de+Z7ZEkhHmvqWpOMLsg45xAY/HV/
+	 XLL2W56ya5+sAzctEcRROezBTxi9J8VOP/sMDUDhAQRFP5ZH3k1BnF6hXqk4XCYNeY
+	 iy6qNPABWgwNnPUl7XiuZj70VWvAr0UWH0eXl0iDUWkybAzqBX529aglOS6iXAU3/V
+	 w3HJztIob+TfOTWk4s4zPrNrvsdFd3O2hVTDRmpqwEtQI80foZrUxJRNPa0JuVahi5
+	 E7kBwyvLbcfHA==
+Message-ID: <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
+Date: Wed, 11 Feb 2026 14:25:21 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,110 +63,170 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
+ willy@infradead.org, linux-mm@kvack.org
+Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20260211125507.4175026-1-usama.arif@linux.dev>
+ <20260211125507.4175026-2-usama.arif@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260211125507.4175026-2-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-7.71 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16809-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.ibm.com,gmail.com,linux.alibaba.com,huawei.com,amd.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16810-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:npache@redhat.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@suse.cz,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[xueshuai@linux.alibaba.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:lukas@wunner.de,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:xueshuai@linux.alibaba.com,m:Jonathan.Cameron@huawei.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:zhuo.song@linux.alibaba.com,m:oliver.yang@linux.alibaba.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xueshuai@linux.alibaba.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,intel.com:email,alibaba.com:email]
-X-Rspamd-Queue-Id: C911712481F
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 76814124B86
 X-Rspamd-Action: no action
 
-Currently, pcie_clear_device_status() clears the entire PCIe Device
-Status register (PCI_EXP_DEVSTA) by writing back the value read from
-the register, which affects not only the error status bits but also
-other writable bits.
+CCing ppc folks
 
-According to PCIe Base Specification r7.0, sec 7.5.3.5 (Device Status
-Register), this register contains:
+On 2/11/26 13:49, Usama Arif wrote:
+> When the kernel creates a PMD-level THP mapping for anonymous pages,
+> it pre-allocates a PTE page table and deposits it via
+> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
+> PMD split or zap. The rationale was that split must not fail—if the
+> kernel decides to split a THP, it needs a PTE table to populate.
+> 
+> However, every anon THP wastes 4KB (one page table page) that sits
+> unused in the deposit list for the lifetime of the mapping. On systems
+> with many THPs, this adds up to significant memory waste. The original
+> rationale is also not an issue. It is ok for split to fail, and if the
+> kernel can't find an order 0 allocation for split, there are much bigger
+> problems. On large servers where you can easily have 100s of GBs of THPs,
+> the memory usage for these tables is 200M per 100G. This memory could be
+> used for any other usecase, which include allocating the pagetables
+> required during split.
+> 
+> This patch removes the pre-deposit for anonymous pages on architectures
+> where arch_needs_pgtable_deposit() returns false (every arch apart from
+> powerpc, and only when radix hash tables are not enabled) and allocates
+> the PTE table lazily—only when a split actually occurs. The split path
+> is modified to accept a caller-provided page table.
+> 
+> PowerPC exception:
+> 
+> It would have been great if we can completely remove the pagetable
+> deposit code and this commit would mostly have been a code cleanup patch,
+> unfortunately PowerPC has hash MMU, it stores hash slot information in
+> the deposited page table and pre-deposit is necessary. All deposit/
+> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
+> behavior is unchanged with this patch. On a better note,
+> arch_needs_pgtable_deposit will always evaluate to false at compile time
+> on non PowerPC architectures and the pre-deposit code will not be
+> compiled in.
 
-- RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are
-  the four error status bits that need to be cleared.
+Is there a way to remove this? It's always been a confusing hack, now 
+it's unpleasant to have around :)
 
-- Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these
-  has no effect.
+In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1 
+copied generic pgtable_trans_huge_deposit() hurts my belly.
 
-- Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
-  introduced in PCIe r5.0 (2019). This is currently the only writable
-  non-error bit in the Device Status register. Unconditionally
-  clearing this bit can interfere with other software components that
-  rely on this power management indication.
 
-- Reserved bits (RsvdZ): These bits are required to be written as
-  zero. Writing 1s to them (as the current implementation may do)
-  violates the specification.
+IIUC, hash is mostly used on legacy power systems, radix on newer ones.
 
-To prevent unintended side effects, modify pcie_clear_device_status()
-to only write 1s to the four error status bits (CED, NFED, FED, URD),
-leaving the Emergency Power Reduction Detected bit and reserved bits
-unaffected.
+So one obvious solution: remove PMD THP support for hash MMUs along with 
+all this hacky deposit code.
 
-Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
-Cc: stable@vger.kernel.org
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
-changes since v2:
-- accommodate two macros per line per Lukas
-- pick up Reviewed-by tag from Lukas
----
- drivers/pci/pci.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 13dbb405dc31..0e6a50260555 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2243,10 +2243,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_state);
- #ifdef CONFIG_PCIEAER
- void pcie_clear_device_status(struct pci_dev *dev)
- {
--	u16 sta;
--
--	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
--	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
-+	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
-+				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
-+				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
- }
- #endif
- 
+the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar 
+checks need to be wrapped in a reasonable helper and likely this all 
+needs to get cleaned up further.
+
+The implementation if the generic pgtable_trans_huge_deposit and the 
+radix handlers etc must be removed. If any code would trigger them it 
+would be a bug.
+
+If we have to keep this around, pgtable_trans_huge_deposit() should 
+likely get renamed to arch_pgtable_trans_huge_deposit() etc, as there 
+will not be generic support for it.
+
 -- 
-2.43.5
+Cheers,
 
+David
 
