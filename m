@@ -1,98 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-16817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJJ0J2QBjWnAwwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 23:23:32 +0100
+	id WKxVFJcEjWlVxAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 23:37:11 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E2612819D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 23:23:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F15128270
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Feb 2026 23:37:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBCcx0ngpz2xnZ;
-	Thu, 12 Feb 2026 09:23:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBCwh00wjz2yFQ;
+	Thu, 12 Feb 2026 09:37:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::1329" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770848608;
-	cv=pass; b=oR0nUBO3JAQKEVXU+byw2ne3x+nJBxCzMphSXdCgoe50UxJhhcSfG671fVXajGBHAps7KrD48ZQoal/4UI3cJSSWI+7vQi8Yxpcn/UdCnAqfaoiMhImskncjp61hTH3315bxBtJe6PiJqpgAI4K3odyoCFG2ENea+ukLv/z92+ezouwsX9ZR5d029pZe7pioeeKhVFyKQVgBEUJZmxtEiNv79+WHjB8XY7ZuM/vQXVIFuH5c8sbxw9Z8nk5LSyyF2VLnphGzCy4hqQgyLM/gK6CGoo8PoJRKzAuOv7NCc3YYAeolNzDOo7ZHn4B39ChXir3adBHyy0B94GjVGvtLcQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770848608; c=relaxed/relaxed;
-	bh=RfH/ZJAACI/swH2C3a/IoB6OapnQajyNzXEzxpMU19Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B9xiz0asHpUTRZTQ1OPtKuVh6GTy3I9eHA99idETBcyn8NKKoj4IiU2ADd6nYaMTXUbpRhsVFR5IVQropfPLxxYIr8uISY3Gv5j2XzZKdUVwVcIlcX6ot1TdpPOcDEyxP7XoxqxCzfUysqFWxIto+l8+xQDW0DVKBtKQOGuF64NaMpqNZH5QM1036uvElqwJ4QFmEoR8g6f8LfEny8tbgqblFxp0Nz/rSVEl3wDeB1HADC2V4/9YO9mvIRGmIAStq2+7stRcniWpfPA7E5fBQajmbaYiq9yWBDAbbxTcC3Nm7QR1QFYpBcjP/fgQh6A6bl6/mDa2LPL7qzZ5BTAo1Q==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AEl5dRMU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1329; helo=mail-dy1-x1329.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770849427;
+	cv=none; b=grzw4pKTtz1UypQzNEyCTq6tk0gCWtTsd2UOwwfuflfyB9sjaOKU0sN0drSjgvJiOvG1DruvMZu4FIYGShjogMHe+JuJLr3Hgbe3RMXaCmGGW3ZOzqvmUMm83sbmLCFf4XLnUJj0W0oBJPMzZ5ivxIAhoWR6I847CxKOV3B5iqb+jZFD9If3cXqNLbnX0Lkjnoyo/lHkjl0JmICZh8uqFgzUj+nbGMovM9kbuY+Xg98Zw1Q8gWj+k5YEDshn7H/VUbkTan2OVvLx9yNi6ONhSgkrs3JoVzlBo9OsAZAAJuIHH0YoZg3K4LPLz8y2Th/QzFKZtr83nyokivApRvKiFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770849427; c=relaxed/relaxed;
+	bh=7Eu5WXcIuBe88Xd8eCDaS+uTqxUL8W+UWJopLy1W8/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=El9vfkborBubptvCRQE/0cKTlu8CZvjpkESiCv6nq8wU+3F3GXmLbcVZ2Hx/G6BsBWlP4KW7ZsDD7CegeJhDKSYj/Ut1B5p/fynpywFvb7wcmV9eilqrOMbU0Gr1moRUR++uwGPcZckLPPgQ4DTmakniwjoPn508FVGH6+gL4I6MOxSDhlzqTPX/AFwZbQb1sEILeHIOJewnrRglJSI1T0gcYEyt6Gah0sj7xUbD4Xy9I/ARKHigrcVOPX16XA8MVZO+/E9V4nfznNK9x7IktC8CDRfcX3DhD6FCS52d8D2BdykU+5CYcbEtfAG/Hp0Anu4YN/h6gIIqcj0w0BlAWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DmiBYLY1; dkim-atps=neutral; spf=pass (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AEl5dRMU;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DmiBYLY1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1329; helo=mail-dy1-x1329.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-dy1-x1329.google.com (mail-dy1-x1329.google.com [IPv6:2607:f8b0:4864:20::1329])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBCcv4rX1z2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 09:23:26 +1100 (AEDT)
-Received: by mail-dy1-x1329.google.com with SMTP id 5a478bee46e88-2ba76d64d14so154774eec.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Feb 2026 14:23:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770848603; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZWmcEt8LSNN0c436JibiZejbZROuAVmQ+ZyazNZVTzsG/jyGRtCr6qVbeM2LG0NbeG
-         hn7telx7fqBpAsJJCQweEvnxB0zTlRf8c689mkbxmWGzEmFZ2eO00cDGA287gvGG6Pf6
-         iQd9Ju+Fu5bc7qdnYXJhRk0HGwiYWp53tWxBeeI5u9MVoR3z9vb6cPnxtsqhQQxhRko6
-         6OtZ/9IkaCkwnzl3nyw+ClhdCsByOPCR3LGGL0vvTA0ZlV4w8Yik9hVcWdJMZA2jumlo
-         /U/O02/5lOOn7+hLhJiR329p3BmvJcRaX9Rv26/PeF5+4E7BgSrVwXSuUtjiezVrEzXz
-         ZXFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RfH/ZJAACI/swH2C3a/IoB6OapnQajyNzXEzxpMU19Q=;
-        fh=kl4/Tb+MYLeTthImi+hzxxDHOkGvJuTmW8YqamMcnyk=;
-        b=GV1EznakRcdi9UikXOfdL/hJeuL2dt+DcyqntAD3rMa1Q8DP9bueiBQzyw2ICHbjOM
-         iY1/52BqsPGjABiFCCXWLtIr8sfTUf+VOqmT9qx6KzZFI1ojSeXB4A0wl/fc9J1KG1nQ
-         BPwYOBF1lL1ID/LCdpqF4lr7WoOECESZJ2pe35mSJuBcen5ZGYl69pS+cjxVo/vaqJp8
-         HiV78jaY0VnFOThIb5hk4oX0iYDSxi1jP0RHKqPRgFW6Ak5Bc6vcmHpbkBb0tYilqscL
-         y80rRu8Ks3v3EzkhW/y1c36y13bt8eG4BDCzuObxGBOEJoaPUkLRCpEh7ZOzzvOnLSGK
-         4Z1g==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770848603; x=1771453403; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RfH/ZJAACI/swH2C3a/IoB6OapnQajyNzXEzxpMU19Q=;
-        b=AEl5dRMUV0AaRXjRnQaM/+15qEl8eheR3L/QLZsrGu9IOt4PPvxHKt9EueIAlu94j1
-         +B86H4Ncdq8vE/6NZ8b5PxSTju8/Ja/IyrCIXDPpWi9YpKKFE+1FDL50CwC33WW9Witp
-         /SWjJA0phn/JZqC+mRlPafHnzGSp1zM4z+NYZmyoIYA/AjZbaZwzmli1b4gD/LY3PnGQ
-         DHhu5mr0qkSqvFIk0IhVRzBh2CwDoAt9Wr3YFXORKx8jFDoLtcD7nuKaTL/YFXUrLBEX
-         8TbWTPTKe3wRzNgb0Fzfds8Uf46A3IBg/rm/vFb0JURpBN4bqwGoqmj9TD5iXRirxvJH
-         fSqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770848603; x=1771453403;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RfH/ZJAACI/swH2C3a/IoB6OapnQajyNzXEzxpMU19Q=;
-        b=terzU0lBv/ySHgYklA6vCK7tKj+2weg9Kz+L1nOEIi38oSn43BO+7yAYf458oBOuBG
-         BguQqukoiYZkEoDU663u42XYIdIK95DZWYxbk8ox/ZJ8h2ftjoSG7gic7hRyTLiPn9Nz
-         g688rJquGrDXnahLjOL8o3OC4cGgTwAmSsHPYefK/oT5iK4Asfq6mNkKailxc0V5rKrz
-         9Sis3bMg1rkNdSi+I8EKxoEebYR2tH4EPSjtAaaPMko2j6/UXsZ1EuSLfiZbYVczteWo
-         TBlBNdxHPRMyssVtSXZLY0fN3yvjM2Qt2tq2YjiDSYA9LGudcFRgYJbK0CVvUITkMbk5
-         yfnA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9pSlaGtGxy6E0jtL9FtS0ZGBP81BADNR3FdCjL/HiK0Rjjdjj+sP3eJOk0JgIZYwR55p/LTpxc6MJlYE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwAnubzYLmerUeL9quubQ53o3PeMtEDpR8cYOskcFkrqZxWPckz
-	GGyU2N25n8SgzU2/ZECSQZpPED/h0GvW28SjZAV/bKgUhe2Zs8ebAcVoZzWIbz7bgqnXnwcYTQx
-	WIyQmBFq8/k10MiAiFxfQZSVkufRAB+8=
-X-Gm-Gg: AZuq6aIdoq2aej74P9kMgr4sAMrW5nGubYtZJ2uegFZw/oF0htaIjptQA1SOBidXFda
-	Ej5NieAQGqf86MxMHvjUuOJq4gkgf2V7VrSMYEPGAQRxciYQJhcjLAOakNxuQC3rA6pnApGLHza
-	oWU078/R0TYzlwsGD8U0p2g2zeP2J9I75O0uQWo8L40wRCco9JVq1KvZzfESJSb3JX4G9PDAUT7
-	WRDVNnR95VFUBD0xY0KmbiBAs1QfVXku7VUEGLmYGxZjsmYP+GQA2ZAz7edaeESEHnpUsRqNBQS
-	qvmsy7YSt5etUO7VK+hhPCHpBr1s714gv2K3VvEiFRJ3HgTw5PiC04NJMSz0fb2w1QWnDl808LA
-	PL8RET2u3vQufBPtggDguiQmX
-X-Received: by 2002:a05:7300:cb0f:b0:2ba:7d5a:a816 with SMTP id
- 5a478bee46e88-2baa8079874mr215051eec.4.1770848603104; Wed, 11 Feb 2026
- 14:23:23 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBCwd0dwWz2xm5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 09:37:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770849425; x=1802385425;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5lBrMrSUEvT4lx29b/VzGz7vn6FI2f6WHH0Xp1tO82E=;
+  b=DmiBYLY1Mkmp1F0uD7bJIraPRv+2phgNrIbMDmrrIR8XqqFzsmbKgtpl
+   BXcvTZlJncoOCdFBOd+YqdWEccwNe0Xif9VzV/aKvj7Qo9IN/HCeOPZon
+   ydEqt9gYfcu6ESg5cXPRytHW50ZiNibTOc9bFYp6TDZjdg7mv1JSB8O3F
+   1sxmdLgJD/TYt0LgNm9N+IezAXJeWxyC5vK4olRi6l2v5CsdzwhdC0OfU
+   kzbkS6MW0ImSf+ruoHc2CbmgNRAAkRh9j1/Fyfd8JFc6S8tgyC7JVgfo3
+   vZuhBl50jid00yfU4cFavlsDfR0uBNOwNIhFPARtF71wRK0CPY2LLnuiv
+   g==;
+X-CSE-ConnectionGUID: 3OT8gYt3QSmjCI5H9JQiog==
+X-CSE-MsgGUID: wKqF1KwATnKeXld0HrVT2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71911096"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="71911096"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 14:36:59 -0800
+X-CSE-ConnectionGUID: ZabLUBVpQsqUdFupslNNvQ==
+X-CSE-MsgGUID: MSBEmk28TJaeA0OfdScegg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="212403937"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 11 Feb 2026 14:36:53 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vqIpH-00000000qRi-0j3G;
+	Wed, 11 Feb 2026 22:36:51 +0000
+Date: Thu, 12 Feb 2026 06:35:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Coiby Xu <coxu@redhat.com>, kexec@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	devicetree@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>,
+	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>, Pingfan Liu <kernelfans@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>, Thomas Staudt <tstaudt@de.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] arm64,ppc64le/kdump: pass dm-crypt keys to kdump
+ kernel
+Message-ID: <202602120648.RgQALnnI-lkp@intel.com>
+References: <20260211082401.2407853-3-coxu@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,88 +102,218 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260204210125.613350-1-mkchauras@gmail.com> <20260204210125.613350-4-mkchauras@gmail.com>
- <aYSgjPD5KRcNN0j4@luna> <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
- <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72mi-V_SF+JErMJu1wZEd27HPHqhsxE8dELtd5e3ZEaA4w@mail.gmail.com> <20260205200222.GA1298159@ax162>
-In-Reply-To: <20260205200222.GA1298159@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Feb 2026 23:23:08 +0100
-X-Gm-Features: AZwV_QiUruFZTWSfo62Op58oUYH2ayIoiaQzk5z1Tco-BdUXIDPQzuMLaoXlnas
-Message-ID: <CANiq72=-8urJufUuZLnRtm6qKCUhsSd=kPF=_a3ga=nk-iMV5A@mail.gmail.com>
-Subject: Re: [PATCH V2 3/3] powerpc: Enable Rust for ppc64le
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Jubilee Young <workingjubilee@gmail.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
-	Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, 
-	jpoimboe@kernel.org, jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	clang-built-linux <llvm@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260211082401.2407853-3-coxu@redhat.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:nathan@kernel.org,m:mkchauras@gmail.com,m:workingjubilee@gmail.com,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:venkat88@linux.ibm.com,m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[lists.linux.dev,clever-cloud.com,redhat.com,gmail.com,linux-foundation.org,kvack.org,kernel.org,de.ibm.com,linux.ibm.com,arm.com,ellerman.id.au,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-16818-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[miguelojedasandonis@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-16817-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	FORGED_RECIPIENTS(0.00)[m:coxu@redhat.com,m:kexec@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:devicetree@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:arnaud.lefebvre@clever-cloud.com,m:bhe@redhat.com,m:dyoung@redhat.com,m:ryncsn@gmail.com,m:kernelfans@gmail.com,m:akpm@linux-foundation.org,m:linux-mm@kvack.org,m:krzk@kernel.org,m:robh@kernel.org,m:tstaudt@de.ibm.com,m:sourabhjain@linux.ibm.com,m:will@kernel.org,m:catalin.marinas@arm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:saravanak@kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,linux.ibm.com,linkmauve.fr,kernel.org,garyguo.net,protonmail.com,umich.edu,lwn.net,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 64E2612819D
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,01.org:url,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 62F15128270
 X-Rspamd-Action: no action
 
-On Thu, Feb 5, 2026 at 9:02=E2=80=AFPM Nathan Chancellor <nathan@kernel.org=
-> wrote:
->
-> Thanks for the CC, I had not seen that issue. LLVM 22 is currently in
-> the -rc phase and I see that the fix has been merged into the
-> release/22.x branch as of yesterday so it should be in LLVM 21.1.0-rc3
-> when it get released on February 10. LLVM 21.1.8 was the last release of
-> the 21.x series (hard to keep up with all the numbers...) and it sounds
-> like this is only a regression from the LLVM 22 development cycle.
+Hi Coiby,
 
-Fixed as well for Rust 1.95.0 (expected 2026-04-16) when using the
-LLVM they provide.
+kernel test robot noticed the following build errors:
 
-  https://github.com/rust-lang/rust/pull/152428
+[auto build test ERROR on 2619c62b7ef2f463bcbbb34af122689c09855c23]
 
-Cheers,
-Miguel
+url:    https://github.com/intel-lab-lkp/linux/commits/Coiby-Xu/crash_dump-dm-crypt-Don-t-print-in-arch-specific-code/20260211-162729
+base:   2619c62b7ef2f463bcbbb34af122689c09855c23
+patch link:    https://lore.kernel.org/r/20260211082401.2407853-3-coxu%40redhat.com
+patch subject: [PATCH v4 2/2] arm64,ppc64le/kdump: pass dm-crypt keys to kdump kernel
+config: powerpc64-randconfig-r111-20260212 (https://download.01.org/0day-ci/archive/20260212/202602120648.RgQALnnI-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260212/202602120648.RgQALnnI-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602120648.RgQALnnI-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/kexec/elf_64.c: In function 'elf64_load':
+>> arch/powerpc/kexec/elf_64.c:82:23: error: implicit declaration of function 'crash_load_dm_crypt_keys' [-Werror=implicit-function-declaration]
+      82 |                 ret = crash_load_dm_crypt_keys(image);
+         |                       ^~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/crash_load_dm_crypt_keys +82 arch/powerpc/kexec/elf_64.c
+
+    27	
+    28	static void *elf64_load(struct kimage *image, char *kernel_buf,
+    29				unsigned long kernel_len, char *initrd,
+    30				unsigned long initrd_len, char *cmdline,
+    31				unsigned long cmdline_len)
+    32	{
+    33		int ret;
+    34		unsigned long kernel_load_addr;
+    35		unsigned long initrd_load_addr = 0, fdt_load_addr;
+    36		void *fdt;
+    37		const void *slave_code;
+    38		struct elfhdr ehdr;
+    39		char *modified_cmdline = NULL;
+    40		struct crash_mem *rmem = NULL;
+    41		struct kexec_elf_info elf_info;
+    42		struct kexec_buf kbuf = { .image = image, .buf_min = 0,
+    43					  .buf_max = ppc64_rma_size };
+    44		struct kexec_buf pbuf = { .image = image, .buf_min = 0,
+    45					  .buf_max = ppc64_rma_size, .top_down = true,
+    46					  .mem = KEXEC_BUF_MEM_UNKNOWN };
+    47	
+    48		ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
+    49		if (ret)
+    50			return ERR_PTR(ret);
+    51	
+    52		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
+    53			/* min & max buffer values for kdump case */
+    54			kbuf.buf_min = pbuf.buf_min = crashk_res.start;
+    55			kbuf.buf_max = pbuf.buf_max =
+    56					((crashk_res.end < ppc64_rma_size) ?
+    57					 crashk_res.end : (ppc64_rma_size - 1));
+    58		}
+    59	
+    60		ret = kexec_elf_load(image, &ehdr, &elf_info, &kbuf, &kernel_load_addr);
+    61		if (ret)
+    62			goto out;
+    63	
+    64		kexec_dprintk("Loaded the kernel at 0x%lx\n", kernel_load_addr);
+    65	
+    66		ret = kexec_load_purgatory(image, &pbuf);
+    67		if (ret) {
+    68			pr_err("Loading purgatory failed.\n");
+    69			goto out;
+    70		}
+    71	
+    72		kexec_dprintk("Loaded purgatory at 0x%lx\n", pbuf.mem);
+    73	
+    74		/* Load additional segments needed for panic kernel */
+    75		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
+    76			ret = load_crashdump_segments_ppc64(image, &kbuf);
+    77			if (ret) {
+    78				pr_err("Failed to load kdump kernel segments\n");
+    79				goto out;
+    80			}
+    81	
+  > 82			ret = crash_load_dm_crypt_keys(image);
+    83			if (ret)
+    84				goto out;
+    85	
+    86			/* Setup cmdline for kdump kernel case */
+    87			modified_cmdline = setup_kdump_cmdline(image, cmdline,
+    88							       cmdline_len);
+    89			if (!modified_cmdline) {
+    90				pr_err("Setting up cmdline for kdump kernel failed\n");
+    91				ret = -EINVAL;
+    92				goto out;
+    93			}
+    94			cmdline = modified_cmdline;
+    95		}
+    96	
+    97		if (initrd != NULL) {
+    98			kbuf.buffer = initrd;
+    99			kbuf.bufsz = kbuf.memsz = initrd_len;
+   100			kbuf.buf_align = PAGE_SIZE;
+   101			kbuf.top_down = false;
+   102			kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+   103			ret = kexec_add_buffer(&kbuf);
+   104			if (ret)
+   105				goto out;
+   106			initrd_load_addr = kbuf.mem;
+   107	
+   108			kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_load_addr);
+   109		}
+   110	
+   111		ret = get_reserved_memory_ranges(&rmem);
+   112		if (ret)
+   113			goto out;
+   114	
+   115		fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+   116						   initrd_len, cmdline,
+   117						   kexec_extra_fdt_size_ppc64(image, rmem));
+   118		if (!fdt) {
+   119			pr_err("Error setting up the new device tree.\n");
+   120			ret = -EINVAL;
+   121			goto out;
+   122		}
+   123	
+   124		ret = setup_new_fdt_ppc64(image, fdt, rmem);
+   125		if (ret)
+   126			goto out_free_fdt;
+   127	
+   128		if (!IS_ENABLED(CONFIG_CRASH_HOTPLUG) || image->type != KEXEC_TYPE_CRASH)
+   129			fdt_pack(fdt);
+   130	
+   131		kbuf.buffer = fdt;
+   132		kbuf.bufsz = kbuf.memsz = fdt_totalsize(fdt);
+   133		kbuf.buf_align = PAGE_SIZE;
+   134		kbuf.top_down = true;
+   135		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+   136		ret = kexec_add_buffer(&kbuf);
+   137		if (ret)
+   138			goto out_free_fdt;
+   139	
+   140		/* FDT will be freed in arch_kimage_file_post_load_cleanup */
+   141		image->arch.fdt = fdt;
+   142	
+   143		fdt_load_addr = kbuf.mem;
+   144	
+   145		kexec_dprintk("Loaded device tree at 0x%lx\n", fdt_load_addr);
+   146	
+   147		slave_code = elf_info.buffer + elf_info.proghdrs[0].p_offset;
+   148		ret = setup_purgatory_ppc64(image, slave_code, fdt, kernel_load_addr,
+   149					    fdt_load_addr);
+   150		if (ret)
+   151			pr_err("Error setting up the purgatory.\n");
+   152	
+   153		goto out;
+   154	
+   155	out_free_fdt:
+   156		kvfree(fdt);
+   157	out:
+   158		kfree(rmem);
+   159		kfree(modified_cmdline);
+   160		kexec_free_elf_info(&elf_info);
+   161	
+   162		return ret ? ERR_PTR(ret) : NULL;
+   163	}
+   164	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
