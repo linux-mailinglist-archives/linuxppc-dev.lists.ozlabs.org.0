@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-16825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16826-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GaaON1vjWma2gAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 07:14:53 +0100
+	id uAFfKEx7jWng3AAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16826-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 08:03:40 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5A212A8BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 07:14:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AAC12AD70
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 08:03:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBQ4k6fq3z2yLH;
-	Thu, 12 Feb 2026 17:14:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBR9259YZz2yLH;
+	Thu, 12 Feb 2026 18:03:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770876886;
-	cv=none; b=M3UrbbtcBhPoBQphinIgQTZWGPAFg3mg0E4zK29hJ60QsBLx9xNzXKE2hYFOx6cwPN8PQNxAGwdr/NeEahtRFb7dfcfONmmNhQwYvh/ozGrt9DgAvfS3wnmASkWn6Uam+CnLvuqz2TFcKmh0XJx9h0EWkfxxa9zJFIbgbyQZ0qI9J40FbeJGYB4fGHtiir6fcVjxUCBLqOP5R1J3JsOTlOCdcsxJvcPiRdUaoL/+sFOJZdS2iRvjbsYZF0cftcwQVFyU5YtbwKVxieYuRZIieQDrANgLHFixV9HwDp2kKGTEPwZpBc9iczTUbkbMd1fiVlc3wUczhWW+whDYiCX1jA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770879814;
+	cv=none; b=m0UtTt3U43oq3HOZeljMQdDU7ZPI1+UDhwdEciV6gbpdEkgnszOKSvPul/SGUfhJfDG3RTbsays9EAaRSnH1btnz+UePg083+Q5K8zT91pleX57X1XTsde68nYkYg4Ikt2aKsWaN/vMJaF/Q5cW7cZNA0epSd7X30P6rMT3lIo4v7bzoywByl4+v3e5Bc8/0ce9wLMzX/ptn2Vm3gUbDOHl8v6PPShVsFbilit6VOa1Jsg5F/fkhW8257gDAaa85la4/gTEnN78YtoiNZIsiLJE1BB5AJdagXeXgSnOYV2qiojS8N/khHUVaWOZPeOoTtPi/deqKHy3Jh4zQOnHawA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770876886; c=relaxed/relaxed;
-	bh=ojMHV+TxP6e3FLHmg8fIJfthetl5cVOWSrR8HU/Rc/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XelAtxZM4jZjJDgo3zOEqT4ShA7GOE6MMGtIsPFf3X8wFqCp+yXxZIXf+VWf3KYlMC1AjV9TyHkjm/gBJsBQwAa/qRp2jwnA2c3TgARqYOVpaGeSKbTJ8d7/c7zK01wunQQoFa/DUu8Z//oLs6hZtRTbHIdv4PkX+uP42NL3qxvuZWzzlmb7BTuizIEvTNX3yoEuLGFy7m8CQPeaaS1KPVLjT2nIlVS6kdJpDlZB7ADArxf0tFK1p9qzMXRRRFEkIu4dVUOjQOs4O0s8l6NV1shePp3kERRaggRt2+UrAzGrSy8ktYSb3FIQKaPH1IcSjefNmvDkbjl7xZxhKUkWhg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ey17cf9b; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1770879814; c=relaxed/relaxed;
+	bh=poZjhNXE0/uh1v8vuuLiSQGegGURE+K+YLsaDlo9OTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S3ob1EfYnszZ+kq3IcLN4Rc6We9f1zApANBAzvBgvNXzJwTLI5z5z+Xe8mUiy+eUnojeXZU7Uo2hcS2+4nlsWG2IqfbISAoX4UhluWfwYjqGP/p6Ejd/wznpFqV2g9W3qlO6pY9UQdJZMeMRuoKyud5W01iY0qVQN87TprECXDojarvzyWMpHQUSr92a3OSs/8ysOSOGwRXW2GL5DO/KG38S2oueCxIzZmWsHbkpzUBgOxvqQUsUzcfcNCIxHWVzj2Yx26KQyfGbiv6TUwOSIRQ9GLY6IBKNEkukdK2mD8/n3dgEDjFV0Hr4SSo9pK4pxAMGJw6121tHhUoiIJh0ig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGR7OYn0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ey17cf9b;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGR7OYn0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBQ4j6HJyz2xN5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 17:14:45 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61BFYKsD369791;
-	Thu, 12 Feb 2026 06:11:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ojMHV+
-	TxP6e3FLHmg8fIJfthetl5cVOWSrR8HU/Rc/I=; b=Ey17cf9bfbIHupEH0Z0c42
-	ETQ1EmhdoqHoKSr9VFi0UrrqyZJS6bAF0Ir9TUvG4I2MJJMtmzkjctMQjbdkcxws
-	E+SUFXx7PkDLaXOQ1yRFQ+7fLoKS3ohJUR2mBqinTC77OsPjA/BlEl+GIE08CQzf
-	GCEht20jhHb8NRTGtPBaGMuu1yrIpfjlqp+EfLOZfibFIA+OZ/NUKonPzXKlPZI9
-	jtwtCW67v7u9qijheZq0SnfyIwG6aIv9iqOzd0hnzpKrD+G3xTpqneMut937gnyt
-	EmfYF/wl62aU6LwgfCrISp3z8VAgHQOnCgBQ80+0+FFjLUdz32zQculJmDG5uS2A
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBR911jqrz2xnZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 18:03:33 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61C1Ose0343472;
+	Thu, 12 Feb 2026 07:02:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=poZjhN
+	XE0/uh1v8vuuLiSQGegGURE+K+YLsaDlo9OTg=; b=HGR7OYn0Otva5nK9+YD49W
+	hOsn2HBVXfQSpoPiOGcHve93HlE6sAO2IkHNlV24LD70O1wbk/Y5QRfnusrwESDo
+	rhgpYH6ImMMQA0rG7Vl3ACyeTxnNs3MreDJYM9TTIBE6VUkd2pVLSgaw9hz0EZg+
+	QknFPjOTAtyCJT6I5zp4tywTmLhOqxYIGRJJ34fpAhZ09sddzq1gbM4cbqGPY8YH
+	oBDzOAaJwpmJnJRzqBh66oxPIjqsB6Ch4CiPRiKCwjeYrH25/MlVBNJRqMhYBBzL
+	8aYPgPLZRJmu7vp4VRJAf+e98ZtHAM1hAWuhRMPeIJbmBxFG4QXEU1poCyfL1COw
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696x24ge-1
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696umvdd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 06:11:26 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C4ZFKh019251;
-	Thu, 12 Feb 2026 06:11:24 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxk8y2q-1
+	Thu, 12 Feb 2026 07:02:50 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C3v4pY012996;
+	Thu, 12 Feb 2026 07:02:48 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6h7kh5p8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 06:11:24 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61C6BKpV15008004
+	Thu, 12 Feb 2026 07:02:48 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61C72iYG13959476
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 06:11:21 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C3C1D2004D;
-	Thu, 12 Feb 2026 06:11:20 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9437220040;
-	Thu, 12 Feb 2026 06:11:01 +0000 (GMT)
-Received: from [9.39.27.166] (unknown [9.39.27.166])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 06:11:01 +0000 (GMT)
-Message-ID: <5b6f4093-3ddd-477d-ade4-fe31429cf3cd@linux.ibm.com>
-Date: Thu, 12 Feb 2026 11:41:00 +0530
+	Thu, 12 Feb 2026 07:02:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E66B20040;
+	Thu, 12 Feb 2026 07:02:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 259D32004E;
+	Thu, 12 Feb 2026 07:02:37 +0000 (GMT)
+Received: from [9.109.215.252] (unknown [9.109.215.252])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Feb 2026 07:02:36 +0000 (GMT)
+Message-ID: <3b71bdb1-2dbe-420f-8fae-5cb1ab3a4ba9@linux.ibm.com>
+Date: Thu, 12 Feb 2026 12:32:36 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,69 +86,70 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] crash: Exclude crash kernel memory in crash core
-To: Jinjie Ruan <ruanjinjie@huawei.com>, corbet@lwn.net,
-        catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
-        kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-        tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, hpa@zytor.com, akpm@linux-foundation.org,
-        bhe@redhat.com, vgoyal@redhat.com, dyoung@redhat.com,
-        rdunlap@infradead.org, pmladek@suse.com, feng.tang@linux.alibaba.com,
-        pawan.kumar.gupta@linux.intel.com, kees@kernel.org, elver@google.com,
-        arnd@arndb.de, lirongqing@baidu.com, fvdl@google.com,
-        leitao@debian.org, rppt@kernel.org, ardb@kernel.org, jbohac@suse.cz,
-        osandov@fb.com, ryan.roberts@arm.com, cfsworks@gmail.com,
-        tangyouling@kylinos.cn, ritesh.list@gmail.com, thuth@redhat.com,
-        hbathini@linux.ibm.com, eajames@linux.ibm.com, bjorn@rivosinc.com,
-        songshuaishuai@tinylab.org, kevin.brodsky@arm.com,
-        samuel.holland@sifive.com, vishal.moola@gmail.com,
-        junhui.liu@pigmoral.tech, dwmw@amazon.co.uk, pbonzini@redhat.com,
-        thomas.lendacky@amd.com, kai.huang@intel.com, ubizjak@gmail.com,
-        coxu@redhat.com, liaoyuanhong@vivo.com, fuqiang.wang@easystack.cn,
-        brgerst@gmail.com, x86@kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, kexec@lists.infradead.org
-References: <20260209095931.2813152-1-ruanjinjie@huawei.com>
- <20260209095931.2813152-2-ruanjinjie@huawei.com>
- <50693f0c-c610-4347-86aa-40d50dc681fc@linux.ibm.com>
- <31c2ae53-cbb7-bfad-9b8f-f9e1a254491e@huawei.com>
+Subject: Re: [PATCH 00/15 v2] tick/sched: Refactor idle cputime accounting
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Kieran Bingham <kbingham@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Xin Zhao <jackzxcui1989@163.com>,
+        Joel Fernandes <joelagnelf@nvidia.com>,
+        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+        Sven Schnelle <svens@linux.ibm.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ben Segall <bsegall@google.com>, Michael Ellerman <mpe@ellerman.id.au>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        linux-pm@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Heiko Carstens <hca@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+References: <20260206142245.58987-1-frederic@kernel.org>
+ <f5f7cc0e-81c1-49c4-9bfa-61b111c69ae2@linux.ibm.com>
+ <aYy3GTXDwZFM3VLy@localhost.localdomain>
 Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <31c2ae53-cbb7-bfad-9b8f-f9e1a254491e@huawei.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <aYy3GTXDwZFM3VLy@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=WZYBqkhX c=1 sm=1 tr=0 ts=698d6f0e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Authority-Analysis: v=2.4 cv=YZiwJgRf c=1 sm=1 tr=0 ts=698d7b1a cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
  a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=i0EeH86SAAAA:8 a=B_ciY6P1UxUjS-fdd_UA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: pPQWyo0dBerxEXBQvX-fWAqozUfKAgMU
-X-Proofpoint-ORIG-GUID: NJnrqqmFwVChV0NJpqnRbaDGJlc_JaK5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDAzOSBTYWx0ZWRfX3ttwUOBSfW6t
- I/8Hz+DYXVvSSlj/G1NDONhkkFRDOcWcVU8ZWOdCaeQiSqDBoTdIv6+Tc99oUe5HVGftG7lRYeC
- 51L9B6eK/zNvaD/TOWeehy7QYHzeOiC8KMMJKPPTR3Xt2B9vcK5BU+o/qLnzLcsSVlo9cZKimqz
- ulVMaPptKVRdY0bjVlTsSHPmhipS7GGPPQoUCKIsYkLSiKIsscPzVZcXkXBlJu93n5DUvZoJgFa
- eO2d6xI6jWJjuPHEG3c3eWKO5rkBYYfOhsQsl9iZouncmrOlkxuxUDiENFvM/CV/MmDZRRhmJfY
- dzsY0+TnQ9Et6vmgImq7ts8pYMkZlJvhVf9ksKIhh6xagoBwd+qGyH+7OQxKgLGqkPIp27VeuSs
- IHivRppL66tOv1wzzSnPdFaTvaoVdda7zpGiTmfzC6304JgPWIwVr5IoU/c2X9EH91PGbdFawpf
- cKNP0JormcRl9vWEjdw==
+ a=Byx-y9mGAAAA:8 a=jna3-dR-LpdznfkkQtQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ykNMXiJuLMZvY8SHVx1k92NnfL__mZAj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA0OCBTYWx0ZWRfXwf0I6im/SFoz
+ UOZhM4tcMuDmndSC7aO0LIN6Sbg1f18jEaekOgqBBncr3g30fHinniII7kb9tqkFq3dwDbqpa0R
+ iQazWnZ1+AcwvTuf8gZQMhXgpGv4dEGT8N55h0QfhCOiW+jU2yAZkMtivl+nRFys0k0iLwIEtYa
+ PjICtoUofjQNMwydGqQ8yS+hm1uVNrjk5bSOFneE8/KGySNj4A9Rp9Rj/TxwCCFtjBX9besOB13
+ fMIoo0FCrMM3upSaXNejT4ZOyS9GozjE+sJF7a2AE2h3RLQNuac5sGJpKh7+Ws7ETLUCdT56awV
+ V2ITTAHZ5B9LC8Xcbq7iUdYQLWJsTZboEoUhgHc+1mq+XliqFe/o1SLUJ4bEUvkezdYQ5XWdRDK
+ zx/OO7DBfS6fS09IPkWzH8gwmKWhv3MFhTgycMDvo9MhnJYj0gPttfpTFQaLbFdVq2CfMwQPuf9
+ vVmPxM41fwgtNlUTDCQ==
+X-Proofpoint-GUID: NCg8jEjEq3HhF8Orr5avhxKfyd3mZDhp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_01,2026-02-11_04,2025-10-01_01
+ definitions=2026-02-12_02,2026-02-11_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602120039
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+ priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602120048
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
@@ -156,175 +157,247 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16825-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_TO(0.00)[huawei.com,lwn.net,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,suse.com,linux.alibaba.com,google.com,arndb.de,baidu.com,debian.org,suse.cz,fb.com,kylinos.cn,rivosinc.com,tinylab.org,sifive.com,pigmoral.tech,amazon.co.uk,amd.com,intel.com,vivo.com,easystack.cn,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16826-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FORGED_RECIPIENTS(0.00)[m:frederic@kernel.org,m:linux-kernel@vger.kernel.org,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:kbingham@kernel.org,m:mingo@redhat.com,m:jackzxcui1989@163.com,m:joelagnelf@nvidia.com,m:neeraj.upadhyay@kernel.org,m:svens@linux.ibm.com,m:boqun.feng@gmail.com,m:mgorman@suse.de,m:dietmar.eggemann@arm.com,m:bsegall@google.com,m:mpe@ellerman.id.au,m:rafael@kernel.org,m:paulmck@kernel.org,m:anna-maria@linutronix.de,m:agordeev@linux.ibm.com,m:maddy@linux.ibm.com,m:linux-s390@vger.kernel.org,m:jan.kiszka@siemens.com,m:juri.lelli@redhat.com,m:chleroy@kernel.org,m:linux-pm@vger.kernel.org,m:urezki@gmail.com,m:peterz@infradead.org,m:rostedt@goodmis.org,m:tglx@linutronix.de,m:npiggin@gmail.com,m:hca@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:borntraeger@linux.ibm.com,m:vschneid@redhat.com,m:viresh.kumar@linaro.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sourabhjain@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:ruanjinjie@huawei.com,m:corbet@lwn.net,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:pmladek@suse.com,m:feng.tang@linux.alibaba.com,m:pawan.kumar.gupta@linux.intel.com,m:kees@kernel.org,m:elver@google.com,m:arnd@arndb.de,m:lirongqing@baidu.com,m:fvdl@google.com,m:leitao@debian.org,m:rppt@kernel.org,m:ardb@kernel.org,m:jbohac@suse.cz,m:osandov@fb.com,m:ryan.roberts@arm.com,m:cfsworks@gmail.com,m:tangyouling@kylinos.cn,m:ritesh.list@gmail.com,m:thuth@redhat.com,m:hbathini@linux.ibm.com,m:eajames@linux.ibm.com,m:bjorn@rivosinc.com,m:songshuaishuai@tinylab
- .org,m:kevin.brodsky@arm.com,m:samuel.holland@sifive.com,m:vishal.moola@gmail.com,m:junhui.liu@pigmoral.tech,m:dwmw@amazon.co.uk,m:pbonzini@redhat.com,m:thomas.lendacky@amd.com,m:kai.huang@intel.com,m:ubizjak@gmail.com,m:coxu@redhat.com,m:liaoyuanhong@vivo.com,m:fuqiang.wang@easystack.cn,m:brgerst@gmail.com,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,linaro.org,kernel.org,redhat.com,163.com,nvidia.com,gmail.com,suse.de,arm.com,google.com,ellerman.id.au,linutronix.de,siemens.com,infradead.org,goodmis.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
-	RCPT_COUNT_GT_50(0.00)[67];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 9A5A212A8BA
+X-Rspamd-Queue-Id: 98AAC12AD70
 X-Rspamd-Action: no action
 
 
 
-On 12/02/26 08:58, Jinjie Ruan wrote:
->
-> On 2026/2/10 20:30, Sourabh Jain wrote:
->> Hello Jinjie,
+On 2/11/26 10:36 PM, Frederic Weisbecker wrote:
+> Le Wed, Feb 11, 2026 at 07:13:45PM +0530, Shrikanth Hegde a écrit :
+>> Hi Frederic,
+>> Gave this series a spin on the same system as v1.
 >>
->> On 09/02/26 15:29, Jinjie Ruan wrote:
->>> The exclude of crashk_res, crashk_low_res and crashk_cma memory
->>> are almost identical across different architectures, handling them
->>> in the crash core would eliminate a lot of duplication, so do
->>> them in the common code.
+>> On 2/6/26 7:52 PM, Frederic Weisbecker wrote:
+>>> Hi,
 >>>
->>> And move the size calculation (and the realloc if needed) into the
->>> generic crash core so that:
+>>> After the issue reported here:
 >>>
->>> - New CMA regions or future crash-memory types can automatically
->>>     accounted for in crash core;
+>>>           https://lore.kernel.org/all/20251210083135.3993562-1-jackzxcui1989@163.com/
 >>>
->>> - Each architecture no longer has to play whack-a-mole with
->>>     its private array size.
+>>> It occurs that the idle cputime accounting is a big mess that
+>>> accumulates within two concurrent statistics, each having their own
+>>> shortcomings:
 >>>
->>> To achieve the above goal, 4 architecture-specific functions are
->>> introduced:
+>>> * The accounting for online CPUs which is based on the delta between
+>>>     tick_nohz_start_idle() and tick_nohz_stop_idle().
 >>>
->>> - arch_get_system_nr_ranges() and arch_prepare_elf64_ram_headers().
->>>     The 1st function pre-counts the number of memory ranges, and
->>>     the 2st function fill the memory ranges into the cmem->ranges[] array,
->>>     and count the actual number of ranges filled. The default
->>> implementation
->>>     is consistent with arm64 and loongson.
+>>>     Pros:
+>>>          - Works when the tick is off
 >>>
->>> - arch_crash_exclude_mem_range(). Realloc for powerpc. The default
->>>     implementation is crash_exclude_mem_range(), and use
->>>     crash_exclude_mem_range_guarded() to implement the arch version
->>>     for powerpc.
+>>>          - Has nsecs granularity
 >>>
->>> - arch_get_crash_memory_ranges(). Get crash memory ranges for arch and
->>>     the default implementation is generic across x86, arm64, riscv, and
->>>     loongson by using the first two arch functions above. powerpc has its
->>>     own implementation by calling get_crash_memory_ranges().
+>>>     Cons:
+>>>          - Account idle steal time but doesn't substract it from idle
+>>>            cputime.
 >>>
->>> Tested on x86, arm64 and riscv with QEMU.
+>>>          - Assumes CONFIG_IRQ_TIME_ACCOUNTING by not accounting IRQs but
+>>>            the IRQ time is simply ignored when
+>>>            CONFIG_IRQ_TIME_ACCOUNTING=n
 >>>
->>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->>> ---
->>>    arch/arm64/kernel/machine_kexec_file.c     |  47 +--------
->>>    arch/loongarch/kernel/machine_kexec_file.c |  45 +-------
->>>    arch/powerpc/include/asm/kexec.h           |  13 +++
->>>    arch/powerpc/kexec/crash.c                 |  52 ++++++----
->>>    arch/powerpc/kexec/file_load_64.c          |  17 ++-
->>>    arch/powerpc/kexec/ranges.c                |  18 +---
->>>    arch/riscv/include/asm/kexec.h             |  10 ++
->>>    arch/riscv/kernel/machine_kexec_file.c     |  37 ++-----
->>>    arch/x86/include/asm/kexec.h               |  10 ++
->>>    arch/x86/kernel/crash.c                    | 104 ++-----------------
->>>    include/linux/crash_core.h                 | 114 +++++++++++++++++++--
->>>    kernel/crash_core.c                        |  71 +++++++++++--
->>>    12 files changed, 269 insertions(+), 269 deletions(-)
+>>>          - The windows between 1) idle task scheduling and the first call
+>>>            to tick_nohz_start_idle() and 2) idle task between the last
+>>>            tick_nohz_stop_idle() and the rest of the idle time are
+>>>            blindspots wrt. cputime accounting (though mostly insignificant
+>>>            amount)
 >>>
-> [...]
->
->>>    extern void crash_ipi_callback(struct pt_regs *regs);
->>> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
->>> index a325c1c02f96..5ade9a853fb0 100644
->>> --- a/arch/powerpc/kexec/crash.c
->>> +++ b/arch/powerpc/kexec/crash.c
->>> @@ -419,30 +419,21 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
->>>        return sizeof(struct elfhdr) + (phdr_cnt * sizeof(Elf64_Phdr));
->>>    }
->>>    -/**
->>> - * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it
->>> with old
->>> - *                   elfcorehdr in the kexec segment array.
->>> - * @image: the active struct kimage
->>> - * @mn: struct memory_notify data handler
->>> - */
->>> -static void update_crash_elfcorehdr(struct kimage *image, struct
->>> memory_notify *mn)
->>> +int arch_get_crash_memory_ranges(struct crash_mem **cmem, unsigned
->>> long *nr_mem_ranges,
->>> +                 struct kimage *image, struct memory_notify *mn)
->>>    {
->>> +    unsigned long base_addr, size;
->>>        int ret;
->>> -    struct crash_mem *cmem = NULL;
->>> -    struct kexec_segment *ksegment;
->>> -    void *ptr, *mem, *elfbuf = NULL;
->>> -    unsigned long elfsz, memsz, base_addr, size;
->>>    -    ksegment = &image->segment[image->elfcorehdr_index];
->>> -    mem = (void *) ksegment->mem;
->>> -    memsz = ksegment->memsz;
->>> -
->>> -    ret = get_crash_memory_ranges(&cmem);
->>> +    ret = get_crash_memory_ranges(cmem);
->>>        if (ret) {
->>>            pr_err("Failed to get crash mem range\n");
->>> -        return;
->>> +        return ret;
->>>        }
->>>    +    if (!image || !mn)
->>> +        return 0;
->>> +
->>>        /*
->>>         * The hot unplugged memory is part of crash memory ranges,
->>>         * remove it here.
->>> @@ -450,14 +441,34 @@ static void update_crash_elfcorehdr(struct
->>> kimage *image, struct memory_notify *
->>>        if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
->>>            base_addr = PFN_PHYS(mn->start_pfn);
->>>            size = mn->nr_pages * PAGE_SIZE;
->>> -        ret = remove_mem_range(&cmem, base_addr, size);
->>> +        ret = remove_mem_range(cmem, base_addr, size);
->> I like the overall design for handling crashkernel memory exclusion
->> in this patch series, especially the way you managed to free the
->> crash_mem object (mem) in the generic code (crash_prepare_elf64_headers()).
-> Thanks for the review.
->
->> However, the way crash memory is prepared after a memory hotplug
->> event on powerpc by calling remove_mem_range(), can leave the crash
->> memory ranges unsorted. This can cause issues in the generic code
->> when excluding crashkernel memory, because crash_exclude_mem_range()
->> expects crash_mem to be sorted.
-> You are absolutely correct.
->
->> So I wrote a simple patch to cover this scenario. Including the
->> patch below as the first patch in this series would be helpful.
->> https://lore.kernel.org/all/20260210120803.433978-1-sourabhjain@linux.ibm.com/
-> Thanks for the additional patch. I'll add it as the first patch in the
-> next revision to ensure crash_mem remains sorted after memory hotplug
-> events on powerpc.
+>>>          - Relies on private fields outside of kernel stats, with specific
+>>>            accessors.
+>>>
+>>> * The accounting for offline CPUs which is based on ticks and the
+>>>     jiffies delta during which the tick was stopped.
+>>>
+>>>     Pros:
+>>>          - Handles steal time correctly
+>>>
+>>>          - Handle CONFIG_IRQ_TIME_ACCOUNTING=y and
+>>>            CONFIG_IRQ_TIME_ACCOUNTING=n correctly.
+>>>
+>>>          - Handles the whole idle task
+>>>
+>>>          - Accounts directly to kernel stats, without midlayer accumulator.
+>>>
+>>>      Cons:
+>>>          - Doesn't elapse when the tick is off, which doesn't make it
+>>>            suitable for online CPUs.
+>>>
+>>>          - Has TICK_NSEC granularity (jiffies)
+>>>
+>>>          - Needs to track the dyntick-idle ticks that were accounted and
+>>>            substract them from the total jiffies time spent while the tick
+>>>            was stopped. This is an ugly workaround.
+>>>
+>>> Having two different accounting for a single context is not the only
+>>> problem: since those accountings are of different natures, it is
+>>> possible to observe the global idle time going backward after a CPU goes
+>>> offline, as reported by Xin Zhao.
+>>>
+>>> Clean up the situation with introducing a hybrid approach that stays
+>>> coherent, fixes the backward jumps and works for both online and offline
+>>> CPUs:
+>>>
+>>> * Tick based or native vtime accounting operate before the tick is
+>>>     stopped and resumes once the tick is restarted.
+>>>
+>>> * When the idle loop starts, switch to dynticks-idle accounting as is
+>>>     done currently, except that the statistics accumulate directly to the
+>>>     relevant kernel stat fields.
+>>>
+>>> * Private dyntick cputime accounting fields are removed.
+>>>
+>>> * Works on both online and offline case.
+>>>
+>>> * Move most of the relevant code to the common sched/cputime subsystem
+>>>
+>>> * Handle CONFIG_IRQ_TIME_ACCOUNTING=n correctly such that the
+>>>     dynticks-idle accounting still elapses while on IRQs.
+>>>
+>>> * Correctly substract idle steal cputime from idle time
+>>>
+>>> Changes since v1:
+>>>
+>>> - Fix deadlock involving double seq count lock on idle
+>>>
+>>> - Fix build breakage on powerpc
+>>>
+>>> - Fix build breakage on s390 (Heiko)
+>>>
+>>> - Fix broken sysfs s390 idle time file (Heiko)
+>>>
+>>> - Convert most ktime usage here into u64 (Peterz)
+>>>
+>>> - Add missing (or too implicit) <linux/sched/clock.h> (Peterz)
+>>>
+>>> - Fix whole idle time acccounting breakage due to missing TS_FLAG_ set
+>>>     on idle entry (Shrikanth Hegde)
+>>>
+>>> git://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
+>>> 	timers/core-v2
+>>>
+>>> HEAD: 21458b98c80a0567d48131240317b7b73ba34c3c
+>>> Thanks,
+>>> 	Frederic
+>>
+>> idle and runtime utilization with mpstat while running stress-ng looks
+>> correct now.
+>>
+>> However, when running hackbench I am noticing the below data. hackbench shows
+>> severe regressions.
+>>
+>> base: tip/master at 9c61ebbdb587a3950072700ab74a9310afe3ad73.
+>> (nit: patch 7 is already part of tip. so skipped applying it)
+>> +-----------------------------------------------+-------+---------+-----------+
+>> | Test                                          | base  | +series | % Diff    |
+>> +-----------------------------------------------+-------+---------+-----------+
+>> | HackBench Process 10 groups                   |  2.23 |  3.05   |   -36.77%  |
+>> | HackBench Process 20 groups                   |  4.17 |  5.82   |   -39.57%  |
+>> | HackBench Process 30 groups                   |  6.04 |  8.49   |   -40.56%  |
+>> | HackBench Process 40 groups                   |  7.90 | 11.10   |   -40.51%  |
+>> | HackBench thread 10                           |  2.44 |  3.36   |   -37.70%  |
+>> | HackBench thread 20                           |  4.57 |  6.35   |   -38.95%  |
+>> | HackBench Process(Pipe) 10                    |  1.76 |  2.29   |   -30.11%  |
+>> | HackBench Process(Pipe) 20                    |  3.49 |  4.76   |   -36.39%  |
+>> | HackBench Process(Pipe) 30                    |  5.21 |  7.13   |   -36.85%  |
+>> | HackBench Process(Pipe) 40                    |  6.89 |  9.31   |   -35.12%  |
+>> | HackBench thread(Pipe) 10                     |  1.91 |  2.50   |   -30.89%  |
+>> | HackBench thread(Pipe) 20                     |  3.74 |  5.16   |   -37.97%  |
+>> +-----------------------------------------------+-------+---------+-----------+
+>>
+>> I have these in .config and I don't have nohz_full or isolated cpus.
+>>
+>> CONFIG_TICK_ONESHOT=y
+>> CONFIG_NO_HZ_COMMON=y
+>> # CONFIG_HZ_PERIODIC is not set
+>> # CONFIG_NO_HZ_IDLE is not set
+>> CONFIG_NO_HZ_FULL=y
+>>
+>> # CPU/Task time and stats accounting
+>> #
+>> CONFIG_VIRT_CPU_ACCOUNTING=y
+>> CONFIG_VIRT_CPU_ACCOUNTING_GEN=y
+>> CONFIG_IRQ_TIME_ACCOUNTING=y
+>> CONFIG_HAVE_SCHED_AVG_IRQ=y
+>>
+>> I did a git bisect and below is what it says.
+>>
+>> git bisect start
+>> # status: waiting for both good and bad commits
+>> # bad: [6821315886a3b5267ea31d29dba26fd34647fbbc] sched/cputime: Handle dyntick-idle steal time correctly
+>> git bisect bad 6821315886a3b5267ea31d29dba26fd34647fbbc
+>> # status: waiting for good commit(s), bad commit known
+>> # good: [9c61ebbdb587a3950072700ab74a9310afe3ad73] Merge branch into tip/master: 'x86/sev'
+>> git bisect good 9c61ebbdb587a3950072700ab74a9310afe3ad73
+>> # good: [dc8bb3c84d162f7d9aa6becf9f8392474f92655a] tick/sched: Remove nohz disabled special case in cputime fetch
+>> git bisect good dc8bb3c84d162f7d9aa6becf9f8392474f92655a
+>> # good: [5070a778a581cd668f5d717f85fb22b078d8c20c] tick/sched: Account tickless idle cputime only when tick is stopped
+>> git bisect good 5070a778a581cd668f5d717f85fb22b078d8c20c
+>> # bad: [1e0ccc25a9a74b188b239c4de716fde279adbf8e] sched/cputime: Provide get_cpu_[idle|iowait]_time_us() off-case
+>> git bisect bad 1e0ccc25a9a74b188b239c4de716fde279adbf8e
+>> # bad: [ee7c735b76071000d401869fc2883c451ee3fa61] tick/sched: Consolidate idle time fetching APIs
+>> git bisect bad ee7c735b76071000d401869fc2883c451ee3fa61
+>> # first bad commit: [ee7c735b76071000d401869fc2883c451ee3fa61] tick/sched:
+>> Consolidate idle time fetching APIs
+> 
+> I see. Can you try this? (or fetch timers/core-v3 from my tree)
+> Perhaps that mistake had some impact on cpufreq.
+> 
+> diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+> index 057fdc00dbc6..08550a6d9469 100644
+> --- a/kernel/sched/cputime.c
+> +++ b/kernel/sched/cputime.c
+> @@ -524,7 +524,7 @@ static u64 get_cpu_sleep_time_us(int cpu, enum cpu_usage_stat idx,
+>   	do_div(res, NSEC_PER_USEC);
+>   
+>   	if (last_update_time)
+> -		*last_update_time = res;
+> +		*last_update_time = ktime_to_us(now);
+>   
+>   	return res;
+>   }
+> 
+Yes. This diff helps. Now the data is almost same.
 
-Thanks you.
-
-Please use the latest version (v2) available here:
-https://lore.kernel.org/all/20260212060159.733023-1-sourabhjain@linux.ibm.com/
-
-Regards,
-Sourabh Jain
-
++-----------------------------------------------+-------+-------+-----------+
+| Test                                          | base  | series+     | % Diff    |
+|                                               |       | +above diff |
++-----------------------------------------------+-------+-------------+-----------+
+| HackBench Process 10 groups                   |  2.23 |  2.25       |    -0.90%  |
+| HackBench Process 20 groups                   |  4.17 |  4.21       |    -0.96%  |
+| HackBench Process 30 groups                   |  6.04 |  6.15       |    -1.82%  |
+| HackBench Process 40 groups                   |  7.90 |  8.06       |    -2.03%  |
+| HackBench thread 10                           |  2.44 |  2.46       |    -0.82%  |
+| HackBench thread 20                           |  4.57 |  4.61       |    -0.88%  |
+| HackBench Process(Pipe) 10                    |  1.76 |  1.73       |     1.70%  |
+| HackBench Process(Pipe) 20                    |  3.49 |  3.50       |    -0.29%  |
+| HackBench Process(Pipe) 30                    |  5.21 |  5.22       |    -0.19%  |
+| HackBench Process(Pipe) 40                    |  6.89 |  6.96       |    -1.02%  |
+| HackBench thread(Pipe) 10                     |  1.91 |  1.88       |     1.57%  |
+| HackBench thread(Pipe) 20                     |  3.74 |  3.81       |    -1.87%  |
++-----------------------------------------------+-------+-------------+-----------+
 
