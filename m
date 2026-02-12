@@ -1,86 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-16835-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16836-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOs1IgqejWmD5QAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16835-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 10:31:54 +0100
+	id SLa6KNWmjWkK5wAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16836-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 11:09:25 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2767012BE21
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 10:31:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DAF12C45D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 11:09:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBVS6631Cz2yLH;
-	Thu, 12 Feb 2026 20:31:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBWHM4zBBz2ydq;
+	Thu, 12 Feb 2026 21:09:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770888710;
-	cv=none; b=iP+gkf5Km06wjyCCBLcb/0mcjY8e/b9iEEHaXQ++xtZ9HmAKUKKGrXA8+gsbKndKeh2cnXf5w+Ln46u0jO9BJ6QSHz3AqaZFcZd9Nt/18wf8WKm0jVVSOaSCSgzJQSrNV7OconzkzDlLJ6AS/Y+oh/DQEzDsb7OilUINeUADKlYeBHc3OY43bn/Yy8Bg9Q680rYW51IVLKUowtOfjDSd89b/TftWBTa3rL29c/Uf5tRwZqI1SWjS6yJfFxlc3Nr2gSsirh7DK6uSPyKa8j2wGJVXrjyUhf4HlYKq9fit20Yx/6UHO18vzwXnL33/xgGEza19zOViPPRXTFAfVb+bNA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=113.46.200.221
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770890959;
+	cv=none; b=bUZk8dxYcXLebd9r6PttjRgTfPqlhnRsF+XVOKYbdXFYkGT7W0fs5lCt1+WcuYu8tLvtl9K6TmmDFkS7ezBjsSr5OFRPadHAq1MWfzutZBF+Shj+fCAtTXol/KlNw577xGtH1xSirD/Q/jWT+VBIr1I9EEXs8JGAW9qQ4WlCBr9YR88RxwnQTUG+t4dL8ImIKeHkS+sR4DU+kXqJbsjux0BS8nYcWUwO2XFq6oF8t1YdxCe2lzmAjJsXcx8PYOo+Ln6CNCBXuy4PFd+lb1iU/ms9yDmzRx5HehJQkKW+f0IoTFT42NA9Ax4R4dmHUTfbHGADVduEs7yEnNJFmE6E6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770888710; c=relaxed/relaxed;
-	bh=ks4BWxfs6IP6kZxAGA0CrXgQnXf5n4rU8aglfzaiFS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gLp2imbUZCFXj+yyI+3kFVEGVpAwdwBSONIsEKo5nYR+zmJ2nYBBJodv80KbXafyiaHHYKfAcTiVZwfUb5rG7qBKaxW6AirE90ObzIrVnUy9PGS4QnhQGDzVPoGqkh3Rnt3FJfJHYz77wtjNOPHDXCzS7+P7LJqFBftofj6wrxVjN/GYasaUcTKVdOm27+K1OHIZwnFzPPwc/a4KP5mX+BuWCB3NU8h6Y5I5MWlllVd0rwI+YWHyRvEevRiDROj4HbksfO7E2en+MnDdt2RdutKrZb3kN5p6iyNuyoAxhWjjqgVP8WQ17MMRAhpJfW3T9LoYRThinOke7buPwoQIZw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=afpRfTWP; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1770890959; c=relaxed/relaxed;
+	bh=DJBahsVO2buYBRo6uanQ4akOube4lASCcn5Wc5JuHA0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jV2k8Ms+kzyYhLpm+m71N7lb8fMT1OQD5XKicqYGFrn4yS3BflxzoyAUOl3JdY13oYZWCwc73wwkX6PglUokLE4PUsSPGIFQTql8x029KAC5+07ZaecBmEzMm5F/FaFOx4jC/JRrHfdtLfx9dZnLjqKAmaXPqmRooJJvqJC7U3pfK8pi72fUpgg/c90O7h5TFxUlmcEAhEJylmP4DCpAj2oJPKofg7XcOTA19M4dtrCd4jV2JyuEke4nym1iv4XbS+UbH8ABHfiEVnjFEhZxCK87zuqYkZE0ACf59yWLD+juqtTkp6nTTh0xpLQLWg0F/KnbASrmXk6EKZ5H7uGiHA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=N1Lb/dyT; dkim-atps=neutral; spf=pass (client-ip=113.46.200.221; helo=canpmsgout06.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=afpRfTWP;
+	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=N1Lb/dyT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=113.46.200.221; helo=canpmsgout06.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBVS513HLz2xlh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 20:31:48 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61C7u78n806309;
-	Thu, 12 Feb 2026 09:26:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=ks4BWxfs6IP6kZxAGA0CrXgQnXf5n4rU8aglfzaiF
-	S4=; b=afpRfTWPxTn+G7zuh3Y7TNVBuAa0tLiJUZr895YQUL8ErYQxrh5nYh0mn
-	5G5gkUSHaFHcuRK/CVXeSOZAGjTNM0GeeaqdPPGtcJnTNE7Ov23e23ihmN0QCYO+
-	u2FrpKSlT2DdH9DnFJx5KEMnzImayAMqN1WDdcBhlESSbQqEDEB0ivlt8RXK1Uc3
-	Z96yUG3L695RauHq4NuvTD+TgWhWBTf76Zv/Ndc70EaM61EVmQ6Mud72jiH9ytBQ
-	CdpuZC0mC6Q/crnHea7UZ0HbgZRlLLuhPD4b06IO8hnlxcZhk/BF6FY+3/mWh2w0
-	9AfB/3cmQbADZRCU/IlVkANuAtdIQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696unc74-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 09:26:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C4jsf9012626;
-	Thu, 12 Feb 2026 09:26:08 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6h7khnka-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 09:26:08 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61C9Q4Jl39518520
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 09:26:04 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E77E20040;
-	Thu, 12 Feb 2026 09:26:04 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD6F220043;
-	Thu, 12 Feb 2026 09:25:59 +0000 (GMT)
-Received: from li-1cb9f04c-2ae1-11b2-a85c-a8a0a83790a8.in.ibm.com (unknown [9.109.207.131])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 09:25:59 +0000 (GMT)
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
-        andrii@kernel.org, eddyz87@gmail.com, ast@kernel.org,
-        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
-        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
-        christophe.leroy@csgroup.eu, maddy@linux.ibm.com, mpe@ellerman.id.au
-Subject: [PATCH v2] selftests/bpf: Add powerpc support for get_preempt_count() in selftest
-Date: Thu, 12 Feb 2026 14:55:58 +0530
-Message-ID: <20260212092558.370623-1-skb99@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBWHJ5TsZz2xlh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 21:09:14 +1100 (AEDT)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=DJBahsVO2buYBRo6uanQ4akOube4lASCcn5Wc5JuHA0=;
+	b=N1Lb/dyTE2h5HOJHrh+NRJNvn9yj1KvCbqkIn6VqWUGF70dIauXoQMrrYoYNwdNWlg3+8a/E2
+	vGe1QBnODc9pH2mKsoaHcQbTyBL1aa76SvP3u+XYQm95+qiCFBlYzCsJrRLeFozkScfrLE4vows
+	heKtPwy0ISFWrMHfm+RuWZA=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fBW9p5KLtzRhTq;
+	Thu, 12 Feb 2026 18:04:30 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id C35A4201EB;
+	Thu, 12 Feb 2026 18:09:08 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
+ (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 12 Feb
+ 2026 18:09:06 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <chenhuacai@kernel.org>, <kernel@xen0n.name>,
+	<maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+	<chleroy@kernel.org>, <pjw@kernel.org>, <palmer@dabbelt.com>,
+	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <akpm@linux-foundation.org>, <bhe@redhat.com>,
+	<vgoyal@redhat.com>, <dyoung@redhat.com>, <rdunlap@infradead.org>,
+	<kees@kernel.org>, <elver@google.com>, <paulmck@kernel.org>, <arnd@arndb.de>,
+	<ruanjinjie@huawei.com>, <fvdl@google.com>, <thuth@redhat.com>,
+	<ardb@kernel.org>, <leitao@debian.org>, <rppt@kernel.org>, <osandov@fb.com>,
+	<cfsworks@gmail.com>, <sourabhjain@linux.ibm.com>, <ryan.roberts@arm.com>,
+	<tangyouling@kylinos.cn>, <eajames@linux.ibm.com>, <hbathini@linux.ibm.com>,
+	<ritesh.list@gmail.com>, <songshuaishuai@tinylab.org>, <bjorn@rivosinc.com>,
+	<samuel.holland@sifive.com>, <kevin.brodsky@arm.com>,
+	<junhui.liu@pigmoral.tech>, <vishal.moola@gmail.com>, <dwmw@amazon.co.uk>,
+	<pbonzini@redhat.com>, <kai.huang@intel.com>, <ubizjak@gmail.com>,
+	<coxu@redhat.com>, <fuqiang.wang@easystack.cn>, <liaoyuanhong@vivo.com>,
+	<brgerst@gmail.com>, <jbohac@suse.cz>, <x86@kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
+	<kexec@lists.infradead.org>
+Subject: [PATCH v5 0/4] arm64/riscv: Add support for crashkernel CMA reservation
+Date: Thu, 12 Feb 2026 18:09:57 +0800
+Message-ID: <20260212101001.343158-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,141 +90,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=YZiwJgRf c=1 sm=1 tr=0 ts=698d9cb2 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=RLNl__C_HODNSpg9kEgA:9
-X-Proofpoint-ORIG-GUID: LFwYoB5YgqT2ivpOH70C3OkLaxkxwh9W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA2OCBTYWx0ZWRfX2TEliqCAk0cE
- ZzqxsGG/rmSvlc1lN191Xxb3pfmkkN9PxUYiu3w3gtfOuwTBXx0PzOpNoms1QWBeZjfxhoGnROx
- Zy0NKDu5axiwdWqw141pR6Bl2d725Fd4mhpZuFyK/SkylnoJa7dO2gqNt0kRJLlT2G/iAbe4Aot
- mDaUO8okuoj4TWh6h3UrZ/py0ldNtposaqllqyspW5NFAFlztdFU8XYhePDz0aWFiP87ak9Aq1G
- xTsFdMaoFUR9XgXKzPrCsJZFKiBBK18+eg9P2q5Obv4mO8+e6NAX3/adcHBhl0cClUBpK2NgNQ+
- ApZm4qkTl4JC9wUdhDXNzm/VMUoGkfxWNNGslW3NBZ48TCogfB1pOf/0fEiBvaapd0gDPY86xSf
- MXW4mRyV6RvgnUNdnoJM3QsgphG7/kemVwvTnFxABnt5ro1NY9AnjQNaDh37WHBT4Vt6vkxZKjP
- FODi8FhR/aNN2oVU5mg==
-X-Proofpoint-GUID: i1J05qq25vvJNc-Aa6lbYJrB11DndFMM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_02,2026-02-11_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602120068
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
+X-Spamd-Result: default: False [0.29 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,google.com,arndb.de,huawei.com,debian.org,fb.com,kylinos.cn,tinylab.org,rivosinc.com,sifive.com,pigmoral.tech,amazon.co.uk,intel.com,easystack.cn,vivo.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[skb99@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:hbathini@linux.ibm.com,m:sachinpb@linux.ibm.com,m:venkat88@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-16835-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skb99@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16836-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:kees@kernel.org,m:elver@google.com,m:paulmck@kernel.org,m:arnd@arndb.de,m:ruanjinjie@huawei.com,m:fvdl@google.com,m:thuth@redhat.com,m:ardb@kernel.org,m:leitao@debian.org,m:rppt@kernel.org,m:osandov@fb.com,m:cfsworks@gmail.com,m:sourabhjain@linux.ibm.com,m:ryan.roberts@arm.com,m:tangyouling@kylinos.cn,m:eajames@linux.ibm.com,m:hbathini@linux.ibm.com,m:ritesh.list@gmail.com,m:songshuaishuai@tinylab.org,m:bjorn@rivosinc.com,m:samuel.holland@sifive.com,m:kevin.brodsky
+ @arm.com,m:junhui.liu@pigmoral.tech,m:vishal.moola@gmail.com,m:dwmw@amazon.co.uk,m:pbonzini@redhat.com,m:kai.huang@intel.com,m:ubizjak@gmail.com,m:coxu@redhat.com,m:fuqiang.wang@easystack.cn,m:liaoyuanhong@vivo.com,m:brgerst@gmail.com,m:jbohac@suse.cz,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	RCPT_COUNT_GT_50(0.00)[65];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MIME_TRACE(0.00)[0:+];
+	HAS_XOIP(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 2767012BE21
+	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: B6DAF12C45D
 X-Rspamd-Action: no action
 
-get_preempt_count() is enabled to return preempt_count for powerpc,
-so that bpf_in_interrupt()/bpf_in_nmi()/bpf_in_serving_softirq()/
-bpf_in_task()/bpf_in_hardirq()/get_preempt_count() works for
-powerpc as well.
+Exclude crash kernel memory in crash core to avoid duplication. Also move
+the size calculation (and the realloc if needed) into crash core.
 
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
----
-Changes since v1:
-* Updated the comments to include powerpc for the APIs.
+And add support for crashkernel CMA reservation for arm64 and riscv.
 
-v1: https://lore.kernel.org/bpf/20260129054035.168078-1-skb99@linux.ibm.com/
----
- tools/testing/selftests/bpf/bpf_experimental.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+Changes in v5:
+- Fix the kernel test robot build warnings.
+- Sort crash memory ranges before preparing elfcorehdr for powerpc
+- Link to v4: https://lore.kernel.org/all/20260209095931.2813152-1-ruanjinjie@huawei.com/
 
-diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-index 4b7210c318dd..9df77e59d4f5 100644
---- a/tools/testing/selftests/bpf/bpf_experimental.h
-+++ b/tools/testing/selftests/bpf/bpf_experimental.h
-@@ -645,6 +645,8 @@ static inline int get_preempt_count(void)
- 			bpf_this_cpu_ptr(&pcpu_hot))->preempt_count;
- #elif defined(bpf_target_arm64)
- 	return bpf_get_current_task_btf()->thread_info.preempt.count;
-+#elif defined(bpf_target_powerpc)
-+	return bpf_get_current_task_btf()->thread_info.preempt_count;
- #endif
- 	return 0;
- }
-@@ -653,6 +655,7 @@ static inline int get_preempt_count(void)
-  *	Report whether it is in interrupt context. Only works on the following archs:
-  *	* x86
-  *	* arm64
-+ *	* powerpc64
-  */
- static inline int bpf_in_interrupt(void)
- {
-@@ -672,6 +675,7 @@ static inline int bpf_in_interrupt(void)
-  *	Report whether it is in NMI context. Only works on the following archs:
-  *	* x86
-  *	* arm64
-+ *	* powerpc64
-  */
- static inline int bpf_in_nmi(void)
- {
-@@ -682,6 +686,7 @@ static inline int bpf_in_nmi(void)
-  *	Report whether it is in hard IRQ context. Only works on the following archs:
-  *	* x86
-  *	* arm64
-+ *	* powerpc64
-  */
- static inline int bpf_in_hardirq(void)
- {
-@@ -692,6 +697,7 @@ static inline int bpf_in_hardirq(void)
-  *	Report whether it is in softirq context. Only works on the following archs:
-  *	* x86
-  *	* arm64
-+ *	* powerpc64
-  */
- static inline int bpf_in_serving_softirq(void)
- {
-@@ -710,6 +716,7 @@ static inline int bpf_in_serving_softirq(void)
-  *	Report whether it is in task context. Only works on the following archs:
-  *	* x86
-  *	* arm64
-+ *	* powerpc64
-  */
- static inline int bpf_in_task(void)
- {
+Changes in v4:
+- Move the size calculation (and the realloc if needed) into the
+  generic crash.
+- Link to v3: https://lore.kernel.org/all/20260204093728.1447527-1-ruanjinjie@huawei.com/
+
+Changs in v3:
+- Exclude crash kernel memory in crash core as Mike suggested.
+- Add acked-by.
+
+Jinjie Ruan (3):
+  crash: Exclude crash kernel memory in crash core
+  arm64: kexec: Add support for crashkernel CMA reservation
+  riscv: kexec: Add support for crashkernel CMA reservation
+
+Sourabh Jain (1):
+  powerpc/crash: sort crash memory ranges before preparing elfcorehdr
+
+ .../admin-guide/kernel-parameters.txt         |  16 +--
+ arch/arm64/include/asm/kexec.h                |   9 +-
+ arch/arm64/kernel/machine_kexec_file.c        |  43 +++-----
+ arch/arm64/mm/init.c                          |   5 +-
+ arch/loongarch/include/asm/kexec.h            |   9 +-
+ arch/loongarch/kernel/machine_kexec_file.c    |  41 +++----
+ arch/powerpc/include/asm/kexec.h              |  13 +++
+ arch/powerpc/include/asm/kexec_ranges.h       |   1 -
+ arch/powerpc/kexec/crash.c                    |  67 ++++++-----
+ arch/powerpc/kexec/file_load_64.c             |  17 +--
+ arch/powerpc/kexec/ranges.c                   | 103 +----------------
+ arch/riscv/include/asm/kexec.h                |   9 +-
+ arch/riscv/kernel/machine_kexec_file.c        |  39 +++----
+ arch/riscv/mm/init.c                          |   5 +-
+ arch/x86/include/asm/kexec.h                  |   9 ++
+ arch/x86/kernel/crash.c                       | 104 ++----------------
+ include/linux/crash_core.h                    |  75 ++++++++++++-
+ kernel/crash_core.c                           |  85 ++++++++++++--
+ 18 files changed, 314 insertions(+), 336 deletions(-)
+
 -- 
-2.52.0
+2.34.1
 
 
