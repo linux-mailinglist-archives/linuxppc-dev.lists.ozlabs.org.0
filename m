@@ -1,77 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-16841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHNFFSCzjWlz6AAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 12:01:52 +0100
+	id iHOhIYTdjWna8AAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 15:02:44 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D4812CCC1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 12:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA33912E0FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 15:02:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBXRp2l7xz2yLH;
-	Thu, 12 Feb 2026 22:01:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBcST0S4dz2yLH;
+	Fri, 13 Feb 2026 01:02:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770894102;
-	cv=none; b=lldqeZDtUT3PtBy3G24uxGe1wV+10OVDHWs2ZSunh/OFhtQZ+1tF2unGUbJvHVzxhgUUBSF81kcINECwQT3vdTNUjbcxJYz2chi+nDd2fCsi7BdPEBAY+qcu7UB5fMDYKH+W8NEf/Jsl2TPFACQCfsYA05/D0VgdJe3OO6hlXjMHPBgPWsT7mY6vjORGQNy7jIM7bZ6Cd/IXKtNu7I0fDuZL4/dAeyMXEsXE7EBlQMV0bqNO0P8pvQ+wzX1ntqzNv07qrKCf3BRkG6pSVJ8iVI4tTgRMARPIfHZJH1AJXX/AbdixQ0Bn2t7QxMKYHWKIc803hpJ/esuZ6BaZ3+5XNw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770904952;
+	cv=none; b=NRpd54fjq8zqa1GzHL/9GBeUD7OgRcM/titTPmcJGdBcN6tACpJu6rdLhlZpXWvD50pmW+wD1v2bJyx2vMF45hc5cl50ENUUVdoOE8lzM4vb0dWAY8/pp5lBETV9vEIlVASMY1neBJ3dE53g2Dvs3TX6KWZiCHNTL9EZoRyQxl3/fub6DIohS3xuzdyNhWuTjhaqjwX/7s5ZcCaX2hl56vFIsxnqufMBtPY1hFccrhBhMRcQw0R0QeQtIFVwykexZs8NCnjiGgFyGqbUug60UxFAYObLkv0H1ixb/hmF20YhEENTz+h/2AhQkyaxdHL1CxhfC4ndRsgFJQG6RUpzkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770894102; c=relaxed/relaxed;
-	bh=kC5PBCrX/sgH2Fq02LEGV9wm5gA5lKwK+RKOC9phkJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wl/rTiJZMhSy+wfxZizejuOCqG5g5po/OQtldl/rSE0XnRa+/1/B4ihA8mwQ/Kiu5LQSGDCyg9Fwypafbhifp3+mdv05IJ1OgLyIypyqxQj3gLNoH1eiraA1O9EncYN/RwS38F7TuacilsWDiJ5HoUnmgIHqKMQLP3wDDdPDx6e960fGViYm55BVcb+PSftHewsuWVNj0vH4PA3eyHdadr3vFCUZ08Bn+nZnMZrJ2qQFlJZibNr08CUCTwZe7wKqN3wzbz0iYVpBHp92MnGjrEHuDyBLNKl/sTGgFY0bhQVFd8uFIukHJ0Mt7nT+Cmc0HpMBzveG6nWChNDcBDTsSw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W6deOLrS; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1770904952; c=relaxed/relaxed;
+	bh=TFo74y0zOAZJ1gXikBmhZ5x7gnmWzyBSYEmf4KFlu6g=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=PQBhhnGEjJJoVFrHAr/avm0qT8Ss4rhpp6TXtk51oRoSs515QnUuf687hbwDplPVPu5gmwblQTwY2MGlYJMUKScaanjpfFn6jGyTlmEv1+bGajrCrP9E7kALoW+zv5Q/ssJCHSsvFTrLzEXPv4eB7MQviefGAkRhYJa1uax+o+x06jxoT+Tx5MXWnsNeqiIz07joojweUL+hWV/o9+3skU5642fK0VfVoztbf1AVMU10iEGS1Hu3ELctDiK98eWBOmfzEhGqAUj8H7DjNAVm4c/oK800jDhUBsNmT9aqQ8jN/g6wA9buzd/P6DJIrS/m14t0nxkILpqL+ystuzO+QQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AOI6KiAS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W6deOLrS;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AOI6KiAS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBXRn3W7Rz2xlh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 22:01:41 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61C6UE1H394028;
-	Thu, 12 Feb 2026 10:54:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kC5PBC
-	rX/sgH2Fq02LEGV9wm5gA5lKwK+RKOC9phkJk=; b=W6deOLrSmmtVXSPitFAh/t
-	/yBHKrAlcNTtI9G2w3XSfMQ6B1/zODmHq06iD+ZfKumubAs6nV6iTliB+UEp0Ntl
-	8Cs7U338COVX2cWNF+AIo6nyGVtLY0smGBojDsAH/hRyXDcp6lL7X7O8vpRrnt9a
-	oYu8b7RW2DFx0998nUBXhu0s7m3sl2kWFiPw/K9pi6jJA0Pfh/pjKvUINHi26nim
-	l/j+HsqLiL385OXH5hHyXP4/xh8COWTuL7cY6ke5qKFjUYhpvo81VJ6KQbTb+Ctg
-	/mFfB/IqEHmolK7w6f/4lowqdRGlStPCg3TQngK9BSyhKJkWqD1R7SDBthKZX5xg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696wdq7f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 10:54:48 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C7nV98002631;
-	Thu, 12 Feb 2026 10:54:47 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6fqst8v0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 10:54:47 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61CAsjQH34538186
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 10:54:45 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86C0C5803F;
-	Thu, 12 Feb 2026 10:54:45 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1985158054;
-	Thu, 12 Feb 2026 10:54:37 +0000 (GMT)
-Received: from [9.61.249.62] (unknown [9.61.249.62])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 10:54:36 +0000 (GMT)
-Message-ID: <ab6ee329-ca59-4765-b309-22e64dfca861@linux.ibm.com>
-Date: Thu, 12 Feb 2026 16:24:32 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBcSR1pZZz2xXB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 01:02:30 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-82361bcbd8fso3405139b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 06:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770904947; x=1771509747; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TFo74y0zOAZJ1gXikBmhZ5x7gnmWzyBSYEmf4KFlu6g=;
+        b=AOI6KiASdqAnBkZ1CLXTjCAgtvO5jBVezitMDUR4p3FMtgM+h6Rp5es4+9XvEC1bP3
+         9MuYVtHYJ7C6pNtZ2t8/WtQhGuYZ17hIDMs4mpftkPTCfzFNz/EVdr8MR7keOJoecg78
+         iDruzQvKptSjasxW50wIX1JIpjSHhRa4Rhjn1Qvm1L02Wuz705ySdqqmvXZFonHfkzqr
+         svOzRWNq0bisDq3MiyH7qFacnaQkaspVHWVymo9vVVuZGsm+oEUEo/HO/4E/ELv3uCYX
+         VhFFteWZT/i0p3uTexRctegrRGp1olsR1VzPW7xxzG9Omu1xDfNiWSZSiVGO9VRo/qmS
+         SC0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770904947; x=1771509747;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TFo74y0zOAZJ1gXikBmhZ5x7gnmWzyBSYEmf4KFlu6g=;
+        b=LoIEtizd69NVSDJNiKxGIGzeBzCRRHUmXdiUv/7VRJo4tiryM6+zmfshj3hw5JCSPa
+         hjK+zj87gcxYjbyqd9WtzTy6hzvKQcqcMJXYIRhuIlOlSKikNsH6HxwfBLX010guoG6p
+         kwq4OamNJxIHIz+axjjFPlIhaTCoSil4TqfuIoyu0Hq+RLOHacgLFgSKp0zXx9vTIkmf
+         lRb68iQPqjxcHlJ0AEH5jc+t06Ne7UiSSHCd7mPNGSXBHyNlfCBm1LxsrzG4Tvj6rVpS
+         TEICAyRs8TLkTm8VPJ8M6YporJ0h6DNtnj/Nh5hsRgic/dyuLGqrV2bdwa9ZjehoiCkv
+         TC8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWrn5KUfGTYTEfImQ6b7V/r9d54fZqXYyCH82lun/kAY+wbp4v6J45Np4Lpj8Lv7cfySpbhH5e+BVmTd8U=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwfuUWBU2lXpTNECIi6zkcpVMaZl8op/odZ9zkJ64Okwz0oaGFN
+	IVliHiy8ERTcwsNRNJ2dhfeI08Eb0WdqXrTSaTSo4oYwOc9xvskIfcomw/9Jyb8S
+X-Gm-Gg: AZuq6aKSve33QF8F1varSgmbJsZQ8+FpR2c3sJLpCIILy2gnpIimAq08HF7xdQ0Exc3
+	I1UwI+ub8D1Z6OChaLLEWkQFYpxFi/g0s4a6OOSCo7GDOhhPZO+mWtvEGnBF9LcC1+2H9t4WOH5
+	BwlbV1h9zXcmjPzC9MTVJyiHD87JlMpKioUxy9PXi6ZJgYNh641CiY3gcdvBTBkFUMKsSPJi704
+	usqls9Q/UUM0TJ2m/hvJWohnWOiHoLjGgifJqAFma/n6b3N5IlHIuT+tHxcVov7XY8B3YPe4ifc
+	RJ+7xavcOJiPnemdELc2lm92u+GXSCkMWuoFSusF87ZIRAoXLu7PqSRcnbSSlUeYULrgxGiFPw8
+	sk+ICVa1BUwVi2HIsHzXnUXhkopMwd6HpjynZOdALyVLvHY4e6v5+NN8LJoAAXVVMgLd1s7q3CO
+	/ieBD3kzyrMLNSmMjL
+X-Received: by 2002:a05:6a00:a24b:b0:823:7ac:1417 with SMTP id d2e1a72fcca58-824b05a920bmr2508988b3a.67.1770904946842;
+        Thu, 12 Feb 2026 06:02:26 -0800 (PST)
+Received: from dw-tp ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e3bd8cbsm5369677b3a.24.2026.02.12.06.02.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 06:02:26 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Usama Arif <usama.arif@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com, willy@infradead.org, linux-mm@kvack.org
+Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
+In-Reply-To: <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
+Date: Thu, 12 Feb 2026 17:43:33 +0530
+Message-ID: <875x82ma6q.ritesh.list@gmail.com>
+References: <20260211125507.4175026-1-usama.arif@linux.dev> <20260211125507.4175026-2-usama.arif@linux.dev> <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,227 +95,154 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/bpf: Add powerpc support for
- get_preempt_count() in selftest
-To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, andrii@kernel.org,
-        eddyz87@gmail.com, ast@kernel.org, daniel@iogearbox.net,
-        martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
-        haoluo@google.com, jolsa@kernel.org, christophe.leroy@csgroup.eu,
-        maddy@linux.ibm.com, mpe@ellerman.id.au
-References: <20260212092558.370623-1-skb99@linux.ibm.com>
-Content-Language: en-GB
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <20260212092558.370623-1-skb99@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698db178 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=dEnyWooXetdK__wXnIsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: vWFzbJ8g7-APD3QRBeCM2NAPYlHWG-t7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA4MCBTYWx0ZWRfXwEgo77BKqPdE
- iImaK5TJ1OnJGXC4bb24zqQOdCkx9cxPxpk3CGWIxYa+4qjLLH1ncmwATrKAV6eS9TAXWQaFs72
- Hwwklk+/t/hvrJBGI+AtNCWScJrctvdEs7FCX+Zws1VMi5seAibiLj6TIL6T9YYQDzpGtn3FBHQ
- 2idSMCok3s10aRKZHvAYvMvDgIsoV3QCsPZmICDbox7Vmo3qCksV2bdFhtWMd3piPReKu7dpK7i
- xOf+X0GNlfVo4jL/H0CQX4fBxq/PoI4E6r7hI9o3l/eEzZB24rRoMhplPBbjNFiKjkdIq/IMaOS
- Z6oCVzDQpFsDvhkIQ7Izb763jSfBmbrE7jpTpCrJZXij2DhsPv5sT75PkIFhdob4PMKqKSzFFh4
- 4btmZDOx4kh74MxS0BQ4Z58Koc8ilQpcxRFWhwPXpY1oczIlUbcKlJz4fYLRzFCGRwkG+Jp4xTr
- fYPuyaT/ott0OGgxu9w==
-X-Proofpoint-ORIG-GUID: 2WhUC-_kZ49qYXhZKIZ4D9ah3Ix5TocJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_03,2026-02-11_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602120080
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16841-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10];
-	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:npache@redhat.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@suse.cz,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FORGED_RECIPIENTS(0.00)[m:skb99@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:hbathini@linux.ibm.com,m:sachinpb@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-16842-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[david.kernel.org:query timed out];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: D9D4812CCC1
+X-Rspamd-Queue-Id: EA33912E0FA
 X-Rspamd-Action: no action
 
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-On 12/02/26 2:55 pm, Saket Kumar Bhaskar wrote:
-> get_preempt_count() is enabled to return preempt_count for powerpc,
-> so that bpf_in_interrupt()/bpf_in_nmi()/bpf_in_serving_softirq()/
-> bpf_in_task()/bpf_in_hardirq()/get_preempt_count() works for
-> powerpc as well.
+> CCing ppc folks
 >
-> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
+Thanks David!
 
-Tested this patch by applying on mainline kernel, and below selftests 
-passes.
-
-
-Please add below tag.
-
-
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-
-
-./test_progs -t exe_ctx
-[  610.897388] bpf_testmod: loading out-of-tree module taints kernel.
-[  610.907373] audit: type=1334 audit(1771408772.036:229): prog-id=72 
-op=LOAD
-[  610.907385] audit: type=1334 audit(1771408772.036:230): prog-id=72 
-op=UNLOAD
-[  610.907461] audit: type=1334 audit(1771408772.036:231): prog-id=73 
-op=LOAD
-[  610.907467] audit: type=1334 audit(1771408772.036:232): prog-id=73 
-op=UNLOAD
-[  610.941282] audit: type=1334 audit(1771408772.076:233): prog-id=74 
-op=LOAD
-[  610.941290] audit: type=1334 audit(1771408772.076:234): prog-id=74 
-op=UNLOAD
-[  610.956474] audit: type=1334 audit(1771408772.086:235): prog-id=75 
-op=LOAD
-[  610.956481] audit: type=1334 audit(1771408772.086:236): prog-id=75 
-op=UNLOAD
-[  610.956964] audit: type=1334 audit(1771408772.086:237): prog-id=76 
-op=LOAD
-[  610.956970] audit: type=1334 audit(1771408772.086:238): prog-id=76 
-op=UNLOAD
-#109     exe_ctx:OK
-Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
-
-
-./test_progs -t timer_interrupt
-[  730.106678] kauditd_printk_skb: 6 callbacks suppressed
-[  730.106685] audit: type=1334 audit(1771408891.236:245): prog-id=80 
-op=LOAD
-[  730.106700] audit: type=1334 audit(1771408891.236:246): prog-id=80 
-op=UNLOAD
-[  730.106787] audit: type=1334 audit(1771408891.236:247): prog-id=81 
-op=LOAD
-[  730.106794] audit: type=1334 audit(1771408891.236:248): prog-id=81 
-op=UNLOAD
-[  730.136150] audit: type=1334 audit(1771408891.266:249): prog-id=82 
-op=LOAD
-[  730.136158] audit: type=1334 audit(1771408891.266:250): prog-id=82 
-op=UNLOAD
-[  730.151245] audit: type=1334 audit(1771408891.286:251): prog-id=83 
-op=LOAD
-[  730.151252] audit: type=1334 audit(1771408891.286:252): prog-id=83 
-op=UNLOAD
-[  730.151572] audit: type=1334 audit(1771408891.286:253): prog-id=84 
-op=LOAD
-[  730.151578] audit: type=1334 audit(1771408891.286:254): prog-id=84 
-op=UNLOAD
-#490     timer_interrupt:OK
-Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
-
-
-Regards,
-
-Venkat.
-
-> ---
-> Changes since v1:
-> * Updated the comments to include powerpc for the APIs.
+> On 2/11/26 13:49, Usama Arif wrote:
+>> When the kernel creates a PMD-level THP mapping for anonymous pages,
+>> it pre-allocates a PTE page table and deposits it via
+>> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
+>> PMD split or zap. The rationale was that split must not fail—if the
+>> kernel decides to split a THP, it needs a PTE table to populate.
+>> 
+>> However, every anon THP wastes 4KB (one page table page) that sits
+>> unused in the deposit list for the lifetime of the mapping. On systems
+>> with many THPs, this adds up to significant memory waste. The original
+>> rationale is also not an issue. It is ok for split to fail, and if the
+>> kernel can't find an order 0 allocation for split, there are much bigger
+>> problems. On large servers where you can easily have 100s of GBs of THPs,
+>> the memory usage for these tables is 200M per 100G. This memory could be
+>> used for any other usecase, which include allocating the pagetables
+>> required during split.
+>> 
+>> This patch removes the pre-deposit for anonymous pages on architectures
+>> where arch_needs_pgtable_deposit() returns false (every arch apart from
+>> powerpc, and only when radix hash tables are not enabled) and allocates
+>> the PTE table lazily—only when a split actually occurs. The split path
+>> is modified to accept a caller-provided page table.
+>> 
+>> PowerPC exception:
+>> 
+>> It would have been great if we can completely remove the pagetable
+>> deposit code and this commit would mostly have been a code cleanup patch,
+>> unfortunately PowerPC has hash MMU, it stores hash slot information in
+>> the deposited page table and pre-deposit is necessary. All deposit/
+>> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
+>> behavior is unchanged with this patch. On a better note,
+>> arch_needs_pgtable_deposit will always evaluate to false at compile time
+>> on non PowerPC architectures and the pre-deposit code will not be
+>> compiled in.
 >
-> v1: https://lore.kernel.org/bpf/20260129054035.168078-1-skb99@linux.ibm.com/
-> ---
->   tools/testing/selftests/bpf/bpf_experimental.h | 7 +++++++
->   1 file changed, 7 insertions(+)
+> Is there a way to remove this? It's always been a confusing hack, now 
+> it's unpleasant to have around :)
 >
-> diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-> index 4b7210c318dd..9df77e59d4f5 100644
-> --- a/tools/testing/selftests/bpf/bpf_experimental.h
-> +++ b/tools/testing/selftests/bpf/bpf_experimental.h
-> @@ -645,6 +645,8 @@ static inline int get_preempt_count(void)
->   			bpf_this_cpu_ptr(&pcpu_hot))->preempt_count;
->   #elif defined(bpf_target_arm64)
->   	return bpf_get_current_task_btf()->thread_info.preempt.count;
-> +#elif defined(bpf_target_powerpc)
-> +	return bpf_get_current_task_btf()->thread_info.preempt_count;
->   #endif
->   	return 0;
->   }
-> @@ -653,6 +655,7 @@ static inline int get_preempt_count(void)
->    *	Report whether it is in interrupt context. Only works on the following archs:
->    *	* x86
->    *	* arm64
-> + *	* powerpc64
->    */
->   static inline int bpf_in_interrupt(void)
->   {
-> @@ -672,6 +675,7 @@ static inline int bpf_in_interrupt(void)
->    *	Report whether it is in NMI context. Only works on the following archs:
->    *	* x86
->    *	* arm64
-> + *	* powerpc64
->    */
->   static inline int bpf_in_nmi(void)
->   {
-> @@ -682,6 +686,7 @@ static inline int bpf_in_nmi(void)
->    *	Report whether it is in hard IRQ context. Only works on the following archs:
->    *	* x86
->    *	* arm64
-> + *	* powerpc64
->    */
->   static inline int bpf_in_hardirq(void)
->   {
-> @@ -692,6 +697,7 @@ static inline int bpf_in_hardirq(void)
->    *	Report whether it is in softirq context. Only works on the following archs:
->    *	* x86
->    *	* arm64
-> + *	* powerpc64
->    */
->   static inline int bpf_in_serving_softirq(void)
->   {
-> @@ -710,6 +716,7 @@ static inline int bpf_in_serving_softirq(void)
->    *	Report whether it is in task context. Only works on the following archs:
->    *	* x86
->    *	* arm64
-> + *	* powerpc64
->    */
->   static inline int bpf_in_task(void)
->   {
+
+Hash MMU on PowerPC works fundamentally different than other MMUs
+(unlike Radix MMU on PowerPC). So yes, it requires few tricks to fit
+into the Linux's multi-level SW page table model. ;) 
+
+
+> In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1 
+> copied generic pgtable_trans_huge_deposit() hurts my belly.
+>
+
+On PowerPC, pgtable_t can be a pte fragment. 
+
+typedef pte_t *pgtable_t;
+
+That means a single page can be shared among other PTE page tables. So, we
+cannot use page->lru which the generic implementation uses. I guess due
+to this, there is a slight change in implementation of
+radix__pgtable_trans_huge_deposit(). 
+
+Doing a grep search, I think that's the same for sparc and s390 as well.
+
+>
+> IIUC, hash is mostly used on legacy power systems, radix on newer ones.
+>
+> So one obvious solution: remove PMD THP support for hash MMUs along with 
+> all this hacky deposit code.
+>
+
+Unfortunately, please no. There are real customers using Hash MMU on
+Power9 and even on older generations and this would mean breaking Hash
+PMD THP support for them. 
+
+
+>
+> the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar 
+> checks need to be wrapped in a reasonable helper and likely this all 
+> needs to get cleaned up further.
+>
+> The implementation if the generic pgtable_trans_huge_deposit and the 
+> radix handlers etc must be removed. If any code would trigger them it 
+> would be a bug.
+>
+
+Sure, I think after this patch series, the radix__pgtable_trans_huge_deposit() 
+will mostly be a dead code anyways. I will spend some time going
+through this series and will also give it a test on powerpc HW (with
+both Hash and Radix MMU).
+
+I guess, we should also look at removing pgtable_trans_huge_deposit() and
+pgtable_trans_huge_withdraw() implementations from s390 and sparc, since
+those too will be dead code after this.
+
+
+> If we have to keep this around, pgtable_trans_huge_deposit() should 
+> likely get renamed to arch_pgtable_trans_huge_deposit() etc, as there 
+> will not be generic support for it.
+>
+
+Sure. That make sense since PowerPC Hash MMU will still need this.
+
+-ritesh
 
