@@ -1,89 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-16824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id PlGhNf1sjWkH2gAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 07:02:37 +0100
+	id +GaaON1vjWma2gAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 07:14:53 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D559C12A873
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 07:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5A212A8BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 07:14:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBPpf4JdRz2yLH;
-	Thu, 12 Feb 2026 17:02:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBQ4k6fq3z2yLH;
+	Thu, 12 Feb 2026 17:14:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770876154;
-	cv=none; b=COCuYd31mP1P9eu+Xigj14jsa+CKFkrVj7zPNp2seeaX1semStpteZS1XT79iqLwzKjbEHrr1AosMp0DyAJTorw2ZK3ynsPGrgfA5ems2DAq3VmLpldtbWfd3WBYx6TDh5rFVkb4qg6GdUKbEmKaTni+vM+VRFtztSl1cGsL+y0ulkFbu6S1tnV247nDyZuXJRLqnIGmM+ylYluvKlOlZ/fzIXAs/UdmBq23+GzI7bDuhorTbYTyAVfk950P+wr/siczajtOOTBtFQ2t2vjjbgE0QWZjC4SzO2iJPPQO42pzhzBubp4ykQKdmNx3q1xMFdyTVUTa36t2l+PXIN/rQQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770876886;
+	cv=none; b=M3UrbbtcBhPoBQphinIgQTZWGPAFg3mg0E4zK29hJ60QsBLx9xNzXKE2hYFOx6cwPN8PQNxAGwdr/NeEahtRFb7dfcfONmmNhQwYvh/ozGrt9DgAvfS3wnmASkWn6Uam+CnLvuqz2TFcKmh0XJx9h0EWkfxxa9zJFIbgbyQZ0qI9J40FbeJGYB4fGHtiir6fcVjxUCBLqOP5R1J3JsOTlOCdcsxJvcPiRdUaoL/+sFOJZdS2iRvjbsYZF0cftcwQVFyU5YtbwKVxieYuRZIieQDrANgLHFixV9HwDp2kKGTEPwZpBc9iczTUbkbMd1fiVlc3wUczhWW+whDYiCX1jA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770876154; c=relaxed/relaxed;
-	bh=Hmvg6P0d+9SZZHeOBqjrXjSt0XSUVnsXbvZhlLYFUA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VrEnh585YU6vevOlkEh3cz1UTOPrhC+UtLw7cUbbr8ini8sqk7KI3hBXDPFl0af7D8aba/YgPebSq1x2Q30wDp7ahWKbrNR/2/wpN3BA6j9EdXs6/z/T3xTfolKhy7rrc22UKe44BZYHnM9Rcp+ANz8z3dukl719Acdm9j9sl356iRsJSPNoVbW/3ZsOdGTmI44i11wicPtY08c2mrMp/f9Wl5mC15LG4Z+CDJCYixIw6Txi+ss8qiS0JmesASeAIsBWJEylq+c0rR1t7bLAHvgjhiTn5MIW0NT53TDUiLvj+CEdzROl36LPDVwJCgE7NH0hHge3KBejy0pPCgKuLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oT+qVrmu; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1770876886; c=relaxed/relaxed;
+	bh=ojMHV+TxP6e3FLHmg8fIJfthetl5cVOWSrR8HU/Rc/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XelAtxZM4jZjJDgo3zOEqT4ShA7GOE6MMGtIsPFf3X8wFqCp+yXxZIXf+VWf3KYlMC1AjV9TyHkjm/gBJsBQwAa/qRp2jwnA2c3TgARqYOVpaGeSKbTJ8d7/c7zK01wunQQoFa/DUu8Z//oLs6hZtRTbHIdv4PkX+uP42NL3qxvuZWzzlmb7BTuizIEvTNX3yoEuLGFy7m8CQPeaaS1KPVLjT2nIlVS6kdJpDlZB7ADArxf0tFK1p9qzMXRRRFEkIu4dVUOjQOs4O0s8l6NV1shePp3kERRaggRt2+UrAzGrSy8ktYSb3FIQKaPH1IcSjefNmvDkbjl7xZxhKUkWhg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ey17cf9b; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oT+qVrmu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ey17cf9b;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBPpc2tDRz2xN5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 17:02:32 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61BH3sgT2503229;
-	Thu, 12 Feb 2026 06:02:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Hmvg6P0d+9SZZHeOBqjrXjSt0XSUVnsXbvZhlLYFU
-	A8=; b=oT+qVrmu4nhXd0YvMpsMRVnXsBjIMRQYnGSuc1swAPNkdm5Sw5hsDjbcU
-	XAiGPxjXw9J8qM1nPo1CLOPIidCsW/0D1Kiqs5B3N+ZG+dS+JTC9aKVYGvdhjkff
-	JfoNr23+C2WCQJro0nF3GwGJCxBJneH4I2niFzHzwxMvibiyTZErzUFA97L3TWSs
-	NjcUV9lHiLitXjMNIV8ItIj05k9K9fzgSlI0+r99y0xwqJqBw0kW0HhciTdoTUdf
-	AyTkwwSZw240ZNzuyq1Fnk7x796j9UqiZVuli7sXnroyeMkedpScG1I3+8hhGbx2
-	r/Nj2OmnJxVJdIqFG36czeaiBjVlw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBQ4j6HJyz2xN5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 17:14:45 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61BFYKsD369791;
+	Thu, 12 Feb 2026 06:11:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ojMHV+
+	TxP6e3FLHmg8fIJfthetl5cVOWSrR8HU/Rc/I=; b=Ey17cf9bfbIHupEH0Z0c42
+	ETQ1EmhdoqHoKSr9VFi0UrrqyZJS6bAF0Ir9TUvG4I2MJJMtmzkjctMQjbdkcxws
+	E+SUFXx7PkDLaXOQ1yRFQ+7fLoKS3ohJUR2mBqinTC77OsPjA/BlEl+GIE08CQzf
+	GCEht20jhHb8NRTGtPBaGMuu1yrIpfjlqp+EfLOZfibFIA+OZ/NUKonPzXKlPZI9
+	jtwtCW67v7u9qijheZq0SnfyIwG6aIv9iqOzd0hnzpKrD+G3xTpqneMut937gnyt
+	EmfYF/wl62aU6LwgfCrISp3z8VAgHQOnCgBQ80+0+FFjLUdz32zQculJmDG5uS2A
+	==
 Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696va110-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696x24ge-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 06:02:12 +0000 (GMT)
+	Thu, 12 Feb 2026 06:11:26 +0000 (GMT)
 Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C4ZFJ2019251;
-	Thu, 12 Feb 2026 06:02:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxk8x6q-1
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C4ZFKh019251;
+	Thu, 12 Feb 2026 06:11:24 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxk8y2q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 06:02:11 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61C628YW50921876
+	Thu, 12 Feb 2026 06:11:24 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61C6BKpV15008004
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 06:02:08 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3932120040;
-	Thu, 12 Feb 2026 06:02:08 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF7D420043;
-	Thu, 12 Feb 2026 06:02:03 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.39.27.166])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 06:02:03 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Baoquan he <bhe@redhat.com>,
-        Jinjie Ruan <ruanjinjie@huawei.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] powerpc/crash: sort crash memory ranges before preparing elfcorehdr
-Date: Thu, 12 Feb 2026 11:31:59 +0530
-Message-ID: <20260212060159.733023-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	Thu, 12 Feb 2026 06:11:21 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3C1D2004D;
+	Thu, 12 Feb 2026 06:11:20 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9437220040;
+	Thu, 12 Feb 2026 06:11:01 +0000 (GMT)
+Received: from [9.39.27.166] (unknown [9.39.27.166])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Feb 2026 06:11:01 +0000 (GMT)
+Message-ID: <5b6f4093-3ddd-477d-ade4-fe31429cf3cd@linux.ibm.com>
+Date: Thu, 12 Feb 2026 11:41:00 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,32 +85,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] crash: Exclude crash kernel memory in crash core
+To: Jinjie Ruan <ruanjinjie@huawei.com>, corbet@lwn.net,
+        catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+        tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, hpa@zytor.com, akpm@linux-foundation.org,
+        bhe@redhat.com, vgoyal@redhat.com, dyoung@redhat.com,
+        rdunlap@infradead.org, pmladek@suse.com, feng.tang@linux.alibaba.com,
+        pawan.kumar.gupta@linux.intel.com, kees@kernel.org, elver@google.com,
+        arnd@arndb.de, lirongqing@baidu.com, fvdl@google.com,
+        leitao@debian.org, rppt@kernel.org, ardb@kernel.org, jbohac@suse.cz,
+        osandov@fb.com, ryan.roberts@arm.com, cfsworks@gmail.com,
+        tangyouling@kylinos.cn, ritesh.list@gmail.com, thuth@redhat.com,
+        hbathini@linux.ibm.com, eajames@linux.ibm.com, bjorn@rivosinc.com,
+        songshuaishuai@tinylab.org, kevin.brodsky@arm.com,
+        samuel.holland@sifive.com, vishal.moola@gmail.com,
+        junhui.liu@pigmoral.tech, dwmw@amazon.co.uk, pbonzini@redhat.com,
+        thomas.lendacky@amd.com, kai.huang@intel.com, ubizjak@gmail.com,
+        coxu@redhat.com, liaoyuanhong@vivo.com, fuqiang.wang@easystack.cn,
+        brgerst@gmail.com, x86@kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, kexec@lists.infradead.org
+References: <20260209095931.2813152-1-ruanjinjie@huawei.com>
+ <20260209095931.2813152-2-ruanjinjie@huawei.com>
+ <50693f0c-c610-4347-86aa-40d50dc681fc@linux.ibm.com>
+ <31c2ae53-cbb7-bfad-9b8f-f9e1a254491e@huawei.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <31c2ae53-cbb7-bfad-9b8f-f9e1a254491e@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: WgP2I7qtboAQMm2_IlCUvLoxp78N--v2
-X-Proofpoint-ORIG-GUID: f13Zli5vsJY8EySErt_WPM3yP13ScLLl
-X-Authority-Analysis: v=2.4 cv=JdWxbEKV c=1 sm=1 tr=0 ts=698d6ce5 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=WZYBqkhX c=1 sm=1 tr=0 ts=698d6f0e cx=c_pps
  a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=i0EeH86SAAAA:8 a=Z4Rwk6OoAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=TNJSkpwCZzExJk-GAwUA:9
- a=HkZW87K1Qel5hWWM3VKY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDAzOSBTYWx0ZWRfXxUzH8bwc6Vhl
- ICqXAaASdGKselvMaXY9QWTK+cIZZqfB3KUsghes5XCmeYRv11cOCIfCd9Z3Ebow3whS+CT0Q+i
- 4J2zk2xILy+AtmRwbowgcnrIrlYhbDcfwmr2/HcNDPJlGspP0Vz644SXL/KJcQGz8dfMzl067st
- wCScmHxX7hXXq/b0nDCxVVyb1BdL+MsaM5WYUW/DyrXzYYOOJD3e26LL0oiSX8RPSKuj++UT9N3
- e5ot/OTOwlO6R0wyM+xZL+I/SNAQpoAPQu9RjWb/RWsEIsBpo4Y6qESYPZLggZ/Yy4T/ACzOKHs
- RF1lqIPth9bMysoxCtGbMzv+dVKUlBI3+IDV7sOTH360lAkiojYegVKkhl+/QCanfB3Z5sQtEgC
- /6ap9ha/OJ9VUKnMo/p7ebY5tk+4SdniUIJ4TfGMygO/13BfoqwAchbe/pTbwAvH4y2Eh6MoFin
- rwJuKncJkSh1ywixcsw==
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=i0EeH86SAAAA:8 a=B_ciY6P1UxUjS-fdd_UA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: pPQWyo0dBerxEXBQvX-fWAqozUfKAgMU
+X-Proofpoint-ORIG-GUID: NJnrqqmFwVChV0NJpqnRbaDGJlc_JaK5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDAzOSBTYWx0ZWRfX3ttwUOBSfW6t
+ I/8Hz+DYXVvSSlj/G1NDONhkkFRDOcWcVU8ZWOdCaeQiSqDBoTdIv6+Tc99oUe5HVGftG7lRYeC
+ 51L9B6eK/zNvaD/TOWeehy7QYHzeOiC8KMMJKPPTR3Xt2B9vcK5BU+o/qLnzLcsSVlo9cZKimqz
+ ulVMaPptKVRdY0bjVlTsSHPmhipS7GGPPQoUCKIsYkLSiKIsscPzVZcXkXBlJu93n5DUvZoJgFa
+ eO2d6xI6jWJjuPHEG3c3eWKO5rkBYYfOhsQsl9iZouncmrOlkxuxUDiENFvM/CV/MmDZRRhmJfY
+ dzsY0+TnQ9Et6vmgImq7ts8pYMkZlJvhVf9ksKIhh6xagoBwd+qGyH+7OQxKgLGqkPIp27VeuSs
+ IHivRppL66tOv1wzzSnPdFaTvaoVdda7zpGiTmfzC6304JgPWIwVr5IoU/c2X9EH91PGbdFawpf
+ cKNP0JormcRl9vWEjdw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-12_01,2026-02-11_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 impostorscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 malwarescore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ spamscore=0 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
  definitions=main-2602120039
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -130,224 +152,179 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,linux-foundation.org,redhat.com,huawei.com,ellerman.id.au,gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-16824-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16825-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_TO(0.00)[huawei.com,lwn.net,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,suse.com,linux.alibaba.com,google.com,arndb.de,baidu.com,debian.org,suse.cz,fb.com,kylinos.cn,rivosinc.com,tinylab.org,sifive.com,pigmoral.tech,amazon.co.uk,amd.com,intel.com,vivo.com,easystack.cn,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sourabhjain@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:ruanjinjie@huawei.com,m:corbet@lwn.net,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:pmladek@suse.com,m:feng.tang@linux.alibaba.com,m:pawan.kumar.gupta@linux.intel.com,m:kees@kernel.org,m:elver@google.com,m:arnd@arndb.de,m:lirongqing@baidu.com,m:fvdl@google.com,m:leitao@debian.org,m:rppt@kernel.org,m:ardb@kernel.org,m:jbohac@suse.cz,m:osandov@fb.com,m:ryan.roberts@arm.com,m:cfsworks@gmail.com,m:tangyouling@kylinos.cn,m:ritesh.list@gmail.com,m:thuth@redhat.com,m:hbathini@linux.ibm.com,m:eajames@linux.ibm.com,m:bjorn@rivosinc.com,m:songshuaishuai@tinylab
+ .org,m:kevin.brodsky@arm.com,m:samuel.holland@sifive.com,m:vishal.moola@gmail.com,m:junhui.liu@pigmoral.tech,m:dwmw@amazon.co.uk,m:pbonzini@redhat.com,m:thomas.lendacky@amd.com,m:kai.huang@intel.com,m:ubizjak@gmail.com,m:coxu@redhat.com,m:liaoyuanhong@vivo.com,m:fuqiang.wang@easystack.cn,m:brgerst@gmail.com,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,huawei.com:email,linux-foundation.org:email];
+	RCPT_COUNT_GT_50(0.00)[67];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: D559C12A873
+X-Rspamd-Queue-Id: 9A5A212A8BA
 X-Rspamd-Action: no action
 
-During a memory hot-remove event, the elfcorehdr is rebuilt to exclude
-the removed memory. While updating the crash memory ranges for this
-operation, the crash memory ranges array can become unsorted. This
-happens because remove_mem_range() may split a memory range into two
-parts and append the higher-address part as a separate range at the end
-of the array.
 
-So far, no issues have been observed due to the unsorted crash memory
-ranges. However, this could lead to problems once crash memory range
-removal is handled by generic code, as introduced in the upcoming
-patches in this series.
 
-Currently, powerpc uses a platform-specific function,
-remove_mem_range(), to exclude hot-removed memory from the crash memory
-ranges. This function performs the same task as the generic
-crash_exclude_mem_range() in crash_core.c. The generic helper also
-ensures that the crash memory ranges remain sorted. So remove the
-redundant powerpc-specific implementation and instead call
-crash_exclude_mem_range_guarded() (which internally calls
-crash_exclude_mem_range()) to exclude the hot-removed memory ranges.
+On 12/02/26 08:58, Jinjie Ruan wrote:
+>
+> On 2026/2/10 20:30, Sourabh Jain wrote:
+>> Hello Jinjie,
+>>
+>> On 09/02/26 15:29, Jinjie Ruan wrote:
+>>> The exclude of crashk_res, crashk_low_res and crashk_cma memory
+>>> are almost identical across different architectures, handling them
+>>> in the crash core would eliminate a lot of duplication, so do
+>>> them in the common code.
+>>>
+>>> And move the size calculation (and the realloc if needed) into the
+>>> generic crash core so that:
+>>>
+>>> - New CMA regions or future crash-memory types can automatically
+>>>     accounted for in crash core;
+>>>
+>>> - Each architecture no longer has to play whack-a-mole with
+>>>     its private array size.
+>>>
+>>> To achieve the above goal, 4 architecture-specific functions are
+>>> introduced:
+>>>
+>>> - arch_get_system_nr_ranges() and arch_prepare_elf64_ram_headers().
+>>>     The 1st function pre-counts the number of memory ranges, and
+>>>     the 2st function fill the memory ranges into the cmem->ranges[] array,
+>>>     and count the actual number of ranges filled. The default
+>>> implementation
+>>>     is consistent with arm64 and loongson.
+>>>
+>>> - arch_crash_exclude_mem_range(). Realloc for powerpc. The default
+>>>     implementation is crash_exclude_mem_range(), and use
+>>>     crash_exclude_mem_range_guarded() to implement the arch version
+>>>     for powerpc.
+>>>
+>>> - arch_get_crash_memory_ranges(). Get crash memory ranges for arch and
+>>>     the default implementation is generic across x86, arm64, riscv, and
+>>>     loongson by using the first two arch functions above. powerpc has its
+>>>     own implementation by calling get_crash_memory_ranges().
+>>>
+>>> Tested on x86, arm64 and riscv with QEMU.
+>>>
+>>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>>> ---
+>>>    arch/arm64/kernel/machine_kexec_file.c     |  47 +--------
+>>>    arch/loongarch/kernel/machine_kexec_file.c |  45 +-------
+>>>    arch/powerpc/include/asm/kexec.h           |  13 +++
+>>>    arch/powerpc/kexec/crash.c                 |  52 ++++++----
+>>>    arch/powerpc/kexec/file_load_64.c          |  17 ++-
+>>>    arch/powerpc/kexec/ranges.c                |  18 +---
+>>>    arch/riscv/include/asm/kexec.h             |  10 ++
+>>>    arch/riscv/kernel/machine_kexec_file.c     |  37 ++-----
+>>>    arch/x86/include/asm/kexec.h               |  10 ++
+>>>    arch/x86/kernel/crash.c                    | 104 ++-----------------
+>>>    include/linux/crash_core.h                 | 114 +++++++++++++++++++--
+>>>    kernel/crash_core.c                        |  71 +++++++++++--
+>>>    12 files changed, 269 insertions(+), 269 deletions(-)
+>>>
+> [...]
+>
+>>>    extern void crash_ipi_callback(struct pt_regs *regs);
+>>> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+>>> index a325c1c02f96..5ade9a853fb0 100644
+>>> --- a/arch/powerpc/kexec/crash.c
+>>> +++ b/arch/powerpc/kexec/crash.c
+>>> @@ -419,30 +419,21 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
+>>>        return sizeof(struct elfhdr) + (phdr_cnt * sizeof(Elf64_Phdr));
+>>>    }
+>>>    -/**
+>>> - * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it
+>>> with old
+>>> - *                   elfcorehdr in the kexec segment array.
+>>> - * @image: the active struct kimage
+>>> - * @mn: struct memory_notify data handler
+>>> - */
+>>> -static void update_crash_elfcorehdr(struct kimage *image, struct
+>>> memory_notify *mn)
+>>> +int arch_get_crash_memory_ranges(struct crash_mem **cmem, unsigned
+>>> long *nr_mem_ranges,
+>>> +                 struct kimage *image, struct memory_notify *mn)
+>>>    {
+>>> +    unsigned long base_addr, size;
+>>>        int ret;
+>>> -    struct crash_mem *cmem = NULL;
+>>> -    struct kexec_segment *ksegment;
+>>> -    void *ptr, *mem, *elfbuf = NULL;
+>>> -    unsigned long elfsz, memsz, base_addr, size;
+>>>    -    ksegment = &image->segment[image->elfcorehdr_index];
+>>> -    mem = (void *) ksegment->mem;
+>>> -    memsz = ksegment->memsz;
+>>> -
+>>> -    ret = get_crash_memory_ranges(&cmem);
+>>> +    ret = get_crash_memory_ranges(cmem);
+>>>        if (ret) {
+>>>            pr_err("Failed to get crash mem range\n");
+>>> -        return;
+>>> +        return ret;
+>>>        }
+>>>    +    if (!image || !mn)
+>>> +        return 0;
+>>> +
+>>>        /*
+>>>         * The hot unplugged memory is part of crash memory ranges,
+>>>         * remove it here.
+>>> @@ -450,14 +441,34 @@ static void update_crash_elfcorehdr(struct
+>>> kimage *image, struct memory_notify *
+>>>        if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
+>>>            base_addr = PFN_PHYS(mn->start_pfn);
+>>>            size = mn->nr_pages * PAGE_SIZE;
+>>> -        ret = remove_mem_range(&cmem, base_addr, size);
+>>> +        ret = remove_mem_range(cmem, base_addr, size);
+>> I like the overall design for handling crashkernel memory exclusion
+>> in this patch series, especially the way you managed to free the
+>> crash_mem object (mem) in the generic code (crash_prepare_elf64_headers()).
+> Thanks for the review.
+>
+>> However, the way crash memory is prepared after a memory hotplug
+>> event on powerpc by calling remove_mem_range(), can leave the crash
+>> memory ranges unsorted. This can cause issues in the generic code
+>> when excluding crashkernel memory, because crash_exclude_mem_range()
+>> expects crash_mem to be sorted.
+> You are absolutely correct.
+>
+>> So I wrote a simple patch to cover this scenario. Including the
+>> patch below as the first patch in this series would be helpful.
+>> https://lore.kernel.org/all/20260210120803.433978-1-sourabhjain@linux.ibm.com/
+> Thanks for the additional patch. I'll add it as the first patch in the
+> next revision to ensure crash_mem remains sorted after memory hotplug
+> events on powerpc.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan he <bhe@redhat.com>
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
+Thanks you.
 
-Requesting this patch to part of the below patch series.
-https://lore.kernel.org/all/20260209095931.2813152-1-ruanjinjie@huawei.com/
+Please use the latest version (v2) available here:
+https://lore.kernel.org/all/20260212060159.733023-1-sourabhjain@linux.ibm.com/
 
-Changelog:
- - Update hot removed memory end address calculation
-
----
- arch/powerpc/include/asm/kexec_ranges.h |  4 +-
- arch/powerpc/kexec/crash.c              |  5 +-
- arch/powerpc/kexec/ranges.c             | 87 +------------------------
- 3 files changed, 7 insertions(+), 89 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-index 14055896cbcb..ad95e3792d10 100644
---- a/arch/powerpc/include/asm/kexec_ranges.h
-+++ b/arch/powerpc/include/asm/kexec_ranges.h
-@@ -7,7 +7,9 @@
- void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
- struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
- int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
--int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-+int crash_exclude_mem_range_guarded(struct crash_mem **mem_ranges,
-+				    unsigned long long mstart,
-+				    unsigned long long mend);
- int get_exclude_memory_ranges(struct crash_mem **mem_ranges);
- int get_reserved_memory_ranges(struct crash_mem **mem_ranges);
- int get_crash_memory_ranges(struct crash_mem **mem_ranges);
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index a325c1c02f96..898742a5205c 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -431,7 +431,7 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
- 	struct crash_mem *cmem = NULL;
- 	struct kexec_segment *ksegment;
- 	void *ptr, *mem, *elfbuf = NULL;
--	unsigned long elfsz, memsz, base_addr, size;
-+	unsigned long elfsz, memsz, base_addr, size, end;
- 
- 	ksegment = &image->segment[image->elfcorehdr_index];
- 	mem = (void *) ksegment->mem;
-@@ -450,7 +450,8 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
- 	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
- 		base_addr = PFN_PHYS(mn->start_pfn);
- 		size = mn->nr_pages * PAGE_SIZE;
--		ret = remove_mem_range(&cmem, base_addr, size);
-+		end = base_addr + size - 1;
-+		ret = crash_exclude_mem_range_guarded(&cmem, base_addr, end);
- 		if (ret) {
- 			pr_err("Failed to remove hot-unplugged memory from crash memory ranges\n");
- 			goto out;
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index 867135560e5c..6c58bcc3e130 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -553,7 +553,7 @@ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
- #endif /* CONFIG_KEXEC_FILE */
- 
- #ifdef CONFIG_CRASH_DUMP
--static int crash_exclude_mem_range_guarded(struct crash_mem **mem_ranges,
-+int crash_exclude_mem_range_guarded(struct crash_mem **mem_ranges,
- 					   unsigned long long mstart,
- 					   unsigned long long mend)
- {
-@@ -641,89 +641,4 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
- 		pr_err("Failed to setup crash memory ranges\n");
- 	return ret;
- }
--
--/**
-- * remove_mem_range - Removes the given memory range from the range list.
-- * @mem_ranges:    Range list to remove the memory range to.
-- * @base:          Base address of the range to remove.
-- * @size:          Size of the memory range to remove.
-- *
-- * (Re)allocates memory, if needed.
-- *
-- * Returns 0 on success, negative errno on error.
-- */
--int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
--{
--	u64 end;
--	int ret = 0;
--	unsigned int i;
--	u64 mstart, mend;
--	struct crash_mem *mem_rngs = *mem_ranges;
--
--	if (!size)
--		return 0;
--
--	/*
--	 * Memory range are stored as start and end address, use
--	 * the same format to do remove operation.
--	 */
--	end = base + size - 1;
--
--	for (i = 0; i < mem_rngs->nr_ranges; i++) {
--		mstart = mem_rngs->ranges[i].start;
--		mend = mem_rngs->ranges[i].end;
--
--		/*
--		 * Memory range to remove is not part of this range entry
--		 * in the memory range list
--		 */
--		if (!(base >= mstart && end <= mend))
--			continue;
--
--		/*
--		 * Memory range to remove is equivalent to this entry in the
--		 * memory range list. Remove the range entry from the list.
--		 */
--		if (base == mstart && end == mend) {
--			for (; i < mem_rngs->nr_ranges - 1; i++) {
--				mem_rngs->ranges[i].start = mem_rngs->ranges[i+1].start;
--				mem_rngs->ranges[i].end = mem_rngs->ranges[i+1].end;
--			}
--			mem_rngs->nr_ranges--;
--			goto out;
--		}
--		/*
--		 * Start address of the memory range to remove and the
--		 * current memory range entry in the list is same. Just
--		 * move the start address of the current memory range
--		 * entry in the list to end + 1.
--		 */
--		else if (base == mstart) {
--			mem_rngs->ranges[i].start = end + 1;
--			goto out;
--		}
--		/*
--		 * End address of the memory range to remove and the
--		 * current memory range entry in the list is same.
--		 * Just move the end address of the current memory
--		 * range entry in the list to base - 1.
--		 */
--		else if (end == mend)  {
--			mem_rngs->ranges[i].end = base - 1;
--			goto out;
--		}
--		/*
--		 * Memory range to remove is not at the edge of current
--		 * memory range entry. Split the current memory entry into
--		 * two half.
--		 */
--		else {
--			size = mem_rngs->ranges[i].end - end + 1;
--			mem_rngs->ranges[i].end = base - 1;
--			ret = add_mem_range(mem_ranges, end + 1, size);
--		}
--	}
--out:
--	return ret;
--}
- #endif /* CONFIG_CRASH_DUMP */
--- 
-2.52.0
+Regards,
+Sourabh Jain
 
 
