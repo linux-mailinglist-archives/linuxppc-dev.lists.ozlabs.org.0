@@ -1,77 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16826-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16827-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAFfKEx7jWng3AAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16826-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 08:03:40 +0100
+	id aIM/DI1/jWmp3QAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16827-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 08:21:49 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AAC12AD70
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 08:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF37C12AEAE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 08:21:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBR9259YZz2yLH;
-	Thu, 12 Feb 2026 18:03:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBRZ12pHcz2yLH;
+	Thu, 12 Feb 2026 18:21:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770879814;
-	cv=none; b=m0UtTt3U43oq3HOZeljMQdDU7ZPI1+UDhwdEciV6gbpdEkgnszOKSvPul/SGUfhJfDG3RTbsays9EAaRSnH1btnz+UePg083+Q5K8zT91pleX57X1XTsde68nYkYg4Ikt2aKsWaN/vMJaF/Q5cW7cZNA0epSd7X30P6rMT3lIo4v7bzoywByl4+v3e5Bc8/0ce9wLMzX/ptn2Vm3gUbDOHl8v6PPShVsFbilit6VOa1Jsg5F/fkhW8257gDAaa85la4/gTEnN78YtoiNZIsiLJE1BB5AJdagXeXgSnOYV2qiojS8N/khHUVaWOZPeOoTtPi/deqKHy3Jh4zQOnHawA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770879814; c=relaxed/relaxed;
-	bh=poZjhNXE0/uh1v8vuuLiSQGegGURE+K+YLsaDlo9OTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S3ob1EfYnszZ+kq3IcLN4Rc6We9f1zApANBAzvBgvNXzJwTLI5z5z+Xe8mUiy+eUnojeXZU7Uo2hcS2+4nlsWG2IqfbISAoX4UhluWfwYjqGP/p6Ejd/wznpFqV2g9W3qlO6pY9UQdJZMeMRuoKyud5W01iY0qVQN87TprECXDojarvzyWMpHQUSr92a3OSs/8ysOSOGwRXW2GL5DO/KG38S2oueCxIzZmWsHbkpzUBgOxvqQUsUzcfcNCIxHWVzj2Yx26KQyfGbiv6TUwOSIRQ9GLY6IBKNEkukdK2mD8/n3dgEDjFV0Hr4SSo9pK4pxAMGJw6121tHhUoiIJh0ig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGR7OYn0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c202::7" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770880905;
+	cv=pass; b=iAu1HF8mGqjDQZGeYmNXzNgPm4XYLavoiHWMh0Czj1qJVluIyinMoVKcw27EuAtvFU+OIn6I4bhwO6izt3iCN9a9WchsORsYqcUxZhiMk5CqwQZbkgU2mTF/H+mduK9kJrzhADo3M7rwlPV3Oc8rehpoTUu7hVmT2HpY+L6byK75016gsKcMyKpB17lqwJ41hd61B68fFCzy3ISGO7CMfYsduK/f6QvqWMd3y29hZxTuysZY5XdHmqPqjYxNKR/6uaxehXqNW7XgP1xESKlGYDjD2adeX5xnYeDPnsh7B1PCCxNrZrl4JpTkYTGPjf5NBRzBzpt/KIk7DmBuB2GtJw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1770880905; c=relaxed/relaxed;
+	bh=CkzExf/GjOzz24jRebpdrtJ4Z9/a+ntbQuN+S9lP18o=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JPMpm5FqEmrh6RDcxtbPnVuCdk9Y0Nt0wP+2yzdFn65SyIb+08cxFVoYKlbD2o/uEXxGDqaRM3LfMNhI2JpUTn4HP3Gp6vhl2Q9k0EpbjF1sDSE6AegoN8S3/FOgrJ6LS6dkvH1/Bl4DRjwwyhrwB1PMu/uZKmYpwmZRTKPePWaAssc+nSVDn/WLTA4s6/oBxUrilpSquQkzwtqmEMCrS3leoI0fVe6U28VOAJRsTxC1YcjgD7yfmg18LHBh/ry+z69aKvckP2ZusxfCyrak0wVzcEQRbjE3nG6YGqbQe4DQbFo34b63AYUENN8ncC0PnyGT6YP0VOzoUCnSVoEONQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=jL3yq+Wn; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c202::7; helo=gvxpr05cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HGR7OYn0;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=jL3yq+Wn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c202::7; helo=gvxpr05cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c202::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBR911jqrz2xnZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 18:03:33 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61C1Ose0343472;
-	Thu, 12 Feb 2026 07:02:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=poZjhN
-	XE0/uh1v8vuuLiSQGegGURE+K+YLsaDlo9OTg=; b=HGR7OYn0Otva5nK9+YD49W
-	hOsn2HBVXfQSpoPiOGcHve93HlE6sAO2IkHNlV24LD70O1wbk/Y5QRfnusrwESDo
-	rhgpYH6ImMMQA0rG7Vl3ACyeTxnNs3MreDJYM9TTIBE6VUkd2pVLSgaw9hz0EZg+
-	QknFPjOTAtyCJT6I5zp4tywTmLhOqxYIGRJJ34fpAhZ09sddzq1gbM4cbqGPY8YH
-	oBDzOAaJwpmJnJRzqBh66oxPIjqsB6Ch4CiPRiKCwjeYrH25/MlVBNJRqMhYBBzL
-	8aYPgPLZRJmu7vp4VRJAf+e98ZtHAM1hAWuhRMPeIJbmBxFG4QXEU1poCyfL1COw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696umvdd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 07:02:50 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C3v4pY012996;
-	Thu, 12 Feb 2026 07:02:48 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6h7kh5p8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 07:02:48 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61C72iYG13959476
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 07:02:44 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E66B20040;
-	Thu, 12 Feb 2026 07:02:44 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 259D32004E;
-	Thu, 12 Feb 2026 07:02:37 +0000 (GMT)
-Received: from [9.109.215.252] (unknown [9.109.215.252])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 07:02:36 +0000 (GMT)
-Message-ID: <3b71bdb1-2dbe-420f-8fae-5cb1ab3a4ba9@linux.ibm.com>
-Date: Thu, 12 Feb 2026 12:32:36 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBRYz1CmQz2xSX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 18:21:42 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mIxr8nGfC/WQDS+be0D45CtSFZwPc52jNBqh2p683qSjqSC9EBoodgMYWjzzaA/1R/7b8HRlytOYtEoVDkg+7wHAL4CsPvO3Sf6zsJ/o5T4Gw+4RhqOZ9TAW3Ip0dlXfUBNBatMxrUh0L0UaotPjUI4aa+iUx3U0KnnJjgnFL3RgFkOgg6b1pRA3nkJl+OBADVCLyydGN88xUnTJEvIit3pIFHnDVE2GAi+uU5+xx5KDOCSQe7lqi0KYmaRjX3FO+trE38jUCAa1+OoZMGQ8bN3bs15NwEGJle614w+doEc9kiFO1x6B6lKYcnSE2Rt0HDvinQPIQCdIT2BilAAE+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CkzExf/GjOzz24jRebpdrtJ4Z9/a+ntbQuN+S9lP18o=;
+ b=UiEASiUo30KPFrXZyT9hIh/dKXKT7HqRjoSnzGlHwtD0Z3i8wcFp6bh44ZY/zP5puFXo3aWoqnFl3eZlV9O0wfm/fVFOT/tGteKW5xBCFu0uXGsNET/mvUq1ej/M9HGh6kn7HsXNwkwx21dQWBUeH+kLs5rSCXcf/jMVa6ezu9OaEEz9kKrUge+Nb6JaNUqxY8TeO33cZI4Sxlgd5bxGOQwiFy4/+Ynx91zr5DbMf5ZM27XR59MpbVCtdQhddglnN8Ogod2OEtcgAgQrmiZNgwjVRrWzK3Wx2sBt46UCmeBK+eNFj+fZpZWlT4zYFJc2B2M69OS9YHr44nV+UbF26Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CkzExf/GjOzz24jRebpdrtJ4Z9/a+ntbQuN+S9lP18o=;
+ b=jL3yq+WnSbQuQKebToUBXYNnfPG2z++/q1OhloiZPlTY26RdjvLdguWx1ZporLYmc/G80exr7ErL+9C/NFlc3PF4YNTjhvcQ0YyfyPqkTHHkn5Gsh8zo9dNqT0sUPrfChtUmfSPNzV9lcicxUeyjeWe8pDvtJI5CfvDDCmx22//UkLZtQgb/oNYCNrl0A4pVRZ8engNZ+T9DJ2BZ9tDdE/OmYdH8AO9SwVyD30JoXYtLbnTxWjz68Z51/iWu+8yezx2I2tECa40G3puCVJcCLeZVnwWxWaLsItbJRLrJfaZrGRIyQttgAHRCz97csnfVNHRDnzmsevUnwrJOaHJWKQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB7055.eurprd04.prod.outlook.com (2603:10a6:800:123::21)
+ by DB9PR04MB9355.eurprd04.prod.outlook.com (2603:10a6:10:36b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
+ 2026 07:21:11 +0000
+Received: from VI1PR04MB7055.eurprd04.prod.outlook.com
+ ([fe80::d6ab:1538:d868:bf8]) by VI1PR04MB7055.eurprd04.prod.outlook.com
+ ([fe80::d6ab:1538:d868:bf8%7]) with mapi id 15.20.9564.014; Thu, 12 Feb 2026
+ 07:21:11 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] ASoC: fsl: add bitcount and timestamp controls
+Date: Thu, 12 Feb 2026 15:22:27 +0800
+Message-Id: <20260212072229.3247604-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0023.apcprd02.prod.outlook.com
+ (2603:1096:4:195::11) To VI1PR04MB7055.eurprd04.prod.outlook.com
+ (2603:10a6:800:123::21)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,319 +91,148 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15 v2] tick/sched: Refactor idle cputime accounting
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Kieran Bingham <kbingham@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Xin Zhao <jackzxcui1989@163.com>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-        Sven Schnelle <svens@linux.ibm.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Michael Ellerman <mpe@ellerman.id.au>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Anna-Maria Behnsen <anna-maria@linutronix.de>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>, linux-s390@vger.kernel.org,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        linux-pm@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Heiko Carstens <hca@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-References: <20260206142245.58987-1-frederic@kernel.org>
- <f5f7cc0e-81c1-49c4-9bfa-61b111c69ae2@linux.ibm.com>
- <aYy3GTXDwZFM3VLy@localhost.localdomain>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <aYy3GTXDwZFM3VLy@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=YZiwJgRf c=1 sm=1 tr=0 ts=698d7b1a cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=Byx-y9mGAAAA:8 a=jna3-dR-LpdznfkkQtQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: ykNMXiJuLMZvY8SHVx1k92NnfL__mZAj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA0OCBTYWx0ZWRfXwf0I6im/SFoz
- UOZhM4tcMuDmndSC7aO0LIN6Sbg1f18jEaekOgqBBncr3g30fHinniII7kb9tqkFq3dwDbqpa0R
- iQazWnZ1+AcwvTuf8gZQMhXgpGv4dEGT8N55h0QfhCOiW+jU2yAZkMtivl+nRFys0k0iLwIEtYa
- PjICtoUofjQNMwydGqQ8yS+hm1uVNrjk5bSOFneE8/KGySNj4A9Rp9Rj/TxwCCFtjBX9besOB13
- fMIoo0FCrMM3upSaXNejT4ZOyS9GozjE+sJF7a2AE2h3RLQNuac5sGJpKh7+Ws7ETLUCdT56awV
- V2ITTAHZ5B9LC8Xcbq7iUdYQLWJsTZboEoUhgHc+1mq+XliqFe/o1SLUJ4bEUvkezdYQ5XWdRDK
- zx/OO7DBfS6fS09IPkWzH8gwmKWhv3MFhTgycMDvo9MhnJYj0gPttfpTFQaLbFdVq2CfMwQPuf9
- vVmPxM41fwgtNlUTDCQ==
-X-Proofpoint-GUID: NCg8jEjEq3HhF8Orr5avhxKfyd3mZDhp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_02,2026-02-11_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602120048
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7055:EE_|DB9PR04MB9355:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48e36e87-a119-42cb-b068-08de6a074c27
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|19092799006|366016|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lOBAdtHAHXDXY9jSfQEkDyZrL5OhgpWwqzzQXCvuup7WdC06xpvzf4l8yVcV?=
+ =?us-ascii?Q?Uj4P2JN8IH7XIDOhmEJW6pk3qlJaoKSlDWMu0Fl2g/RKqFVolLdE2E45MlbH?=
+ =?us-ascii?Q?pzk21Hc4NaBHUtgMhdyZ/WYBnE7KddlFE+kDWKBHWsFGSQa0HhRdN7RgB156?=
+ =?us-ascii?Q?9y4hL3RgQK8A1r+nY38+Ny/QuWY2M0FcP0K1Gi2Tv4ULBgZZWMkgP0C916Hr?=
+ =?us-ascii?Q?9e6MtaFUjBb7IM4OO7mg9YrmaMUxDHHIOpdKclZAD3Rlqb/LzeUYju1plSHU?=
+ =?us-ascii?Q?A3WBts4FhIRSRw28nrvj+Cr/RQpqMNQrmprR0771BE7Qr2TxVKqot0GZ0Lj/?=
+ =?us-ascii?Q?N1e2s5MHJbcTaPPCA+2+kQsNJTMaDlDDT/2R3OWBYOpZULU0HnzeoFE0T5oe?=
+ =?us-ascii?Q?A/GArUgMW53rP8EjJoX7I0kcUTHLSwH9IqE9PyqHvdP7F94NcEo4nj+0Os3Q?=
+ =?us-ascii?Q?8I8vMSLqVnQb9rG0nOUOjxot22HRq0jn5hcFEFnMxW9D9W7NVqGfDL6EUYKR?=
+ =?us-ascii?Q?scsNMW9+UT7Jlz2oZ68Aoc/49cp83kS6mfyIPdzBqcksBsEQDik+xgeDszja?=
+ =?us-ascii?Q?Lo/u4kmvNVMawnd9/GitwIfRs754CzX7F0Y2Q1tYL2thqtp/0fIhv3Z4W7aM?=
+ =?us-ascii?Q?GmxkyYkbzqtaa7/29UguVs3U3BL0ITPYhQ3DJD2vzcN9TPzo8AakTX+l0Gj5?=
+ =?us-ascii?Q?e6P2mSWmTn5vaAkz6AHXGPjQUHy+BrVqvYX4+eL0uSVqimZVFEBw0OzDCJyt?=
+ =?us-ascii?Q?IxfEaqhOmVEnQBI0ohAcgY08KH3fzsdSCgmYVVk7xfZqlreSA9HiVAhkNfdV?=
+ =?us-ascii?Q?XwwgAlLbryZycdPW8w9raHgr/MKOXQXuFg9bDoh3ZL/eN0KXwebNEZtLuAIj?=
+ =?us-ascii?Q?qPyXAt+g4xnE5B53TyMajiA7wSdeEs/cnuUeuOcS1YrJdg7sDRH23kZJLQ/v?=
+ =?us-ascii?Q?OvpdTtVjuzUrMsBJ54BZ9M/U46/aHwiyaFJvXzz+IMC6WYbUJjhmfAWLFJC/?=
+ =?us-ascii?Q?oRbWz1mj4mkjLJxFmYG01jhULiKN/8muwRSS4TTFcOTowb5pj0LRxYa7+HOB?=
+ =?us-ascii?Q?YsOnSOanpi9+2kmkLhIYnuL8z6DrIEnxx+l8KTBG8fkCmN+9C6CxDU553rl6?=
+ =?us-ascii?Q?d7jQKmIWwLLrpUQT+odAVf78ozDEQbYw3oQwRa89+JpiDzBae6l357edtCio?=
+ =?us-ascii?Q?yblmZnlz75FS4rdcZGx/EBjSWTZUVyRkHt/VbCOtm2YoiDSInVfnFLvVrIjj?=
+ =?us-ascii?Q?Wmc4rsYvkIbuiqlpIMYizSJsHvmPz0TVy8A3MOL6zNn9eHsJ7KpYri6ncCVv?=
+ =?us-ascii?Q?cwbVezC12J4GJVTb7+kQvic3CB3wmDpujx+DWB/a4/Rb7sQLm3AB2RBuercA?=
+ =?us-ascii?Q?3cL90U/OplqfaXRNein3FMOcn3MqcNj/zV0ONHRTNlhU23xh2IsvVeXoIEDR?=
+ =?us-ascii?Q?gkgpm5RSmYh0Vzq0Eu/AqC5qaCcS2NFhGqHxm11lgfrjZ70kNwFaXw1zZWBM?=
+ =?us-ascii?Q?yyabfBh1TQsENFrPxCGHj5mPjU+H//GzVoNxsBpsFGg4pEkG8qo6Xy8IYkA8?=
+ =?us-ascii?Q?DjfxIhvDiP5HCULFj1mpkldQ5FpQf3HKBaBxZdnGgPu/ZZJZbapEu4ZcelFD?=
+ =?us-ascii?Q?2XdviXgD9KsT4b88y6GAdQt1QSx4/sBPGEu1eiAWH4PY?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7055.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(19092799006)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ao9BkCe2ZJyw4PJTEN9mjobR1WMB9iq7FnTRVxrk3syh0q5WDqOFz/+TSPr4?=
+ =?us-ascii?Q?CkcBZUOgXTp4lk/yHVJKGqK8UdEFbh6Y+QNqlsONYAG7chlA5dDH1aBJ07Ni?=
+ =?us-ascii?Q?LV7Aa6xjV0xFifWMJdM95gtVuvrVvPxqqWziR5oN7vfFZVO3Fc5bxwQTKB8w?=
+ =?us-ascii?Q?n1Ks1Pu74vZoVLKn0mh1qDmMHk2Qu0B38y53rv2gYY6zbWsCL6bhHF/rW+MY?=
+ =?us-ascii?Q?o62vk33XGzlWqu8vlM6LgfxB7Xk4H/fEo4invo6vjG8hUIyCuYmgP8h/4rke?=
+ =?us-ascii?Q?Jhq5W4+UzI8+kvZ2l9CgIVYjoaafNCFLQQfwkkIrw2dqP2oHPMQ9YspS/m8Z?=
+ =?us-ascii?Q?/Z6P8AF1k4d8ZrT9GeLegDlJVMfQVAWP5zC3MAQaxpfAoTjioR9egq2ZjG30?=
+ =?us-ascii?Q?lZ8kFxxix6JPKf3glegHNSIkJ0umP3Ncx4ArtohcXB7iWMmLPI0cWWbp6gUy?=
+ =?us-ascii?Q?T7npaag0HFBjOSDy45u+et+tCJYMbNysIWJXJPDZflacEVnucKT/kMN21WQM?=
+ =?us-ascii?Q?oo5J5bXRudCVHH4RrmkItd3kIAKBV14xy6MOtlFt6KboJidkMsgESnnQG/pu?=
+ =?us-ascii?Q?gvDxeoF7co1Faj98oSnWZZJn6nhk9kytLbj4wHP29NOX2TCnb8Ay1zwlHNmg?=
+ =?us-ascii?Q?dnRrhkG/2bg66/aE+eyOxiw/4ZAGQoIoguR599k5Sd5Ay6VK6dJrK07qEBCd?=
+ =?us-ascii?Q?CgxUN2OZbO676jAu5E6/+FUjpK7XRwsdve4FXeKDgd0oUCxv+CvkgJG6sFb3?=
+ =?us-ascii?Q?O1a7tLE+MJB2qBSFwgBzoY5Jzj3jboxjY0r0Q1a5SrAZRcEneFxt/ElNGvxe?=
+ =?us-ascii?Q?nwWnU8JDQRYIlm7gDkBBW0wuJawCrw4/eJ+wTRbkhfJPZCBSTkso3txnCueO?=
+ =?us-ascii?Q?bPb042Za+/qT1yxvjCLxxc9iUKLugS8bC/TfdhUHXKro7yvOAwxrJlOVfnLe?=
+ =?us-ascii?Q?es7BVSKuC0+/dQgpYiSuSFELti0895kKdtzqN2x+F6ylp6J/QJAOK/Z2HYRu?=
+ =?us-ascii?Q?CKjotXZhDQuBvNslSn5OyW6pWCHzjW3vLRR+NEbhWW+kCqonScTX1piuZbKH?=
+ =?us-ascii?Q?p0NqsRhdbu9Xo6v8qjxi4S42qXVXbZqU2NDQlwZA33P1FLzPjhd1yE9XHqMi?=
+ =?us-ascii?Q?MLZy1UthqLJYQ00oWZsCkjZLUwnsbuDQo2kBmh50C+axXfot1/3wU0fdr8rM?=
+ =?us-ascii?Q?4dHS/qSo1Tkajox3xtzKCHq8sBLzqsKJVCpY9ihadXWP32eUjw1u6lbv6x8b?=
+ =?us-ascii?Q?J+VGcKRS3yPEyzcoyQfZbYa0056NCCiIXMZE4e6MRABHfW/Vc+1M6M7BmITz?=
+ =?us-ascii?Q?s50jn3tUWBABRgrPFWPPuGD7xdEl26PMDlcJxkl00wpIWLig4ttg0TFGhXNQ?=
+ =?us-ascii?Q?2A5cADVYBDoRxJVuJlEGYNcEgnrHXVjhrD9tbqR0V1fKe/KbZpiJVq17BD8W?=
+ =?us-ascii?Q?LFit0AM0fnksLc4CSHicBYvOejHbiFdgL1BTKh/Rt3nT96IJ9eFkZ5sAuXHD?=
+ =?us-ascii?Q?PsWUugN1IdCIPs1OmIl6YbzIOy3Y/oBIDMRfJMQjfa+KcBiipdpmrR+82vrP?=
+ =?us-ascii?Q?2KsHPY3gT5JUfnt3QQovmnXd+BCgGJAnx+zcszCvL4B3zA1M9YLiMJgoE5ko?=
+ =?us-ascii?Q?P/wLhOty88PvZ0bGybLb8NgA3FJEiKVrYKfSaqLuxqHtw2Yw+VM4/kPt39EP?=
+ =?us-ascii?Q?RdZFNTR8Iv1Wjvcntry9k3Rq+GnyMw67hVNdtWY+MbxG4fyAzZfYFeslGgh8?=
+ =?us-ascii?Q?F1t4jnp5bQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48e36e87-a119-42cb-b068-08de6a074c27
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7055.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 07:21:11.1409
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YAhYTyb1zbPYEwpmZTKGYHLg2e5WMK10Pz7rJJKZZh98ALPJ7P8nuJoB8tNqgvSe1Y682tFrwcUeFirNrqy2cQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9355
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+	T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16826-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	FORGED_RECIPIENTS(0.00)[m:frederic@kernel.org,m:linux-kernel@vger.kernel.org,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:kbingham@kernel.org,m:mingo@redhat.com,m:jackzxcui1989@163.com,m:joelagnelf@nvidia.com,m:neeraj.upadhyay@kernel.org,m:svens@linux.ibm.com,m:boqun.feng@gmail.com,m:mgorman@suse.de,m:dietmar.eggemann@arm.com,m:bsegall@google.com,m:mpe@ellerman.id.au,m:rafael@kernel.org,m:paulmck@kernel.org,m:anna-maria@linutronix.de,m:agordeev@linux.ibm.com,m:maddy@linux.ibm.com,m:linux-s390@vger.kernel.org,m:jan.kiszka@siemens.com,m:juri.lelli@redhat.com,m:chleroy@kernel.org,m:linux-pm@vger.kernel.org,m:urezki@gmail.com,m:peterz@infradead.org,m:rostedt@goodmis.org,m:tglx@linutronix.de,m:npiggin@gmail.com,m:hca@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:borntraeger@linux.ibm.com,m:vschneid@redhat.com,m:viresh.kumar@linaro.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[shengjiu.wang@nxp.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16827-lists,linuxppc-dev=lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,linaro.org,kernel.org,redhat.com,163.com,nvidia.com,gmail.com,suse.de,arm.com,google.com,ellerman.id.au,linutronix.de,siemens.com,infradead.org,goodmis.org,lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shengjiu.wang@nxp.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	DKIM_TRACE(0.00)[nxp.com:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 98AAC12AD70
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,nxp.com:mid,nxp.com:dkim]
+X-Rspamd-Queue-Id: CF37C12AEAE
 X-Rspamd-Action: no action
 
+The SAI and XCVR have the timestamp counters and bit counters, which can
+be used by software to track the progress of the transmitter and receiver.
+They can also be used to calculate the relative frequency of the bit clock
+against the bus interface clock.
 
+Changes in v2:
+- remove arrays of enums, define transmit_tstmp_enum and receive_tstmp_enum
+  separately.
+- remove __bf_shf(), define the XXX_SHIFT macros.
 
-On 2/11/26 10:36 PM, Frederic Weisbecker wrote:
-> Le Wed, Feb 11, 2026 at 07:13:45PM +0530, Shrikanth Hegde a écrit :
->> Hi Frederic,
->> Gave this series a spin on the same system as v1.
->>
->> On 2/6/26 7:52 PM, Frederic Weisbecker wrote:
->>> Hi,
->>>
->>> After the issue reported here:
->>>
->>>           https://lore.kernel.org/all/20251210083135.3993562-1-jackzxcui1989@163.com/
->>>
->>> It occurs that the idle cputime accounting is a big mess that
->>> accumulates within two concurrent statistics, each having their own
->>> shortcomings:
->>>
->>> * The accounting for online CPUs which is based on the delta between
->>>     tick_nohz_start_idle() and tick_nohz_stop_idle().
->>>
->>>     Pros:
->>>          - Works when the tick is off
->>>
->>>          - Has nsecs granularity
->>>
->>>     Cons:
->>>          - Account idle steal time but doesn't substract it from idle
->>>            cputime.
->>>
->>>          - Assumes CONFIG_IRQ_TIME_ACCOUNTING by not accounting IRQs but
->>>            the IRQ time is simply ignored when
->>>            CONFIG_IRQ_TIME_ACCOUNTING=n
->>>
->>>          - The windows between 1) idle task scheduling and the first call
->>>            to tick_nohz_start_idle() and 2) idle task between the last
->>>            tick_nohz_stop_idle() and the rest of the idle time are
->>>            blindspots wrt. cputime accounting (though mostly insignificant
->>>            amount)
->>>
->>>          - Relies on private fields outside of kernel stats, with specific
->>>            accessors.
->>>
->>> * The accounting for offline CPUs which is based on ticks and the
->>>     jiffies delta during which the tick was stopped.
->>>
->>>     Pros:
->>>          - Handles steal time correctly
->>>
->>>          - Handle CONFIG_IRQ_TIME_ACCOUNTING=y and
->>>            CONFIG_IRQ_TIME_ACCOUNTING=n correctly.
->>>
->>>          - Handles the whole idle task
->>>
->>>          - Accounts directly to kernel stats, without midlayer accumulator.
->>>
->>>      Cons:
->>>          - Doesn't elapse when the tick is off, which doesn't make it
->>>            suitable for online CPUs.
->>>
->>>          - Has TICK_NSEC granularity (jiffies)
->>>
->>>          - Needs to track the dyntick-idle ticks that were accounted and
->>>            substract them from the total jiffies time spent while the tick
->>>            was stopped. This is an ugly workaround.
->>>
->>> Having two different accounting for a single context is not the only
->>> problem: since those accountings are of different natures, it is
->>> possible to observe the global idle time going backward after a CPU goes
->>> offline, as reported by Xin Zhao.
->>>
->>> Clean up the situation with introducing a hybrid approach that stays
->>> coherent, fixes the backward jumps and works for both online and offline
->>> CPUs:
->>>
->>> * Tick based or native vtime accounting operate before the tick is
->>>     stopped and resumes once the tick is restarted.
->>>
->>> * When the idle loop starts, switch to dynticks-idle accounting as is
->>>     done currently, except that the statistics accumulate directly to the
->>>     relevant kernel stat fields.
->>>
->>> * Private dyntick cputime accounting fields are removed.
->>>
->>> * Works on both online and offline case.
->>>
->>> * Move most of the relevant code to the common sched/cputime subsystem
->>>
->>> * Handle CONFIG_IRQ_TIME_ACCOUNTING=n correctly such that the
->>>     dynticks-idle accounting still elapses while on IRQs.
->>>
->>> * Correctly substract idle steal cputime from idle time
->>>
->>> Changes since v1:
->>>
->>> - Fix deadlock involving double seq count lock on idle
->>>
->>> - Fix build breakage on powerpc
->>>
->>> - Fix build breakage on s390 (Heiko)
->>>
->>> - Fix broken sysfs s390 idle time file (Heiko)
->>>
->>> - Convert most ktime usage here into u64 (Peterz)
->>>
->>> - Add missing (or too implicit) <linux/sched/clock.h> (Peterz)
->>>
->>> - Fix whole idle time acccounting breakage due to missing TS_FLAG_ set
->>>     on idle entry (Shrikanth Hegde)
->>>
->>> git://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
->>> 	timers/core-v2
->>>
->>> HEAD: 21458b98c80a0567d48131240317b7b73ba34c3c
->>> Thanks,
->>> 	Frederic
->>
->> idle and runtime utilization with mpstat while running stress-ng looks
->> correct now.
->>
->> However, when running hackbench I am noticing the below data. hackbench shows
->> severe regressions.
->>
->> base: tip/master at 9c61ebbdb587a3950072700ab74a9310afe3ad73.
->> (nit: patch 7 is already part of tip. so skipped applying it)
->> +-----------------------------------------------+-------+---------+-----------+
->> | Test                                          | base  | +series | % Diff    |
->> +-----------------------------------------------+-------+---------+-----------+
->> | HackBench Process 10 groups                   |  2.23 |  3.05   |   -36.77%  |
->> | HackBench Process 20 groups                   |  4.17 |  5.82   |   -39.57%  |
->> | HackBench Process 30 groups                   |  6.04 |  8.49   |   -40.56%  |
->> | HackBench Process 40 groups                   |  7.90 | 11.10   |   -40.51%  |
->> | HackBench thread 10                           |  2.44 |  3.36   |   -37.70%  |
->> | HackBench thread 20                           |  4.57 |  6.35   |   -38.95%  |
->> | HackBench Process(Pipe) 10                    |  1.76 |  2.29   |   -30.11%  |
->> | HackBench Process(Pipe) 20                    |  3.49 |  4.76   |   -36.39%  |
->> | HackBench Process(Pipe) 30                    |  5.21 |  7.13   |   -36.85%  |
->> | HackBench Process(Pipe) 40                    |  6.89 |  9.31   |   -35.12%  |
->> | HackBench thread(Pipe) 10                     |  1.91 |  2.50   |   -30.89%  |
->> | HackBench thread(Pipe) 20                     |  3.74 |  5.16   |   -37.97%  |
->> +-----------------------------------------------+-------+---------+-----------+
->>
->> I have these in .config and I don't have nohz_full or isolated cpus.
->>
->> CONFIG_TICK_ONESHOT=y
->> CONFIG_NO_HZ_COMMON=y
->> # CONFIG_HZ_PERIODIC is not set
->> # CONFIG_NO_HZ_IDLE is not set
->> CONFIG_NO_HZ_FULL=y
->>
->> # CPU/Task time and stats accounting
->> #
->> CONFIG_VIRT_CPU_ACCOUNTING=y
->> CONFIG_VIRT_CPU_ACCOUNTING_GEN=y
->> CONFIG_IRQ_TIME_ACCOUNTING=y
->> CONFIG_HAVE_SCHED_AVG_IRQ=y
->>
->> I did a git bisect and below is what it says.
->>
->> git bisect start
->> # status: waiting for both good and bad commits
->> # bad: [6821315886a3b5267ea31d29dba26fd34647fbbc] sched/cputime: Handle dyntick-idle steal time correctly
->> git bisect bad 6821315886a3b5267ea31d29dba26fd34647fbbc
->> # status: waiting for good commit(s), bad commit known
->> # good: [9c61ebbdb587a3950072700ab74a9310afe3ad73] Merge branch into tip/master: 'x86/sev'
->> git bisect good 9c61ebbdb587a3950072700ab74a9310afe3ad73
->> # good: [dc8bb3c84d162f7d9aa6becf9f8392474f92655a] tick/sched: Remove nohz disabled special case in cputime fetch
->> git bisect good dc8bb3c84d162f7d9aa6becf9f8392474f92655a
->> # good: [5070a778a581cd668f5d717f85fb22b078d8c20c] tick/sched: Account tickless idle cputime only when tick is stopped
->> git bisect good 5070a778a581cd668f5d717f85fb22b078d8c20c
->> # bad: [1e0ccc25a9a74b188b239c4de716fde279adbf8e] sched/cputime: Provide get_cpu_[idle|iowait]_time_us() off-case
->> git bisect bad 1e0ccc25a9a74b188b239c4de716fde279adbf8e
->> # bad: [ee7c735b76071000d401869fc2883c451ee3fa61] tick/sched: Consolidate idle time fetching APIs
->> git bisect bad ee7c735b76071000d401869fc2883c451ee3fa61
->> # first bad commit: [ee7c735b76071000d401869fc2883c451ee3fa61] tick/sched:
->> Consolidate idle time fetching APIs
-> 
-> I see. Can you try this? (or fetch timers/core-v3 from my tree)
-> Perhaps that mistake had some impact on cpufreq.
-> 
-> diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-> index 057fdc00dbc6..08550a6d9469 100644
-> --- a/kernel/sched/cputime.c
-> +++ b/kernel/sched/cputime.c
-> @@ -524,7 +524,7 @@ static u64 get_cpu_sleep_time_us(int cpu, enum cpu_usage_stat idx,
->   	do_div(res, NSEC_PER_USEC);
->   
->   	if (last_update_time)
-> -		*last_update_time = res;
-> +		*last_update_time = ktime_to_us(now);
->   
->   	return res;
->   }
-> 
-Yes. This diff helps. Now the data is almost same.
+Shengjiu Wang (2):
+  ASoC: fsl_sai: add bitcount and timestamp controls
+  ASoC: fsl_xcvr: add bitcount and timestamp controls
 
-+-----------------------------------------------+-------+-------+-----------+
-| Test                                          | base  | series+     | % Diff    |
-|                                               |       | +above diff |
-+-----------------------------------------------+-------+-------------+-----------+
-| HackBench Process 10 groups                   |  2.23 |  2.25       |    -0.90%  |
-| HackBench Process 20 groups                   |  4.17 |  4.21       |    -0.96%  |
-| HackBench Process 30 groups                   |  6.04 |  6.15       |    -1.82%  |
-| HackBench Process 40 groups                   |  7.90 |  8.06       |    -2.03%  |
-| HackBench thread 10                           |  2.44 |  2.46       |    -0.82%  |
-| HackBench thread 20                           |  4.57 |  4.61       |    -0.88%  |
-| HackBench Process(Pipe) 10                    |  1.76 |  1.73       |     1.70%  |
-| HackBench Process(Pipe) 20                    |  3.49 |  3.50       |    -0.29%  |
-| HackBench Process(Pipe) 30                    |  5.21 |  5.22       |    -0.19%  |
-| HackBench Process(Pipe) 40                    |  6.89 |  6.96       |    -1.02%  |
-| HackBench thread(Pipe) 10                     |  1.91 |  1.88       |     1.57%  |
-| HackBench thread(Pipe) 20                     |  3.74 |  3.81       |    -1.87%  |
-+-----------------------------------------------+-------+-------------+-----------+
+ sound/soc/fsl/fsl_sai.c  | 50 +++++++++++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_sai.h  |  4 +++
+ sound/soc/fsl/fsl_xcvr.c | 56 ++++++++++++++++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_xcvr.h | 18 +++++++++++++
+ 4 files changed, 128 insertions(+)
+
+-- 
+2.34.1
+
 
