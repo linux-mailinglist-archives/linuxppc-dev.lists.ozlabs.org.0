@@ -1,130 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-16853-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPsoCmY3jmkhBAEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16853-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 21:26:14 +0100
+	id cCSbDLNDjmmPBQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 22:18:43 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3772C130ED6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 21:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C96CF13130C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 22:18:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBmz40Fmwz2yQj;
-	Fri, 13 Feb 2026 07:26:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBp7g43KDz2xKh;
+	Fri, 13 Feb 2026 08:18:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770927967;
-	cv=none; b=jDIc2Rf29PIPIvp9guXpFrTmfkCvzyKMpCS4KrV3b+RjTH6iHwq3072UmVO0sFA961nyVP/PF7kJn79MBNvBvECeexQUc2tS5zgExB5p+CXcPqa/8jLTUaeO1Ea8uDa+3o9PguYmqTWIC1f3qOPWCtVLykU601URJjPmRBZ7lR4WfIZROiXVHO3FchzqQmMNxD05o7RMtnWJOsYmbU49DMjD8bm4sAzw44FXSpZT63kNkTPM17U/E0PRUMaotkhB9K8sCOii2PoEL+RlgzHelXhBnAXwuSLdOEmS+7eAaSnTQD1Sc8iR6+mxVkImdA+jLn/QZOnNqSpKCUytIduIiQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770931119;
+	cv=none; b=ZrvRcvPcnQvBxaITiw9vWIjlLfkOzOSZjgHciwjMj2kS6yZDfnjy27Gum6J3mbSQTonqbBcrn8iYM0hRbyQr72wWOxqP9slrWoUOkcAoHVUie8/a6vSGPOo1ldy+rMr9q9Uxql5hZ6C+Mj6rJmBBaDa43l9Dj4+eYGUFcq7MD7Ty9nWRP7muAFpMzM+TUhDEMSFHDH8eTY9RGH54+4ObskLSHNNEKaEzktF3CqBZvPIHjM2K90lgq8T0Ggdlw6iWP5DoO33Rz+//DAzk61nQ8Z0eHYmJTeuAvS+eKCilFVHVAbIWGjTDEsB+QRIUyxniSeTH9UQfo6VZvuKGfCxQzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770927967; c=relaxed/relaxed;
-	bh=/AQFd9vIuiZK1MsItmBHlvbYNCfVXPM+5ScmYYs9mLw=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=OYFAiyarhtKjqADWfd+Emn1dWhBtG7qEVLyH+LaTdgE0NYLZvSn8iRGjwIAK4XjZSrYEAJPZ4CEL6dtJ3uiQiiONJwUQ/oHPf+XUWReZ+8ZjxW/Rey+dMocz0FvpBDEa+hsP+SxnZxJyrX81mkOBB1jP++gEH6dnc1KJ9uZnIUc+OgI00NhjP9ypnG//8jr9rN2Fnsa7YNPA8T77qjJLrAWP3xS2YEMdjiodXR40Hqrg67Td4aMVrGR5omKGpZvCSwnRUgsFBnve/71kgkpP54WmVz+F84uEXU8iDdE+pb+8KYiJKQPEkbll0OkYOB4Yc4TFJ1vAq5kL+d0zJPOJwg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZWbkLAwn; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1770931119; c=relaxed/relaxed;
+	bh=l6Qgd8q97IOwavSYuNdyrUq53+L1BehAFL5b246zql8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hNTLZ7CpYuv/GTwEYzOzSt9+Ug1ORmyhStmXYlb3eKKShpWjmrIh77BaY68ehqc03LHwMVtKBip39YLkAU9PzWR7OWmABSOt23545/KOiqqPc9AXdCdtbW9lb0lZ28SIGJ/vwK9uxBWAZaUbNqUikCNXNqmzHtXMsBom6W7Jqw8egDi4xl5g78F7LS9M+2UW7N6UohfsRXcBVUjQCTHMrSfXaisiJbZVUahNVj4utoRiL6/xnKhbI42wo0R+/3vC1wOOCvjXrLB/2fjd9pa14lh/XaHxwLEUIUo+huiDZCjsGI1sg6aaDVpdE8AJG3kddcyFRaC6TWrHeOJCuMbGzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZqKOS5wm; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZWbkLAwn;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZqKOS5wm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBmz24nSgz2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 07:26:05 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61CK42Oq2890525;
-	Thu, 12 Feb 2026 20:25:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/AQFd9
-	vIuiZK1MsItmBHlvbYNCfVXPM+5ScmYYs9mLw=; b=ZWbkLAwnH/Mf7Vb3Fq2Hmh
-	mByWePhvy1+ieWdA9hRLCmoYbYwnWs8zrbIW/8/Uac2QT/zGITnLJohKhAOxooh2
-	cPufbdU1Xk4UgxZSY8Lw0INMeSIaBejxrW26T/dr87KkvcauiAKoURtMGF5rs2kj
-	DPeSc1QxeWokVwBS/Vri5yb+ltCOjQuv/W3qRa/RZOGgINq/I7iW6xgs7ZHu8VkV
-	kl1fLZoa4o9/34g/aERijUGC/58aZtp+swTMRAN8Am5v7uhivD9YR4EOuMu81iCu
-	fk99bxwQdOp5dzuRM9yP4Laiwe9vVP2+SOz8gPYhrYCuTIywBbNe+cnk0KPE5FgQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696x5a69-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 20:25:23 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61CGf35A008400;
-	Thu, 12 Feb 2026 20:25:23 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6g3ym5yd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 20:25:23 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61CKP0Qw22807052
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 20:25:00 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACCD658052;
-	Thu, 12 Feb 2026 20:25:20 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8221258045;
-	Thu, 12 Feb 2026 20:25:17 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.21.193])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Feb 2026 20:25:17 +0000 (GMT)
-Message-ID: <0df1685d630035d5ab0e32f4b4d26db9bb6a91a4.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 1/3] integrity: Make arch_ima_get_secureboot
- integrity-wide
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Coiby Xu <coxu@redhat.com>
-Cc: linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        Ard Biesheuvel
- <ardb@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
-        Roberto Sassu
- <roberto.sassu@huawei.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman	 <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev	
- <agordeev@linux.ibm.com>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav
- Petkov	 <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)"	 <x86@kernel.org>,
-        "H.
- Peter Anvin" <hpa@zytor.com>,
-        Dmitry Kasatkin	 <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn"	 <serge@hallyn.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        open list	
- <linux-kernel@vger.kernel.org>,
-        "open list:LINUX FOR POWERPC (32-BIT AND
- 64-BIT)" <linuxppc-dev@lists.ozlabs.org>,
-        "open list:S390 ARCHITECTURE"
- <linux-s390@vger.kernel.org>,
-        "open list:EXTENSIBLE FIRMWARE INTERFACE
- (EFI)"	 <linux-efi@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM"	
- <linux-security-module@vger.kernel.org>,
-        "open
- list:KEYS/KEYRINGS_INTEGRITY"	 <keyrings@vger.kernel.org>
-In-Reply-To: <aY0rZp9ROwfjPgD8@Rk>
-References: <20260203041434.872784-1-coxu@redhat.com>
-	 <20260203041434.872784-2-coxu@redhat.com>
-	 <66f9d13875e81a965984e2a661e992a3fe43c516.camel@linux.ibm.com>
-	 <aY0rZp9ROwfjPgD8@Rk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Feb 2026 15:25:17 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBp7f3skXz2xHX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 08:18:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D36542DF7;
+	Thu, 12 Feb 2026 21:18:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018AFC4CEF7;
+	Thu, 12 Feb 2026 21:18:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770931116;
+	bh=ZwjtNdHrTt4z5zvI0HCzLCKNAoAwOFoGsgaqJCN6lHc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ZqKOS5wmzLv7LH2bJxsIltWIQIbCLYwUcK2r6Uiwb0CIgWGuGHeTuWg6k20hQ8P49
+	 RZTaUSds/6ApSanFdQ5NpNeA6lS7x89gZxgNvkPqwmNk5tShRwTPm1lULIgP9P+618
+	 N6xPu6PUsNUK6sKp/z+sJFeZStTaP/YxDRWpXzTqkXiLMO0B3PEZ5bvXlV6wrnLHPk
+	 +z5OmSfLOq/13hMC7e0xpIZ7mMtlTY0fMOUFDi3mysIyUz3MWIvvs27Vx+qiVodEHk
+	 4Uz4otm2Uf4Fi5mHYyYrQFwl3m9UKc2UnGoLCVm8uW8YjX68utcSN+VMc1mDfH8ZqT
+	 deD6SyzqPhdQg==
+Date: Thu, 12 Feb 2026 15:18:34 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com,
+	kbusch@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+	lukas@wunner.de, mahesh@linux.ibm.com, oohall@gmail.com,
+	Jonathan.Cameron@huawei.com, terry.bowman@amd.com,
+	tianruidong@linux.alibaba.com, zhuo.song@linux.alibaba.com,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH v3] PCI/AER: Only clear error bits in PCIe Device Status
+ register
+Message-ID: <20260212211834.GA3075092@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -138,141 +74,117 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=WZYBqkhX c=1 sm=1 tr=0 ts=698e3734 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=i0EeH86SAAAA:8 a=20KFwNOVAAAA:8 a=rnUjhx4C2NHl8nqPuY0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 4ry9PeEgol-hXXYqsZobF_X61z83qHwt
-X-Proofpoint-ORIG-GUID: akyquk1pgbcHhjp5hBb1sq5u85ZLzeyN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDE1NyBTYWx0ZWRfXxoerCjpT3xeC
- zVMGloxz4oW7ZH0W1JnLHvCmD2zg4YHQTE47xu8EW/NtZWUolzpugCzh88tpiXJj8iOkzbnbbPZ
- oyEF2cGUDTu5zmXg0GtBJXqiqr97EYRxO1V21iNJikJ916bkPjgSnFA6BpA0M0rYIdcdoIj+kk4
- 1i4FJaLyFR/moFs0b8otGG1PH+MKLZ+oHFFnHFHQ4sPEx9WulQqY/E3jyU7GINS1QGXJvKCJk5I
- BLQ7JehWDeB/ooCr0Ujtj8QDw/HRUHHNwldeQYGrazfVdj3idM15NpDUooVHxmuDbFoH3gEM7lj
- WHoVf28JqVzJbgbGqq81WWiNeu5YIu98GvfuDJuYYZdRvSHON/dYzvAFm3KkVh314o3tn6yJWfJ
- nKyi9ZPtfKieX3I0MtXxxahawVM8cAFwxtUb8gSHq0E7kpxWNF3F7pER/1KycdC4WYFEmoMCZUX
- i1bGF7uv4SxiPXz7Egw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_05,2026-02-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602120157
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260211124624.49656-1-xueshuai@linux.alibaba.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16853-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email];
-	FORGED_SENDER(0.00)[zohar@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[helgaas@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FORGED_RECIPIENTS(0.00)[m:coxu@redhat.com,m:linux-integrity@vger.kernel.org,m:hca@linux.ibm.com,m:egorenar@linux.ibm.com,m:ardb@kernel.org,m:dave.hansen@intel.com,m:roberto.sassu@huawei.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:jarkko@kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:linux-efi@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:keyrings@vger.kernel.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:lukas@wunner.de,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:Jonathan.Cameron@huawei.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:zhuo.song@linux.alibaba.com,m:oliver.yang@linux.alibaba.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,intel.com,huawei.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,oracle.com,paul-moore.com,namei.org,hallyn.com,lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16854-lists,linuxppc-dev=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zohar@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,wunner.de,linux.ibm.com,gmail.com,huawei.com,amd.com,linux.alibaba.com];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 3772C130ED6
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,intel.com:email,wunner.de:email]
+X-Rspamd-Queue-Id: C96CF13130C
 X-Rspamd-Action: no action
 
-On Thu, 2026-02-12 at 09:28 +0800, Coiby Xu wrote:
-> On Mon, Feb 09, 2026 at 03:43:08PM -0500, Mimi Zohar wrote:
-> > On Tue, 2026-02-03 at 12:14 +0800, Coiby Xu wrote:
-> > > EVM and other LSMs need the ability to query the secure boot status o=
-f
-> > > the system, without directly calling the IMA arch_ima_get_secureboot
-> > > function. Refactor the secure boot status check into a general functi=
-on
-> > > named arch_get_secureboot.
-> > >=20
-> > > Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > Suggested-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > Signed-off-by: Coiby Xu <coxu@redhat.com>
-> >=20
-> > Thanks, Coiby.  Other than unnecessarily splitting a line, the patch se=
-t looks
-> > good.  As soon as the open window closes, I'll queue these patches for =
-linux-
-> > next.
->=20
-> Hi Mimi, thanks for reviewing the patch set! Would you like me to send a
-> new version with the line splitting issue fixed?
+On Wed, Feb 11, 2026 at 08:46:24PM +0800, Shuai Xue wrote:
+> Currently, pcie_clear_device_status() clears the entire PCIe Device
+> Status register (PCI_EXP_DEVSTA) by writing back the value read from
+> the register, which affects not only the error status bits but also
+> other writable bits.
+> 
+> According to PCIe Base Specification r7.0, sec 7.5.3.5 (Device Status
+> Register), this register contains:
+> 
+> - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are
+>   the four error status bits that need to be cleared.
+> 
+> - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these
+>   has no effect.
+> 
+> - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
+>   introduced in PCIe r5.0 (2019). This is currently the only writable
+>   non-error bit in the Device Status register. Unconditionally
+>   clearing this bit can interfere with other software components that
+>   rely on this power management indication.
+> 
+> - Reserved bits (RsvdZ): These bits are required to be written as
+>   zero. Writing 1s to them (as the current implementation may do)
+>   violates the specification.
+> 
+> To prevent unintended side effects, modify pcie_clear_device_status()
+> to only write 1s to the four error status bits (CED, NFED, FED, URD),
+> leaving the Emergency Power Reduction Detected bit and reserved bits
+> unaffected.
+> 
+> Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Lukas Wunner <lukas@wunner.de>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Reviewed-by: Lukas Wunner <lukas@wunner.de>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-Yes, thanks.
+Applied to pci/aer for v7.1, thank you!
 
-Mimi
+This branch will be rebased to v7.0-rc1 when it is tagged.
 
->=20
-> >=20
-> > > diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/im=
-a/ima_efi.c
-> > > index 138029bfcce1..27521d665d33 100644
-> > > --- a/security/integrity/ima/ima_efi.c
-> > > +++ b/security/integrity/ima/ima_efi.c
-> [...]
-> > >  {
-> > > -	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()=
-) {
-> > > +	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) &&
-> > > +	    arch_get_secureboot()) {
-> >=20
-> > No need to split the line here or below.
-> >=20
-> >=20
-> > >  		if (IS_ENABLED(CONFIG_MODULE_SIG))
-> > >  			set_module_sig_enforced();
-> > >  		if (IS_ENABLED(CONFIG_KEXEC_SIG))
-> > > diff --git a/security/integrity/ima/ima_main.c b/security/integrity/i=
-ma/ima_main.c
-> > > index 5770cf691912..6d093ac82a45 100644
-> > > --- a/security/integrity/ima/ima_main.c
-> > > +++ b/security/integrity/ima/ima_main.c
-> > > @@ -949,8 +949,8 @@ static int ima_load_data(enum kernel_load_data_id=
- id, bool contents)
-> > >=20
-> > >  	switch (id) {
-> > >  	case LOADING_KEXEC_IMAGE:
-> > > -		if (IS_ENABLED(CONFIG_KEXEC_SIG)
-> > > -		    && arch_ima_get_secureboot()) {
-> > > +		if (IS_ENABLED(CONFIG_KEXEC_SIG) &&
-> > > +		    arch_get_secureboot()) {
-> >=20
-> > =3D=3D=3D>
-> >=20
-> > Mimi
-> >=20
-> > >  			pr_err("impossible to appraise a kernel image without a file desc=
-riptor; try using kexec_file_load syscall.\n");
-> > >  			return -EACCES;
-> > >  		}
-> >=20
+> ---
+> changes since v2:
+> - accommodate two macros per line per Lukas
+> - pick up Reviewed-by tag from Lukas
+> ---
+>  drivers/pci/pci.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 13dbb405dc31..0e6a50260555 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -2243,10 +2243,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_state);
+>  #ifdef CONFIG_PCIEAER
+>  void pcie_clear_device_status(struct pci_dev *dev)
+>  {
+> -	u16 sta;
+> -
+> -	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+> -	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
+> +	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
+> +				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
+> +				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
+>  }
+>  #endif
+>  
+> -- 
+> 2.43.5
+> 
 
