@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16831-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16832-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id NktxEUuWjWkG5AAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16831-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 09:58:51 +0100
+	id 2DGJDQSXjWkt5AAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16832-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 10:01:56 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A920B12B9D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 09:58:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC04812BA36
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 10:01:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBTjz2JgLz2yLH;
-	Thu, 12 Feb 2026 19:58:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBTnX2z4Pz2yLH;
+	Thu, 12 Feb 2026 20:01:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770886727;
-	cv=none; b=CYF6jd2vE6sEm8e7B43SlDUkimX5gig9cn1gQAOEPnCQHs36f4MA91xVmEDxnIAoB/SRD+fqNaTiGh+2ZAcufbODq1W+ZEvm0I2J9Lj64khZ9Tin9ho4Lx76TLBBSYykBVDf5VPoYtFZfWULR5tZneMNxXmgVCJHcKwg1EUypiPWl9bSVZT0zNr9UUYhAfZIzjxq9m06X8zddNSsZNzTCmcygyiaeQHjSI2CRT7zZSPPUc0C86zF0Ytvn50Y+FlsBcMdRQdjfJeM852jRyGeWDHRkfv33JNp4ndv5V5i3cfxDHxe//MmuQ4tNQBH/OMck35wYq+PKMJxgEbxUN9WUQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770886912;
+	cv=none; b=lK9wYvWJvGupXSk55+HOsuLfAEkWPS+hjOTTAujetkYad7VXzd+jZAKSuLddXQAl5pmBNHVBUssEbsmELRk2qZkCogykJnOhJYdd6xmHSiPBXgFooDer+yyfWKwuPhTeHQPBxh6GUAX4/fa/d6MVFL4/FGDXPCTzKPalsSsY1Io0nrvnqtU7Yp10XFG7HtoEeAdRAK1BNoq6SUFesakKiD69gdzYIAt+7VtwLhHQcjm8JNQDYqdJJD9r2ItVfi4FtE/+Zw+4sIog4DLHGxMOAhq/ZwwzQcUDmuxW7ypeH43tb+kIf3HuzX5446wVY4eTHjCQzB+1Ga7I0sxcHAvZgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770886727; c=relaxed/relaxed;
-	bh=YDZYxDalqWS4jpiN6DyzwpwDXVyHMVpKrE+0rILK6hg=;
+	t=1770886912; c=relaxed/relaxed;
+	bh=ztokAIoCYpkBlx7T8Bsk0Xjj5MaU1sWiBBOC3dSH5QU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mWtC1t8Mn7+3B1HEEmN5rLaMf/8WKl2vnMF7v+TG8WbQjppKMokSEVxkpVUfq9vwJ5OMaqLxIkOr2ZsC3sX+lAoIdabG5DvmuC0JGNuW10W6z6o1FZXqbbXxRjtNZ6YXLuw+DAd6f9KndjRfzaoGVzGD+JGlFA3N8xlH1jLVpMyewyVOx55fsPd9o2ph/DAsUoH9h5NfSyRrIYkXc9McUKxJJGfo6owThbwMSi9rYlbLIUjNLU3okFE2XGVIgppjzB5+AX5zPftTF1mQ1r/c+wdt+/RxRQosEqoCdiCu/6BjP1uhDdprI2/mNvCDSNgSfrXJdF7gJfxb1DUK2OXYqQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HT5R6kpv; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=DTe2jSr3AQiUNuXVfkrfxs1jPKmzYB1cIMMydWicLQFKfjnalN26aDmVNBFchYIBslmo1KlIpln4opqBGu3SgQqkTq2bj1LkDOtC98Q3wOmfrGX6mYgm9d9koNOEuJg5cMlChjwSLd+15BndSgdEnyZ4vnggx02DPBCQkjpX5zFaKzq3pXpfeiX3fAL/9ubC20Y158jg2oBr+m1AE5lBh147bl9CKIZ9k6NMROxjB6hhOnqgZFL9ibPEi4gSd4PKeWzXwL73dysZCtfbKxVkVjt+vglZNtwAu1X1Pk/zaa9AWnRIECdI7rv7PR8wVrrPUGuylFNLP9lHV/7lQOaMMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EzC7pZZ3; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HT5R6kpv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EzC7pZZ3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBTjx73pxz2xlh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 19:58:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBTnV04sbz2xlh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 20:01:49 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B62960128;
-	Thu, 12 Feb 2026 08:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0155DC16AAE;
-	Thu, 12 Feb 2026 08:58:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A70941980;
+	Thu, 12 Feb 2026 09:01:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B128C4CEF7;
+	Thu, 12 Feb 2026 09:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770886723;
-	bh=O72aDxD0jjZlGGwbJFSDSKCAXe0FHSLzulcP/3B+3gA=;
+	s=k20201202; t=1770886907;
+	bh=mbeyKAvym1Evnd03SXCqu1tAKf52BxUCYkSrs6de9OY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HT5R6kpvSukfg5IN9nlS4YbpAP2leknMovU4Qa/hAHCkiDLHNZCK/gaEeXQHxyP1T
-	 EeaWGdiI6XLZNPc7qylXP4VxUBbfiWCiPR0OOrU3ukw4sHt8o/tbgJHm1EXYuVKv5l
-	 TBZNfkmh8mxb3m+xGctyA2sWLPBXy+8bVH6k/ChG6pgU9xLYtMCirmrNSdekZUSMr1
-	 rcLqmGD6U2Zf3RltXhzmv3O0aVtAoGjJuEnP61CUcxzzuUEYvxoWOwO1f80x8bs6UX
-	 gPY2bh3g5BAn1TNdodmkMMpjKpSAgB1l7qIcZJmbGe5SiaAuLLViJ5jFEfzgOeHrZb
-	 3ef+PtYkktc6A==
-Message-ID: <a9834da2-67c5-4641-8ca1-fc5ba067572e@kernel.org>
-Date: Thu, 12 Feb 2026 09:58:24 +0100
+	b=EzC7pZZ31+AvqkeNbZ+v1uBdrrQu/Ug8+evZxdKrZiDdRxVQ9FJ6YzrNMAOjK6l1l
+	 lmA2Vqe7Yd2Y1fOK/Gf/bHij4F99vPL/NoVeb/p4w5i3b0ZJOx0+iUhnJYpQoDl79S
+	 vvU8wl5F2oYQ0e22bB7hT79dtpzdPxIQO89tikEAnB0VTGRwU2yhWdh4sD6hFlZMj8
+	 HpUICv7+9ultjVQRagyYsoL6VB2fxPVVT5hFfxy0PlrOl41v9xEYNuIAuSVc1vAmlJ
+	 JDfwSZ+HNeo4rjkOTyrcFsmfy2SUffMK2Adtr7i2FrD0mIutj8T5KgIQM6xp8QRIZa
+	 Mu5waAMtsSfSw==
+Message-ID: <74103a51-cada-4645-91d3-e0807b32c2a7@kernel.org>
+Date: Thu, 12 Feb 2026 10:01:27 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,8 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] mm: don't special case !MMU for is_zero_pfn() and
- my_zero_pfn()
+Subject: Re: [PATCH v3 2/4] mm: rename my_zero_pfn() to zero_pfn()
 To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
  Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
@@ -97,7 +96,7 @@ Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
  sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
  linux-mm@kvack.org, x86@kernel.org
 References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-2-rppt@kernel.org>
+ <20260211103141.3215197-3-rppt@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,7 +143,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260211103141.3215197-2-rppt@kernel.org>
+In-Reply-To: <20260211103141.3215197-3-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -156,50 +155,46 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16831-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-16832-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:chleroy@kernel.org,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.li
  nux.dev,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	MIME_TRACE(0.00)[0:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[52];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[52];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: A920B12B9D7
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: CC04812BA36
 X-Rspamd-Action: no action
 
 On 2/11/26 11:31, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> nommu architectures have empty_zero_page and define ZERO_PAGE() and
-> although they don't really use it to populate page tables, there is no
-> reason to hardwire !MMU implementation of is_zero_pfn() and my_zero_pfn()
-> to 0.
+> my_zero_pfn() is a silly name.
 > 
-> Drop #ifdef CONFIG_MMU around implementations of is_zero_pfn() and
-> my_zero_pfn() and remove !MMU version.
+> Rename zero_pfn variable to zero_page_pfn and my_zero_pfn() function to
+> zero_pfn().
 > 
-> While on it, make zero_pfn __ro_after_init.
+> While on it, move extern declarations of zero_page_pfn outside the
+> functions that use it and add a comment about what ZERO_PAGE is.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
