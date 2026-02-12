@@ -1,88 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-16842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16843-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHOhIYTdjWna8AAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 15:02:44 +0100
+	id cNFjFDrnjWkm8gAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16843-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 15:44:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA33912E0FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 15:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E0F12E642
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 15:44:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBcST0S4dz2yLH;
-	Fri, 13 Feb 2026 01:02:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBdNN2rYTz2yLH;
+	Fri, 13 Feb 2026 01:44:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770904952;
-	cv=none; b=NRpd54fjq8zqa1GzHL/9GBeUD7OgRcM/titTPmcJGdBcN6tACpJu6rdLhlZpXWvD50pmW+wD1v2bJyx2vMF45hc5cl50ENUUVdoOE8lzM4vb0dWAY8/pp5lBETV9vEIlVASMY1neBJ3dE53g2Dvs3TX6KWZiCHNTL9EZoRyQxl3/fub6DIohS3xuzdyNhWuTjhaqjwX/7s5ZcCaX2hl56vFIsxnqufMBtPY1hFccrhBhMRcQw0R0QeQtIFVwykexZs8NCnjiGgFyGqbUug60UxFAYObLkv0H1ixb/hmF20YhEENTz+h/2AhQkyaxdHL1CxhfC4ndRsgFJQG6RUpzkw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770907444;
+	cv=none; b=WeYnadOZuiSdcHrFnkbqJRIMg5Nf6qmXMwdrs3NPpZcW9WlNPkNpXidlyQ3WEtisX1zsxXKxMNR9CMXNUMtI1oFDKKJ+TEb/ouXLwb90gY7TMO7xX6kpQ54vyK40mXxwwT2Butzaiidoe04ByRHsCqswwMU7E1eu3VKp9xAU0zR5HvbbUmrAnwCe2KY8IH5IqNVV/etmusKFI8MlqUq4JRL9zNuW9CkZSBJm+KGyYqWUHfBAM+9URk8JMGwvaCUry3MITaT8BOU9/rUpQCSMhJy3PWE9wW/Dq5JBD2jIxOfqGvXZDKKw2Cm3EYtfiHHJCV6HRReznYevtFbyO2eeDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770904952; c=relaxed/relaxed;
-	bh=TFo74y0zOAZJ1gXikBmhZ5x7gnmWzyBSYEmf4KFlu6g=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=PQBhhnGEjJJoVFrHAr/avm0qT8Ss4rhpp6TXtk51oRoSs515QnUuf687hbwDplPVPu5gmwblQTwY2MGlYJMUKScaanjpfFn6jGyTlmEv1+bGajrCrP9E7kALoW+zv5Q/ssJCHSsvFTrLzEXPv4eB7MQviefGAkRhYJa1uax+o+x06jxoT+Tx5MXWnsNeqiIz07joojweUL+hWV/o9+3skU5642fK0VfVoztbf1AVMU10iEGS1Hu3ELctDiK98eWBOmfzEhGqAUj8H7DjNAVm4c/oK800jDhUBsNmT9aqQ8jN/g6wA9buzd/P6DJIrS/m14t0nxkILpqL+ystuzO+QQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AOI6KiAS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1770907444; c=relaxed/relaxed;
+	bh=4QNE0rmrVgUNOHM54Q6+KXIw9mcgEQxg8vQIoBdEY9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZPjgDfMAZt2wt/LUfOX3LLllXZq9PO6mAIFPeMUfJKX3spz2uKwka1D4rwexCOwlWK+KrhQi6Fos4W9UWGLnJpAfr1nQIHLzwvk1brM8UTl9LY62cNIq9Ex0/URoOXzMS5GwnYfBYreHZPyCgLJc+nipLqFYxIPaVA6XSXvCivh79vLc1r29z+ZCSiSPpD9EWs47ONE2INQMcGqe4/Z+Wr4VkyFn7AVlwqD4TW1Fgw4H7Sl8QZe2iAwwLzu+Rn52gDsNHOw0WhRch0DWdxHpVjkz8yKm8bFOmAYFfkJwtzr9B6iFpa9Hlcorti4joYjwcdiU11lb6CVGgNUAbXxJgw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ko6YX0yE; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AOI6KiAS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ko6YX0yE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBcSR1pZZz2xXB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 01:02:30 +1100 (AEDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-82361bcbd8fso3405139b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 06:02:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770904947; x=1771509747; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TFo74y0zOAZJ1gXikBmhZ5x7gnmWzyBSYEmf4KFlu6g=;
-        b=AOI6KiASdqAnBkZ1CLXTjCAgtvO5jBVezitMDUR4p3FMtgM+h6Rp5es4+9XvEC1bP3
-         9MuYVtHYJ7C6pNtZ2t8/WtQhGuYZ17hIDMs4mpftkPTCfzFNz/EVdr8MR7keOJoecg78
-         iDruzQvKptSjasxW50wIX1JIpjSHhRa4Rhjn1Qvm1L02Wuz705ySdqqmvXZFonHfkzqr
-         svOzRWNq0bisDq3MiyH7qFacnaQkaspVHWVymo9vVVuZGsm+oEUEo/HO/4E/ELv3uCYX
-         VhFFteWZT/i0p3uTexRctegrRGp1olsR1VzPW7xxzG9Omu1xDfNiWSZSiVGO9VRo/qmS
-         SC0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770904947; x=1771509747;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TFo74y0zOAZJ1gXikBmhZ5x7gnmWzyBSYEmf4KFlu6g=;
-        b=LoIEtizd69NVSDJNiKxGIGzeBzCRRHUmXdiUv/7VRJo4tiryM6+zmfshj3hw5JCSPa
-         hjK+zj87gcxYjbyqd9WtzTy6hzvKQcqcMJXYIRhuIlOlSKikNsH6HxwfBLX010guoG6p
-         kwq4OamNJxIHIz+axjjFPlIhaTCoSil4TqfuIoyu0Hq+RLOHacgLFgSKp0zXx9vTIkmf
-         lRb68iQPqjxcHlJ0AEH5jc+t06Ne7UiSSHCd7mPNGSXBHyNlfCBm1LxsrzG4Tvj6rVpS
-         TEICAyRs8TLkTm8VPJ8M6YporJ0h6DNtnj/Nh5hsRgic/dyuLGqrV2bdwa9ZjehoiCkv
-         TC8A==
-X-Forwarded-Encrypted: i=1; AJvYcCWrn5KUfGTYTEfImQ6b7V/r9d54fZqXYyCH82lun/kAY+wbp4v6J45Np4Lpj8Lv7cfySpbhH5e+BVmTd8U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwfuUWBU2lXpTNECIi6zkcpVMaZl8op/odZ9zkJ64Okwz0oaGFN
-	IVliHiy8ERTcwsNRNJ2dhfeI08Eb0WdqXrTSaTSo4oYwOc9xvskIfcomw/9Jyb8S
-X-Gm-Gg: AZuq6aKSve33QF8F1varSgmbJsZQ8+FpR2c3sJLpCIILy2gnpIimAq08HF7xdQ0Exc3
-	I1UwI+ub8D1Z6OChaLLEWkQFYpxFi/g0s4a6OOSCo7GDOhhPZO+mWtvEGnBF9LcC1+2H9t4WOH5
-	BwlbV1h9zXcmjPzC9MTVJyiHD87JlMpKioUxy9PXi6ZJgYNh641CiY3gcdvBTBkFUMKsSPJi704
-	usqls9Q/UUM0TJ2m/hvJWohnWOiHoLjGgifJqAFma/n6b3N5IlHIuT+tHxcVov7XY8B3YPe4ifc
-	RJ+7xavcOJiPnemdELc2lm92u+GXSCkMWuoFSusF87ZIRAoXLu7PqSRcnbSSlUeYULrgxGiFPw8
-	sk+ICVa1BUwVi2HIsHzXnUXhkopMwd6HpjynZOdALyVLvHY4e6v5+NN8LJoAAXVVMgLd1s7q3CO
-	/ieBD3kzyrMLNSmMjL
-X-Received: by 2002:a05:6a00:a24b:b0:823:7ac:1417 with SMTP id d2e1a72fcca58-824b05a920bmr2508988b3a.67.1770904946842;
-        Thu, 12 Feb 2026 06:02:26 -0800 (PST)
-Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e3bd8cbsm5369677b3a.24.2026.02.12.06.02.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 06:02:26 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Usama Arif <usama.arif@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com, willy@infradead.org, linux-mm@kvack.org
-Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
-In-Reply-To: <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
-Date: Thu, 12 Feb 2026 17:43:33 +0530
-Message-ID: <875x82ma6q.ritesh.list@gmail.com>
-References: <20260211125507.4175026-1-usama.arif@linux.dev> <20260211125507.4175026-2-usama.arif@linux.dev> <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBdNM1R7nz2xXB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 01:44:03 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7DEA040A48;
+	Thu, 12 Feb 2026 14:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E60C4CEF7;
+	Thu, 12 Feb 2026 14:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770907440;
+	bh=JgHytrfIoVHvSrB+ZHqvgP9qOCOR6LftqPuUXmXPewE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ko6YX0yEFe4E0jrbp3XxgX4zcX+pt5kKGo3qsoUNXAjP6BmajfjaWMR7EZwObD3mv
+	 RaQE4z+0+Y4Gvw1ciyp3sCoy9AWoV51k6SCkkX3HI2r8w9NGPYJAIaOZZnUH2/CyAt
+	 FCBngxnZE5xc2/k3bOXFQAM1G/mpwsKy3pmOJK8ljYA+CUHAY9etU2AWnTdKmHe6kI
+	 HZlhRcgRSjONrL5wCWjVGmpSaYyE8ivrPjr5pZvM5QJmgaMHdUy9DFX0Ke6voUeoPk
+	 feWHia6y6PLrBYPJdAa4URtO8gt/Nen7sw+LzrielacYjoBKTAX8sR6v3rAfEPlgAn
+	 olPDejjZ8fPrA==
+Date: Thu, 12 Feb 2026 16:43:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, catalin.marinas@arm.com,
+	will@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, alex@ghiti.fr, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	hpa@zytor.com, akpm@linux-foundation.org, bhe@redhat.com,
+	vgoyal@redhat.com, dyoung@redhat.com, rdunlap@infradead.org,
+	kees@kernel.org, elver@google.com, paulmck@kernel.org,
+	arnd@arndb.de, fvdl@google.com, thuth@redhat.com, ardb@kernel.org,
+	leitao@debian.org, osandov@fb.com, cfsworks@gmail.com,
+	sourabhjain@linux.ibm.com, ryan.roberts@arm.com,
+	tangyouling@kylinos.cn, eajames@linux.ibm.com,
+	hbathini@linux.ibm.com, ritesh.list@gmail.com,
+	songshuaishuai@tinylab.org, bjorn@rivosinc.com,
+	samuel.holland@sifive.com, kevin.brodsky@arm.com,
+	junhui.liu@pigmoral.tech, vishal.moola@gmail.com, dwmw@amazon.co.uk,
+	pbonzini@redhat.com, kai.huang@intel.com, ubizjak@gmail.com,
+	coxu@redhat.com, fuqiang.wang@easystack.cn, liaoyuanhong@vivo.com,
+	brgerst@gmail.com, jbohac@suse.cz, x86@kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	kexec@lists.infradead.org
+Subject: Re: [PATCH v5 1/4] powerpc/crash: sort crash memory ranges before
+ preparing elfcorehdr
+Message-ID: <aY3nGuredkMTCZIm@kernel.org>
+References: <20260212101001.343158-1-ruanjinjie@huawei.com>
+ <20260212101001.343158-2-ruanjinjie@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,154 +92,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260212101001.343158-2-ruanjinjie@huawei.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MAILLIST(-0.20)[generic];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:npache@redhat.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@suse.cz,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16842-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-16843-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,google.com,arndb.de,debian.org,fb.com,kylinos.cn,tinylab.org,rivosinc.com,sifive.com,pigmoral.tech,amazon.co.uk,intel.com,easystack.cn,vivo.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[david.kernel.org:query timed out];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:ruanjinjie@huawei.com,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:kees@kernel.org,m:elver@google.com,m:paulmck@kernel.org,m:arnd@arndb.de,m:fvdl@google.com,m:thuth@redhat.com,m:ardb@kernel.org,m:leitao@debian.org,m:osandov@fb.com,m:cfsworks@gmail.com,m:sourabhjain@linux.ibm.com,m:ryan.roberts@arm.com,m:tangyouling@kylinos.cn,m:eajames@linux.ibm.com,m:hbathini@linux.ibm.com,m:ritesh.list@gmail.com,m:songshuaishuai@tinylab.org,m:bjorn@rivosinc.com,m:samuel.holland@sifive.com,m:kevin.brodsky@arm.com,m:junhui.
+ liu@pigmoral.tech,m:vishal.moola@gmail.com,m:dwmw@amazon.co.uk,m:pbonzini@redhat.com,m:kai.huang@intel.com,m:ubizjak@gmail.com,m:coxu@redhat.com,m:fuqiang.wang@easystack.cn,m:liaoyuanhong@vivo.com,m:brgerst@gmail.com,m:jbohac@suse.cz,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[rppt@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_GT_50(0.00)[64];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: EA33912E0FA
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 79E0F12E642
 X-Rspamd-Action: no action
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Thu, Feb 12, 2026 at 06:09:58PM +0800, Jinjie Ruan wrote:
+> From: Sourabh Jain <sourabhjain@linux.ibm.com>
+> 
+> During a memory hot-remove event, the elfcorehdr is rebuilt to exclude
+> the removed memory. While updating the crash memory ranges for this
+> operation, the crash memory ranges array can become unsorted. This
+> happens because remove_mem_range() may split a memory range into two
+> parts and append the higher-address part as a separate range at the end
+> of the array.
+> 
+> So far, no issues have been observed due to the unsorted crash memory
+> ranges. However, this could lead to problems once crash memory range
+> removal is handled by generic code, as introduced in the upcoming
+> patches in this series.
+> 
+> Currently, powerpc uses a platform-specific function,
+> remove_mem_range(), to exclude hot-removed memory from the crash memory
+> ranges. This function performs the same task as the generic
+> crash_exclude_mem_range() in crash_core.c. The generic helper also
+> ensures that the crash memory ranges remain sorted. So remove the
+> redundant powerpc-specific implementation and instead call
+> crash_exclude_mem_range_guarded() (which internally calls
+> crash_exclude_mem_range()) to exclude the hot-removed memory ranges.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Baoquan he <bhe@redhat.com>
+> Cc: Jinjie Ruan <ruanjinjie@huawei.com>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/kexec_ranges.h |  4 +-
+>  arch/powerpc/kexec/crash.c              |  5 +-
+>  arch/powerpc/kexec/ranges.c             | 87 +------------------------
+>  3 files changed, 7 insertions(+), 89 deletions(-)
 
-> CCing ppc folks
->
+This looks like a nice improvement!
+FWIW
 
-Thanks David!
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> On 2/11/26 13:49, Usama Arif wrote:
->> When the kernel creates a PMD-level THP mapping for anonymous pages,
->> it pre-allocates a PTE page table and deposits it via
->> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
->> PMD split or zap. The rationale was that split must not fail—if the
->> kernel decides to split a THP, it needs a PTE table to populate.
->> 
->> However, every anon THP wastes 4KB (one page table page) that sits
->> unused in the deposit list for the lifetime of the mapping. On systems
->> with many THPs, this adds up to significant memory waste. The original
->> rationale is also not an issue. It is ok for split to fail, and if the
->> kernel can't find an order 0 allocation for split, there are much bigger
->> problems. On large servers where you can easily have 100s of GBs of THPs,
->> the memory usage for these tables is 200M per 100G. This memory could be
->> used for any other usecase, which include allocating the pagetables
->> required during split.
->> 
->> This patch removes the pre-deposit for anonymous pages on architectures
->> where arch_needs_pgtable_deposit() returns false (every arch apart from
->> powerpc, and only when radix hash tables are not enabled) and allocates
->> the PTE table lazily—only when a split actually occurs. The split path
->> is modified to accept a caller-provided page table.
->> 
->> PowerPC exception:
->> 
->> It would have been great if we can completely remove the pagetable
->> deposit code and this commit would mostly have been a code cleanup patch,
->> unfortunately PowerPC has hash MMU, it stores hash slot information in
->> the deposited page table and pre-deposit is necessary. All deposit/
->> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
->> behavior is unchanged with this patch. On a better note,
->> arch_needs_pgtable_deposit will always evaluate to false at compile time
->> on non PowerPC architectures and the pre-deposit code will not be
->> compiled in.
->
-> Is there a way to remove this? It's always been a confusing hack, now 
-> it's unpleasant to have around :)
->
-
-Hash MMU on PowerPC works fundamentally different than other MMUs
-(unlike Radix MMU on PowerPC). So yes, it requires few tricks to fit
-into the Linux's multi-level SW page table model. ;) 
-
-
-> In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1 
-> copied generic pgtable_trans_huge_deposit() hurts my belly.
->
-
-On PowerPC, pgtable_t can be a pte fragment. 
-
-typedef pte_t *pgtable_t;
-
-That means a single page can be shared among other PTE page tables. So, we
-cannot use page->lru which the generic implementation uses. I guess due
-to this, there is a slight change in implementation of
-radix__pgtable_trans_huge_deposit(). 
-
-Doing a grep search, I think that's the same for sparc and s390 as well.
-
->
-> IIUC, hash is mostly used on legacy power systems, radix on newer ones.
->
-> So one obvious solution: remove PMD THP support for hash MMUs along with 
-> all this hacky deposit code.
->
-
-Unfortunately, please no. There are real customers using Hash MMU on
-Power9 and even on older generations and this would mean breaking Hash
-PMD THP support for them. 
-
-
->
-> the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar 
-> checks need to be wrapped in a reasonable helper and likely this all 
-> needs to get cleaned up further.
->
-> The implementation if the generic pgtable_trans_huge_deposit and the 
-> radix handlers etc must be removed. If any code would trigger them it 
-> would be a bug.
->
-
-Sure, I think after this patch series, the radix__pgtable_trans_huge_deposit() 
-will mostly be a dead code anyways. I will spend some time going
-through this series and will also give it a test on powerpc HW (with
-both Hash and Radix MMU).
-
-I guess, we should also look at removing pgtable_trans_huge_deposit() and
-pgtable_trans_huge_withdraw() implementations from s390 and sparc, since
-those too will be dead code after this.
-
-
-> If we have to keep this around, pgtable_trans_huge_deposit() should 
-> likely get renamed to arch_pgtable_trans_huge_deposit() etc, as there 
-> will not be generic support for it.
->
-
-Sure. That make sense since PowerPC Hash MMU will still need this.
-
--ritesh
+-- 
+Sincerely yours,
+Mike.
 
