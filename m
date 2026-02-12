@@ -1,87 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-16850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16851-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGWFNmIejmnp/gAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 19:39:30 +0100
+	id oNw4LO0ejmnp/gAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16851-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 19:41:49 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70CD130545
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 19:39:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BDF1305A8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 19:41:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBkbz08dkz2yQj;
-	Fri, 13 Feb 2026 05:39:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBkff3QTpz2yQj;
+	Fri, 13 Feb 2026 05:41:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770921566;
-	cv=pass; b=SVj4HzeMRW5a0tNxTnK1oKei2hK0Y+EHIFhb0V2BO2HCCFXJuVYfsI6jDJWieyY6bbJ/cFLebFnQd7tCWNKIVqiHc8ieVl7eMAUOtdem6yPklgp6EbsJ1sKz4jwmPt0ibpHQR264jY4SEUdb88e4jvczgz7ZZzVSDqdhAFwLWVB9ELghI8sWKse0m7xhoAMt1HnlFr4HSqBt6ShU9TPi31IqmttbyRvb36yaAg8AbhaeRNnwIK/Ceb8XUVe9PXFcoNpmnAR9yE5GomM6kdEGLX2g4Y+Ng+z4DdzTJw0v+US26+pNc0UotytilN5UxRom1ks38f0SA6fL58GTVKRgJQ==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.165.32 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770921706;
+	cv=pass; b=CL4HHB0JxYS8wXCTbAzwogmHkJFbkYJhRLkWuH1aWWwME1axXwr/wMgwfmmUxCsKj7mzQH/XTNm6i9FqJBL3jmeyE1x2LhlT7G3qcKTZ3fUQ5SrNM9Ol+98KcHmiTOB5FWuvr4tem13+2k6ZCdqNlrDnM4GcTtggeu9oAxI2w00QDCzpU40oeejn9i6KM2pSTawNeEPxQ5UxYi4CVW1ZKxIWjxJJC243gjcgbtX/zPylc5HGf1966jCY+WpHX1XN1JOlGzS4Z0DyGam8ArydQgWOepjXubyn0So7A6DMRMRDtWuDssApWE3nn5cyqQ8sradofKKGXRNGtoAM95uCPg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770921566; c=relaxed/relaxed;
-	bh=OxCCStciEcQaaSQV/M+L2GcKr11256cRHh+DSRuuARc=;
+	t=1770921706; c=relaxed/relaxed;
+	bh=4BVzRN5iDmCLcnIiLLHTCmDdynKYuoT202IyclrrqVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HHYZ1jrH4Dj5YKqt211+m2ES3TYcdNZEkxlWIo+wVF7qOXtWuRA0YsGzxjyQs5kkJ3ffDnO6aUSzQDETI+gGaXt240lcb0Y6lbA6ZQqOKn7b96ZKb6VFJMH0rysaQYaDyAfUxpNCK2u6vGBtIVkCOfLjilZCkWpcbw2MBdv/wMZyudrb9iXshATdmPFW07WFg+mKD18fdtP/DfueN5Gq3ugaQdYHquBUkFrOYCUenESswzs5XjId1YiuEbptPhwSbA+yoFCntJV646cxagxXm7zP6rdBIp0ZedQklou3LLnz+yMQewJZ93ZsGVgTcfgpAkjOVx2oJ7HosH6+n5WDOg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=B5hDT59n; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=Rs9p9HvX; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RaMsQGebcuaLX5x+Vy2J9OkFDDC6+05qWkmELmrkiwMMTT4nV4WJsbmNyzq+IPqFJAdG9DBo2uKhVnUMz5Gfmwd23nqC6+2uktgIBd0cvVB32LdOhp4e2TU627Wyvepa1pZPV1MKlBfG7kdamyiGp6DvCR5uapf6IVxKEo7smCQBfkog5WZTjq7kNWNRMER+n4TthunBHBfLj9EArIsC2YZtbeNhDujCKdWwkkFRlKIwOwvmo7BwVzRfgILJOYoP/vZ6tkF4Gb3DDnKr40DyAp9SWQDvV+a2XHabmPLQzZw5wG0nx0ZmNC3Viz9nuTej6HN+L7m4M3D0d36N+GbmNg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=pFGCQ+2v; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=KQdWqfJi; dkim-atps=neutral; spf=pass (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=B5hDT59n;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=Rs9p9HvX;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=pFGCQ+2v;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=KQdWqfJi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBkbx38Tjz2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 05:39:24 +1100 (AEDT)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61CGNFM92001161;
-	Thu, 12 Feb 2026 18:38:30 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBkfd4qgGz2xHX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 05:41:44 +1100 (AEDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61CGNG8r948454;
+	Thu, 12 Feb 2026 18:40:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=OxCCStciEcQaaSQV/M
-	+L2GcKr11256cRHh+DSRuuARc=; b=B5hDT59nkr91SIPd+RO+BM9aieh0TnG0R8
-	RS8eZBMGNLH0N3wRXYUHUhYbSYmtVbOEiCMN5sjkC+gGxHQdSpPURr18HvF6EaSe
-	Y8v8Wq2mXJOMrPzE+5fptomVf4Y49FX5f5p0hh2ZYTSb04fjlAnVLJ3J1ZVGmsBn
-	4Y1vwuQSi7dZh8hKmg+EZ4fPkqdwVCLv8A7D+CH0TYusiCrxWd9zzgNg+zoEOmSy
-	U5bf3PgTWBZOfP/D3sFof3Z2Hzknu+zrZylYXu0FRj9ctsSnmrLsrmM0F8aQaER6
-	bDTK1KCrszENVEE5MICNO8bNanMkTjws4kTGj2IuBjIYETEsHlfg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88df41g2-1
+	:references:subject:to; s=corp-2025-04-25; bh=4BVzRN5iDmCLcnIiLL
+	HTCmDdynKYuoT202IyclrrqVg=; b=pFGCQ+2vEbU3l1A5vmLw9bZbtRXrVpDp66
+	Ro3Epg4gwddgjtc+Hycey4rE2Nl5WwWPaDMfz1P+dp29lJRumMWQ/xpC4FISKr+Z
+	+mtLUujFJbDRc/EyN8Rz1eXko1Oyw8V3UNKuVQkQkpwqDheMzfd63NHl48GX1KoY
+	OS1ZbNgTf0ysa4eyBJ5Lvu8b4h7WFfU1LowhcOIk5BKg3xxctXcE5AdznY7BejbV
+	m+QHWsu8skxW3DRudzU1yvPFlh8W+8E8EL4jYI2q1jjm8NMrjxH7EQmWstU+HVS+
+	NFB0MDBuEknSM8+pN3e0fgvwU7dsAGAyKViaOUhfW1R8OH9uhpUg==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88n7kynv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 18:38:30 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61CI3Cic033621;
-	Thu, 12 Feb 2026 18:38:29 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011010.outbound.protection.outlook.com [52.101.62.10])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c82481ts0-1
+	Thu, 12 Feb 2026 18:40:40 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61CHKHT8022380;
+	Thu, 12 Feb 2026 18:40:39 GMT
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010023.outbound.protection.outlook.com [52.101.85.23])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c828d9nqh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 18:38:29 +0000
+	Thu, 12 Feb 2026 18:40:39 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GaB2JHuPjXzV2M0oBdZtNrPQ/BdHPxUwqGAOyX7n5GSH/zaWZkd2a7LdVEi4XLtc8YuA3xrRH3dqKLxOjZ5S0lWk/jyk0RVPqW7rZMf9okuMkcF3PCvWpqvc99mBvkE6DkVgb1jEp1IRRkNtYQ8HpvLcmvcA1VMwfRj1P0uYjgfWNUYEQB5F/m6xXZqg5/FOEoos/biux2v0DHpgWV1FMHs7kDB1gzqdLdhXVMKDvKeYQ0JuZMmtmO331vKJX7NujYAfPAra+ZQOoPrK2nkcn1syAFxzCsuPxJM6AZpgOCohGuHG6m5kuGCRhVC9S1FvN0+1J3pNYsqI2X3gJC/9Wg==
+ b=KHqvcMgqaCJvpHSb6UQ8WngkONdm6EphAHEDSP0eyvQ2OlFZc2jwQ96x1sj8tS48soIUTtam5xzyoihpco1hxf3NNzgoVF+IUxD8vBzJsr8rzJLMYCWo2FxyBKa5XGPc0O6E9z08eBGc18V0yp2ZJTjlFi8Aoi/L5AbmnEaU+6VuvHaYLyQeTYu1+2p57bW63mbCgLKf3KGXVPum3glVaTYIQb3Z4CCzmJqtqcqgsHoROd52TxrbMWv04BF2CZV3I8xDklcqAuck6lI571V0FxlnER8WoACRYq+qORPMDanLn00v0Dh826sC67jYpQNCq0O70TYCTwjwbpi8klNApA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OxCCStciEcQaaSQV/M+L2GcKr11256cRHh+DSRuuARc=;
- b=TwQWUUarCx8FIzuLlILKBeZTSIymTCP2uGZdPtTVl88V+fsrgDZrPeydVBlur0FwcpnKY8L+gDARf6wtjQj8zhPb4S7zrDxkdhCxHKKAlF/5uSO/r7wuPPuKTKwEYjV3SI3rxYWsxqYwd8R/SMuduZ2uZY65jHnd06qOFnkzLzlkQvaxRn8DaISufZrcnb3jSb8cM/Lk34GGQc5K7/XYZVEqnphf3br+xOsjmR/6EHcCuaV3iFRAIGJzKR44/cIb5grQNAV5oUV+MHGSpI+oSXXwem1PRMh/5mCRk0pAD/aMpg8cG3M38qR9i3QChl1iWW5BB7b4GsIrgwzRsfkOzQ==
+ bh=4BVzRN5iDmCLcnIiLLHTCmDdynKYuoT202IyclrrqVg=;
+ b=DU3N8Xy3IJbjP1R34zEP6CNY3bpi6ZeYIQ54km8ysoqg5gO4uvFsakqvqBYdp/ToYDNKuU9acFR3CWSHKXXlkNROC7poeE6ZtCPGNMJVk3ZbNiHMWag7Z4cwgkXA4Wumkr95leEhLKB/8yBUPRTd4dgiOwBQOR4itnoPRCZz3CKifD75772HaZcYxm6XZ+aMx/j5eRQcCpsQzqQNL43Smn+yvPp65lDh11i4346JXL5/TN4zrZuJ/jJJP2P85sIp43KsysKf/LamJMQU9JMclmdaXF6MwiTOsmbSxwdgYTZs0KkulnqW4WVdNuHK/WoGIPaT6qpP135IpcrlKyT5AQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OxCCStciEcQaaSQV/M+L2GcKr11256cRHh+DSRuuARc=;
- b=Rs9p9HvXe+81HSPFdfwhlpHL3xMKUuL1PvC5b7BimfxQ9epkY5gJgVWffKgGEILymDRnygq0GmJMtiVYArROrsCZPlVf9V89J56S1ZUDV+ohEBSuDNcGlHUAVIOzTjiI+o1Eix2BXslvOF7kYXKBsnslLMso5OYZ58xuo7BGBrM=
+ bh=4BVzRN5iDmCLcnIiLLHTCmDdynKYuoT202IyclrrqVg=;
+ b=KQdWqfJid+2Ffv2KvF3qOszYhqQokKqmrgMii9otxwvDvqSJ0OvoDOa3AXcVoiyN7BUuX4nPoeydNfOfE56URFu4JSZp6JOC0cbZW3DpWx7zK49ZWR6E/dpW1ZeuwvQMuEAyDeeUMl6io1NTYZ3Nwmdu9TkfeFz2lcv9EcP/hOA=
 Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
  by DS0PR10MB6996.namprd10.prod.outlook.com (2603:10b6:8:152::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
- 2026 18:38:23 +0000
+ 2026 18:40:31 +0000
 Received: from PH0PR10MB5777.namprd10.prod.outlook.com
  ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
  ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
- 18:38:23 +0000
-Date: Thu, 12 Feb 2026 13:38:16 -0500
+ 18:40:31 +0000
+Date: Thu, 12 Feb 2026 13:40:04 -0500
 From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -119,8 +119,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
         linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
         linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v3 3/4] arch, mm: consolidate empty_zero_page
-Message-ID: <6tmykmowua6szz7sxtnseemqgj3mzfls56ks3akasqexueh5wd@ymab6q3sp4pe>
+Subject: Re: [PATCH v3 4/4] mm: cache struct page for empty_zero_page and
+ return it from ZERO_PAGE()
+Message-ID: <chzhbnsmqsrj2sg7tua55cnwdpyuxn5pnkv3qtstimboo3r5gf@56i43rsfmmgr>
 Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
 	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
@@ -145,13 +146,13 @@ Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
 	linux-mm@kvack.org, x86@kernel.org
 References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-4-rppt@kernel.org>
+ <20260211103141.3215197-5-rppt@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260211103141.3215197-4-rppt@kernel.org>
+In-Reply-To: <20260211103141.3215197-5-rppt@kernel.org>
 User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT3PR01CA0123.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:83::23) To PH0PR10MB5777.namprd10.prod.outlook.com
+X-ClientProxiedBy: YT4PR01CA0182.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:110::23) To PH0PR10MB5777.namprd10.prod.outlook.com
  (2603:10b6:510:128::16)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -168,112 +169,112 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|DS0PR10MB6996:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3584a79b-2741-43b3-896b-08de6a65e6a4
+X-MS-Office365-Filtering-Correlation-Id: a2b41c1f-251c-4c0f-8326-08de6a66331c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bcDJ1ybvjrvroMBvaYPsKR7yYLorOctC7nxWRjg8Wn/g1LjuVFd6xbc+lKkU?=
- =?us-ascii?Q?204VpMp4M80iJ5y/Xd/8Dfl2bJ8J2s71YT4ilJdF3IlFGODNKc/siJQsPBSB?=
- =?us-ascii?Q?eCX44idC6kddpAjlaQr+rfiKO3+UAPWZzvJtKUEWo3Ras9PLfAEEgdu4M05d?=
- =?us-ascii?Q?0RJM+gy7ocUMI5wK3n3YugUPwjqkWzzLPsSMZI5NNTQ1TefMn3ZjZrt27q3j?=
- =?us-ascii?Q?u/XDl80OhlZApNSd/S2H+KhEDJBf7mwbwUDCqZerny93AQY4PmVGrGebFQxu?=
- =?us-ascii?Q?dBk9LkKFh84wi5XwnaZDvVQQj3vLsc5s8v6++1p1hyOwI2bokyNj4t/ljuqG?=
- =?us-ascii?Q?xbXsm3zHWQT9kQYVFpMGcBZCvmndvcUGG77u0CcFDdjvwCu8SCcOhlqSaLD4?=
- =?us-ascii?Q?oepoHvxCpwwKXUT4CJ9ItNU1Gc/3tUoQWY74+obERDX11PbZ7OkCzmwPfL4A?=
- =?us-ascii?Q?X69dc+scGMoHmel1ci2hNq8PdRF7NPHNqAnKvltiCPIg1IoDrOd7mgUg7E/n?=
- =?us-ascii?Q?cUxcrDNLrBtvV1ECNZoUUsaMWal9ToQ3r+hH2lMTEvbGMNRpwvOOOzcNQrDU?=
- =?us-ascii?Q?VvPk38Y544a3IiVijV4AWupgpqbYxx+7SXHjK3cxvm3/M4RMV3ls/pzmEewq?=
- =?us-ascii?Q?+pgzRDrf4LhuMFHzxbfvEwqaSbHu3XgCNe5Jt3tnBQ7BipYGIL9Y76HCWFYz?=
- =?us-ascii?Q?CDXEAcF2MJsDvKzWv0FqTQAb9LcXvgxrMMUcZ2qMp6hwvdkKhYde0QkIWYgU?=
- =?us-ascii?Q?UoivChg6ibVMX4WQpwh0vwEP/28fb3O6E8k1Hg87qa0nTSV/IsuATdUjpnjM?=
- =?us-ascii?Q?yvR9g9761yGX3Va5fCySMV7BrfC51G+f5PfTPtcEXqB1LZlChiQkRVk7S4lk?=
- =?us-ascii?Q?wsglUcbLOZgWqCLq8Y/SeSOB0XsBabjcVruyy08DJH647FNgbKiGbVJs9zIT?=
- =?us-ascii?Q?Se03ecxV7XEN/cEp7Hq3T5thQ8OCW3LDCHv1y/PjyzNg2Jwjpv8FoQxyDAVQ?=
- =?us-ascii?Q?EDqNGwRVt4ekcL+WUbSPCMMqyLkbDXC+byDOTWVt8cviOkNsCuJ7JuUiieeE?=
- =?us-ascii?Q?uZgjPvqL4cO7JfcaGww4FfYicvjafqhm+AuRPkGsegkgIMIryq3V54deWtB4?=
- =?us-ascii?Q?IEefefQUlQpPTHbNc0zZ6oUurY+fJpW03shv3AfEg6jkizO7bZIHEDAYYV0X?=
- =?us-ascii?Q?oNQZeVDgWw7WrDFc4512MPu4Rd+hyPWz+Ln8xCaDvBpLUHAjsrYyYN2GcSd0?=
- =?us-ascii?Q?72tzCHgTBZRqDh9uMUygCtNwmKgts++vOS/S+jOdsUstMpJh0kxYKe6aqo7e?=
- =?us-ascii?Q?w3E7x3Zsf4zL662AyI0CXZz3IL+CIWbxbCaOiwsZUqu5J2JX43DLmgNwdwqV?=
- =?us-ascii?Q?gFC6gSovRTmwi1U60gDvMIs1axWMCy6Bc3pCR44k8AOWhcIxp7jqZRgS2fzW?=
- =?us-ascii?Q?uW/oJAZqbHEGR9zUUQlbkuXIj6BhwUuXbHqRAcQOdksHmgxwYOmpq5z7PgOD?=
- =?us-ascii?Q?2GABv/x/5MtozcbJ1Ubt6ryGMQ+Kw/mgVpgZ5+eKvTMBMKisgIoz25sPiFrn?=
- =?us-ascii?Q?pejxI864vPxLNb6sVCc=3D?=
+	=?us-ascii?Q?C1Emi0LgWC3OoadJNNk6ZoZLatRrMMlhjlTc3+72v84R1nlfTGngZ3gaaJDw?=
+ =?us-ascii?Q?vHq3+98JDzy0nziV2BnCBPpHgBUZ7dAZiWKQDTcPtgNQ/gJ9f9AUFQKbYIBQ?=
+ =?us-ascii?Q?dyN+DWpdUFLz90XmrMhkH0aywRNAv8E4eQ4cQso4sgTpO7fzPlHfcJG0Z4wT?=
+ =?us-ascii?Q?swfCSV9DAD9jcDGvEnt4fFraR/bLo8dKY8St53oDyThl54iLE8yatN2ivuMc?=
+ =?us-ascii?Q?QFVSAezOI3jWucDTpFFbC1VCm5I9JkSPDbBkdJnfG6qxSzN4/ZceCYInRkVG?=
+ =?us-ascii?Q?U/+kiHo01ge5gyqYJjV01FVT/RdKwDORhsgTRx4G4R4Ax0jkwZAl6pR/ayUP?=
+ =?us-ascii?Q?EqpIlZa80FR2OeFfEGN9Wl8R3d4AyVytUUIqljEV3c3fAX9xD7ZD9k3OjUOC?=
+ =?us-ascii?Q?3htpIxE3xcoGqyclgtrYIMk4QQCdPENUuuDTolZYWakA3HX6N3amJ4Hc2dH7?=
+ =?us-ascii?Q?xP5ySWbLppEqdZx5goy5+V8fI0JB6uTgNVUgpBG8pFa4kqexq9gkpjPJxPCL?=
+ =?us-ascii?Q?ad/X2SwvaRZ8xsuEGBLPQfFubudGcAXlyS42vQZaiLSEVIw2aGNG4yf3HFlW?=
+ =?us-ascii?Q?UCiPDNTqZuDwoezIbRtsPhL/Cc31KcVfTqIxe8HDy0vjqoZBEWbXmOwaPLUF?=
+ =?us-ascii?Q?StIEhGbr2Yfu5fgMZFYoi8JkPxYi/flhEUG71xfgmgEMhNsVp8g7IGTbNdkW?=
+ =?us-ascii?Q?2Wzv6anMeJNvHXl3u3ISUc9nl0BZX/2Y+R7pftGbgzvvATLBwR/mK7oW0pAV?=
+ =?us-ascii?Q?joeo17Vuc1BrW8g/UpLrtyDsD7YSCn0PrrCwDf8LsaZe2EexBg3QfxVcVQr6?=
+ =?us-ascii?Q?D6SuAd5vV5S+5H1Nxm22OUkU0UlWJd+QpHe22zIM8d2V5LEVcGRsVcFJAFT1?=
+ =?us-ascii?Q?3OI3WIkDvuIEr9zFLSk9ZJcfgrG98apwTwAWtCKUwazRA9uGwdtIVaKWzRPP?=
+ =?us-ascii?Q?5G5Tg7L2HtPL663FWtbNYgf6pEi7D1B/BsQL1E0WNwAM981iXKsSNFfhMbbe?=
+ =?us-ascii?Q?6fwjk2W8lDyOZ6YZgK5i6lWgnsCsDmOHCw+9afFKqziaB8fQlnFC+kd8mu5n?=
+ =?us-ascii?Q?a8YD9qidNEhll00s0BmDdfXTHqllSB4JKlp8AItlQv8M589Za/sUTLrTMGRx?=
+ =?us-ascii?Q?LkkkPqAQlqSnKNkkailDYBASBhFfa1iXkSJb4pHkqBe4KEWIs5xXmUl+xCiT?=
+ =?us-ascii?Q?IV/J+VHBiZfuOZDI4AY1L9ORzzIsZhnf/TX1p/+WsJA+bGsxdj/LyTHvaT7X?=
+ =?us-ascii?Q?/f1pPlW7cq4mUTUrn81eOC1bx/ZfFs9kMXQsqOlsWI0BfJYnoke3iCQJI7rs?=
+ =?us-ascii?Q?3KxhVqHhVbWCt2Rk+oy1zpYRvifNm1QcX6YbVZCuiHBNTkAanLaeswBYkqDY?=
+ =?us-ascii?Q?B6FfUVQzzoPB6mHkACJncrph9dGew7bNxpFvWOGmMcOognfOK0nLnnIZhzgZ?=
+ =?us-ascii?Q?WWcgQUOrk+YV5f9X5OTYztlfj6JrLcEud8VWes7f7d+gA0WzkuahurQe8PX9?=
+ =?us-ascii?Q?y1qXLI/271u3LhdfUSQ9jeWFg2duXUrpq1HjNHv8EBE770xv63j4/PsQa5Yn?=
+ =?us-ascii?Q?tBMMhe/WflTEXwix3nc=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UlX1Yd+TRd8Vo/ORGYH/j4Bc5HSIYxs4i/EQhXJDyFedx0iw6BtEkQ3WyJEn?=
- =?us-ascii?Q?0hQv3ThjTIJwuxrB3z0G3UYydB1JAM72Cqayklk0IFINqHnfCTNRamT+k3wN?=
- =?us-ascii?Q?rv/4yqIigB0Snuab+3Ec7Wlyo20lBUcKzlVaWFgiNTqi2UDH3w32G1c7YCs4?=
- =?us-ascii?Q?5sOV15nRrnsFHDfb8U1nWCr67FgIJsEFj2HYdY3lRtYE8ZTSBQU6D6hd2yJF?=
- =?us-ascii?Q?99OlDWeThSmIiEpJYw2YJSaNc97h4zI5eovFgJB0qkMEl0fC42OkEQiqIwB4?=
- =?us-ascii?Q?/fO8xmMnI6nTMV5KPWcpfx0GJm2ncDjrHobHHOqn9BcVAdIvA2vyMTKTbtgr?=
- =?us-ascii?Q?XUEQat3ehbqHNIaT3UL9yvOJCEUI182X9Q+9y+PsXoBhJIJB182FhnEVVhxK?=
- =?us-ascii?Q?CKh2t1nPRDgnpX/Ku6uIoCKHsh+UfIRrmhLMtkdRz4nl6KSj8qNRIH2Wpoy8?=
- =?us-ascii?Q?p2ZLRwj4+YbcImlAi7qew8qtFhsjwWFfMpANpTEJPSW/ucEeJ5whM/s9ne75?=
- =?us-ascii?Q?+d7Cj9gCRWEesT/iJiK/EFfCuqBuIWWVv1RQG8ten92myLEUjGKqRlFNAVOa?=
- =?us-ascii?Q?wh+Lgcc9DZcIjRqwTnjB6uvMe98HnZRPjkWYpuWM3ZQDzkSnbbpMBuFKVKG/?=
- =?us-ascii?Q?DVDFzSztV3YsRDtRaHq55Scyrk3BtetyVCA3NvB96haZMhvjRdwu6xQt2NgV?=
- =?us-ascii?Q?HVH99G31/4cy7v9WJ6C5W8UX5GGiS9YKkAobL9NKJI+Ah4wReQvGYDSYjScF?=
- =?us-ascii?Q?nRRlGrUxdIiGOXl3LV1PAb+6IMQAUPOU5c4FqbZZ+P4ySCxRynT+63RiMJno?=
- =?us-ascii?Q?Ud+sTHeV4OnNhPRMvpyQEutkn9aK3QrWSPEDCTXzNASCHynijnPG02pKILof?=
- =?us-ascii?Q?GqRdlL4g1QrPqXxBTFpLMfxcNiFonEzgKT710Sy2yI8cZyAXZFi/KaouPp+y?=
- =?us-ascii?Q?5CeYmwqmhiGciylODNh167pxKIu/BopsST68cy7rqcQy12hQVJfbLbhAicvp?=
- =?us-ascii?Q?SQSWVLn022FqCFRQO0vCDkvxwfHPHBhXCFaKZivFlNHLSNutQ/vzjeQgL8Xv?=
- =?us-ascii?Q?t0Ckqa0THidtdZTKpCwqUJwiMsEXsG8VsXlTQRU+VIlMiZ+37ZAxJeXPn041?=
- =?us-ascii?Q?ETAMKrna6Mf/f8kTZ+ARmzNrJYM/jmfVkSFCM08jee2pMVE1CiYhepHWkhvb?=
- =?us-ascii?Q?ojqNAcPCXukeZpHB/6HnzINQl/sdIJY7l0OOAjzKGm9LuR0vfq74TzJ1b6QW?=
- =?us-ascii?Q?FF8ah3QUeCbrPmyU91gU117HxmVzUcqehszt9igBh2FEA1o/nQhgdp9rEMBw?=
- =?us-ascii?Q?yMlLI6qEi8XQpNG1oxgesLJSlo0UuUpVMg4mVMoVGfHZuayuIXjai+FBKVnF?=
- =?us-ascii?Q?Z+aDZg5k46IXdbFEdmmc3+8J/lwXHCtMM1Y94d/7ljh7bqfxMFP9AZYQhqrn?=
- =?us-ascii?Q?EWz+qVVJj1tqGNTUspfmao8WKaDAAXfcdKL+PH/b13FLQRpEbRtSolWbf6UO?=
- =?us-ascii?Q?FkiXa6FqMxcCQImYDtxrv97Iq/88HfE3bKX4/6eA7QDN6QGBJoCk4NUrRnYB?=
- =?us-ascii?Q?JDOIClwhIcfNWoGAFCyg/d8jd3ciCN133IKacASSXmK8hAsPlSM8xH6RFEAp?=
- =?us-ascii?Q?M5R9y0aE+77pWD+fbHX0w5RPMXSZgF+2rrKbYAaCIo/JJ1GiYrCwJQtU/xw5?=
- =?us-ascii?Q?dZvqJVGSOUxIXSmfoG8Ks9gnUedXpsAKjOkxciabZbDT4ECZnJ9cWPMDc4Z2?=
- =?us-ascii?Q?f2YJOu6dLA=3D=3D?=
+	=?us-ascii?Q?md6snu4muffKx9PfsFjr7DKPCoa539CVngNSQEkis8dnRzEpnrn08xSArWiA?=
+ =?us-ascii?Q?+yHpWVOAY0EvQHY0rOyQpbv5ulElEHMMJ5mKrYtz3UONeqJbZtKA19xNQNTN?=
+ =?us-ascii?Q?6H8KiIR3PtZi4gmG2Emdly+VPHxHttX7EnStfI5kuAuExaFi6rCMaMZ+3BJX?=
+ =?us-ascii?Q?r2tUaoCUAN8izB6bxeFQILCIqUn0FW0B7u2kv9tGUwLBxy/AlMHgAYsg8U5L?=
+ =?us-ascii?Q?kLA966hvcFrVZ2zo16xQpJ5ze0MilGPWEBNChGa9eXbxWkNDUrTvIzNAHbQB?=
+ =?us-ascii?Q?mVJSbnljuwer8MzFJve3DEdV8WV8zmSGBllItyli4xpng1ND2yCouac5Zij4?=
+ =?us-ascii?Q?qETLQt3PWJ8eMy3XuTl9AwgfqD/BEtCHHvDQyJQUhPF5sOIrTApWdwfJf3CS?=
+ =?us-ascii?Q?hMJRnLIG2ERvsMe99PJ06PSLZIl25bltmXJN31iIqvJrBM5Q/znvA7x3uK43?=
+ =?us-ascii?Q?uI2lw9iRlIbvBXytbz+Ex70PmUKKGbhGnIuxxSrlRlF/zDbQXAzoljABOcgR?=
+ =?us-ascii?Q?SQy8yoZoLhyycJQSgJx3QqCrhU+mOeAYQgKO7WgRFz0108Q1ddUGh+22Yw92?=
+ =?us-ascii?Q?PQDpPo7ieDqPZjmNzsjLiqVNHFGYp39QgQ1H6hvnIxOGb1k1exfDbSLRRjXs?=
+ =?us-ascii?Q?F2mMTmP/5YrIVU8DW1CJtjZ8UKe5qKIYg0LMmF2LNdIBX/a0YCDtQAlMnGe/?=
+ =?us-ascii?Q?NKnWUqXJKARncwzoO8jvl43zqxJnxJNH+xKLodiL3L87CR3dcT21ZDAkxBNT?=
+ =?us-ascii?Q?PEy11yc6FU1wjqjhMMuTbAs1o66EOhCS3Hag7lrrdpagTuiFOKS4aryvfjTe?=
+ =?us-ascii?Q?uzXv4e7OEBTEexCs2X4OnuXRQyKxIRn5gTMNvCJDICja/KcRrhjE83Feoxtv?=
+ =?us-ascii?Q?km5SBdfeVQ2MD6UYyaD6sgEbbnyyIvce79Igi+kt5RKGkkxszrgCaioyOkiW?=
+ =?us-ascii?Q?HSd2VPoy4VqmlpXTuyQovhfiQQNPm1NMAoEzEJfrYF7bjFfNGi0Fj1EYE57G?=
+ =?us-ascii?Q?KCWsCju2rUGdieeO0z3l3succ8irprQ1K/bwt8nI/wO16yiSVmF9jpab7KJM?=
+ =?us-ascii?Q?DvCGmjrZO/Az+bt7IEz7sQvKuCjagSJzNzz0/k2Bq+iw+5gZ/Zle1Mtu/0+1?=
+ =?us-ascii?Q?3AZCyV5xYPEHqiVbDisawhHCGXw7bQrRRPccJzkaXKPuANBlmExbP6Pc7LhI?=
+ =?us-ascii?Q?lzet+XuUYo5NO+KPyu1C4DMYF172FS8VF0u4w1u1ICJgzFXCWE7PymIUbvaS?=
+ =?us-ascii?Q?gm2SrWNWJjVa9JMx7PwdPesKRIjDiLClWsy9BzoqS9wnMi5tzfFS27V0W79J?=
+ =?us-ascii?Q?KuqOjkN+hl15HHiuWWIXl7Sf8MUP76DGx6VIu7hOE86LjPH/Bclyl6moGtAQ?=
+ =?us-ascii?Q?i4h/rF7fshBIThIy/v6eT8fmTIA7Nv8eosrtdj11KYvdKU4Bt78XH0L43h4g?=
+ =?us-ascii?Q?2uvdaRcZq8z1/pFXJ+nq1o1dMpWv6lBklsKFb96e0l3kl8yDO8Fplmt79rg0?=
+ =?us-ascii?Q?7ePS3PbWFNpx2gQbdAGHK/2BUN+gInXmFMljtTvZSDnEM1I57QbmH1zKatZh?=
+ =?us-ascii?Q?lD0n0VYFhj6AWcnuLqZDkZEsU7dPajW/0Ozp+OxZArBPL2RsNNPVOkcu4ibQ?=
+ =?us-ascii?Q?MPKRisWlWpFS2ohMCZileUJwSNkNqNq05d+ldj4gR9wfQRdgRyhwpXgdpZsl?=
+ =?us-ascii?Q?lpN1nSXRYmktGgZugc4qqVLwJZPfHw5at3Rr7MIarIcSHfTFOuYK+uOEOdzR?=
+ =?us-ascii?Q?KoMxQug34Q=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	49hAfPxYw7eWfeQjHV67bgg/36dxkYNUqnbhMj9fZ4n0WxKiftbvTIzw9myKPRAds7T6peuvGOGAjmNhfFxEKauEKz9rLqB7wHeMTityaSF4RoMxwFjGIivSy2ZRUkoXWIQAqrfbIJp2vt+1d2712NuHgmo2iu6ZEq3IH2izx7InL1eWRvMlim23wB6qSN47JdSiiFnqjaKFE9M/xz/eg2VN+SOiWtHuxlt01ZNQtfvn7YsAma21h9ASi2/xLYULwCl5edD+b3hofirNb/UolYJeW/OnE4SAKat+a1xzpJTf6tahWYavJcgnCNhl9bU8VHX8KTFFb0eJ87e+klShr0PNbbfEIh3lY0ZdOnceqwulkvulILVYVGAZmBTnOG+lGh1GEdbA6fkjKqvzQvbAM5kYvptdKozSupfiUdZCY8RWhfxOaTnm4AUQe55MNZ3/kIc4QlvP/RrHuDpbJDtNyJB4sx//F0saWcAfKp3RyNYAxmEQDPtAWZ9edsFzkwrKoC6pj57U2c95tfjYB887R4Hh+IvwIuol5OG8HKQyAZXUvcJrEWuepAZG3Q+qeC+1YPt7KsABmqftolRl+vLNVo/oNkUUCJaFXYFMieJwe6c=
+	EcfeEskMjOJMVh/vrxaDOC7efaG1LhsK4RFlBsXH+pP26+Uzupo6vauySEr5FfeFzvGGHh8eQUqNKB0JxwLxKe7rgP60ZoWgHDFLhTlQ4lQwFz+XWQjLGyIvLXEPfjSqgn3cYwMbZ+qzayG9QZBFAePExqvDDcKYVrha5flAGmI/RcoGHtiOp2q3imQY4XENXC9crwpFEhHA9GZWIK3BGkWMBD3yRd7IT3ocpyCd01RTxZYoJ/8oOQs+KOLSWS5cbePlgXNV5RyRZPkdKeOXDrBsZb1gd89uV2bwHVikVw9UaKA9jaf3vBPf/JrADb9Du97PQQGmEN6ZqyJDLdOiEJ3sJtN9V8PtFDO17pgdI1OutVYh2RJrOtWpQCrtcAS9tRXcJLeAsiDDmVYsmMSb1gBWFXJKX06GcwAOog0EyTXo5BBR2MpiGWMo3qNMyOCyEWuBzvva6MXK8+PqA5+50aReNO5MhHPFTO7tQGL9nO1df4T0q2LyKlGVLAD3URarPAs2KhJHQzNzq6sXt1TBssi+mgKbPmpJ7+aeTzQXiBo8O+wqGeQtZb095Mm4Np8YRDsfp9l5zg6VbZDvLOhchXlKyfDfPta9l7G2YanFb/Q=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3584a79b-2741-43b3-896b-08de6a65e6a4
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2b41c1f-251c-4c0f-8326-08de6a66331c
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 18:38:22.9501
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 18:40:31.1966
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kZ2NkA8vxmOLgRADQZZ2HZRs/NQ5yH8SKGpr0JRXBdbpes8e4P5CG0pkk38OmGyHkOYzu7VwZ9y7n2Ls/z7xQQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: iYbFKyeQC22pMIzm24e6s9N4dviB8lPfaa84REgJTvFzBAmTUghB7xzJ8+JTzemNBV4Iy6H/1M6VdjDXWInW7Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6996
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-12_05,2026-02-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
- adultscore=0 phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 phishscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
  definitions=main-2602120144
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDE0NCBTYWx0ZWRfX4cljNotvoMIZ
- OrOaaJnhvlDVJ+sIurGLyGQxgsHvndDvHV4pCKjbLkj3C/DvLmcxk2L+LVWWpmhAIo7BjvR5lH3
- VBRddY0gOL0iq244VI1Wizo6g3vtaadaSeloEKNSLzLfpLK+fHNzUOuDOu/KJVOa4OUMICHaHwk
- 4iUjkxumaokVOf+UFKqn0zsCm0kEtFzt1hG74x0AByNWAo9khK2Ej1k9eUo4qTnD+pTEI30sg36
- Ow4JSoZC7Zov7cwMtGQdunKyGFW0TnuhhsT5QTmtd+SK8aj8/i+VWpxyYYOABVt/zexPNkYR4Xl
- lmYIjev5PYHeB1lByVxJEVOuvAI+GJLBuK6dFnrTFxxuuetTl/g/sqsfYpc0RzXbF4CoWRhz8Ip
- BXZl9ILAKLWPCgcKLbXVxjO9swjUU7Ew9m6zZELxL4qc2+pdA1mL/pdxIM8iBxiLpswZdEeKGak
- 6EqeO2dB+VsbFu1DcdA==
-X-Proofpoint-GUID: p0FqRJUPgA3A2bAzYT0AfRz6z48Nv-1R
-X-Authority-Analysis: v=2.4 cv=AqbjHe9P c=1 sm=1 tr=0 ts=698e1e26 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+X-Proofpoint-ORIG-GUID: 0mDId0a0QQJgYesi1mNQ9ZbrJZBI9avE
+X-Proofpoint-GUID: 0mDId0a0QQJgYesi1mNQ9ZbrJZBI9avE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDE0NCBTYWx0ZWRfX2TdQN5k8hUda
+ hSDhGH8wk0zOY7Z5jCLppGkqFJz+t2tbpRQRih0D4dhSt9RHYovaKze+8KkNX/wOe2HnbqV9T2a
+ 0sbuY4AdA8FzflHgH7Z3r9q+RCB8xEjQPBxW542IjEZvrv3NKND6lcAfn7TMYYLD5SsEyTMffSu
+ pznCf3hdRE0HaGG6ru0tpfIUyg8jxbTpvdKJ3gckyqY9mCbY/o2tyIupmxOIzblDE9M4VJoVwkD
+ +zVmQTMwb9lx0iMY5T3PEFjsrenZwpPdQ5Shg2zP+ikGqSJ7SxnxPDacJW5DAr6gMFLJWvRPzDR
+ e8ieU6OGt86B91nA4Cq8JgHEzAEtHFw6S4OLPYRxCk3ZQE5zPlTzNlhc7P5MkqLpSsN2DOG0LWo
+ pr9TNPKxOPTgn+Hqh9H5emBXY1Y9Xv3BiJUNGdaIYlA7ylP+TBzGcV49qd187q9b04uVdAXFAp0
+ oez0Aj7/frcK7+EGEvh4GNsg2BEe8OwpPErLuJbA=
+X-Authority-Analysis: v=2.4 cv=O5c0fR9W c=1 sm=1 tr=0 ts=698e1ea8 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
  a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=QyXUC8HyAAAA:8 a=7CQSdrXTAAAA:8 a=yPCof4ZbAAAA:8 a=hTHyHy4oAQDaNJFdxq4A:9
- a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-ORIG-GUID: p0FqRJUPgA3A2bAzYT0AfRz6z48Nv-1R
+ a=7CQSdrXTAAAA:8 a=yPCof4ZbAAAA:8 a=zIzQp8f6N97s4e50T3oA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:12149
 X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
 	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
@@ -282,23 +283,23 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:chleroy@kernel.org,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.linux.dev
  ,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-16850-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16851-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[Liam.Howlett@oracle.com,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[linux-foundation.org,gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,oracle.com:dkim,oracle.onmicrosoft.com:dkim,arm.com:email,intel.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,gmx.de:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,oracle.onmicrosoft.com:dkim,oracle.com:email,oracle.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -308,1134 +309,277 @@ X-Spamd-Result: default: False [-1.71 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_GT_50(0.00)[52];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: B70CD130545
+X-Rspamd-Queue-Id: D6BDF1305A8
 X-Rspamd-Action: no action
 
 * Mike Rapoport <rppt@kernel.org> [260211 05:32]:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> ZERO_PAGE() to 4.
+> For most architectures every invocation of ZERO_PAGE() does
+> virt_to_page(empty_zero_page). But empty_zero_page is in BSS and it is
+> enough to get its struct page once at initialization time and then use
+> it whenever a zero page should be accessed.
 > 
-> Every architecture defines empty_zero_page that way or another, but for the
-> most of them it is always a page aligned page in BSS and most definitions
-> of ZERO_PAGE do virt_to_page(empty_zero_page).
+> Add yet another __zero_page variable that will be initialized as
+> virt_to_page(empty_zero_page) for most architectures in a weak
+> arch_setup_zero_pages() function.
 > 
-> Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> core MM and drop these definitions in architectures that do not implement
-> colored zero page (MIPS and s390).
+> For architectures that use colored zero pages (MIPS and s390) rename their
+> setup_zero_pages() to arch_setup_zero_pages() and make it global rather
+> than static.
 > 
-> ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> inline causes severe pain in header dependencies.
+> For architectures that cannot use virt_to_page() for BSS (arm64 and
+> sparc64) add override of arch_setup_zero_pages().
 > 
-> For the most part the change is mechanical, with these being noteworthy:
-> 
-> * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
->   parameters. Switching to a generic empty_zero_page removes the aliasing
->   and keeps ZERO_PGE for boot parameters only
-> * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
->   ZERO_PAGE() is kept intact.
-> * m68k/parisc/um: allocated empty_zero_page from memblock,
->   although they do not support zero page coloring and having it in BSS
->   will work fine.
-> * sparc64 can have empty_zero_page in BSS rather allocate it, but it
->   can't use virt_to_page() for BSS. Keep it's definition of ZERO_PAGE()
->   but instead of allocating it, make mem_map_zero point to
->   empty_zero_page.
-> * sh: used empty_zero_page for boot parameters at the very early boot.
->   Rename the parameters page to boot_params_page and let sh use the generic
->   empty_zero_page.
-> * hexagon: had an amusing comment about empty_zero_page
-> 
-> 	/* A handy thing to have if one has the RAM. Declared in head.S */
-> 
->   that unfortunately had to go :)
-> 
-> Acked-by: Helge Deller <deller@gmx.de>   # parisc
-> Tested-by: Helge Deller <deller@gmx.de>  # parisc
-> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 > Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
 > ---
->  arch/alpha/include/asm/pgtable.h          |  6 ------
->  arch/arc/include/asm/pgtable.h            |  3 ---
->  arch/arc/mm/init.c                        |  2 --
->  arch/arm/include/asm/pgtable.h            |  9 ---------
->  arch/arm/mm/mmu.c                         |  7 -------
->  arch/arm/mm/nommu.c                       |  7 -------
->  arch/arm64/include/asm/pgtable.h          |  1 -
->  arch/arm64/mm/mmu.c                       |  7 -------
->  arch/csky/include/asm/pgtable.h           |  3 ---
->  arch/csky/mm/init.c                       |  3 ---
->  arch/hexagon/include/asm/pgtable.h        |  6 ------
->  arch/hexagon/kernel/head.S                |  5 -----
->  arch/hexagon/kernel/hexagon_ksyms.c       |  1 -
->  arch/loongarch/include/asm/pgtable.h      |  9 ---------
->  arch/loongarch/mm/init.c                  |  3 ---
->  arch/m68k/include/asm/pgtable_mm.h        |  9 ---------
->  arch/m68k/include/asm/pgtable_no.h        |  7 -------
->  arch/m68k/mm/init.c                       |  9 ---------
->  arch/m68k/mm/mcfmmu.c                     |  2 --
->  arch/m68k/mm/motorola.c                   |  6 ------
->  arch/m68k/mm/sun3mmu.c                    |  2 --
->  arch/microblaze/include/asm/pgtable.h     | 10 ----------
->  arch/microblaze/kernel/head.S             |  4 ----
->  arch/microblaze/kernel/microblaze_ksyms.c |  2 --
->  arch/nios2/include/asm/pgtable.h          |  7 -------
->  arch/nios2/kernel/head.S                  | 10 ----------
->  arch/nios2/kernel/nios2_ksyms.c           |  1 -
->  arch/openrisc/include/asm/pgtable.h       |  4 ----
->  arch/openrisc/kernel/head.S               |  3 ---
->  arch/openrisc/kernel/or32_ksyms.c         |  1 -
->  arch/openrisc/mm/init.c                   |  3 ---
->  arch/parisc/include/asm/pgtable.h         | 11 -----------
->  arch/parisc/mm/init.c                     |  6 ------
->  arch/powerpc/include/asm/pgtable.h        |  6 ------
->  arch/powerpc/mm/mem.c                     |  3 ---
->  arch/riscv/include/asm/pgtable.h          |  7 -------
->  arch/riscv/mm/init.c                      |  4 ----
->  arch/sh/include/asm/pgtable.h             |  8 --------
->  arch/sh/include/asm/setup.h               |  3 ++-
->  arch/sh/kernel/head_32.S                  |  4 ++--
->  arch/sh/kernel/sh_ksyms_32.c              |  1 -
->  arch/sh/mm/init.c                         |  1 -
->  arch/sparc/include/asm/pgtable_32.h       |  8 --------
->  arch/sparc/include/asm/setup.h            |  2 --
->  arch/sparc/kernel/head_32.S               |  7 -------
->  arch/sparc/mm/init_32.c                   |  4 ----
->  arch/sparc/mm/init_64.c                   | 11 ++++-------
->  arch/um/include/asm/pgtable.h             |  9 ---------
->  arch/um/include/shared/kern_util.h        |  1 -
->  arch/um/kernel/mem.c                      | 16 ----------------
->  arch/um/kernel/um_arch.c                  |  1 -
->  arch/x86/include/asm/pgtable.h            |  8 --------
->  arch/x86/kernel/head_32.S                 |  4 ----
->  arch/x86/kernel/head_64.S                 |  7 -------
->  arch/xtensa/include/asm/pgtable.h         |  4 ----
->  arch/xtensa/kernel/head.S                 |  3 ---
->  arch/xtensa/kernel/xtensa_ksyms.c         |  2 --
->  include/linux/pgtable.h                   | 10 ++++++++++
->  mm/mm_init.c                              |  5 +++++
->  59 files changed, 23 insertions(+), 285 deletions(-)
+>  arch/arm64/include/asm/pgtable.h    |  6 ------
+>  arch/arm64/mm/init.c                |  5 +++++
+>  arch/mips/mm/init.c                 | 11 +----------
+>  arch/s390/mm/init.c                 |  4 +---
+>  arch/sparc/include/asm/pgtable_64.h |  3 ---
+>  arch/sparc/mm/init_64.c             | 17 +++++++----------
+>  include/linux/pgtable.h             | 11 ++++++++---
+>  mm/mm_init.c                        | 21 +++++++++++++++++----
+>  8 files changed, 39 insertions(+), 39 deletions(-)
 > 
-> diff --git a/arch/alpha/include/asm/pgtable.h b/arch/alpha/include/asm/pgtable.h
-> index 90e7a9539102..12a3c5f8ece8 100644
-> --- a/arch/alpha/include/asm/pgtable.h
-> +++ b/arch/alpha/include/asm/pgtable.h
-> @@ -125,12 +125,6 @@ struct vm_area_struct;
->   */
->  #define pgprot_noncached(prot)	(prot)
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero:  used
-> - * for zero-mapped memory areas etc..
-> - */
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(ZERO_PGE))
-> -
->  /*
->   * On certain platforms whose physical address space can overlap KSEG,
->   * namely EV6 and above, we must re-twiddle the physaddr to restore the
-> diff --git a/arch/arc/include/asm/pgtable.h b/arch/arc/include/asm/pgtable.h
-> index bd580e2b62d7..0fdaea81b5fa 100644
-> --- a/arch/arc/include/asm/pgtable.h
-> +++ b/arch/arc/include/asm/pgtable.h
-> @@ -21,9 +21,6 @@
->  
->  #ifndef __ASSEMBLER__
->  
-> -extern char empty_zero_page[PAGE_SIZE];
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
-> -
->  extern pgd_t swapper_pg_dir[] __aligned(PAGE_SIZE);
->  
->  /* to cope with aliasing VIPT cache */
-> diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-> index a5e92f46e5d1..d6b5c27a0098 100644
-> --- a/arch/arc/mm/init.c
-> +++ b/arch/arc/mm/init.c
-> @@ -19,8 +19,6 @@
->  #include <asm/arcregs.h>
->  
->  pgd_t swapper_pg_dir[PTRS_PER_PGD] __aligned(PAGE_SIZE);
-> -char empty_zero_page[PAGE_SIZE] __aligned(PAGE_SIZE);
-> -EXPORT_SYMBOL(empty_zero_page);
->  
->  static const unsigned long low_mem_start = CONFIG_LINUX_RAM_BASE;
->  static unsigned long low_mem_sz;
-> diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-> index 6fa9acd6a7f5..982795cf4563 100644
-> --- a/arch/arm/include/asm/pgtable.h
-> +++ b/arch/arm/include/asm/pgtable.h
-> @@ -10,15 +10,6 @@
->  #include <linux/const.h>
->  #include <asm/proc-fns.h>
->  
-> -#ifndef __ASSEMBLY__
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
-> -#endif
-> -
->  #include <asm-generic/pgtable-nopud.h>
->  
->  #ifndef CONFIG_MMU
-> diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-> index 518def8314e7..23b87b5ef7f1 100644
-> --- a/arch/arm/mm/mmu.c
-> +++ b/arch/arm/mm/mmu.c
-> @@ -41,13 +41,6 @@
->  
->  extern unsigned long __atags_pointer;
->  
-> -/*
-> - * empty_zero_page is a special page that is used for
-> - * zero-initialized data and COW.
-> - */
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  /*
->   * The pmd table for the upper-most set of pages.
->   */
-> diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
-> index 7e42d8accec6..040ea43cce32 100644
-> --- a/arch/arm/mm/nommu.c
-> +++ b/arch/arm/mm/nommu.c
-> @@ -27,13 +27,6 @@
->  
->  unsigned long vectors_base;
->  
-> -/*
-> - * empty_zero_page is a special page that is used for
-> - * zero-initialized data and COW.
-> - */
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  #ifdef CONFIG_ARM_MPU
->  struct mpu_rgn_info mpu_rgn_info;
->  #endif
 > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index d94445b4f3df..63da07398a30 100644
+> index 63da07398a30..2c1ec7cc8612 100644
 > --- a/arch/arm64/include/asm/pgtable.h
 > +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -110,7 +110,6 @@ static inline void arch_leave_lazy_mmu_mode(void)
->   * ZERO_PAGE is a global shared page that is always zero: used
->   * for zero-mapped memory areas etc..
->   */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
->  #define ZERO_PAGE(vaddr)	phys_to_page(__pa_symbol(empty_zero_page))
+> @@ -106,12 +106,6 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>  #define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
+>  	local_flush_tlb_page_nonotify(vma, address)
 >  
+> -/*
+> - * ZERO_PAGE is a global shared page that is always zero: used
+> - * for zero-mapped memory areas etc..
+> - */
+> -#define ZERO_PAGE(vaddr)	phys_to_page(__pa_symbol(empty_zero_page))
+> -
 >  #define pte_ERROR(e)	\
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index a6a00accf4f9..0f6a171faf1f 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -64,13 +64,6 @@ static bool rodata_is_rw __ro_after_init = true;
->   */
->  long __section(".mmuoff.data.write") __early_cpu_boot_status;
+>  	pr_err("%s:%d: bad pte %016llx.\n", __FILE__, __LINE__, pte_val(e))
 >  
-> -/*
-> - * Empty_zero_page is a special page that is used for zero-initialized data
-> - * and COW.
-> - */
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  static DEFINE_SPINLOCK(swapper_pgdir_lock);
->  static DEFINE_MUTEX(fixmap_lock);
->  
-> diff --git a/arch/csky/include/asm/pgtable.h b/arch/csky/include/asm/pgtable.h
-> index d606afbabce1..bafcd5823531 100644
-> --- a/arch/csky/include/asm/pgtable.h
-> +++ b/arch/csky/include/asm/pgtable.h
-> @@ -76,9 +76,6 @@
->  #define MAX_SWAPFILES_CHECK() \
->  		BUILD_BUG_ON(MAX_SWAPFILES_SHIFT != 5)
->  
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
-> -
->  extern void load_pgd(unsigned long pg_dir);
->  extern pte_t invalid_pte_table[PTRS_PER_PTE];
->  
-> diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
-> index 573da66b2543..fa16015ea1c0 100644
-> --- a/arch/csky/mm/init.c
-> +++ b/arch/csky/mm/init.c
-> @@ -38,9 +38,6 @@ pte_t invalid_pte_table[PTRS_PER_PTE] __page_aligned_bss;
->  pte_t kernel_pte_tables[PTRS_KERN_TABLE] __page_aligned_bss;
->  
->  EXPORT_SYMBOL(invalid_pte_table);
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
-> -						__page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
->  
->  void free_initmem(void)
->  {
-> diff --git a/arch/hexagon/include/asm/pgtable.h b/arch/hexagon/include/asm/pgtable.h
-> index fbf24d1d1ca6..27b269e2870d 100644
-> --- a/arch/hexagon/include/asm/pgtable.h
-> +++ b/arch/hexagon/include/asm/pgtable.h
-> @@ -14,9 +14,6 @@
->  #include <asm/page.h>
->  #include <asm-generic/pgtable-nopmd.h>
->  
-> -/* A handy thing to have if one has the RAM. Declared in head.S */
-> -extern unsigned long empty_zero_page;
-> -
->  /*
->   * The PTE model described here is that of the Hexagon Virtual Machine,
->   * which autonomously walks 2-level page tables.  At a lower level, we
-> @@ -348,9 +345,6 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
->  	return (unsigned long)__va(pmd_val(pmd) & PAGE_MASK);
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 96711b8578fd..417ec7efe569 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -328,6 +328,11 @@ void __init bootmem_init(void)
+>  	memblock_dump_all();
 >  }
 >  
-> -/* ZERO_PAGE - returns the globally shared zero page */
-> -#define ZERO_PAGE(vaddr) (virt_to_page(&empty_zero_page))
-> -
->  /*
->   * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
->   * are !pte_none() && !pte_present().
-> diff --git a/arch/hexagon/kernel/head.S b/arch/hexagon/kernel/head.S
-> index 0b016308cc79..908ffece9132 100644
-> --- a/arch/hexagon/kernel/head.S
-> +++ b/arch/hexagon/kernel/head.S
-> @@ -216,8 +216,3 @@ __head_s_vaddr_target:
->  .p2align PAGE_SHIFT
->  ENTRY(external_cmdline_buffer)
->          .fill _PAGE_SIZE,1,0
-> -
-> -.data
-> -.p2align PAGE_SHIFT
-> -ENTRY(empty_zero_page)
-> -        .fill _PAGE_SIZE,1,0
-> diff --git a/arch/hexagon/kernel/hexagon_ksyms.c b/arch/hexagon/kernel/hexagon_ksyms.c
-> index 36a80e31d187..81bc6f81e200 100644
-> --- a/arch/hexagon/kernel/hexagon_ksyms.c
-> +++ b/arch/hexagon/kernel/hexagon_ksyms.c
-> @@ -17,7 +17,6 @@ EXPORT_SYMBOL(raw_copy_to_user);
->  EXPORT_SYMBOL(__vmgetie);
->  EXPORT_SYMBOL(__vmsetie);
->  EXPORT_SYMBOL(__vmyield);
-> -EXPORT_SYMBOL(empty_zero_page);
->  EXPORT_SYMBOL(memcpy);
->  EXPORT_SYMBOL(memset);
->  
-> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
-> index c33b3bcb733e..a244de27a03e 100644
-> --- a/arch/loongarch/include/asm/pgtable.h
-> +++ b/arch/loongarch/include/asm/pgtable.h
-> @@ -74,15 +74,6 @@
->  struct mm_struct;
->  struct vm_area_struct;
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero; used
-> - * for zero-mapped memory areas etc..
-> - */
-> -
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -
-> -#define ZERO_PAGE(vaddr)	virt_to_page(empty_zero_page)
-> -
->  #ifdef CONFIG_32BIT
->  
->  #define VMALLOC_START	(vm_map_base + PCI_IOSIZE + (2 * PAGE_SIZE))
-> diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-> index c331bf69d2ec..00f3822b6e47 100644
-> --- a/arch/loongarch/mm/init.c
-> +++ b/arch/loongarch/mm/init.c
-> @@ -36,9 +36,6 @@
->  #include <asm/pgalloc.h>
->  #include <asm/tlb.h>
->  
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  void copy_user_highpage(struct page *to, struct page *from,
->  	unsigned long vaddr, struct vm_area_struct *vma)
+> +void __init arch_setup_zero_pages(void)
+> +{
+> +	__zero_page = phys_to_page(__pa_symbol(empty_zero_page));
+> +}
+> +
+>  void __init arch_mm_preinit(void)
 >  {
-> diff --git a/arch/m68k/include/asm/pgtable_mm.h b/arch/m68k/include/asm/pgtable_mm.h
-> index bba64a9c49ac..7501ff030c63 100644
-> --- a/arch/m68k/include/asm/pgtable_mm.h
-> +++ b/arch/m68k/include/asm/pgtable_mm.h
-> @@ -110,15 +110,6 @@ extern unsigned long m68k_vmalloc_end;
->  #define VMALLOC_END KMAP_START
->  #endif
->  
-> -/* zero page used for uninitialized stuff */
-> -extern void *empty_zero_page;
-> -
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
-> -
->  extern void kernel_set_cachemode(void *addr, unsigned long size, int cmode);
->  
->  /*
-> diff --git a/arch/m68k/include/asm/pgtable_no.h b/arch/m68k/include/asm/pgtable_no.h
-> index 1a86c15b9008..11751807a3f3 100644
-> --- a/arch/m68k/include/asm/pgtable_no.h
-> +++ b/arch/m68k/include/asm/pgtable_no.h
-> @@ -30,13 +30,6 @@
->  
->  #define swapper_pg_dir ((pgd_t *) 0)
+>  	unsigned int flags = SWIOTLB_VERBOSE;
+> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> index 4f6449ad02ca..55b25e85122a 100644
+> --- a/arch/mips/mm/init.c
+> +++ b/arch/mips/mm/init.c
+> @@ -56,10 +56,7 @@ unsigned long empty_zero_page, zero_page_mask;
+>  EXPORT_SYMBOL_GPL(empty_zero_page);
+>  EXPORT_SYMBOL(zero_page_mask);
 >  
 > -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
+> - * Not static inline because used by IP27 special magic initialization code
 > - */
-> -extern void *empty_zero_page;
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
-> -
->  /*
->   * All 32bit addresses are effectively valid for vmalloc...
->   * Sort of meaningless for non-VM targets.
-> diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
-> index 53b71f786c27..3b88c0dd1616 100644
-> --- a/arch/m68k/mm/init.c
-> +++ b/arch/m68k/mm/init.c
-> @@ -33,13 +33,6 @@
->  #include <asm/sections.h>
->  #include <asm/tlb.h>
->  
-> -/*
-> - * ZERO_PAGE is a special page that is used for zero-initialized
-> - * data and COW.
-> - */
-> -void *empty_zero_page;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> -static void __init setup_zero_pages(void)
+> +void __init arch_setup_zero_pages(void)
 >  {
->  	max_zone_pfns[ZONE_DMA] = PFN_DOWN(memblock_end_of_DRAM());
-> @@ -71,8 +64,6 @@ void __init paging_init(void)
->  	unsigned long end_mem = memory_end & PAGE_MASK;
+>  	unsigned int order;
 >  
->  	high_memory = (void *) end_mem;
-> -
-> -	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
->  }
+> @@ -450,7 +447,6 @@ void __init arch_mm_preinit(void)
+>  	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
 >  
->  #endif /* CONFIG_MMU */
-> diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
-> index 3418fd864237..4924f2ff8ef8 100644
-> --- a/arch/m68k/mm/mcfmmu.c
-> +++ b/arch/m68k/mm/mcfmmu.c
-> @@ -41,8 +41,6 @@ void __init paging_init(void)
->  	unsigned long next_pgtable;
->  	int i;
+>  	maar_init();
+> -	setup_zero_pages();	/* Setup zeroed pages.  */
+>  	highmem_init();
 >  
-> -	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
-> -
->  	pg_dir = swapper_pg_dir;
->  	memset(swapper_pg_dir, 0, sizeof(swapper_pg_dir));
->  
-> diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
-> index 127a3fa69f4c..b30aa69a73a6 100644
-> --- a/arch/m68k/mm/motorola.c
-> +++ b/arch/m68k/mm/motorola.c
-> @@ -498,12 +498,6 @@ void __init paging_init(void)
->  
->  	early_memtest(min_addr, max_addr);
->  
-> -	/*
-> -	 * initialize the bad page table and bad page to point
-> -	 * to a couple of allocated pages
-> -	 */
-> -	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
-> -
->  	/*
->  	 * Set up SFC/DFC registers
->  	 */
-> diff --git a/arch/m68k/mm/sun3mmu.c b/arch/m68k/mm/sun3mmu.c
-> index c801677f7df8..f139cc15753a 100644
-> --- a/arch/m68k/mm/sun3mmu.c
-> +++ b/arch/m68k/mm/sun3mmu.c
-> @@ -43,8 +43,6 @@ void __init paging_init(void)
->  	unsigned long bootmem_end;
->  	unsigned long size;
->  
-> -	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
-> -
->  	address = PAGE_OFFSET;
->  	pg_dir = swapper_pg_dir;
->  	memset (swapper_pg_dir, 0, sizeof (swapper_pg_dir));
-> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
-> index 4eb76de6be4a..ea72291de553 100644
-> --- a/arch/microblaze/include/asm/pgtable.h
-> +++ b/arch/microblaze/include/asm/pgtable.h
-> @@ -207,16 +207,6 @@ extern pte_t *va_to_pte(unsigned long address);
->   * Also, write permissions imply read permissions.
->   */
->  
-> -#ifndef __ASSEMBLER__
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[1024];
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
-> -#endif /* __ASSEMBLER__ */
-> -
->  #define pte_none(pte)		((pte_val(pte) & ~_PTE_NONE_MASK) == 0)
->  #define pte_present(pte)	(pte_val(pte) & _PAGE_PRESENT)
->  #define pte_clear(mm, addr, ptep) \
-> diff --git a/arch/microblaze/kernel/head.S b/arch/microblaze/kernel/head.S
-> index ec2fcb545e64..808019c3b7ac 100644
-> --- a/arch/microblaze/kernel/head.S
-> +++ b/arch/microblaze/kernel/head.S
-> @@ -39,10 +39,6 @@
->  #include <asm/processor.h>
->  
->  .section .data
-> -.global empty_zero_page
-> -.align 12
-> -empty_zero_page:
-> -	.space	PAGE_SIZE
->  .global swapper_pg_dir
->  swapper_pg_dir:
->  	.space	PAGE_SIZE
-> diff --git a/arch/microblaze/kernel/microblaze_ksyms.c b/arch/microblaze/kernel/microblaze_ksyms.c
-> index a8553f54152b..ad7596d7ba07 100644
-> --- a/arch/microblaze/kernel/microblaze_ksyms.c
-> +++ b/arch/microblaze/kernel/microblaze_ksyms.c
-> @@ -33,8 +33,6 @@ EXPORT_SYMBOL(memcpy);
->  EXPORT_SYMBOL(memmove);
->  #endif
->  
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  EXPORT_SYMBOL(mbc);
->  
->  extern void __divsi3(void);
-> diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-> index 844dce55569f..d389aa9ca57c 100644
-> --- a/arch/nios2/include/asm/pgtable.h
-> +++ b/arch/nios2/include/asm/pgtable.h
-> @@ -65,13 +65,6 @@ struct mm_struct;
->  #define PGDIR_SIZE	(1UL << PGDIR_SHIFT)
->  #define PGDIR_MASK	(~(PGDIR_SIZE-1))
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
-> -
->  extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
->  extern pte_t invalid_pte_table[PAGE_SIZE/sizeof(pte_t)];
->  
-> diff --git a/arch/nios2/kernel/head.S b/arch/nios2/kernel/head.S
-> index 372ce4a33018..613212e1a63a 100644
-> --- a/arch/nios2/kernel/head.S
-> +++ b/arch/nios2/kernel/head.S
-> @@ -23,16 +23,6 @@
->  #include <asm/asm-offsets.h>
->  #include <asm/asm-macros.h>
->  
-> -/*
-> - * ZERO_PAGE is a special page that is used for zero-initialized
-> - * data and COW.
-> - */
-> -.data
-> -.global empty_zero_page
-> -.align 12
-> -empty_zero_page:
-> -	.space	PAGE_SIZE
-> -
->  /*
->   * This global variable is used as an extension to the nios'
->   * STATUS register to emulate a user/supervisor mode.
-> diff --git a/arch/nios2/kernel/nios2_ksyms.c b/arch/nios2/kernel/nios2_ksyms.c
-> index 54f7b23df1bf..c40aa39e8658 100644
-> --- a/arch/nios2/kernel/nios2_ksyms.c
-> +++ b/arch/nios2/kernel/nios2_ksyms.c
-> @@ -20,7 +20,6 @@ EXPORT_SYMBOL(memmove);
->  
->  /* memory management */
->  
-> -EXPORT_SYMBOL(empty_zero_page);
->  EXPORT_SYMBOL(flush_icache_range);
->  
->  /*
-> diff --git a/arch/openrisc/include/asm/pgtable.h b/arch/openrisc/include/asm/pgtable.h
-> index b218050e2f6d..6b89996d0b62 100644
-> --- a/arch/openrisc/include/asm/pgtable.h
-> +++ b/arch/openrisc/include/asm/pgtable.h
-> @@ -179,10 +179,6 @@ extern void paging_init(void);
->  	__pgprot(_PAGE_ALL | _PAGE_SRE | _PAGE_SWE \
->  		 | _PAGE_SHARED | _PAGE_DIRTY | _PAGE_EXEC | _PAGE_CI)
->  
-> -/* zero page used for uninitialized stuff */
-> -extern unsigned long empty_zero_page[2048];
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
->  #define pte_none(x)	(!pte_val(x))
->  #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
->  #define pte_clear(mm, addr, xp)	do { pte_val(*(xp)) = 0; } while (0)
-> diff --git a/arch/openrisc/kernel/head.S b/arch/openrisc/kernel/head.S
-> index bd760066f1cd..45890393947d 100644
-> --- a/arch/openrisc/kernel/head.S
-> +++ b/arch/openrisc/kernel/head.S
-> @@ -1563,9 +1563,6 @@ _string_nl:
->   */
->  	.section .data,"aw"
->  	.align	8192
-> -	.global  empty_zero_page
-> -empty_zero_page:
-> -	.space  8192
->  
->  	.global  swapper_pg_dir
->  swapper_pg_dir:
-> diff --git a/arch/openrisc/kernel/or32_ksyms.c b/arch/openrisc/kernel/or32_ksyms.c
-> index 212e5f85004c..84a937a64e2a 100644
-> --- a/arch/openrisc/kernel/or32_ksyms.c
-> +++ b/arch/openrisc/kernel/or32_ksyms.c
-> @@ -40,7 +40,6 @@ DECLARE_EXPORT(__ashldi3);
->  DECLARE_EXPORT(__lshrdi3);
->  DECLARE_EXPORT(__ucmpdi2);
->  
-> -EXPORT_SYMBOL(empty_zero_page);
->  EXPORT_SYMBOL(__copy_tofrom_user);
->  EXPORT_SYMBOL(__clear_user);
->  EXPORT_SYMBOL(memset);
-> diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-> index 78fb0734cdbc..89d8c6df8855 100644
-> --- a/arch/openrisc/mm/init.c
-> +++ b/arch/openrisc/mm/init.c
-> @@ -188,9 +188,6 @@ void __init mem_init(void)
->  {
->  	BUG_ON(!mem_map);
->  
-> -	/* clear the zero-page */
-> -	memset((void *)empty_zero_page, 0, PAGE_SIZE);
-> -
->  	printk("mem_init_done ...........................................\n");
->  	mem_init_done = 1;
->  	return;
-> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-> index 2c139a4dbf4b..cbdc01a26ea0 100644
-> --- a/arch/parisc/include/asm/pgtable.h
-> +++ b/arch/parisc/include/asm/pgtable.h
-> @@ -262,17 +262,6 @@ extern pgd_t swapper_pg_dir[]; /* declared in init_task.c */
->  
->  extern pte_t pg0[];
->  
-> -/* zero page used for uninitialized stuff */
-> -
-> -extern unsigned long *empty_zero_page;
-> -
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
->  #define pte_none(x)     (pte_val(x) == 0)
->  #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
->  #define pte_user(x)	(pte_val(x) & _PAGE_USER)
-> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-> index 6a39e031e5ff..be3380c9bcda 100644
-> --- a/arch/parisc/mm/init.c
-> +++ b/arch/parisc/mm/init.c
-> @@ -604,9 +604,6 @@ void __init mem_init(void)
+>  #ifdef CONFIG_64BIT
+> @@ -461,11 +457,6 @@ void __init arch_mm_preinit(void)
+>  				0x80000000 - 4, KCORE_TEXT);
 >  #endif
 >  }
+> -#else  /* CONFIG_NUMA */
+> -void __init arch_mm_preinit(void)
+> -{
+> -	setup_zero_pages();	/* This comes from node 0 */
+> -}
+>  #endif /* !CONFIG_NUMA */
 >  
-> -unsigned long *empty_zero_page __ro_after_init;
-> -EXPORT_SYMBOL(empty_zero_page);
+>  void free_init_pages(const char *what, unsigned long begin, unsigned long end)
+> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+> index 3c20475cbee2..1f72efc2a579 100644
+> --- a/arch/s390/mm/init.c
+> +++ b/arch/s390/mm/init.c
+> @@ -69,7 +69,7 @@ unsigned long empty_zero_page, zero_page_mask;
+>  EXPORT_SYMBOL(empty_zero_page);
+>  EXPORT_SYMBOL(zero_page_mask);
+>  
+> -static void __init setup_zero_pages(void)
+> +void __init arch_setup_zero_pages(void)
+>  {
+>  	unsigned long total_pages = memblock_estimated_nr_free_pages();
+>  	unsigned int order;
+> @@ -159,8 +159,6 @@ void __init arch_mm_preinit(void)
+>  	cpumask_set_cpu(0, mm_cpumask(&init_mm));
+>  
+>  	pv_init();
 > -
->  /*
->   * pagetable_init() sets up the page tables
->   *
-> @@ -639,9 +636,6 @@ static void __init pagetable_init(void)
->  			  initrd_end - initrd_start, PAGE_KERNEL, 0);
->  	}
->  #endif
-> -
-> -	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
-> -
+> -	setup_zero_pages();	/* Setup zeroed pages. */
 >  }
 >  
->  static void __init gateway_init(void)
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index dcd3a88caaf6..b27d94c06d0e 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -76,12 +76,6 @@ static inline const void *pmd_page_vaddr(pmd_t pmd)
->  }
->  #define pmd_page_vaddr pmd_page_vaddr
->  #endif
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[];
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+>  unsigned long memory_block_size_bytes(void)
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 615f460c50af..74ede706fb32 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -210,9 +210,6 @@ extern unsigned long _PAGE_CACHE;
+>  extern unsigned long pg_iobits;
+>  extern unsigned long _PAGE_ALL_SZ_BITS;
 >  
->  extern pgd_t swapper_pg_dir[];
->  
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 3789a51bdaae..85508392a6b6 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -34,9 +34,6 @@
->  
->  unsigned long long memory_limit __initdata;
->  
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
+> -extern struct page *mem_map_zero;
+> -#define ZERO_PAGE(vaddr)	(mem_map_zero)
 > -
->  pgprot_t __phys_mem_access_prot(unsigned long pfn, unsigned long size,
->  				pgprot_t vma_prot)
->  {
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index 9ecbf0366719..a6b496f4944f 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -1258,13 +1258,6 @@ extern u64 satp_mode;
->  void paging_init(void);
->  void misc_mem_init(void);
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero,
-> - * used for zero-mapped memory areas, etc.
-> - */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
->  /*
->   * Use set_p*_safe(), and elide TLB flushing, when confident that *no*
->   * TLB flush will be required as a result of the "set". For example, use
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 848efeb9e163..95ac79c62067 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -69,10 +69,6 @@ unsigned long vmemmap_start_pfn __ro_after_init;
->  EXPORT_SYMBOL(vmemmap_start_pfn);
->  #endif
->  
-> -unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
-> -							__page_aligned_bss;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  extern char _start[];
->  void *_dtb_early_va __initdata;
->  uintptr_t _dtb_early_pa __initdata;
-> diff --git a/arch/sh/include/asm/pgtable.h b/arch/sh/include/asm/pgtable.h
-> index 10fa8f2bb8d1..d5ce0950a323 100644
-> --- a/arch/sh/include/asm/pgtable.h
-> +++ b/arch/sh/include/asm/pgtable.h
-> @@ -20,14 +20,6 @@
->  #ifndef __ASSEMBLER__
->  #include <asm/addrspace.h>
->  #include <asm/fixmap.h>
-> -
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
->  #endif /* !__ASSEMBLER__ */
->  
->  /*
-> diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
-> index 84bb23a771f3..63c9efc06348 100644
-> --- a/arch/sh/include/asm/setup.h
-> +++ b/arch/sh/include/asm/setup.h
-> @@ -7,7 +7,8 @@
->  /*
->   * This is set up by the setup-routine at boot-time
->   */
-> -#define PARAM	((unsigned char *)empty_zero_page)
-> +extern unsigned char *boot_params_page;
-> +#define PARAM boot_params_page
->  
->  #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
->  #define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))
-> diff --git a/arch/sh/kernel/head_32.S b/arch/sh/kernel/head_32.S
-> index b603b7968b38..0b91bb85d40a 100644
-> --- a/arch/sh/kernel/head_32.S
-> +++ b/arch/sh/kernel/head_32.S
-> @@ -26,7 +26,7 @@
->  #endif
->  
->  	.section	.empty_zero_page, "aw"
-> -ENTRY(empty_zero_page)
-> +ENTRY(boot_params_page)
->  	.long	1		/* MOUNT_ROOT_RDONLY */
->  	.long	0		/* RAMDISK_FLAGS */
->  	.long	0x0200		/* ORIG_ROOT_DEV */
-> @@ -39,7 +39,7 @@ ENTRY(empty_zero_page)
->  	.long	0x53453f00 + 29	/* "SE?" = 29 bit */
->  #endif
->  1:
-> -	.skip	PAGE_SIZE - empty_zero_page - 1b
-> +	.skip	PAGE_SIZE - boot_params_page - 1b
->  
->  	__HEAD
->  
-> diff --git a/arch/sh/kernel/sh_ksyms_32.c b/arch/sh/kernel/sh_ksyms_32.c
-> index 5858936cb431..041191002e2e 100644
-> --- a/arch/sh/kernel/sh_ksyms_32.c
-> +++ b/arch/sh/kernel/sh_ksyms_32.c
-> @@ -20,7 +20,6 @@ EXPORT_SYMBOL(csum_partial);
->  EXPORT_SYMBOL(csum_partial_copy_generic);
->  EXPORT_SYMBOL(copy_page);
->  EXPORT_SYMBOL(__clear_user);
-> -EXPORT_SYMBOL(empty_zero_page);
->  #ifdef CONFIG_FLATMEM
->  /* need in pfn_valid macro */
->  EXPORT_SYMBOL(min_low_pfn);
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 464a3a63e2fa..4e40d5e96be9 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -332,7 +332,6 @@ void __init mem_init(void)
->  	cpu_cache_init();
->  
->  	/* clear the zero-page */
-> -	memset(empty_zero_page, 0, PAGE_SIZE);
->  	__flush_wback_region(empty_zero_page, PAGE_SIZE);
->  
->  	vsyscall_init();
-> diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
-> index a9f802d1dd64..f89b1250661d 100644
-> --- a/arch/sparc/include/asm/pgtable_32.h
-> +++ b/arch/sparc/include/asm/pgtable_32.h
-> @@ -71,14 +71,6 @@ extern unsigned long ptr_in_current_pgd;
->  extern unsigned long phys_base;
->  extern unsigned long pfn_base;
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
->  /*
->   * In general all page table modifications should use the V8 atomic
->   * swap instruction.  This insures the mmu and the cpu are in sync
-> diff --git a/arch/sparc/include/asm/setup.h b/arch/sparc/include/asm/setup.h
-> index 72205684e51e..21bed5514028 100644
-> --- a/arch/sparc/include/asm/setup.h
-> +++ b/arch/sparc/include/asm/setup.h
-> @@ -17,8 +17,6 @@ extern char reboot_command[];
->   */
->  extern unsigned char boot_cpu_id;
->  
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-> -
->  extern int serial_console;
->  static inline int con_is_present(void)
->  {
-> diff --git a/arch/sparc/kernel/head_32.S b/arch/sparc/kernel/head_32.S
-> index 38345460d542..8c320fa25a67 100644
-> --- a/arch/sparc/kernel/head_32.S
-> +++ b/arch/sparc/kernel/head_32.S
-> @@ -57,13 +57,6 @@ sun4e_notsup:
->  
->  	.align PAGE_SIZE
->  
-> -/* This was the only reasonable way I could think of to properly align
-> - * these page-table data structures.
-> - */
-> -	.globl empty_zero_page
-> -empty_zero_page:	.skip PAGE_SIZE
-> -EXPORT_SYMBOL(empty_zero_page)
-> -
->  	.global root_flags
->  	.global ram_flags
->  	.global root_dev
-> diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
-> index fdc93dd12c3e..e0e66f91ceeb 100644
-> --- a/arch/sparc/mm/init_32.c
-> +++ b/arch/sparc/mm/init_32.c
-> @@ -246,10 +246,6 @@ void __init arch_mm_preinit(void)
->  		prom_halt();
->  	}
->  
-> -
-> -	/* Saves us work later. */
-> -	memset((void *)empty_zero_page, 0, PAGE_SIZE);
-> -
->  	i = last_valid_pfn >> ((20 - PAGE_SHIFT) + 5);
->  	i += 1;
->  	sparc_valid_addr_bitmap = (unsigned long *)
+>  /* PFNs are real physical page numbers.  However, mem_map only begins to record
+>   * per-page information starting at pfn_base.  This is to handle systems where
+>   * the first physical page in the machine is at some huge physical address,
 > diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 4f7bdb18774b..0cc8de2fea90 100644
+> index 0cc8de2fea90..707c1df67d79 100644
 > --- a/arch/sparc/mm/init_64.c
 > +++ b/arch/sparc/mm/init_64.c
-> @@ -2498,6 +2498,9 @@ static void __init register_page_bootmem_info(void)
+> @@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
+>  extern unsigned int sparc_ramdisk_image;
+>  extern unsigned int sparc_ramdisk_size;
+>  
+> -struct page *mem_map_zero __read_mostly;
+> -EXPORT_SYMBOL(mem_map_zero);
+> -
+>  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
+>  
+>  unsigned long sparc64_kern_pri_context __read_mostly;
+> @@ -2496,11 +2493,17 @@ static void __init register_page_bootmem_info(void)
+>  			register_page_bootmem_info_node(NODE_DATA(i));
+>  #endif
 >  }
->  void __init mem_init(void)
->  {
-> +	phys_addr_t zero_page_pa = kern_base +
-> +		((unsigned long)&empty_zero_page[0] - KERNBASE);
+> -void __init mem_init(void)
 > +
+> +void __init arch_setup_zero_pages(void)
+>  {
+>  	phys_addr_t zero_page_pa = kern_base +
+>  		((unsigned long)&empty_zero_page[0] - KERNBASE);
+>  
+> +	__zero_page = phys_to_page(zero_page_pa);
+> +}
+> +
+> +void __init mem_init(void)
+> +{
 >  	/*
 >  	 * Must be done after boot memory is put on freelist, because here we
 >  	 * might set fields in deferred struct pages that have not yet been
-> @@ -2510,13 +2513,7 @@ void __init mem_init(void)
->  	 * Set up the zero page, mark it reserved, so that page count
->  	 * is not manipulated when freeing the page from user ptes.
+> @@ -2509,12 +2512,6 @@ void __init mem_init(void)
 >  	 */
-> -	mem_map_zero = alloc_pages(GFP_KERNEL|__GFP_ZERO, 0);
-> -	if (mem_map_zero == NULL) {
-> -		prom_printf("paging_init: Cannot alloc zero page.\n");
-> -		prom_halt();
-> -	}
-> -	mark_page_reserved(mem_map_zero);
-> -
-> +	mem_map_zero = pfn_to_page(PHYS_PFN(zero_page_pa));
+>  	register_page_bootmem_info();
 >  
+> -	/*
+> -	 * Set up the zero page, mark it reserved, so that page count
+> -	 * is not manipulated when freeing the page from user ptes.
+> -	 */
+> -	mem_map_zero = pfn_to_page(PHYS_PFN(zero_page_pa));
+> -
 >  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
 >  		cheetah_ecache_flush_init();
-> diff --git a/arch/um/include/asm/pgtable.h b/arch/um/include/asm/pgtable.h
-> index 3b42b0f45bf6..19e0608fb649 100644
-> --- a/arch/um/include/asm/pgtable.h
-> +++ b/arch/um/include/asm/pgtable.h
-> @@ -34,9 +34,6 @@
->  
->  extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
->  
-> -/* zero page used for uninitialized stuff */
-> -extern unsigned long *empty_zero_page;
-> -
->  /* Just any arbitrary offset to the start of the vmalloc VM area: the
->   * current 8MB value just means that there will be a 8MB "hole" after the
->   * physical memory until the kernel virtual memory starts.  That means that
-> @@ -74,12 +71,6 @@ extern unsigned long *empty_zero_page;
->   * get..
->   */
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -#define ZERO_PAGE(vaddr) virt_to_page(empty_zero_page)
-> -
->  #define pte_clear(mm, addr, xp) pte_set_val(*(xp), (phys_t) 0, __pgprot(_PAGE_NEEDSYNC))
->  
->  #define pmd_none(x)	(!((unsigned long)pmd_val(x) & ~_PAGE_NEEDSYNC))
-> diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
-> index 38321188c04c..9812efd14ec0 100644
-> --- a/arch/um/include/shared/kern_util.h
-> +++ b/arch/um/include/shared/kern_util.h
-> @@ -38,7 +38,6 @@ extern void timer_handler(int sig, struct siginfo *unused_si, struct uml_pt_regs
->  extern void uml_pm_wake(void);
->  
->  extern int start_uml(void);
-> -extern void paging_init(void);
->  
->  extern void uml_cleanup(void);
->  extern void do_uml_exitcalls(void);
-> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-> index 89c8c8b94a79..1eef0e42ef5d 100644
-> --- a/arch/um/kernel/mem.c
-> +++ b/arch/um/kernel/mem.c
-> @@ -44,10 +44,6 @@ __section(".kasan_init") __used
->  = kasan_init;
->  #endif
->  
-> -/* allocated in paging_init, zeroed in mem_init, and unchanged thereafter */
-> -unsigned long *empty_zero_page = NULL;
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  /*
->   * Initialized during boot, and readonly for initializing page tables
->   * afterwards
-> @@ -65,9 +61,6 @@ void __init arch_mm_preinit(void)
->  	/* Safe to call after jump_label_init(). Enables KASAN. */
->  	kasan_init_generic();
->  
-> -	/* clear the zero-page */
-> -	memset(empty_zero_page, 0, PAGE_SIZE);
-> -
->  	/* Map in the area just after the brk now that kmalloc is about
->  	 * to be turned on.
->  	 */
-> @@ -89,15 +82,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
->  	max_zone_pfns[ZONE_NORMAL] = high_physmem >> PAGE_SHIFT;
 >  }
->  
-> -void __init paging_init(void)
-> -{
-> -	empty_zero_page = (unsigned long *) memblock_alloc_low(PAGE_SIZE,
-> -							       PAGE_SIZE);
-> -	if (!empty_zero_page)
-> -		panic("%s: Failed to allocate %lu bytes align=%lx\n",
-> -		      __func__, PAGE_SIZE, PAGE_SIZE);
-> -}
-> -
->  /*
->   * This can't do anything because nothing in the kernel image can be freed
->   * since it's not in kernel physical memory.
-> diff --git a/arch/um/kernel/um_arch.c b/arch/um/kernel/um_arch.c
-> index e2b24e1ecfa6..2141f5f1f5a2 100644
-> --- a/arch/um/kernel/um_arch.c
-> +++ b/arch/um/kernel/um_arch.c
-> @@ -413,7 +413,6 @@ void __init setup_arch(char **cmdline_p)
->  	uml_dtb_init();
->  	read_initrd();
->  
-> -	paging_init();
->  	strscpy(boot_command_line, command_line, COMMAND_LINE_SIZE);
->  	*cmdline_p = command_line;
->  	setup_hostinfo(host_info, sizeof host_info);
-> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-> index 1662c5a8f445..54289f4587a4 100644
-> --- a/arch/x86/include/asm/pgtable.h
-> +++ b/arch/x86/include/asm/pgtable.h
-> @@ -47,14 +47,6 @@ void ptdump_walk_user_pgd_level_checkwx(void);
->  #define debug_checkwx_user()	do { } while (0)
->  #endif
->  
-> -/*
-> - * ZERO_PAGE is a global shared page that is always zero: used
-> - * for zero-mapped memory areas etc..
-> - */
-> -extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
-> -	__visible;
-> -#define ZERO_PAGE(vaddr) ((void)(vaddr),virt_to_page(empty_zero_page))
-> -
->  extern spinlock_t pgd_lock;
->  extern struct list_head pgd_list;
->  
-> diff --git a/arch/x86/kernel/head_32.S b/arch/x86/kernel/head_32.S
-> index 80ef5d386b03..5171cb746444 100644
-> --- a/arch/x86/kernel/head_32.S
-> +++ b/arch/x86/kernel/head_32.S
-> @@ -441,10 +441,6 @@ initial_pg_fixmap:
->  swapper_pg_dir:
->  	.fill 1024,4,0
->  	.fill PTI_USER_PGD_FILL,4,0
-> -.globl empty_zero_page
-> -empty_zero_page:
-> -	.fill 4096,1,0
-> -EXPORT_SYMBOL(empty_zero_page)
->  
->  /*
->   * This starts the data section.
-> diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-> index 21816b48537c..cbf7647a25d8 100644
-> --- a/arch/x86/kernel/head_64.S
-> +++ b/arch/x86/kernel/head_64.S
-> @@ -712,10 +712,3 @@ SYM_PIC_ALIAS(phys_base);
->  EXPORT_SYMBOL(phys_base)
->  
->  #include "../xen/xen-head.S"
-> -
-> -	__PAGE_ALIGNED_BSS
-> -SYM_DATA_START_PAGE_ALIGNED(empty_zero_page)
-> -	.skip PAGE_SIZE
-> -SYM_DATA_END(empty_zero_page)
-> -EXPORT_SYMBOL(empty_zero_page)
-> -
-> diff --git a/arch/xtensa/include/asm/pgtable.h b/arch/xtensa/include/asm/pgtable.h
-> index 50a136213b2b..61f07d981a94 100644
-> --- a/arch/xtensa/include/asm/pgtable.h
-> +++ b/arch/xtensa/include/asm/pgtable.h
-> @@ -209,10 +209,6 @@
->  #define pgd_ERROR(e) \
->  	printk("%s:%d: bad pgd entry %08lx.\n", __FILE__, __LINE__, pgd_val(e))
->  
-> -extern unsigned long empty_zero_page[1024];
-> -
-> -#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-> -
->  #ifdef CONFIG_MMU
->  extern pgd_t swapper_pg_dir[PAGE_SIZE/sizeof(pgd_t)];
->  extern void paging_init(void);
-> diff --git a/arch/xtensa/kernel/head.S b/arch/xtensa/kernel/head.S
-> index 8484294bc623..4b0c5c5e685a 100644
-> --- a/arch/xtensa/kernel/head.S
-> +++ b/arch/xtensa/kernel/head.S
-> @@ -381,6 +381,3 @@ ENTRY(swapper_pg_dir)
->  	.fill	PAGE_SIZE, 1, 0
->  END(swapper_pg_dir)
->  #endif
-> -ENTRY(empty_zero_page)
-> -	.fill	PAGE_SIZE, 1, 0
-> -END(empty_zero_page)
-> diff --git a/arch/xtensa/kernel/xtensa_ksyms.c b/arch/xtensa/kernel/xtensa_ksyms.c
-> index 62d81e76e18e..ced335b4df5f 100644
-> --- a/arch/xtensa/kernel/xtensa_ksyms.c
-> +++ b/arch/xtensa/kernel/xtensa_ksyms.c
-> @@ -15,8 +15,6 @@
->  #include <linux/module.h>
->  #include <asm/pgtable.h>
->  
-> -EXPORT_SYMBOL(empty_zero_page);
-> -
->  unsigned int __sync_fetch_and_and_4(volatile void *p, unsigned int v)
->  {
->  	BUG();
 > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 9bacf4df9769..3d48eea57cd2 100644
+> index 3d48eea57cd2..1da21ec62836 100644
 > --- a/include/linux/pgtable.h
 > +++ b/include/linux/pgtable.h
-> @@ -1890,6 +1890,9 @@ static inline void pfnmap_setup_cachemode_pfn(unsigned long pfn, pgprot_t *prot)
->   * for different ranges in the virtual address space.
->   *
->   * zero_page_pfn identifies the first (or the only) pfn for these pages.
-> + *
-> + * For architectures that don't __HAVE_COLOR_ZERO_PAGE the zero page lives in
-> + * empty_zero_page in BSS.
+> @@ -1894,6 +1894,8 @@ static inline void pfnmap_setup_cachemode_pfn(unsigned long pfn, pgprot_t *prot)
+>   * For architectures that don't __HAVE_COLOR_ZERO_PAGE the zero page lives in
+>   * empty_zero_page in BSS.
 >   */
+> +void arch_setup_zero_pages(void);
+> +
 >  #ifdef __HAVE_COLOR_ZERO_PAGE
 >  static inline int is_zero_pfn(unsigned long pfn)
-> @@ -1916,6 +1919,13 @@ static inline unsigned long zero_pfn(unsigned long addr)
->  
->  	return zero_page_pfn;
+>  {
+> @@ -1921,10 +1923,13 @@ static inline unsigned long zero_pfn(unsigned long addr)
 >  }
-> +
-> +extern uint8_t empty_zero_page[PAGE_SIZE];
-> +
-> +#ifndef ZERO_PAGE
-> +#define ZERO_PAGE(vaddr) ((void)(vaddr),virt_to_page(empty_zero_page))
-> +#endif
-> +
+>  
+>  extern uint8_t empty_zero_page[PAGE_SIZE];
+> +extern struct page *__zero_page;
+>  
+> -#ifndef ZERO_PAGE
+> -#define ZERO_PAGE(vaddr) ((void)(vaddr),virt_to_page(empty_zero_page))
+> -#endif
+> +static inline struct page *_zero_page(unsigned long addr)
+> +{
+> +	return __zero_page;
+> +}
+> +#define ZERO_PAGE(vaddr) _zero_page(vaddr)
+>  
 >  #endif /* __HAVE_COLOR_ZERO_PAGE */
 >  
->  #ifdef CONFIG_MMU
 > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index a0ca236eb4f5..1eac634ece1a 100644
+> index 1eac634ece1a..b08608c1b71d 100644
 > --- a/mm/mm_init.c
 > +++ b/mm/mm_init.c
-> @@ -56,6 +56,11 @@ EXPORT_SYMBOL(high_memory);
->  unsigned long zero_page_pfn __ro_after_init;
->  EXPORT_SYMBOL(zero_page_pfn);
->  
-> +#ifndef __HAVE_COLOR_ZERO_PAGE
-> +uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
-> +EXPORT_SYMBOL(empty_zero_page);
-> +#endif
+> @@ -59,7 +59,10 @@ EXPORT_SYMBOL(zero_page_pfn);
+>  #ifndef __HAVE_COLOR_ZERO_PAGE
+>  uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
+>  EXPORT_SYMBOL(empty_zero_page);
+> -#endif
 > +
+> +struct page *__zero_page __ro_after_init;
+> +EXPORT_SYMBOL(__zero_page);
+> +#endif /* __HAVE_COLOR_ZERO_PAGE */
+>  
 >  #ifdef CONFIG_DEBUG_MEMORY_INIT
 >  int __meminitdata mminit_loglevel;
+> @@ -2675,12 +2678,21 @@ static void __init mem_init_print_info(void)
+>  		);
+>  }
 >  
+> -static int __init init_zero_page_pfn(void)
+> +#ifndef __HAVE_COLOR_ZERO_PAGE
+> +/*
+> + * architectures that __HAVE_COLOR_ZERO_PAGE must define this function
+> + */
+> +void __init __weak arch_setup_zero_pages(void)
+> +{
+> +	__zero_page = virt_to_page(empty_zero_page);
+> +}
+> +#endif
+> +
+> +static void __init init_zero_page_pfn(void)
+>  {
+> +	arch_setup_zero_pages();
+>  	zero_page_pfn = page_to_pfn(ZERO_PAGE(0));
+> -	return 0;
+>  }
+> -early_initcall(init_zero_page_pfn);
+>  
+>  void __init __weak arch_mm_preinit(void)
+>  {
+> @@ -2704,6 +2716,7 @@ void __init mm_core_init_early(void)
+>  void __init mm_core_init(void)
+>  {
+>  	arch_mm_preinit();
+> +	init_zero_page_pfn();
+>  
+>  	/* Initializations relying on SMP setup */
+>  	BUILD_BUG_ON(MAX_ZONELISTS > 2);
 > -- 
 > 2.51.0
 > 
