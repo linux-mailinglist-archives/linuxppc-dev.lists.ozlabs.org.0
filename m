@@ -1,85 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-16840-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PErHPCmjWkK5wAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16840-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 11:09:52 +0100
+	id KHNFFSCzjWlz6AAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 12:01:52 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E16F12C47C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 11:09:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D4812CCC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Feb 2026 12:01:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBWHR2snFz3br5;
-	Thu, 12 Feb 2026 21:09:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBXRp2l7xz2yLH;
+	Thu, 12 Feb 2026 22:01:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=113.46.200.223
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770890963;
-	cv=none; b=Urv/ygDH/jv3h5vDae0LNMuymMJ4U9VvvQ1feVO4iUmoqvwhBiV4Nu0y+NIEOAapR8dYCptL3D/0fUA9e9ik0nlj8zqkDk4m8T5W3B5LqeEBh5d+a0J7G/td05Pm3MN4g5XoXa5RTEqEeYSrSfOXKCwivS4iQfsmRvSZWcmFLRBvWGzId0URjUBoY362wvSgqtKqpXsqyIhhXt0tVqCW/b0t6x+vwhi0SH7XNXkfkhW2uSbO9b3EpXrWSeKs1GiwYhprzgAdtVkURABuoRoUmtgxa7tASqTxCLJ6c1PQwsLmOJwzWECMEjB2MMQhJ0fzrSceAeJNP2ARLrkLTC5RhQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770894102;
+	cv=none; b=lldqeZDtUT3PtBy3G24uxGe1wV+10OVDHWs2ZSunh/OFhtQZ+1tF2unGUbJvHVzxhgUUBSF81kcINECwQT3vdTNUjbcxJYz2chi+nDd2fCsi7BdPEBAY+qcu7UB5fMDYKH+W8NEf/Jsl2TPFACQCfsYA05/D0VgdJe3OO6hlXjMHPBgPWsT7mY6vjORGQNy7jIM7bZ6Cd/IXKtNu7I0fDuZL4/dAeyMXEsXE7EBlQMV0bqNO0P8pvQ+wzX1ntqzNv07qrKCf3BRkG6pSVJ8iVI4tTgRMARPIfHZJH1AJXX/AbdixQ0Bn2t7QxMKYHWKIc803hpJ/esuZ6BaZ3+5XNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770890963; c=relaxed/relaxed;
-	bh=VtIO3omn8+PnTjjnD8spJPG7DsNFFnKCkMyH1MFJ9iU=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MTpNpkDTha26ErWWGh5PU4zG2JC1MuKM29GvexcMHKd4GMQDiR2umH1A23yt6ia96wsHzSmX6Ze+pSQqlwcP10SRsi1IGsLj3obbSKNRgk++WhQGx9kMDizht4EZlSa/gTCkwKDxOXkVB6ZESDziGUzUqTEjzqCLnGSb23AfPRW144gRTDR6P/aAsSrwAqhbMcIejUCAwgu5kP/C2N29Zwmau/k6g11MFMigc2kPRdr1mtzAuPzvx+M/5FPC2OFUTgMZU+dh1GQ1AYhjt8PzJj41Tw5ujiV0LEcnWJAqpdTLWNAe20MWS0w6ae0lAkP/UVM6lysbXglyKNdexvm9eQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=LRBlxtXx; dkim-atps=neutral; spf=pass (client-ip=113.46.200.223; helo=canpmsgout08.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+	t=1770894102; c=relaxed/relaxed;
+	bh=kC5PBCrX/sgH2Fq02LEGV9wm5gA5lKwK+RKOC9phkJk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wl/rTiJZMhSy+wfxZizejuOCqG5g5po/OQtldl/rSE0XnRa+/1/B4ihA8mwQ/Kiu5LQSGDCyg9Fwypafbhifp3+mdv05IJ1OgLyIypyqxQj3gLNoH1eiraA1O9EncYN/RwS38F7TuacilsWDiJ5HoUnmgIHqKMQLP3wDDdPDx6e960fGViYm55BVcb+PSftHewsuWVNj0vH4PA3eyHdadr3vFCUZ08Bn+nZnMZrJ2qQFlJZibNr08CUCTwZe7wKqN3wzbz0iYVpBHp92MnGjrEHuDyBLNKl/sTGgFY0bhQVFd8uFIukHJ0Mt7nT+Cmc0HpMBzveG6nWChNDcBDTsSw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W6deOLrS; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=LRBlxtXx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W6deOLrS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=113.46.200.223; helo=canpmsgout08.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBWHQ1q9dz3bq4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 21:09:21 +1100 (AEDT)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=VtIO3omn8+PnTjjnD8spJPG7DsNFFnKCkMyH1MFJ9iU=;
-	b=LRBlxtXxNIhJUpIXnCI0UUrNFItuoyFQorrQRUdZrd/efDRrIa9FBhjtnlJESaBSGzxQs1CSM
-	/z1ydjV90abpxBtjreG9cwQ44wc0KiK+S/l1VZoX45KemCZ+AW3x7pCvV1Hsto62RViiW314c2E
-	4q3ASiodvKeF5Ix7Ei7gpeU=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4fBW9x4BbyzmVCn;
-	Thu, 12 Feb 2026 18:04:37 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7224F4056D;
-	Thu, 12 Feb 2026 18:09:17 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
- (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 12 Feb
- 2026 18:09:15 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <chenhuacai@kernel.org>, <kernel@xen0n.name>,
-	<maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
-	<chleroy@kernel.org>, <pjw@kernel.org>, <palmer@dabbelt.com>,
-	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <akpm@linux-foundation.org>, <bhe@redhat.com>,
-	<vgoyal@redhat.com>, <dyoung@redhat.com>, <rdunlap@infradead.org>,
-	<kees@kernel.org>, <elver@google.com>, <paulmck@kernel.org>, <arnd@arndb.de>,
-	<ruanjinjie@huawei.com>, <fvdl@google.com>, <thuth@redhat.com>,
-	<ardb@kernel.org>, <leitao@debian.org>, <rppt@kernel.org>, <osandov@fb.com>,
-	<cfsworks@gmail.com>, <sourabhjain@linux.ibm.com>, <ryan.roberts@arm.com>,
-	<tangyouling@kylinos.cn>, <eajames@linux.ibm.com>, <hbathini@linux.ibm.com>,
-	<ritesh.list@gmail.com>, <songshuaishuai@tinylab.org>, <bjorn@rivosinc.com>,
-	<samuel.holland@sifive.com>, <kevin.brodsky@arm.com>,
-	<junhui.liu@pigmoral.tech>, <vishal.moola@gmail.com>, <dwmw@amazon.co.uk>,
-	<pbonzini@redhat.com>, <kai.huang@intel.com>, <ubizjak@gmail.com>,
-	<coxu@redhat.com>, <fuqiang.wang@easystack.cn>, <liaoyuanhong@vivo.com>,
-	<brgerst@gmail.com>, <jbohac@suse.cz>, <x86@kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
-	<kexec@lists.infradead.org>
-Subject: [PATCH v5 4/4] riscv: kexec: Add support for crashkernel CMA reservation
-Date: Thu, 12 Feb 2026 18:10:01 +0800
-Message-ID: <20260212101001.343158-5-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260212101001.343158-1-ruanjinjie@huawei.com>
-References: <20260212101001.343158-1-ruanjinjie@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBXRn3W7Rz2xlh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 22:01:41 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61C6UE1H394028;
+	Thu, 12 Feb 2026 10:54:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kC5PBC
+	rX/sgH2Fq02LEGV9wm5gA5lKwK+RKOC9phkJk=; b=W6deOLrSmmtVXSPitFAh/t
+	/yBHKrAlcNTtI9G2w3XSfMQ6B1/zODmHq06iD+ZfKumubAs6nV6iTliB+UEp0Ntl
+	8Cs7U338COVX2cWNF+AIo6nyGVtLY0smGBojDsAH/hRyXDcp6lL7X7O8vpRrnt9a
+	oYu8b7RW2DFx0998nUBXhu0s7m3sl2kWFiPw/K9pi6jJA0Pfh/pjKvUINHi26nim
+	l/j+HsqLiL385OXH5hHyXP4/xh8COWTuL7cY6ke5qKFjUYhpvo81VJ6KQbTb+Ctg
+	/mFfB/IqEHmolK7w6f/4lowqdRGlStPCg3TQngK9BSyhKJkWqD1R7SDBthKZX5xg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696wdq7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Feb 2026 10:54:48 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61C7nV98002631;
+	Thu, 12 Feb 2026 10:54:47 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6fqst8v0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Feb 2026 10:54:47 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61CAsjQH34538186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Feb 2026 10:54:45 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86C0C5803F;
+	Thu, 12 Feb 2026 10:54:45 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1985158054;
+	Thu, 12 Feb 2026 10:54:37 +0000 (GMT)
+Received: from [9.61.249.62] (unknown [9.61.249.62])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Feb 2026 10:54:36 +0000 (GMT)
+Message-ID: <ab6ee329-ca59-4765-b309-22e64dfca861@linux.ibm.com>
+Date: Thu, 12 Feb 2026 16:24:32 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,163 +85,226 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] selftests/bpf: Add powerpc support for
+ get_preempt_count() in selftest
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, ast@kernel.org, daniel@iogearbox.net,
+        martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+        haoluo@google.com, jolsa@kernel.org, christophe.leroy@csgroup.eu,
+        maddy@linux.ibm.com, mpe@ellerman.id.au
+References: <20260212092558.370623-1-skb99@linux.ibm.com>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20260212092558.370623-1-skb99@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500011.china.huawei.com (7.185.36.131)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698db178 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=dEnyWooXetdK__wXnIsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: vWFzbJ8g7-APD3QRBeCM2NAPYlHWG-t7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA4MCBTYWx0ZWRfXwEgo77BKqPdE
+ iImaK5TJ1OnJGXC4bb24zqQOdCkx9cxPxpk3CGWIxYa+4qjLLH1ncmwATrKAV6eS9TAXWQaFs72
+ Hwwklk+/t/hvrJBGI+AtNCWScJrctvdEs7FCX+Zws1VMi5seAibiLj6TIL6T9YYQDzpGtn3FBHQ
+ 2idSMCok3s10aRKZHvAYvMvDgIsoV3QCsPZmICDbox7Vmo3qCksV2bdFhtWMd3piPReKu7dpK7i
+ xOf+X0GNlfVo4jL/H0CQX4fBxq/PoI4E6r7hI9o3l/eEzZB24rRoMhplPBbjNFiKjkdIq/IMaOS
+ Z6oCVzDQpFsDvhkIQ7Izb763jSfBmbrE7jpTpCrJZXij2DhsPv5sT75PkIFhdob4PMKqKSzFFh4
+ 4btmZDOx4kh74MxS0BQ4Z58Koc8ilQpcxRFWhwPXpY1oczIlUbcKlJz4fYLRzFCGRwkG+Jp4xTr
+ fYPuyaT/ott0OGgxu9w==
+X-Proofpoint-ORIG-GUID: 2WhUC-_kZ49qYXhZKIZ4D9ah3Ix5TocJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-12_03,2026-02-11_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602120080
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:kees@kernel.org,m:elver@google.com,m:paulmck@kernel.org,m:arnd@arndb.de,m:ruanjinjie@huawei.com,m:fvdl@google.com,m:thuth@redhat.com,m:ardb@kernel.org,m:leitao@debian.org,m:rppt@kernel.org,m:osandov@fb.com,m:cfsworks@gmail.com,m:sourabhjain@linux.ibm.com,m:ryan.roberts@arm.com,m:tangyouling@kylinos.cn,m:eajames@linux.ibm.com,m:hbathini@linux.ibm.com,m:ritesh.list@gmail.com,m:songshuaishuai@tinylab.org,m:bjorn@rivosinc.com,m:samuel.holland@sifive.com,m:kevin.brodsky
- @arm.com,m:junhui.liu@pigmoral.tech,m:vishal.moola@gmail.com,m:dwmw@amazon.co.uk,m:pbonzini@redhat.com,m:kai.huang@intel.com,m:ubizjak@gmail.com,m:coxu@redhat.com,m:fuqiang.wang@easystack.cn,m:liaoyuanhong@vivo.com,m:brgerst@gmail.com,m:jbohac@suse.cz,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16840-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16841-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,google.com,arndb.de,huawei.com,debian.org,fb.com,kylinos.cn,tinylab.org,rivosinc.com,sifive.com,pigmoral.tech,amazon.co.uk,intel.com,easystack.cn,vivo.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FORGED_RECIPIENTS(0.00)[m:skb99@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:hbathini@linux.ibm.com,m:sachinpb@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:johnfastabend@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[65];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	HAS_XOIP(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 8E16F12C47C
+X-Rspamd-Queue-Id: D9D4812CCC1
 X-Rspamd-Action: no action
 
-Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
-crashkernel= command line option") and commit ab475510e042 ("kdump:
-implement reserve_crashkernel_cma") added CMA support for kdump
-crashkernel reservation. This allows the kernel to dynamically allocate
-contiguous memory for crash dumping when needed, rather than permanently
-reserving a fixed region at boot time.
 
-So extend crashkernel CMA reservation support to riscv. The following
-changes are made to enable CMA reservation:
+On 12/02/26 2:55 pm, Saket Kumar Bhaskar wrote:
+> get_preempt_count() is enabled to return preempt_count for powerpc,
+> so that bpf_in_interrupt()/bpf_in_nmi()/bpf_in_serving_softirq()/
+> bpf_in_task()/bpf_in_hardirq()/get_preempt_count() works for
+> powerpc as well.
+>
+> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-- Parse and obtain the CMA reservation size along with other crashkernel
-  parameters.
-- Call reserve_crashkernel_cma() to allocate the CMA region for kdump.
-- Include the CMA-reserved ranges for kdump kernel to use.
-- Exclude the CMA-reserved ranges from the crash kernel memory to
-  prevent them from being exported through /proc/vmcore, which is already
-  done in the crash core.
 
-Update kernel-parameters.txt to document CMA support for crashkernel on
-riscv architecture.
+Tested this patch by applying on mainline kernel, and below selftests 
+passes.
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 16 ++++++++--------
- arch/riscv/kernel/machine_kexec_file.c          | 14 +++++++++++++-
- arch/riscv/mm/init.c                            |  5 +++--
- 3 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a2c7c22c60e4..037002b5b867 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1121,14 +1121,14 @@ Kernel parameters
- 			It will be ignored when crashkernel=X,high is not used
- 			or memory reserved is below 4G.
- 	crashkernel=size[KMG],cma
--			[KNL, X86, ARM64, ppc] Reserve additional crash kernel memory from
--			CMA. This reservation is usable by the first system's
--			userspace memory and kernel movable allocations (memory
--			balloon, zswap). Pages allocated from this memory range
--			will not be included in the vmcore so this should not
--			be used if dumping of userspace memory is intended and
--			it has to be expected that some movable kernel pages
--			may be missing from the dump.
-+			[KNL, X86, ARM64, RISCV, ppc] Reserve additional crash
-+			kernel memory from CMA. This reservation is usable by
-+			the first system's userspace memory and kernel movable
-+			allocations (memory balloon, zswap). Pages allocated
-+			from this memory range will not be included in the vmcore
-+			so this should not be used if dumping of userspace memory
-+			is intended and it has to be expected that some movable
-+			kernel pages may be missing from the dump.
- 
- 			A standard crashkernel reservation, as described above,
- 			is still needed to hold the crash kernel and initrd.
-diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
-index 2f0e7bbeb2f0..bc10ff157cf0 100644
---- a/arch/riscv/kernel/machine_kexec_file.c
-+++ b/arch/riscv/kernel/machine_kexec_file.c
-@@ -64,8 +64,20 @@ static int prepare_elf64_ram_headers_callback(struct resource *res, void *arg)
- 
- int arch_prepare_elf64_ram_headers(struct crash_mem *cmem)
- {
-+	int ret, i;
-+
- 	cmem->nr_ranges = 0;
--	return walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
-+	ret = walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < crashk_cma_cnt; i++) {
-+		cmem->ranges[cmem->nr_ranges].start = crashk_cma_ranges[i].start;
-+		cmem->ranges[cmem->nr_ranges].end = crashk_cma_ranges[i].end;
-+		cmem->nr_ranges++;
-+	}
-+
-+	return 0;
- }
- 
- static char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index addb8a9305be..074d2d5f79ee 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1404,7 +1404,7 @@ static inline void setup_vm_final(void)
-  */
- static void __init arch_reserve_crashkernel(void)
- {
--	unsigned long long low_size = 0;
-+	unsigned long long low_size = 0, cma_size = 0;
- 	unsigned long long crash_base, crash_size;
- 	bool high = false;
- 	int ret;
-@@ -1414,11 +1414,12 @@ static void __init arch_reserve_crashkernel(void)
- 
- 	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
- 				&crash_size, &crash_base,
--				&low_size, NULL, &high);
-+				&low_size, &cma_size, &high);
- 	if (ret)
- 		return;
- 
- 	reserve_crashkernel_generic(crash_size, crash_base, low_size, high);
-+	reserve_crashkernel_cma(cma_size);
- }
- 
- void __init paging_init(void)
--- 
-2.34.1
+Please add below tag.
 
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+
+./test_progs -t exe_ctx
+[  610.897388] bpf_testmod: loading out-of-tree module taints kernel.
+[  610.907373] audit: type=1334 audit(1771408772.036:229): prog-id=72 
+op=LOAD
+[  610.907385] audit: type=1334 audit(1771408772.036:230): prog-id=72 
+op=UNLOAD
+[  610.907461] audit: type=1334 audit(1771408772.036:231): prog-id=73 
+op=LOAD
+[  610.907467] audit: type=1334 audit(1771408772.036:232): prog-id=73 
+op=UNLOAD
+[  610.941282] audit: type=1334 audit(1771408772.076:233): prog-id=74 
+op=LOAD
+[  610.941290] audit: type=1334 audit(1771408772.076:234): prog-id=74 
+op=UNLOAD
+[  610.956474] audit: type=1334 audit(1771408772.086:235): prog-id=75 
+op=LOAD
+[  610.956481] audit: type=1334 audit(1771408772.086:236): prog-id=75 
+op=UNLOAD
+[  610.956964] audit: type=1334 audit(1771408772.086:237): prog-id=76 
+op=LOAD
+[  610.956970] audit: type=1334 audit(1771408772.086:238): prog-id=76 
+op=UNLOAD
+#109     exe_ctx:OK
+Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
+
+
+./test_progs -t timer_interrupt
+[  730.106678] kauditd_printk_skb: 6 callbacks suppressed
+[  730.106685] audit: type=1334 audit(1771408891.236:245): prog-id=80 
+op=LOAD
+[  730.106700] audit: type=1334 audit(1771408891.236:246): prog-id=80 
+op=UNLOAD
+[  730.106787] audit: type=1334 audit(1771408891.236:247): prog-id=81 
+op=LOAD
+[  730.106794] audit: type=1334 audit(1771408891.236:248): prog-id=81 
+op=UNLOAD
+[  730.136150] audit: type=1334 audit(1771408891.266:249): prog-id=82 
+op=LOAD
+[  730.136158] audit: type=1334 audit(1771408891.266:250): prog-id=82 
+op=UNLOAD
+[  730.151245] audit: type=1334 audit(1771408891.286:251): prog-id=83 
+op=LOAD
+[  730.151252] audit: type=1334 audit(1771408891.286:252): prog-id=83 
+op=UNLOAD
+[  730.151572] audit: type=1334 audit(1771408891.286:253): prog-id=84 
+op=LOAD
+[  730.151578] audit: type=1334 audit(1771408891.286:254): prog-id=84 
+op=UNLOAD
+#490     timer_interrupt:OK
+Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
+
+
+Regards,
+
+Venkat.
+
+> ---
+> Changes since v1:
+> * Updated the comments to include powerpc for the APIs.
+>
+> v1: https://lore.kernel.org/bpf/20260129054035.168078-1-skb99@linux.ibm.com/
+> ---
+>   tools/testing/selftests/bpf/bpf_experimental.h | 7 +++++++
+>   1 file changed, 7 insertions(+)
+>
+> diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+> index 4b7210c318dd..9df77e59d4f5 100644
+> --- a/tools/testing/selftests/bpf/bpf_experimental.h
+> +++ b/tools/testing/selftests/bpf/bpf_experimental.h
+> @@ -645,6 +645,8 @@ static inline int get_preempt_count(void)
+>   			bpf_this_cpu_ptr(&pcpu_hot))->preempt_count;
+>   #elif defined(bpf_target_arm64)
+>   	return bpf_get_current_task_btf()->thread_info.preempt.count;
+> +#elif defined(bpf_target_powerpc)
+> +	return bpf_get_current_task_btf()->thread_info.preempt_count;
+>   #endif
+>   	return 0;
+>   }
+> @@ -653,6 +655,7 @@ static inline int get_preempt_count(void)
+>    *	Report whether it is in interrupt context. Only works on the following archs:
+>    *	* x86
+>    *	* arm64
+> + *	* powerpc64
+>    */
+>   static inline int bpf_in_interrupt(void)
+>   {
+> @@ -672,6 +675,7 @@ static inline int bpf_in_interrupt(void)
+>    *	Report whether it is in NMI context. Only works on the following archs:
+>    *	* x86
+>    *	* arm64
+> + *	* powerpc64
+>    */
+>   static inline int bpf_in_nmi(void)
+>   {
+> @@ -682,6 +686,7 @@ static inline int bpf_in_nmi(void)
+>    *	Report whether it is in hard IRQ context. Only works on the following archs:
+>    *	* x86
+>    *	* arm64
+> + *	* powerpc64
+>    */
+>   static inline int bpf_in_hardirq(void)
+>   {
+> @@ -692,6 +697,7 @@ static inline int bpf_in_hardirq(void)
+>    *	Report whether it is in softirq context. Only works on the following archs:
+>    *	* x86
+>    *	* arm64
+> + *	* powerpc64
+>    */
+>   static inline int bpf_in_serving_softirq(void)
+>   {
+> @@ -710,6 +716,7 @@ static inline int bpf_in_serving_softirq(void)
+>    *	Report whether it is in task context. Only works on the following archs:
+>    *	* x86
+>    *	* arm64
+> + *	* powerpc64
+>    */
+>   static inline int bpf_in_task(void)
+>   {
 
