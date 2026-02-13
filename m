@@ -1,137 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-16857-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ2qEXB+jmnJCgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16857-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Feb 2026 02:29:20 +0100
+	id QJyeOXGUjmmhDAEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Feb 2026 04:03:13 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB42D132466
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Feb 2026 02:29:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC44132864
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Feb 2026 04:03:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fBvhr0S80z2yY0;
-	Fri, 13 Feb 2026 12:29:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fBxn23CB6z2ydq;
+	Fri, 13 Feb 2026 14:03:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770946155;
-	cv=none; b=eYJ2KNmFbCnDluL9UjgEBBLW3sANTosb98FkZCN+bYArOe6fIDmCmuAWZlMwiC+ipYQ8B6Bb6srZTpIOU5a08hRZ1tIYXtvKU6sG45tjWQk0UygxS7zd7VLnWNQXm1qmcSo03wptultfFKU6824rbC+hwfDlOo3LrBiAXJrSDJuQCLjfR9boELwJ98ybW9N0OXJWHSVEzC/bwV86Vsr9iJj0y34o8a68kqYOCdjh+hkwuqw29giwz6CafeWoyKp1wB/rbGS8ojjBoDpQiPO8gWNQWUOlBi/8npT/i9IUK0MXFRCBhTovAEnFNRtI/M3aOo1xEPK/Y7skXH5BD8BV9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=113.46.200.219
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770951782;
+	cv=none; b=J4kemovj29x5gQQ3aZz7w8MG2+qnkAqIrdOhxqUzltdDA4a6MQqDPujJh9kOKdI5IlnwcP+p34COo2m2vrUkSAv1z5H22in9vQRV5dcifjPPug8qA47Sinx2/TxuDe4n4tO1Dm9o3/xFkZhjPGK6T7VayeIPgUXYou4ovt7nYnjGf9/y0rPT3BPVCyP621Iu+TPV28fA3gCwdc/30vHvUaMASZLAs43l6t5+WkGtqnh7pLkLVWxens0dhXz6G53OxbI6rH3xbzQ10oTN7SEV0vsQtV6GmAqRVdgQdLNEiS77OqS7yUhDHfKUGqy+0gaGKUnNVkYOOEvSlrsW2o6A9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770946155; c=relaxed/relaxed;
-	bh=mEAaO36zyPmsyKqKL7e+8BHcnGxbMJMT7wzopiULDAA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=PglqSNJ6obw2OEoXKIz6Sqw4HJrcyya6Sjvpxwyvg1O7WtuavYeCoVqu9tZ/NZRoUZGg50vwa4Y/v4raAZiJugnPF7PGPywxLBeKPhucPRkqBfIvIH2GASEGJr1s1/Sy7aqbIbjv5BY7YlLAiHN92j8yVGCYHwL5mYmv5RYGvxAtyANF3OvSIPYjeQ/3zenF21yngE5Sqbx09p9X3BFxzUVDPl5k5sqRJFrBXQULJ/yhyZml1HORivjq22y1/rSorWU70oEbn/4Q+7xM8L7qz6tIH4ArQ9NRsYQlnEwSQuS2TNK7awAtYzLtXqaaJOgfsRBPuZYuwBVy1x1hVQehzg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VzGLJs+M; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VzGLJs+M; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1770951782; c=relaxed/relaxed;
+	bh=K5cL1rUjW8lH3PpXOjpFyvJ0RBVPGunsEahu80kYEIM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=L61ZQZYUIYai6jg7sjlcpkngNXUqxxkcsaLo31soMGvOabkMmUOq05z/zKszzGqOMmFn/7RwgjLKmiH37YrrzgQDUatVIf+Ar3EM362FPJ3p5EAP3O5475HhAZaCCdJbZLztfvtrNjBvNZZqPQpnmlbWhTXpij9cRC0bwN+Kiecr3Y6n9ciyFzBLjkopTxo1q+c7ABAEoOfh72wwuOiriugHV3Z5XlX/nAbcBg8YpRulK13nRKrm+FmwLcyTauRSHwfFzZtMAS34OLUB4c63FUlT6xr/D6cbFeg5U3xgJzBqvsUrNITQX6bzy9yOMKLdkTprOWQcbmMpAVubhFQQHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=tSVQdw+J; dkim-atps=neutral; spf=pass (client-ip=113.46.200.219; helo=canpmsgout04.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VzGLJs+M;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VzGLJs+M;
+	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=tSVQdw+J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=113.46.200.219; helo=canpmsgout04.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBvhp0HnLz2xlx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 12:29:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770946147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mEAaO36zyPmsyKqKL7e+8BHcnGxbMJMT7wzopiULDAA=;
-	b=VzGLJs+MypaCtXLTx+DtSYauH42gHoLJo7qyBigl745XDJ4wDCdQHDvWoc5yrp7dBTI2Lm
-	EUbqSPGr48KZUp98KGSh/ElJJTznmKA5q2+BDIouKWWBQwdzLMGA/F1dBblQnk05obKi9z
-	XdKR0oJCU6tlC2UF67vyJZW6x+GkI3I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770946147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mEAaO36zyPmsyKqKL7e+8BHcnGxbMJMT7wzopiULDAA=;
-	b=VzGLJs+MypaCtXLTx+DtSYauH42gHoLJo7qyBigl745XDJ4wDCdQHDvWoc5yrp7dBTI2Lm
-	EUbqSPGr48KZUp98KGSh/ElJJTznmKA5q2+BDIouKWWBQwdzLMGA/F1dBblQnk05obKi9z
-	XdKR0oJCU6tlC2UF67vyJZW6x+GkI3I=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-pE58vg_KPEeWALTZBZMjig-1; Thu, 12 Feb 2026 20:29:05 -0500
-X-MC-Unique: pE58vg_KPEeWALTZBZMjig-1
-X-Mimecast-MFC-AGG-ID: pE58vg_KPEeWALTZBZMjig_1770946144
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-29f2381ea85so17223545ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Feb 2026 17:29:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770946142; x=1771550942;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mEAaO36zyPmsyKqKL7e+8BHcnGxbMJMT7wzopiULDAA=;
-        b=dSCKz8UuDqXKPrX7B9wfUHppsRZQbhtgY0I3fFw+v1/E5BfGyuJaHup27dMFNtjE3i
-         HRySVYMh0rxYE1apzWgHhqoKl6HEW8FpDn+b/Tsg07xc3Qrj8dZBK0RmdA5ExvxKs9KK
-         RNpcNpmPKr6xepsmh6kAwvQ/gCg4Z3azbyOhKgwGzYOm2P4468VNH/zPfFYiCD/STscd
-         WOPGYbGKSbsn2WNqS0YA2c2tf47zWthMGuzm/VjLJE8/hiNoYOaTQgD1IFed9EOHfjpP
-         ixLLWLE/DcgvS4yj/fOoEwwQwiSCdD5BJ0CCp+sGSSmu+ZFJSc2DRg7ONwMW70UfWbpn
-         J99Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVi9mB388RYgp9Qvi3r6MKy27XlmxYKBMbjdWGFAa1ImXW6SK9vHaXN8YY93C8kQhOn9CgC0QDqopn986s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx4rzbe9thS97Tlt3ySPbPnH4xxRIDA+toGWXxdamPmELFRpGbC
-	tyPD7UB0VlpK3HTb6sHKRJgPrCJViyhbVwoLTUiy/PiNcXvrF3N+U824w77C7DTYgMQ48J2aEPZ
-	DQEfEpMSdH0SVVQKaF8u4GHDGSXWY/plCxquXp/pIJspLdCQ+k7WEIcFYL71p2GX6axg=
-X-Gm-Gg: AZuq6aLKrWr3U3/VeIAR73otqqXRiWvsHjeHcoGexMFZDx/httVCVG8vUBzPMGIA91i
-	cKXUr71FN76NE3bQdQu6p+YOLEeiiq0JNxJJ5fStN28VAg01Gn/jAUGWo2QBIjV7glLGvWuKTcv
-	/pcvCJvtKLlyFOszdBl5ZQm1PffjJbUMEqd5Ox+1G1v3+ULk71NINbvFz8KOoU0IPNvzWbi73Fj
-	DIAu3J/tEefKq9qrZ61bOB0vYK+F7v/Ci/YeqcSF6uyRjJm52oLLorFLWtIhZsd5qyys9P7d/a1
-	AT/RpmDpgQZX2UEBSC7+nXgVvBPJMEPJbRVfIq17zpxeZ9U0qY2bM8tnNHfq1VOFOF0uDqRnDkf
-	Km0UE5ktgsVWK
-X-Received: by 2002:a17:902:f688:b0:2aa:f9d7:68af with SMTP id d9443c01a7336-2ab5051a134mr2098225ad.4.1770946142056;
-        Thu, 12 Feb 2026 17:29:02 -0800 (PST)
-X-Received: by 2002:a17:902:f688:b0:2aa:f9d7:68af with SMTP id d9443c01a7336-2ab5051a134mr2097885ad.4.1770946141482;
-        Thu, 12 Feb 2026 17:29:01 -0800 (PST)
-Received: from localhost ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3567e9da8a2sm6282862a91.5.2026.02.12.17.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 17:29:00 -0800 (PST)
-From: Coiby Xu <coxu@redhat.com>
-To: linux-integrity@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-kernel@vger.kernel.org (open list),
-	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
-	linux-s390@vger.kernel.org (open list:S390 ARCHITECTURE),
-	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)),
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
-	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS_INTEGRITY)
-Subject: [PATCH v3 1/3] integrity: Make arch_ima_get_secureboot integrity-wide
-Date: Fri, 13 Feb 2026 09:28:46 +0800
-Message-ID: <20260213012851.2532722-2-coxu@redhat.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213012851.2532722-1-coxu@redhat.com>
-References: <20260213012851.2532722-1-coxu@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fBxmz23bFz2yY0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Feb 2026 14:02:56 +1100 (AEDT)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=K5cL1rUjW8lH3PpXOjpFyvJ0RBVPGunsEahu80kYEIM=;
+	b=tSVQdw+JNJXAf1MY/KPskhRvBv85Okf/IgHzgOt+2D5eEBLWqfzS9u47OjAJeMtqzAfWdPhtd
+	HvIv83mJ7r9/qriS+SpF+6Ahl4Ra1bl7OmirckSWin+B1oIOwAthF/yVPEQMD+PQghmwUwCG5Ek
+	a6V35f7r3GC+IrEZG7cqb78=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fBxgN1HdXz1prmP;
+	Fri, 13 Feb 2026 10:58:08 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 07D9940570;
+	Fri, 13 Feb 2026 11:02:50 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 13 Feb 2026 11:02:40 +0800
+Message-ID: <efb16ebb-a6e3-01e8-2277-98ac1347d084@huawei.com>
+Date: Fri, 13 Feb 2026 11:02:39 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -145,473 +65,517 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 13cM8TtAZfYcEl7-18Up9Rph057y16QCEOy5sESFflY_1770946144
-X-Mimecast-Originator: redhat.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v5 2/4] crash: Exclude crash kernel memory in crash core
+Content-Language: en-US
+To: Mike Rapoport <rppt@kernel.org>
+CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <chenhuacai@kernel.org>, <kernel@xen0n.name>,
+	<maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+	<chleroy@kernel.org>, <pjw@kernel.org>, <palmer@dabbelt.com>,
+	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <akpm@linux-foundation.org>, <bhe@redhat.com>,
+	<vgoyal@redhat.com>, <dyoung@redhat.com>, <rdunlap@infradead.org>,
+	<kees@kernel.org>, <elver@google.com>, <paulmck@kernel.org>, <arnd@arndb.de>,
+	<fvdl@google.com>, <thuth@redhat.com>, <ardb@kernel.org>,
+	<leitao@debian.org>, <osandov@fb.com>, <cfsworks@gmail.com>,
+	<sourabhjain@linux.ibm.com>, <ryan.roberts@arm.com>,
+	<tangyouling@kylinos.cn>, <eajames@linux.ibm.com>, <hbathini@linux.ibm.com>,
+	<ritesh.list@gmail.com>, <songshuaishuai@tinylab.org>, <bjorn@rivosinc.com>,
+	<samuel.holland@sifive.com>, <kevin.brodsky@arm.com>,
+	<junhui.liu@pigmoral.tech>, <vishal.moola@gmail.com>, <dwmw@amazon.co.uk>,
+	<pbonzini@redhat.com>, <kai.huang@intel.com>, <ubizjak@gmail.com>,
+	<coxu@redhat.com>, <fuqiang.wang@easystack.cn>, <liaoyuanhong@vivo.com>,
+	<brgerst@gmail.com>, <jbohac@suse.cz>, <x86@kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
+	<kexec@lists.infradead.org>
+References: <20260212101001.343158-1-ruanjinjie@huawei.com>
+ <20260212101001.343158-3-ruanjinjie@huawei.com> <aY4izR61SWal5BAg@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <aY4izR61SWal5BAg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-integrity@vger.kernel.org,m:hca@linux.ibm.com,m:egorenar@linux.ibm.com,m:ardb@kernel.org,m:dave.hansen@intel.com,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[coxu@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:kees@kernel.org,m:elver@google.com,m:paulmck@kernel.org,m:arnd@arndb.de,m:fvdl@google.com,m:thuth@redhat.com,m:ardb@kernel.org,m:leitao@debian.org,m:osandov@fb.com,m:cfsworks@gmail.com,m:sourabhjain@linux.ibm.com,m:ryan.roberts@arm.com,m:tangyouling@kylinos.cn,m:eajames@linux.ibm.com,m:hbathini@linux.ibm.com,m:ritesh.list@gmail.com,m:songshuaishuai@tinylab.org,m:bjorn@rivosinc.com,m:samuel.holland@sifive.com,m:kevin.brodsky@arm.com,m:junhui.liu@pi
+ gmoral.tech,m:vishal.moola@gmail.com,m:dwmw@amazon.co.uk,m:pbonzini@redhat.com,m:kai.huang@intel.com,m:ubizjak@gmail.com,m:coxu@redhat.com,m:fuqiang.wang@easystack.cn,m:liaoyuanhong@vivo.com,m:brgerst@gmail.com,m:jbohac@suse.cz,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16857-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[coxu@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,intel.com,huawei.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MIME_TRACE(0.00)[0:+];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16858-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,google.com,arndb.de,debian.org,fb.com,kylinos.cn,tinylab.org,rivosinc.com,sifive.com,pigmoral.tech,amazon.co.uk,intel.com,easystack.cn,vivo.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,oracle.com:email]
-X-Rspamd-Queue-Id: AB42D132466
+	RCVD_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	RCPT_COUNT_GT_50(0.00)[64];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	HAS_XOIP(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: 4AC44132864
 X-Rspamd-Action: no action
 
-EVM and other LSMs need the ability to query the secure boot status of
-the system, without directly calling the IMA arch_ima_get_secureboot
-function. Refactor the secure boot status check into a general function
-named arch_get_secureboot.
 
-Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-Suggested-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Coiby Xu <coxu@redhat.com>
----
- MAINTAINERS                                   |  1 +
- arch/powerpc/kernel/ima_arch.c                |  5 --
- arch/powerpc/kernel/secure_boot.c             |  6 ++
- arch/s390/kernel/ima_arch.c                   |  6 --
- arch/s390/kernel/ipl.c                        |  5 ++
- arch/x86/include/asm/efi.h                    |  4 +-
- arch/x86/platform/efi/efi.c                   |  2 +-
- include/linux/ima.h                           |  7 +--
- include/linux/secure_boot.h                   | 19 +++++++
- security/integrity/Makefile                   |  3 +-
- security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
- security/integrity/ima/ima_appraise.c         |  2 +-
- security/integrity/ima/ima_efi.c              | 47 +---------------
- security/integrity/ima/ima_main.c             |  3 +-
- security/integrity/integrity.h                |  1 +
- security/integrity/platform_certs/load_uefi.c |  2 +-
- security/integrity/secure_boot.c              | 16 ++++++
- 17 files changed, 115 insertions(+), 70 deletions(-)
- create mode 100644 include/linux/secure_boot.h
- create mode 100644 security/integrity/efi_secureboot.c
- create mode 100644 security/integrity/secure_boot.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 149deedafe2c..56242d78e4a6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12550,6 +12550,7 @@ R:	Eric Snowberg <eric.snowberg@oracle.com>
- L:	linux-integrity@vger.kernel.org
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git
-+F:	include/linux/secure_boot.h
- F:	security/integrity/
- F:	security/integrity/ima/
- 
-diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
-index b7029beed847..0d8892a03526 100644
---- a/arch/powerpc/kernel/ima_arch.c
-+++ b/arch/powerpc/kernel/ima_arch.c
-@@ -7,11 +7,6 @@
- #include <linux/ima.h>
- #include <asm/secure_boot.h>
- 
--bool arch_ima_get_secureboot(void)
--{
--	return is_ppc_secureboot_enabled();
--}
--
- /*
-  * The "secure_rules" are enabled only on "secureboot" enabled systems.
-  * These rules verify the file signatures against known good values.
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
-index 3a28795b4ed8..28436c1599e0 100644
---- a/arch/powerpc/kernel/secure_boot.c
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -5,6 +5,7 @@
-  */
- #include <linux/types.h>
- #include <linux/of.h>
-+#include <linux/secure_boot.h>
- #include <linux/string_choices.h>
- #include <asm/secure_boot.h>
- 
-@@ -44,6 +45,11 @@ bool is_ppc_secureboot_enabled(void)
- 	return enabled;
- }
- 
-+bool arch_get_secureboot(void)
-+{
-+	return is_ppc_secureboot_enabled();
-+}
-+
- bool is_ppc_trustedboot_enabled(void)
- {
- 	struct device_node *node;
-diff --git a/arch/s390/kernel/ima_arch.c b/arch/s390/kernel/ima_arch.c
-index f3c3e6e1c5d3..6ccbe34ce408 100644
---- a/arch/s390/kernel/ima_arch.c
-+++ b/arch/s390/kernel/ima_arch.c
-@@ -1,12 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/ima.h>
--#include <asm/boot_data.h>
--
--bool arch_ima_get_secureboot(void)
--{
--	return ipl_secure_flag;
--}
- 
- const char * const *arch_get_ima_policy(void)
- {
-diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
-index dcdc7e274848..781deb588557 100644
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -2504,6 +2504,11 @@ void *ipl_report_finish(struct ipl_report *report)
- 	return buf;
- }
- 
-+bool arch_get_secureboot(void)
-+{
-+	return ipl_secure_flag;
-+}
-+
- int ipl_report_free(struct ipl_report *report)
- {
- 	struct ipl_report_component *comp, *ncomp;
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index f227a70ac91f..ee382b56dd7b 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -401,9 +401,9 @@ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
- extern void __init efi_memmap_insert(struct efi_memory_map *old_memmap,
- 				     void *buf, struct efi_mem_range *mem);
- 
--extern enum efi_secureboot_mode __x86_ima_efi_boot_mode(void);
-+enum efi_secureboot_mode __x86_efi_boot_mode(void);
- 
--#define arch_ima_efi_boot_mode	__x86_ima_efi_boot_mode()
-+#define arch_efi_boot_mode __x86_efi_boot_mode()
- 
- #ifdef CONFIG_EFI_RUNTIME_MAP
- int efi_get_runtime_map_size(void);
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index d00c6de7f3b7..74032f3ab9b0 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -920,7 +920,7 @@ umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n)
- 	return attr->mode;
- }
- 
--enum efi_secureboot_mode __x86_ima_efi_boot_mode(void)
-+enum efi_secureboot_mode __x86_efi_boot_mode(void)
- {
- 	return boot_params.secure_boot;
- }
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index 8e29cb4e6a01..b3927b795a60 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -11,6 +11,7 @@
- #include <linux/fs.h>
- #include <linux/security.h>
- #include <linux/kexec.h>
-+#include <linux/secure_boot.h>
- #include <crypto/hash_info.h>
- struct linux_binprm;
- 
-@@ -72,14 +73,8 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size);
- #endif
- 
- #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
--extern bool arch_ima_get_secureboot(void);
- extern const char * const *arch_get_ima_policy(void);
- #else
--static inline bool arch_ima_get_secureboot(void)
--{
--	return false;
--}
--
- static inline const char * const *arch_get_ima_policy(void)
- {
- 	return NULL;
-diff --git a/include/linux/secure_boot.h b/include/linux/secure_boot.h
-new file mode 100644
-index 000000000000..3ded3f03655c
---- /dev/null
-+++ b/include/linux/secure_boot.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
-+ *
-+ * Author: Coiby Xu <coxu@redhat.com>
-+ */
-+
-+#ifndef _LINUX_SECURE_BOOT_H
-+#define _LINUX_SECURE_BOOT_H
-+
-+#include <linux/types.h>
-+
-+/*
-+ * Returns true if the platform secure boot is enabled.
-+ * Returns false if disabled or not supported.
-+ */
-+bool arch_get_secureboot(void);
-+
-+#endif /* _LINUX_SECURE_BOOT_H */
-diff --git a/security/integrity/Makefile b/security/integrity/Makefile
-index 92b63039c654..548665e2b702 100644
---- a/security/integrity/Makefile
-+++ b/security/integrity/Makefile
-@@ -5,7 +5,7 @@
- 
- obj-$(CONFIG_INTEGRITY) += integrity.o
- 
--integrity-y := iint.o
-+integrity-y := iint.o secure_boot.o
- integrity-$(CONFIG_INTEGRITY_AUDIT) += integrity_audit.o
- integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
- integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
-@@ -18,6 +18,7 @@ integrity-$(CONFIG_LOAD_IPL_KEYS) += platform_certs/load_ipl_s390.o
- integrity-$(CONFIG_LOAD_PPC_KEYS) += platform_certs/efi_parser.o \
-                                      platform_certs/load_powerpc.o \
-                                      platform_certs/keyring_handler.o
-+integrity-$(CONFIG_EFI) += efi_secureboot.o
- # The relative order of the 'ima' and 'evm' LSMs depends on the order below.
- obj-$(CONFIG_IMA)			+= ima/
- obj-$(CONFIG_EVM)			+= evm/
-diff --git a/security/integrity/efi_secureboot.c b/security/integrity/efi_secureboot.c
-new file mode 100644
-index 000000000000..bfd4260a83a3
---- /dev/null
-+++ b/security/integrity/efi_secureboot.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: GPL-1.0+
-+/*
-+ * Copyright (C) 2018 IBM Corporation
-+ */
-+#include <linux/efi.h>
-+#include <linux/secure_boot.h>
-+#include <asm/efi.h>
-+
-+#ifndef arch_efi_boot_mode
-+#define arch_efi_boot_mode efi_secureboot_mode_unset
-+#endif
-+
-+static enum efi_secureboot_mode get_sb_mode(void)
-+{
-+	enum efi_secureboot_mode mode;
-+
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
-+		pr_info("integrity: secureboot mode unknown, no efi\n");
-+		return efi_secureboot_mode_unknown;
-+	}
-+
-+	mode = efi_get_secureboot_mode(efi.get_variable);
-+	if (mode == efi_secureboot_mode_disabled)
-+		pr_info("integrity: secureboot mode disabled\n");
-+	else if (mode == efi_secureboot_mode_unknown)
-+		pr_info("integrity: secureboot mode unknown\n");
-+	else
-+		pr_info("integrity: secureboot mode enabled\n");
-+	return mode;
-+}
-+
-+/*
-+ * Query secure boot status
-+ *
-+ * Note don't call this function too early e.g. in __setup hook otherwise the
-+ * kernel may hang when calling efi_get_secureboot_mode.
-+ *
-+ */
-+bool arch_get_secureboot(void)
-+{
-+	static enum efi_secureboot_mode sb_mode;
-+	static bool initialized;
-+
-+	if (!initialized && efi_enabled(EFI_BOOT)) {
-+		sb_mode = arch_efi_boot_mode;
-+
-+		if (sb_mode == efi_secureboot_mode_unset)
-+			sb_mode = get_sb_mode();
-+		initialized = true;
-+	}
-+
-+	if (sb_mode == efi_secureboot_mode_enabled)
-+		return true;
-+	else
-+		return false;
-+}
-diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
-index 5149ff4fd50d..9737bf76ce17 100644
---- a/security/integrity/ima/ima_appraise.c
-+++ b/security/integrity/ima/ima_appraise.c
-@@ -27,7 +27,7 @@ core_param(ima_appraise, ima_appraise_cmdline_default, charp, 0);
- void __init ima_appraise_parse_cmdline(void)
- {
- 	const char *str = ima_appraise_cmdline_default;
--	bool sb_state = arch_ima_get_secureboot();
-+	bool sb_state = arch_get_secureboot();
- 	int appraisal_state = ima_appraise;
- 
- 	if (!str)
-diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/ima_efi.c
-index 138029bfcce1..78191879dd98 100644
---- a/security/integrity/ima/ima_efi.c
-+++ b/security/integrity/ima/ima_efi.c
-@@ -2,52 +2,9 @@
- /*
-  * Copyright (C) 2018 IBM Corporation
-  */
--#include <linux/efi.h>
- #include <linux/module.h>
- #include <linux/ima.h>
--#include <asm/efi.h>
--
--#ifndef arch_ima_efi_boot_mode
--#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
--#endif
--
--static enum efi_secureboot_mode get_sb_mode(void)
--{
--	enum efi_secureboot_mode mode;
--
--	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
--		pr_info("ima: secureboot mode unknown, no efi\n");
--		return efi_secureboot_mode_unknown;
--	}
--
--	mode = efi_get_secureboot_mode(efi.get_variable);
--	if (mode == efi_secureboot_mode_disabled)
--		pr_info("ima: secureboot mode disabled\n");
--	else if (mode == efi_secureboot_mode_unknown)
--		pr_info("ima: secureboot mode unknown\n");
--	else
--		pr_info("ima: secureboot mode enabled\n");
--	return mode;
--}
--
--bool arch_ima_get_secureboot(void)
--{
--	static enum efi_secureboot_mode sb_mode;
--	static bool initialized;
--
--	if (!initialized && efi_enabled(EFI_BOOT)) {
--		sb_mode = arch_ima_efi_boot_mode;
--
--		if (sb_mode == efi_secureboot_mode_unset)
--			sb_mode = get_sb_mode();
--		initialized = true;
--	}
--
--	if (sb_mode == efi_secureboot_mode_enabled)
--		return true;
--	else
--		return false;
--}
-+#include <linux/secure_boot.h>
- 
- /* secureboot arch rules */
- static const char * const sb_arch_rules[] = {
-@@ -67,7 +24,7 @@ static const char * const sb_arch_rules[] = {
- 
- const char * const *arch_get_ima_policy(void)
- {
--	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
-+	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_get_secureboot()) {
- 		if (IS_ENABLED(CONFIG_MODULE_SIG))
- 			set_module_sig_enforced();
- 		if (IS_ENABLED(CONFIG_KEXEC_SIG))
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 5770cf691912..4aa8f0a20950 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -949,8 +949,7 @@ static int ima_load_data(enum kernel_load_data_id id, bool contents)
- 
- 	switch (id) {
- 	case LOADING_KEXEC_IMAGE:
--		if (IS_ENABLED(CONFIG_KEXEC_SIG)
--		    && arch_ima_get_secureboot()) {
-+		if (IS_ENABLED(CONFIG_KEXEC_SIG) && arch_get_secureboot()) {
- 			pr_err("impossible to appraise a kernel image without a file descriptor; try using kexec_file_load syscall.\n");
- 			return -EACCES;
- 		}
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index 7b388b66cf80..4636629533af 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -14,6 +14,7 @@
- 
- #include <linux/types.h>
- #include <linux/integrity.h>
-+#include <linux/secure_boot.h>
- #include <crypto/sha1.h>
- #include <crypto/hash.h>
- #include <linux/key.h>
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index d1fdd113450a..c0d6948446c3 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -212,7 +212,7 @@ static int __init load_uefi_certs(void)
- 	}
- 
- 	/* the MOK/MOKx can not be trusted when secure boot is disabled */
--	if (!arch_ima_get_secureboot())
-+	if (!arch_get_secureboot())
- 		return 0;
- 
- 	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
-diff --git a/security/integrity/secure_boot.c b/security/integrity/secure_boot.c
-new file mode 100644
-index 000000000000..fc2693c286f8
---- /dev/null
-+++ b/security/integrity/secure_boot.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
-+ *
-+ * Author: Coiby Xu <coxu@redhat.com>
-+ */
-+#include <linux/secure_boot.h>
-+
-+/*
-+ * Default weak implementation.
-+ * Architectures that support secure boot must override this.
-+ */
-+__weak bool arch_get_secureboot(void)
-+{
-+	return false;
-+}
--- 
-2.53.0
+On 2026/2/13 2:58, Mike Rapoport wrote:
+> Hi,
+> 
+> On Thu, Feb 12, 2026 at 06:09:59PM +0800, Jinjie Ruan wrote:
+>> The exclude of crashk_res, crashk_low_res and crashk_cma memory
+>> are almost identical across different architectures, handling them
+>> in the crash core would eliminate a lot of duplication, so do
+>> them in the common code.
+>>
+>> And move the size calculation (and the realloc if needed) into the
+>> generic crash core so that:
+>>
+>> - New CMA regions or future crash-memory types can automatically
+>>   accounted for in crash core;
+>>
+>> - Each architecture no longer has to play whack-a-mole with
+>>   its private array size.
+>>
+>> To achieve the above goal, 4 architecture-specific functions are
+>> introduced:
+>>
+>> - arch_get_system_nr_ranges() and arch_prepare_elf64_ram_headers().
+>>   The 1st function pre-counts the number of memory ranges, and
+>>   the 2st function fill the memory ranges into the cmem->ranges[] array,
+>>   and count the actual number of ranges filled.
+> 
+> The names should reflect that these function deal with crash memory ranges.
+>  
+>> - arch_crash_exclude_mem_range(). Realloc for powerpc. The default
+>>   implementation is crash_exclude_mem_range(), and use
+>>   crash_exclude_mem_range_guarded() to implement the arch version
+>>   for powerpc.
+>>
+>> - arch_get_crash_memory_ranges(). Get crash memory ranges for arch and
+>>   the default implementation is generic across x86, arm64, riscv, and
+>>   loongson by using the first two arch functions above. powerpc has its
+>>   own implementation by calling get_crash_memory_ranges().
+> 
+> Hmm, powerpc seems too different from the rest, maybe we shouldn't try to
+> squeeze it in?
+> 
+>> Tested on x86, arm64 and riscv with QEMU.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>  arch/arm64/include/asm/kexec.h             |   9 +-
+>>  arch/arm64/kernel/machine_kexec_file.c     |  41 +++-----
+>>  arch/loongarch/include/asm/kexec.h         |   9 +-
+>>  arch/loongarch/kernel/machine_kexec_file.c |  41 +++-----
+>>  arch/powerpc/include/asm/kexec.h           |  13 +++
+>>  arch/powerpc/include/asm/kexec_ranges.h    |   3 -
+>>  arch/powerpc/kexec/crash.c                 |  68 ++++++++------
+>>  arch/powerpc/kexec/file_load_64.c          |  17 ++--
+>>  arch/powerpc/kexec/ranges.c                |  18 +---
+>>  arch/riscv/include/asm/kexec.h             |   9 +-
+>>  arch/riscv/kernel/machine_kexec_file.c     |  37 +++-----
+>>  arch/x86/include/asm/kexec.h               |   9 ++
+>>  arch/x86/kernel/crash.c                    | 104 +++------------------
+>>  include/linux/crash_core.h                 |  75 +++++++++++++--
+>>  kernel/crash_core.c                        |  85 +++++++++++++++--
+>>  15 files changed, 289 insertions(+), 249 deletions(-)
+> 
+> TBH, I'd expect this to produce negative diffstat :/
 
+Forcing compatibility with powerpc has brought a lot of inconvenience.
+
+>  
+>> diff --git a/arch/arm64/include/asm/kexec.h b/arch/arm64/include/asm/kexec.h
+>> index 892e5bebda95..67f790e3ba14 100644
+>> --- a/arch/arm64/include/asm/kexec.h
+>> +++ b/arch/arm64/include/asm/kexec.h
+>> @@ -119,6 +119,7 @@ struct kimage_arch {
+>>  };
+>>  
+>>  #ifdef CONFIG_KEXEC_FILE
+>> +struct crash_mem;
+>>  extern const struct kexec_file_ops kexec_image_ops;
+>>  
+>>  int arch_kimage_file_post_load_cleanup(struct kimage *image);
+>> @@ -128,7 +129,13 @@ extern int load_other_segments(struct kimage *image,
+>>  		unsigned long kernel_load_addr, unsigned long kernel_size,
+>>  		char *initrd, unsigned long initrd_len,
+>>  		char *cmdline);
+>> -#endif
+>> +
+>> +int arch_get_system_nr_ranges(unsigned int *nr_ranges);
+>> +#define arch_get_system_nr_ranges arch_get_system_nr_ranges
+>> +
+>> +int arch_prepare_elf64_ram_headers(struct crash_mem *cmem);
+>> +#define arch_prepare_elf64_ram_headers arch_prepare_elf64_ram_headers
+> 
+> I think a better practice would be to declare all functions that an
+> architecture may override in include/linux/crash_core.h and provide a
+> default __weak implementation in kernel/crash_core.c.
+
+This would avoid many function declarations in architecture-specific code.
+
+> 
+>> +#endif /* CONFIG_KEXEC_FILE */
+>>  
+>>  #endif /* __ASSEMBLER__ */
+>>  
+>> diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+>> index 410060ebd86d..506a165117b1 100644
+>> --- a/arch/arm64/kernel/machine_kexec_file.c
+>> +++ b/arch/arm64/kernel/machine_kexec_file.c
+>> @@ -40,23 +40,22 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
+>>  }
+>>  
+>>  #ifdef CONFIG_CRASH_DUMP
+>> -static int prepare_elf_headers(void **addr, unsigned long *sz)
+>> +int arch_get_system_nr_ranges(unsigned int *nr_ranges)
+>>  {
+>> -	struct crash_mem *cmem;
+>> -	unsigned int nr_ranges;
+>> -	int ret;
+>> -	u64 i;
+>>  	phys_addr_t start, end;
+>> +	u64 i;
+>>  
+>> -	nr_ranges = 2; /* for exclusion of crashkernel region */
+>>  	for_each_mem_range(i, &start, &end)
+>> -		nr_ranges++;
+>> +		(*nr_ranges)++;
+>> +
+> 
+> Won't be simpler to make it 
+
+This is indeed much cleaner.
+
+> 
+> 	unsigned int arch_get_system_nr_ranges(void)
+> 
+> count the ranges and return the result?
+> 
+>> +	return 0;
+>> +}
+>>  
+>> -	cmem = kmalloc(struct_size(cmem, ranges, nr_ranges), GFP_KERNEL);
+>> -	if (!cmem)
+>> -		return -ENOMEM;
+>> +int arch_prepare_elf64_ram_headers(struct crash_mem *cmem)
+>> +{
+> 
+> It seems that this function collects the memory ranges and fills them into
+> cmem rather than prepares elf headers.
+
+Yes, the function names were taken from the x86 and riscv
+implementations, which caused some confusion.
+
+> 
+>> +	phys_addr_t start, end;
+>> +	u64 i;
+>>  
+>> -	cmem->max_nr_ranges = nr_ranges;
+>>  	cmem->nr_ranges = 0;
+>>  	for_each_mem_range(i, &start, &end) {
+>>  		cmem->ranges[cmem->nr_ranges].start = start;
+>> @@ -64,22 +63,7 @@ static int prepare_elf_headers(void **addr, unsigned long *sz)
+>>  		cmem->nr_ranges++;
+>>  	}
+>>  
+>> -	/* Exclude crashkernel region */
+>> -	ret = crash_exclude_mem_range(cmem, crashk_res.start, crashk_res.end);
+>> -	if (ret)
+>> -		goto out;
+>> -
+>> -	if (crashk_low_res.end) {
+>> -		ret = crash_exclude_mem_range(cmem, crashk_low_res.start, crashk_low_res.end);
+>> -		if (ret)
+>> -			goto out;
+>> -	}
+>> -
+>> -	ret = crash_prepare_elf64_headers(cmem, true, addr, sz);
+>> -
+>> -out:
+>> -	kfree(cmem);
+>> -	return ret;
+>> +	return 0;
+>>  }
+>>  #endif
+>>  
+>> @@ -109,7 +93,8 @@ int load_other_segments(struct kimage *image,
+>>  	void *headers;
+>>  	unsigned long headers_sz;
+>>  	if (image->type == KEXEC_TYPE_CRASH) {
+>> -		ret = prepare_elf_headers(&headers, &headers_sz);
+>> +		ret = crash_prepare_elf64_headers(true, &headers, &headers_sz,
+>> +						  NULL, NULL, NULL);
+>>  		if (ret) {
+>>  			pr_err("Preparing elf core header failed\n");
+>>  			goto out_err;
+> 
+> Same comments as for arm64 apply for other architectures as well. 
+> 
+>> diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
+>> index d35726d6a415..3105d28fd0c6 100644
+>> --- a/include/linux/crash_core.h
+>> +++ b/include/linux/crash_core.h
+>> @@ -2,11 +2,14 @@
+>>  #ifndef LINUX_CRASH_CORE_H
+>>  #define LINUX_CRASH_CORE_H
+>>  
+>> -#include <linux/linkage.h>
+>>  #include <linux/elfcore.h>
+>>  #include <linux/elf.h>
+>> +#include <linux/kexec.h>
+>> +#include <linux/linkage.h>
+>> +#include <linux/vmalloc.h>
+>>  
+>>  struct kimage;
+>> +struct memory_notify;
+>>  
+>>  struct crash_mem {
+>>  	unsigned int max_nr_ranges;
+>> @@ -54,6 +57,66 @@ static inline int arch_crash_hotplug_support(struct kimage *image, unsigned long
+>>  }
+>>  #endif
+>>  
+>> +extern int crash_exclude_mem_range(struct crash_mem *mem,
+>> +				   unsigned long long mstart,
+>> +				   unsigned long long mend);
+>> +
+>> +#ifndef arch_crash_exclude_mem_range
+>> +static __always_inline int arch_crash_exclude_mem_range(struct crash_mem **mem_ranges,
+>> +							unsigned long long mstart,
+>> +							unsigned long long mend)
+>> +{
+>> +	return crash_exclude_mem_range(*mem_ranges, mstart, mend);
+>> +}
+>> +#endif
+>> +
+>> +#ifndef arch_get_system_nr_ranges
+>> +static inline int arch_get_system_nr_ranges(unsigned int *nr_ranges)
+>> +{
+>> +	return -EINVAL;
+>> +}
+>> +#endif
+>> +
+>> +#ifndef arch_prepare_elf64_ram_headers
+>> +static inline int arch_prepare_elf64_ram_headers(struct crash_mem *cmem)
+>> +{
+>> +	return -EINVAL;
+>> +}
+>> +#endif
+>> +
+>> +#ifndef arch_get_crash_memory_ranges
+>> +static inline int arch_get_crash_memory_ranges(struct crash_mem **cmem,
+>> +					       unsigned long *nr_mem_ranges,
+>> +					       struct kimage *image,
+>> +					       struct memory_notify *mn)
+>> +{
+>> +	unsigned int nr_ranges;
+>> +	int ret;
+>> +
+>> +	/*
+>> +	 * Exclusion of crash region, crashk_low_res and/or crashk_cma_ranges
+>> +	 * may cause range splits. So add extra slots here.
+>> +	 */
+>> +	nr_ranges = 1 + (crashk_low_res.end != 0) + crashk_cma_cnt;
+>> +	ret = arch_get_system_nr_ranges(&nr_ranges);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	*cmem = kvzalloc(struct_size(*cmem, ranges, nr_ranges), GFP_KERNEL);
+>> +	if (!(*cmem))
+>> +		return -ENOMEM;
+>> +
+>> +	(*cmem)->max_nr_ranges = nr_ranges;
+>> +	ret = arch_prepare_elf64_ram_headers(*cmem);
+>> +	if (ret) {
+>> +		kvfree(*cmem);
+>> +		return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+> 
+> This function is quite large for an inline, should be in
+> kernel/crash_core.c IMHO.
+
+Right，inlinie large functions will lead to code bloat.
+
+> 
+>> +#endif
+>> +
+>>  #ifndef crash_get_elfcorehdr_size
+>>  static inline unsigned int crash_get_elfcorehdr_size(void) { return 0; }
+>>  #endif
+>> @@ -61,11 +124,11 @@ static inline unsigned int crash_get_elfcorehdr_size(void) { return 0; }
+>>  /* Alignment required for elf header segment */
+>>  #define ELF_CORE_HEADER_ALIGN   4096
+>>  
+>> -extern int crash_exclude_mem_range(struct crash_mem *mem,
+>> -				   unsigned long long mstart,
+>> -				   unsigned long long mend);
+>> -extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
+>> -				       void **addr, unsigned long *sz);
+>> +extern int crash_prepare_elf64_headers(int need_kernel_map,
+>> +				       void **addr, unsigned long *sz,
+>> +				       unsigned long *nr_mem_ranges,
+>> +				       struct kimage *image,
+>> +				       struct memory_notify *mn);
+>>  
+>>  struct kimage;
+>>  struct kexec_segment;
+>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>> index 99dac1aa972a..99a0d6abf88e 100644
+>> --- a/kernel/crash_core.c
+>> +++ b/kernel/crash_core.c
+>> @@ -18,6 +18,7 @@
+>>  #include <linux/memblock.h>
+>>  #include <linux/kmemleak.h>
+>>  #include <linux/crash_core.h>
+>> +#include <linux/crash_reserve.h>
+>>  #include <linux/reboot.h>
+>>  #include <linux/btf.h>
+>>  #include <linux/objtool.h>
+>> @@ -161,19 +162,80 @@ static inline resource_size_t crash_resource_size(const struct resource *res)
+>>  	return !res->end ? 0 : resource_size(res);
+>>  }
+>>  
+>> +static int crash_exclude_mem_ranges(struct crash_mem *cmem,
+>> +				    unsigned long *nr_mem_ranges)
+>> +{
+>> +	int ret, i;
+>> +
+>> +#if defined(CONFIG_X86_64) || defined(CONFIG_X86_32)
+>> +	/*
+>> +	 * Exclusion of low 1M may not cause another range split, because the
+>> +	 * range of exclude is [0, 1M] and the condition for splitting a new
+>> +	 * region is that the start, end parameters are both in a certain
+>> +	 * existing region in cmem and cannot be equal to existing region's
+>> +	 * start or end. Obviously, the start of [0, 1M] cannot meet this
+>> +	 * condition.
+>> +	 *
+>> +	 * But in order to lest the low 1M could be changed in the future,
+>> +	 * (e.g. [start, 1M]), add a extra slot.
+>> +	 */
+>> +	cmem->max_nr_ranges++;
+>>  
+>> +	/* Exclude the low 1M because it is always reserved */
+>> +	ret = arch_crash_exclude_mem_range(&cmem, 0, SZ_1M - 1);
+>> +	if (ret)
+>> +		return ret;
+>> +#endif
+> 
+> This should remain in x86.
+
+Yes, this should not be in the generic code.
+
+> 
+>>  
+>> +	/* Exclude crashkernel region */
+>> +	ret = arch_crash_exclude_mem_range(&cmem, crashk_res.start, crashk_res.end);
+>> +	if (ret)
+>> +		return ret;
+>>  
+>> -int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
+>> -			  void **addr, unsigned long *sz)
+>> +	if (crashk_low_res.end) {
+>> +		ret = arch_crash_exclude_mem_range(&cmem, crashk_low_res.start, crashk_low_res.end);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	for (i = 0; i < crashk_cma_cnt; ++i) {
+>> +		ret = arch_crash_exclude_mem_range(&cmem, crashk_cma_ranges[i].start,
+>> +						   crashk_cma_ranges[i].end);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	/* Return the computed number of memory ranges, for hotplug usage */
+>> +	if (nr_mem_ranges)
+>> +		*nr_mem_ranges = cmem->nr_ranges;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +int crash_prepare_elf64_headers(int need_kernel_map, void **addr,
+>> +				unsigned long *sz, unsigned long *nr_mem_ranges,
+>> +				struct kimage *image, struct memory_notify *mn)
+> 
+> Hmm, we are adding image and mn parameters only for powerpc and we already
+> have arch_crash_exclude_mem_range() and arch_get_crash_memory_ranges() to
+> accommodate powerpc differences.
+
+Yes, accommodating powerpc has brought a lot of trouble.
+
+> 
+> I'd suggest to take a slightly different approach. I'm thinking that we can
+> add crash_prepare_elf_headers() that will be similar to current
+> x86/arm64/loongarch prepare_elf_headers(), leave
+> crash_prepare_elf64_headers() alone and add a helper to exclude common
+> ranges, e.g crash_exclude_core_ranges(struct crash_mem *mem).
+> 
+> The crash_prepare_headers() would be something like this (error handling
+> omitted):
+> 
+> int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz)
+> {
+> 	unsigned int nr;
+> 	struct crash_mem *cmem;
+> 
+> 	nr = arch_get_system_nr_ranges();
+> 	cmem = alloc_cmem(nr);
+> 	arch_crash_populate_cmem(cmem);
+> 	crash_exclude_core_ranges(cmem);
+> 	arch_crash_exclude_ranges(cmem);
+> 	crash_prepare_elf64_headers(cmem, need_kernel_map, addr, sz);
+> }
+
+This looks fine to me and it can indeed avoid impacting other
+architectures that use `crash_prepare_elf64_headers()` but do not use
+our generic code.
+
+> 
+> powerpc could reuse crash_exclude_core_ranges() provided the latter call
+> an overridable arch_crash_exclude_range()
+
+We can do this in two steps: first switch x86/arm64/riscv/loongarch to
+the above approach, and then switch powerpc over. This will make the
+code easier to review.
+
+> 
+> What do you think?
+
+ I think your proposed approach is more elegant and reduces the
+disruption to existing code.
+
+> 
 
