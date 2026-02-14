@@ -1,72 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-16864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16865-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id DYHOMOXJj2ndTgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Feb 2026 02:03:33 +0100
+	id 6LnfNzeBkGncaQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16865-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Feb 2026 15:05:43 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B39513A461
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Feb 2026 02:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC87B13C2B1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Feb 2026 15:05:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fCW4b5m1Fz2yFk;
-	Sat, 14 Feb 2026 12:03:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fCrR568xvz2yFk;
+	Sun, 15 Feb 2026 01:05:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771031007;
-	cv=none; b=eZQ5xsQjiAyWUlskAL5QkL5RdH10PYYTYvkKt3q9GJ3TDqmFtplhdhwCCfFaYgZw0bYK9FxOffllNVypyKCd7/sBwpsj3+elObj63VF5b7HHlmQ2+7IxxrWFvfoAWqUnI+9AUx2Da0bZIE8Y+ms4YUbXcndkA/DT1SjgO0j/Sj1aCfRJl/HsUg0AgEv9dKn20XkwKRv+pW10uMGZIyn61EbBq6btBWlS4YNcVKbeEmQWTlKIvYZqgttDhBwMYAr3KHdWEg+BmnxishFu1e7ukXOZXpLsv78FrZKb3dxNpyi5hq2b+V5aEZXQcnGX15vO6BSET61Q5yyHr8Fswgz3Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771031007; c=relaxed/relaxed;
-	bh=bHKgEj1YO685ABoxn09XgLWVXkNh27wly27rECy0EgE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exY+T5a1ywgRScLiQJvVoXdgJ6pifQ6nGgeP0mMZGjK45x6CxEuOX//GdO/DKGfqOoWc1VKBXcre+5GilpkYmTlnbR8rwHIv9eY1a6G6zuOZWEsVNW3aTy5kVC4dqH7DaUn+03OzRAiKEx+Ey1c9+2gIFXstbN3hPQyNvaSVFePJ2DkDBhVivFS5QJYLdw3PO0Z7hbx1mNA5Lim2Ul+jSTZgIWg7jQiuTaEW8/ckfx+HWxqjb3iwThAR8s0ZafsfjzwUUpnEBZEyL6ghWgL0nK3KG7QMmM5dUcKBt/1HjkPXXHoYgTfgsbDPHdnwW2T8AWMIO8h31xpbkHTs2Rua8A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D8JsEno8; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.163 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771077937;
+	cv=pass; b=bv+45VemQvqwG75y7kNdXzsYEd2DxiLs4SNoeIloAdgXdJp/aef4sNENjizJx4u0IHAVvGUxRsbt7AHFvB5C+baikskEhp6Ew51RAT1D+CbgEbb+IWbsNSZX4WqhQ2ET/mgxriluE7UlUE6RWl1mvHBW2GohQAl904I1+zAYkTJ/n6rgDOts4NhHbo1hLYxK2rOJJg1FfL30gtPb4jpxyZnUhu39pJ44VatCivnk6rEmGcd+JadKP0MFtBzJxeGi1ZVptc+zGHPuJJfQRRpO72nKOA+Cjh/Z3bod6hDw9+OAyMPB+Bthxw2AwU71hQavx9PWM1R1nNlh9TU50kaBDg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771077937; c=relaxed/relaxed;
+	bh=pyVNx/QiO7Slo7z0VquiA9s7yUlC0HUTp1usBsfViv8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=I1vvCa9D7QU1CRoDkZvhetf8I4pIkTXs9Wo61mkHELDaA9zmVyAUXJnQp3OMSulSj9N7bkpZvWocH74aR9XGdpjLDuo1qow2TCPlMbn12uGp0bbENwUeiqf9VBh8GDtxJNcjI+3Q6rUEH0Ak24fd3z9pVSWJl3Eu5/sP2lFk8cYL/TvjaaKZs8oPfKG+ZXYYp96c2xgabigSh78DqSPtsveAMmBg0s1B8lzibXk+GrhgCN9VGaYfeiBYJ3dPDQRO3ArW9IP46IY/F4MAd6vn7y/NDo1gGuC+YWIdWCNOkv0L+FO8oGlmfkP8UTeDC3dBrEhzd0Lpz/zKD+CGt+nsQw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Nw0ps78u; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=7DsT63Md; dkim-atps=neutral; spf=pass (client-ip=81.169.146.163; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D8JsEno8;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Nw0ps78u;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=7DsT63Md;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.163; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 164 seconds by postgrey-1.37 at boromir; Sun, 15 Feb 2026 01:05:33 AEDT
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.163])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fCW4W3kkDz2xSF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Feb 2026 12:03:23 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AF9D060054;
-	Sat, 14 Feb 2026 01:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C904C16AAE;
-	Sat, 14 Feb 2026 01:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771031000;
-	bh=Sj1dl4mJHIY1lAiXUEN7nZi6A3IVTki3mOPvGibGbMM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8JsEno8tXYXRV1R4vIR1bqBfusPsDSVOBGfZ7tVDMPJ/lvvNoHoBdvB2fjtbPfG8
-	 eRGQ6VGiZaI3bLGvqgaa8ZBfj+vKPBhKDuYe6fn+97RMHjA3xPGQJNy34aYXORZ9aE
-	 o0MxicSZxlDN0CFuLJV/To018jOY6zFmRu4hXTQ4kiYswRQs5KGl7l4IECeIyOTOhp
-	 5ySleQmO0RygRK+CwOoeMllK1vjOhqwdml8YPH94y+cVWyb8IgUg2f4idOEIH5J8B0
-	 ipEO/YPRPjkS3SppX+Zv58sQ74aCmlYj2tHCxYIhOXW4JeOTDfVSAdCw+M0PLuuglN
-	 A/+vl0UhZ2M4Q==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-6.12] ASoC: fsl: imx-rpmsg: use snd_soc_find_dai_with_mutex() in probe
-Date: Fri, 13 Feb 2026 19:58:19 -0500
-Message-ID: <20260214010245.3671907-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fCrR16yLBz2xHZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Feb 2026 01:05:33 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1771077742; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=CQjWSJwf+IpJt4a5uaWmb+eDukU0TMQDQ72JWY4WMBgMkUUAVi9h9AXBHw9yKqvqka
+    U/hOw6lMXJJ1vPxMuKac0Jx/34xma8ACPXpo6UlXuojsjjv7se/g4GxJf8Zq+slWkgr7
+    0tYv00TlTqNT5fU1N0M55gvkAFtXHJVfQ3QXVKuEAoPfSTCds9qQSOKjM2lYz/VbVwKc
+    jqU3SBAsdl+L5zMRVBwDWKwqErWA6LpUqBW9l8jiMxH8Oj23rG0755XYv3cY2vQq554e
+    qhE3A7p1gCMiL/j2d7zqkeLHZixz4ZPqwAWEuwFvL9Uts0jO40/YaVV6PJN8n7frOivy
+    ZoTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1771077742;
+    s=strato-dkim-0002; d=strato.com;
+    h=Subject:From:Cc:To:Date:Message-ID:Cc:Date:From:Subject:Sender;
+    bh=pyVNx/QiO7Slo7z0VquiA9s7yUlC0HUTp1usBsfViv8=;
+    b=VofA5JEzihcmtQYfYlTrLq9VmUnXLaedvH1R2sf6d2kC2J/ez4RFT1VBaaaoOgK/7L
+    sSy+AjdT1Nvf8tLA6IMt/iSpz6h5wUtfp5ye61M03/AMROtcDaQyoK2/RaBeQknC5lmo
+    ZgZDtFHA1QxkdKJgulIoLiI7LGmrnyNcEzEwrhk0D0UwuI4RpfmJ8/xE6Zr8p6UwUnEo
+    81nyq3djbpe2pldQTluHaqPj+TaRL1nb6tud4M6wI1Yz0XFtrjODaebPQUxP3sCQPfOK
+    +YfTzN2cdyGvodPQ2mPEIQOr/5xf5Z8m65D4Jk2BybLLHi3yDtEGaKmsbJ5r3gFCxAN+
+    mm3Q==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1771077742;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=Subject:From:Cc:To:Date:Message-ID:Cc:Date:From:Subject:Sender;
+    bh=pyVNx/QiO7Slo7z0VquiA9s7yUlC0HUTp1usBsfViv8=;
+    b=Nw0ps78uvqED6YTdZNwE5NamIc0VVB0X4JWFSKZwx6ogte9Yp4Pzh6XBFth7pPCUDy
+    JLLFRIaIxSiH/b4NblT00km5wlYfWlwZZ1gRScmABnxVBFmZBFBBYKaFtSKsSYPYgRV7
+    T2odWa3HBcjwahmsVIMlE2u55NCqQaAd1gfTgu3NcmlXA1nSeEwPVYxUn70M4ecSRuDv
+    iTQ3Jw/H5BCb18Fp5JPjlavBUNTTlH8+iCKOhpId5ygsvIkYbTrDzeJc/WcITlSzHnrZ
+    HqKbiyKcLw2cLlWF6WpmlQcxH6edTnH4PQnfWjEs55VYbNq0WLtYEXnfrXVZR9c7gDmZ
+    uyzQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1771077742;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=Subject:From:Cc:To:Date:Message-ID:Cc:Date:From:Subject:Sender;
+    bh=pyVNx/QiO7Slo7z0VquiA9s7yUlC0HUTp1usBsfViv8=;
+    b=7DsT63Mdw1V1XZsBfm+fhrRDlwGj4q/VW90GJjmUllxgEjQiYT9ohmulZdDJeqrk/N
+    2cuy2e5/8JfIZa6BVeAw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIy+l7xzg"
+Received: from [192.168.178.48]
+    by smtp.strato.de (RZmta 55.0.1 DYNA|AUTH)
+    with ESMTPSA id e9337f21EE2MruD
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 14 Feb 2026 15:02:22 +0100 (CET)
+Message-ID: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
+Date: Sat, 14 Feb 2026 15:02:21 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,130 +94,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+ mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: [Linux PPC] KVM PR and KVM HV do not work if the kernel was compiled
+ with PREEMPT
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[xenosoft.de,reject];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[xenosoft.de:s=strato-dkim-0002,xenosoft.de:s=strato-dkim-0003];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16864-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:patches@lists.linux.dev,m:stable@vger.kernel.org,m:n7l8m4@u.northwestern.edu,m:Frank.Li@nxp.com,m:broonie@kernel.org,m:sashal@kernel.org,m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16865-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[u.northwestern.edu,nxp.com,kernel.org,gmail.com,vger.kernel.org,lists.ozlabs.org,lists.linux.dev,lists.infradead.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[chzigotzky@xenosoft.de,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[xenosoft.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,i.mx:url,northwestern.edu:email]
-X-Rspamd-Queue-Id: 8B39513A461
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xenosoft.de:mid,xenosoft.de:dkim,raw.githubusercontent.com:url,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: CC87B13C2B1
 X-Rspamd-Action: no action
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Hello,
 
-[ Upstream commit 84faa91585fa22a161763f2fe8f84a602a196c87 ]
+KVM PR and KVM HV do not work if the kernel was compiled with PREEMPT.
 
-imx_rpmsg_probe() calls snd_soc_find_dai() without holding client_mutex.
-However, snd_soc_find_dai() has lockdep_assert_held(&client_mutex)
-indicating callers must hold this lock, as the function iterates over the
-global component list.
+The entire FSL Cyrus+ board freezes when using KVM HV with PREEMPT.
 
-All other callers of snd_soc_find_dai() either hold client_mutex via the
-snd_soc_bind_card() path or use the snd_soc_find_dai_with_mutex() wrapper.
+The guest kernel doesn't boot if we use KVM PR with a PREEMPT kernel on 
+the PA Semi Nemo board.
 
-Use snd_soc_find_dai_with_mutex() instead to fix the missing lock
-protection.
+We were previously able to disable PREEMPT in the kernel configuration, 
+but the latest git kernels now enable it by default and it is no longer 
+possible to disable it.
 
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260205052429.4046903-1-n7l8m4@u.northwestern.edu
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+I created a patch for disabling PREEMPT today. [1]
 
-LLM Generated explanations, may be completely bogus:
+Is it possible to let us decide whether to activate PREEMPT or not?
 
-The wrapper was added in 2020, so it exists in all currently maintained
-stable trees (5.10+, 5.15+, 6.1+, 6.6+, 6.12+). This confirms the fix
-will apply cleanly to all relevant stable branches.
+Thanks in advance,
 
-### User Impact
+Christian
 
-- Without this fix, users with i.MX RPMSG sound cards will hit **lockdep
-  warnings** during probe when `CONFIG_PROVE_LOCKING` is enabled
-- More seriously, without the lock, there is a real (though perhaps
-  rare) **race condition** where concurrent component
-  registration/deregistration during probe could corrupt the component
-  list, leading to crashes or undefined behavior
-- The i.MX RPMSG audio is used on NXP i.MX SoC platforms, which are
-  widely deployed in embedded systems
-
-### Stability Indicators
-
-- **Reviewed-by: Frank Li** (NXP maintainer) - indicates domain
-  expertise review
-- **Applied by Mark Brown** (ASoC subsystem maintainer) - indicates
-  acceptance by the subsystem maintainer
-- Single-line change with zero risk of regression
-
-### Summary
-
-This is a textbook stable backport candidate:
-1. **Fixes a real bug**: Missing lock protection for a global list
-   traversal (race condition + lockdep warning)
-2. **Obviously correct**: Uses the existing mutex wrapper that all other
-   callers use
-3. **Small and surgical**: Single line change
-4. **No new features**: Just corrects locking
-5. **Low risk**: The wrapper function has existed since 2020 and is
-   well-tested
-6. **No dependencies**: Self-contained fix
-
-**YES**
-
- sound/soc/fsl/imx-rpmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index 53f04d1f32806..76a8e68c1b620 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -145,7 +145,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- 	data->dai.ignore_pmdown_time = 1;
- 
- 	data->dai.cpus->dai_name = pdev->dev.platform_data;
--	cpu_dai = snd_soc_find_dai(data->dai.cpus);
-+	cpu_dai = snd_soc_find_dai_with_mutex(data->dai.cpus);
- 	if (!cpu_dai) {
- 		ret = -EPROBE_DEFER;
- 		goto fail;
--- 
-2.51.0
-
+[1] 
+https://raw.githubusercontent.com/chzigotzky/kernels/a74fa6179eaeafcea7ad89f0e61c30ace038daf2/patches/X1000/Kconfig.preempt.patch
+[2] Bug report: https://github.com/chzigotzky/kernels/issues/19
 
