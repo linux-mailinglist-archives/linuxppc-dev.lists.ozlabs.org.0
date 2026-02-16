@@ -1,74 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-16883-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UL/+N43/kmlY0wEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16883-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 12:29:17 +0100
+	id EO1ILZ80k2mV2gEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 16:15:43 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F83142FA4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 12:29:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506EA1454A4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 16:15:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fF0sj3C3Zz2yhZ;
-	Mon, 16 Feb 2026 22:29:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fF5v006y9z2ySS;
+	Tue, 17 Feb 2026 02:15:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::649"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771241353;
-	cv=none; b=JK/+vHxAi+qnXi1wDKasNzBplR2+mUL0+veRrOuaQ1eV1okHTOQVKa0v/oRcLfv2Mqhw/ZVM8kqBIeb4s6OdgCQr7ilkldX4Mh/95W73plY/z/SPyT+/YXajDBNH6PQhO2sJHSOghDtHqu7QQl4f98nKRkxPIR/434Gk5yYJ51at+nJbIyWAxsEdLuCY30k1OCvjoBnHEznXZFafxIIKwZX38LXLbUoEw3hg4DHi8sw11BXQmMM2FVaB+8Ls1oBFBYWp5HaI8dCY9CYpMAQ6h6z4uAA5VSim/F0gFRjXMYiEDNQnuvPZawwLpD39cVm7XLwFyxk4uFwem8SIwLiYgA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771254939;
+	cv=none; b=c/wjCL6G0SRXKhg/DFCu30mwFh+FUb7rAS37ZQpB048Xw1bmxQB1UQlIUPcfG2zcfpIjzuivN34p+CeugfSNOleLc9MMlfEOarJ9m8aocRFXN0Ubgmym2MEbX8tEIptMWjSChpmAXAB9tIu7TRccwWUVxSFOy6uL/qlFhokWH6LAe2E3V0OI0pwkepK5bjVQ7HGkWK4oL4SNp1Hd+uVmjziZ8AdhM8dHi0RQUcb8Lev+g+aaCeAWGctRrRBX8AO3aEzwl3FVCVH3/DYqDGrWRAd5gKsp3dsAISWKGMCqLzrl3ej9QcWZRXP7IxAuf6m2plKOqRCUcp4wFxjmtsWAWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771241353; c=relaxed/relaxed;
-	bh=Vo1OOIvCISDxl5O3fpiaDD0IWyIfX7wGxG8VPYZFpaE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XyJvFBRWGmOsiW+TBeDjWZYy9NxQ1kuuXQjAl3rHwl84ac+FcKkZF6NCopOScoDOTaHfdQu7mF/iNoIFk2JJvnue/xZaXmKCYd6uv1eR/piypuE9PYHIFMcEYWO+oks4QMqeCm2KzpTUV9q4ctC5+Mp8voGokxc+uFt7THiNVpV0Txu1ROP+t/F7iwoM4v7x+NvKc20/cwo4+B3ibuDzYrYRFe7j7XotIroK9En+AbK1ZdlrQ4zZ+SWaDK6N77fP3PBrH1AKnByPmAA7S+DTrEQjh2HDWYKlmTtKOiFQYmKLB8k+d18YVE4frqwNfxhBKArL+OSx/lYmlhxG5r8zAA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=2y2Pmw/2; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::649; helo=mail-ej1-x649.google.com; envelope-from=3gv-saqkkdce7if9boveidlldib.9ljifkrumm9-absifpqp.lwi78p.lod@flex--aliceryhl.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1771254939; c=relaxed/relaxed;
+	bh=P6sI1XImtIgHuyzvVkTZIk/Ol4dy/LnLxklTJ6uAFSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yif3pY2dnknFCz68bPyh2ZVDV83eOF6TEQ+Tr5uBpoEyFJTiZ1KlTgB/7jYWzUaghRb/fQ/os1u2s98/qnMuwaKH4RHgC024gKHUSBsCQK3Y1f85rsmkDhN3T6ZfeQqvzL3sCC2aHHA2OYTzCllwJXVTHAXVxCvLlJiRgp2zRU6rOCiG/SEZKbNFKvMSnfkkBmKKpAUqubdhFOAsMFIIVcYY1jaU0zgPLRJRhcHukdH3RTXed8z+pT3xy8SsA8wucUa3T6FB5qvXBC2Zd6X4lWn55ZbfZNrKqeCl4NxCxUYz6tbRJwl4UzHVx3RMZvyikhJfE+tavcri92+ZbZKO2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eVAmm0hV; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=2y2Pmw/2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eVAmm0hV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--aliceryhl.bounces.google.com (client-ip=2a00:1450:4864:20::649; helo=mail-ej1-x649.google.com; envelope-from=3gv-saqkkdce7if9boveidlldib.9ljifkrumm9-absifpqp.lwi78p.lod@flex--aliceryhl.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x649.google.com (mail-ej1-x649.google.com [IPv6:2a00:1450:4864:20::649])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fF0sg22Qgz2xVT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Feb 2026 22:29:10 +1100 (AEDT)
-Received: by mail-ej1-x649.google.com with SMTP id a640c23a62f3a-b8861544696so325504966b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Feb 2026 03:29:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771241347; x=1771846147; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Vo1OOIvCISDxl5O3fpiaDD0IWyIfX7wGxG8VPYZFpaE=;
-        b=2y2Pmw/2iN5905trhzxy9Ngkhysnpo3G09Z3CuHgeXW++aNebgNsW6iff9O+tkNPpm
-         YpIWln9V4I+gFEG25QtLLEtF66Rf9JvRXNzEi+21Gk3d/x0DLiEdtK1k6hOkqEMUPCxM
-         qUX8vEWdMlskl5KF2IVkKv8CkrMoXyOarVPFPb7t39ic87dUx+h4FxuncElsiTI0TZyq
-         rL5+EgaBtIqr7rp9xyCZE9/+rwnEZGLhCXi5EEusfkhcSpXhkODg25p4lrGEJOy7OkCb
-         fESHQW5a1/SqhANatHF03l5cJgMIZOTakilCFi4sleI1ljoSc/DrzwKzhA0VGbWAf2uQ
-         M0ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771241347; x=1771846147;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Vo1OOIvCISDxl5O3fpiaDD0IWyIfX7wGxG8VPYZFpaE=;
-        b=gGqAu6QDukFSJ9sZC94/C+qhfHT7XnOuNqBzF90vkDIpDBGos1uqLCcssgyBTIE+Nt
-         gNTKtX75uD5PEu6u+0FmQKT3BHLwM53KONbFM66GjUln/jNuRWxTHi8VEI1RIesRO6dP
-         ZTVeDOQ6nRDdx9VTlacxwQRPLEgjBpsE1CZE64JklSi3l4FwjnEPYLqLIIi+DXuP9nw4
-         bvg7Ub+nzVOJIlUKsCxIVdHWEqW3jm7V6Hz1vB9l1peO7Y/EwGmCd4HhSgShdCyYc497
-         ZDxTtr6J1iVXQCFfI/zpsmsf2ADSEsNdaaP3BOzkcfHQQUz+l043X78ZqDvQfUlUm+Ne
-         QnWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjVony1cccuZGw2vsJ1NzL0Wc+efDPufSIP3RHdaj2xZxoRNb4XbdLq0UNgB5MTFTzLRsWdpt0AR+lwY0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxAyofaZ8S78C2WLqc2ENXVMY/mKOq1yaAllUOFUWOvRIJfpQ70
-	gUxQgItwZxy4kZl48oKZ5O9/T0tUHpgwZ+dXRCraUMTal4XI620a2LBupmh3sZsrnlGKZkLr2+N
-	Ns4b1Lp0hkDPSg2AEFQ==
-X-Received: from edqp10.prod.google.com ([2002:aa7:d30a:0:b0:659:474e:caf2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:869e:b0:b8e:9e11:6615 with SMTP id a640c23a62f3a-b8fb44d5e4fmr626744366b.47.1771241346405;
- Mon, 16 Feb 2026 03:29:06 -0800 (PST)
-Date: Mon, 16 Feb 2026 11:29:05 +0000
-In-Reply-To: <aZL-JO3950gc9YO_@probook>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fF5tz09S7z2xVT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 02:15:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75B2743B09;
+	Mon, 16 Feb 2026 15:15:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CDFC19423;
+	Mon, 16 Feb 2026 15:15:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771254936;
+	bh=T0/dBAH4A6VtIhLGFbkca4e08w1S8Y6tr6iOo5y+MLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eVAmm0hV5VPgoD8Na1fqz30ujWFYw2iZR7Xeepn3HwBgpweurYwSUjOsEhwJJqY0i
+	 RC4PisqqVINr9iOO2DQ5iymWQQa7ztNq/7ftY6gOf5E6SPGI5bN5dx5Kpm80NsXXqr
+	 L2Vy2EQnhW4+sq70Wo9fSTkxNMU0Kh1uoS8ae8mUOhPFp4LKlMtwotnJ7JEU8Hkn3d
+	 80XYwVPsogpL4Z96+zTD94LTqQbkd9BngC8QA2yyHpAdVob+s0D4URZYhvECQudqrW
+	 4e7IZdvnK4e9HNDeATC+z4rRzlghwzR3e5ABG4SmldLqggK0V73aBqV8Wy1GLUoqV2
+	 oSdjNt8fSlpNg==
+Date: Mon, 16 Feb 2026 20:45:19 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/3] PCI: mvebu: Simplify with scoped for each OF child
+ loop
+Message-ID: <2w3cvp43y5fxjveifmagikxhlbrotuztjufa2eoaxesi2fzz2f@6fkyex46nucd>
+References: <20260102124900.64528-4-krzysztof.kozlowski@oss.qualcomm.com>
+ <20260105103502.00002efe@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,113 +76,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20260204210125.613350-1-mkchauras@gmail.com> <20260204210125.613350-4-mkchauras@gmail.com>
- <aYSgjPD5KRcNN0j4@luna> <1ed12a72-06e4-461b-907e-2581e25e3e38@linux.ibm.com>
- <aYS2oWCE0ZCC3don@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com> <aZL-JO3950gc9YO_@probook>
-Message-ID: <aZL_gVBFVzMjQkYK@google.com>
-Subject: Re: Rust version requirement (was: [PATCH V2 3/3] powerpc: Enable
- Rust for ppc64le)
-From: Alice Ryhl <aliceryhl@google.com>
-To: "=?utf-8?Q?J=2E_Neusch=C3=A4fer?=" <j.neuschaefer@gmx.net>
-Cc: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
-	Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, corbet@lwn.net, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
-	jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260105103502.00002efe@huawei.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:j.neuschaefer@gmx.net,m:mkchauras@gmail.com,m:venkat88@linux.ibm.com,m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[aliceryhl@google.com,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16883-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	FREEMAIL_TO(0.00)[gmx.net];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
+	FORGED_SENDER(0.00)[mani@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_RECIPIENTS(0.00)[m:jonathan.cameron@huawei.com,m:krzysztof.kozlowski@oss.qualcomm.com,m:thomas.petazzoni@bootlin.com,m:pali@kernel.org,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:tyreld@linux.ibm.com,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16885-lists,linuxppc-dev=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[gmail.com,linux.ibm.com,linkmauve.fr,kernel.org,garyguo.net,protonmail.com,umich.edu,lwn.net,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,bootlin.com,kernel.org,google.com,linux.ibm.com,ellerman.id.au,gmail.com,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 35F83142FA4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 506EA1454A4
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 12:23:16PM +0100, J. Neusch=C3=A4fer wrote:
-> On Thu, Feb 05, 2026 at 09:12:01PM +0530, Mukesh Kumar Chaurasiya wrote:
-> [...]
-> > use rust version nightly-2026-01-28
-> >=20
-> > the latest one has some issue. I just raised a bug for the rustc
-> > here[1].
-> >=20
-> > [1] https://github.com/rust-lang/rust/issues/152177
->=20
-> Another reason to use a nightly version is that Rust inline assembly for
-> PowerPC will only be stabilized[1] in version 1.94, so current release
-> versions fail like this (tested with 1.91.1):
->=20
->     error[E0658]: inline assembly is not stable yet on this architecture
->       --> ../rust/kernel/sync/barrier.rs:19:14
->        |
->     19 |     unsafe { core::arch::asm!("") };
->        |              ^^^^^^^^^^^^^^^^^^^^
->        |
->        =3D note: see issue #93335 <https://github.com/rust-lang/rust/issu=
-es/93335> for more information
->        =3D help: add `#![feature(asm_experimental_arch)]` to the crate at=
-tributes to enable
->        =3D note: this compiler was built on 2025-11-07; consider upgradin=
-g it if it is out of date
->=20
-> This is somewhat at odds with Documentation/process/changes.rst which
-> only requires Rust 1.78. I wonder if the rust version requirement should
-> generally be bumped, or if there should be arch-specific requirements
-> somewhere in changes.rst or rust/arch-support.rst.
->=20
-> Best regards,
-> J. Neusch=C3=A4fer
->=20
-> [1]: https://github.com/rust-lang/rust/pull/147996
+On Mon, Jan 05, 2026 at 10:35:02AM +0000, Jonathan Cameron wrote:
+> On Fri,  2 Jan 2026 13:49:01 +0100
+> Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
+> 
+> > Use scoped for-each loop when iterating over device nodes to make code a
+> > bit simpler.
+> > 
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Hi Krzysztof,
+> 
+> Drive by review.  Your changes are functionally equivalent and lgtm.
+> However, I am curious at whether the lack of reference count for child
+> when stashed in port->dn (and then used in the for loop) is a potential
+> issue.
+> 
 
-The MSRV is planned to be bumped to 1.85.
+Looks like it. But the current code doesn't drop the reference either :/
 
-If it's available as a nightly feature on 1.78, then you can just add
-#![feature(asm_experimental_arch)] to lib.rs, which already enables
-several other stabilized feature on older compilers.
+- Mani
 
-Otherwise powerpc support can always be gated to require a larger
-rustc version than other platforms.
+> Jonathan
+> 
+> > ---
+> >  drivers/pci/controller/pci-mvebu.c | 10 ++++------
+> >  1 file changed, 4 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/pci/controller/pci-mvebu.c b/drivers/pci/controller/pci-mvebu.c
+> > index a72aa57591c0..4d3c97b62fe0 100644
+> > --- a/drivers/pci/controller/pci-mvebu.c
+> > +++ b/drivers/pci/controller/pci-mvebu.c
+> > @@ -1452,7 +1452,6 @@ static int mvebu_pcie_probe(struct platform_device *pdev)
+> >  	struct mvebu_pcie *pcie;
+> >  	struct pci_host_bridge *bridge;
+> >  	struct device_node *np = dev->of_node;
+> > -	struct device_node *child;
+> >  	int num, i, ret;
+> >  
+> >  	bridge = devm_pci_alloc_host_bridge(dev, sizeof(struct mvebu_pcie));
+> > @@ -1474,16 +1473,14 @@ static int mvebu_pcie_probe(struct platform_device *pdev)
+> >  		return -ENOMEM;
+> >  
+> >  	i = 0;
+> > -	for_each_available_child_of_node(np, child) {
+> > +	for_each_available_child_of_node_scoped(np, child) {
+> >  		struct mvebu_pcie_port *port = &pcie->ports[i];
+> >  
+> >  		ret = mvebu_pcie_parse_port(pcie, port, child);
+> > -		if (ret < 0) {
+> > -			of_node_put(child);
+> > +		if (ret < 0)
+> >  			return ret;
+> > -		} else if (ret == 0) {
+> > +		else if (ret == 0)
+> >  			continue;
+> > -		}
+> >  
+> >  		port->dn = child;
+> >  		i++;
+> > @@ -1493,6 +1490,7 @@ static int mvebu_pcie_probe(struct platform_device *pdev)
+> >  	for (i = 0; i < pcie->nports; i++) {
+> >  		struct mvebu_pcie_port *port = &pcie->ports[i];
+> >  		int irq = port->intx_irq;
+> > +		struct device_node *child;
+> >  
+> >  		child = port->dn;
+> >  		if (!child)
+> 
 
-Alice
+-- 
+மணிவண்ணன் சதாசிவம்
 
