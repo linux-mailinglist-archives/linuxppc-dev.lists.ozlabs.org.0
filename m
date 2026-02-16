@@ -1,80 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-16887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOhKFuFsk2kb4gEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 20:15:45 +0100
+	id UGYQNAuVk2n76gEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 23:07:07 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807F9147378
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 20:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8DC147D9F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Feb 2026 23:07:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fFCCw6Nmnz2ySS;
-	Tue, 17 Feb 2026 06:15:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fFH1g31vKz2xm3;
+	Tue, 17 Feb 2026 09:07:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771269340;
-	cv=none; b=cdIJcEyD2TF4ZW1TLw/IaXnvR+1X8mGmMaAzULZCL9AFTzHYNH8FHm7mbcH5dNCotH/7Rpcm6DmWMZpPm72rAh3uOASu8PNUMIr1vHZqZo03p/58aHLT2Y17J7MVrT3wY/RgySvhGzmzIuSCrHXnBi8xj1NtTg64bQEOXllWLOl8dAPRxudC8qXLwsLKy29BoolrJOPbIaqbeYB3NRp1cqcjRaZz4xgGG8zxCX2GWEY8g1IiN1CUYe09fiteEiiMOkUeyK2lzWOlt31nlVR8dlX0DATK4DvnZp6HM1ArXXwwVg8agtThPX/HMQls0/w5FDeNiVlygW+7RFQ951tTwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771279623;
+	cv=none; b=bepy0FjT4C/nk+DFDyIi9V2hxEq0STpkgqlfIv+8ytpzPe5kEGVr9aFOjYnUD3rmQsC6zfxJOH41VBg3RsTxXwp+yHd22w1NtAigLC+lw/AQNqIWHwRuQ2dnnzoWL1PsXkjtgvlAAUhvZ3c4FpLD8xHgGG3rqXb5U5tGh8rPdywMxKrUmIhVWCHveVnfS78R8FiCklrN7fvYTLAelJPKUGUZbdBJG9o4MvPwsajvrec48abvQYK6d+BNEWXt1/XzScr76ztq02fZyKu+IZAg4c1I9PUuYK8ul8T0WK523dSMBKHtA3sp7yM4YqaQgRSx2vAvUOinWqd58kpm8cbSxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771269340; c=relaxed/relaxed;
-	bh=hyfRXvjr5nJVo9V0sq9shn9y3zL71fzSrpzs6KfCdV8=;
+	t=1771279623; c=relaxed/relaxed;
+	bh=t8BYgHoDiUqLazySoLpLeVrihmYilevIB92jtHXcapg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZqHeL4MV50qB+/84tCd2eRys8Bt4/JJ0UPkSj7bDfbEc4JqPuQSNY9d8J1PS34esLqty+pgnGU5AznfxYxwqAHZgEPqov2LxUtQe86FjKbumVrylNWxkF3T4Xl/6hZaZKj+QCzvm5YE7KIgH2sG5etd9351+Iw5yA4eSiuwnr3f4mW8GkBtYeDLNreoDGx2WKDdzKX3sdOvFmlMYnf/wjN6bmi+tZvu5d7VrdP2+PJf7xUlZu92edwFR//xiAhtYTC7prSKiTIzGyuLSSQUP/IHKI1nk44CUP+S5nEddw/a2PLiEKGpBv48qkzLTGBd1RJfZdfXkdPAUpZjbL+zHGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=j1r48TBV; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=j1r48TBV;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	 Content-Type:Content-Disposition:In-Reply-To; b=D+KNJTySbxEnW0Ajlrq/YYVXadQBAC4YLPmQfgq5G/3WpluDK9gVXZ7ZtNNZxOEifG76fC2LU7umePP476CElge8AGC4dhUQr+C9mgqBanPZA7qi/phInODt/dV5+A7UDIhVKVYj+UFpXWAV762hXYgvcZA0y+cjxLIAgK6+811EfUP5aePZQQwtL+AnSqUSgtfHrDukqRZOrtoECU2kWunWROJ0/OiWL9fLRc90A5zkM+clawDzXPjiOiLii3g0tepnnF8kxh1f/r2E4viGTmNiNqQQHbgfyGecLWJwG+I241KOZ9inbKZKA5ZPMR7uMEHCmJARC0+741kascy7CA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1012 seconds by postgrey-1.37 at boromir; Tue, 17 Feb 2026 09:07:01 AEDT
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFCCs31H0z2xVT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 06:15:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771269336; x=1802805336;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5se4Iu/7ubFuyPU7cpRyrrJpTks1JWXd3S01JarPDrg=;
-  b=j1r48TBVGjUgX6gRizPRBHqMdFf9BAr3x3cNAQA3MpPnbEWhIv/S0RPJ
-   /eS6NuJbc7r9A/Dfkgm/mf3schz1tENTnM8pQAL+NlSn0rezcnJi7eAeF
-   QfsEGVFe3TJgLmdXv6SMPA8/Pk6X+ucMG214Vp4IBc1V4jKGvbfFkbWE5
-   2sISrFnTLJ3FDD4o7G8TcyuWdrmZtZY9HPtb/IPgklb0on5/yQaH+rXoL
-   AEkthSH6D3UnoJw2KCNHBKD3kGcKi6kyJfvUOw3aVjYsqU5DOiV0c4Mtv
-   PP5GENMur2cSPWVGrte2eTPXVlbFPFVc4Wc5plu1TfzSV7Vr+xs3aPOPK
-   w==;
-X-CSE-ConnectionGUID: s8IwW/1iRdC/zGkaMdPsAQ==
-X-CSE-MsgGUID: XxlpEP9gQ3mDm03OyZ8/Fg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83075272"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="83075272"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 11:15:28 -0800
-X-CSE-ConnectionGUID: g389iGY3QYOLVaC38m3Aqw==
-X-CSE-MsgGUID: QgXzA+KSRYmFUvCkDRvOTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="218674562"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 16 Feb 2026 11:15:26 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vs444-000000010Ci-091H;
-	Mon, 16 Feb 2026 19:15:24 +0000
-Date: Tue, 17 Feb 2026 03:14:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: adubey@linux.ibm.com, bpf@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@kernel.org, eddyz87@gmail.com,
-	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev,
-	chleroy@kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
-Subject: Re: [PATCH 1/2] powerpc64/bpf: Implement JIT support for private
- stack
-Message-ID: <202602170316.V2RZWuVa-lkp@intel.com>
-References: <20260216152234.36632-1-adubey@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFH1d4LZZz2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 09:07:01 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vs6TQ-00034A-LG; Mon, 16 Feb 2026 22:49:44 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vs6TO-0018BD-0n;
+	Mon, 16 Feb 2026 22:49:43 +0100
+Received: from pengutronix.de (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 4494D4EA95C;
+	Mon, 16 Feb 2026 21:49:43 +0000 (UTC)
+Date: Mon, 16 Feb 2026 22:49:42 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, 
+	Jingoo Han <jingoohan1@gmail.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] PCI: layerscape: Allow to compile as module
+Message-ID: <20260216-mahogany-caterpillar-of-certainty-38b0bc-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,266 +76,161 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="acibql3y7ovkmvyd"
 Content-Disposition: inline
-In-Reply-To: <20260216152234.36632-1-adubey@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.21 / 15.00];
+X-Spamd-Result: default: False [-2.61 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16887-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.linux.dev,linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:bpf@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,m:chleroy@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-16888-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[pengutronix.de];
+	FORGED_SENDER(0.00)[mkl@pengutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:s.trumtrar@pengutronix.de,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:mani@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:jingoohan1@gmail.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@lists.infradead.org,m:imx@lists.linux.dev,m:s.hauer@pengutronix.de,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,nxp.com,gmail.com,vger.kernel.org,lists.ozlabs.org,lists.infradead.org,lists.linux.dev,pengutronix.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[intel.com:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 807F9147378
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[freescale.com:email]
+X-Rspamd-Queue-Id: 2D8DC147D9F
 X-Rspamd-Action: no action
 
-Hi,
 
-kernel test robot noticed the following build warnings:
+--acibql3y7ovkmvyd
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] PCI: layerscape: Allow to compile as module
+MIME-Version: 1.0
 
-[auto build test WARNING on bpf-next/master]
-[also build test WARNING on bpf/master powerpc/next linus/master next-20260216]
-[cannot apply to bpf-next/net powerpc/fixes v6.19]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hello,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/adubey-linux-ibm-com/selftests-bpf-Enable-private-stack-tests-for-powerpc64/20260216-182353
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-patch link:    https://lore.kernel.org/r/20260216152234.36632-1-adubey%40linux.ibm.com
-patch subject: [PATCH 1/2] powerpc64/bpf: Implement JIT support for private stack
-config: powerpc-randconfig-001-20260217 (https://download.01.org/0day-ci/archive/20260217/202602170316.V2RZWuVa-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602170316.V2RZWuVa-lkp@intel.com/reproduce)
+Bjorn can you take this patch?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602170316.V2RZWuVa-lkp@intel.com/
+On 12.01.2026 20:17:11, Steffen Trumtrar wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+>
+> The layerscape pcie host controller could also be compiled as module.
+> Add the necessary infrastructure to allow building as module instead of
+> only as builtin driver.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/pci/controller/dwc/Kconfig          |  2 +-
+>  drivers/pci/controller/dwc/pci-layerscape.c | 16 +++++++++++++++-
+>  2 files changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/=
+dwc/Kconfig
+> index 519b59422b479..abfa4a6e62c25 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -121,7 +121,7 @@ config PCI_IMX6_EP
+>  	  DesignWare core functions to implement the driver.
+>
+>  config PCI_LAYERSCAPE
+> -	bool "Freescale Layerscape PCIe controller (host mode)"
+> +	tristate "Freescale Layerscape PCIe controller (host mode)"
+>  	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+>  	depends on PCI_MSI
+>  	select PCIE_DW_HOST
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/co=
+ntroller/dwc/pci-layerscape.c
+> index a44b5c256d6e2..14d6ac4fc53fd 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/init.h>
+>  #include <linux/iopoll.h>
+> +#include <linux/module.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/of_address.h>
+> @@ -403,8 +404,16 @@ static const struct dev_pm_ops ls_pcie_pm_ops =3D {
+>  	NOIRQ_SYSTEM_SLEEP_PM_OPS(ls_pcie_suspend_noirq, ls_pcie_resume_noirq)
+>  };
+>
+> +static void ls_pcie_remove(struct platform_device *pdev)
+> +{
+> +	struct ls_pcie *pcie =3D platform_get_drvdata(pdev);
+> +
+> +	dw_pcie_host_deinit(&pcie->pci->pp);
+> +}
+> +
+>  static struct platform_driver ls_pcie_driver =3D {
+>  	.probe =3D ls_pcie_probe,
+> +	.remove =3D ls_pcie_remove,
+>  	.driver =3D {
+>  		.name =3D "layerscape-pcie",
+>  		.of_match_table =3D ls_pcie_of_match,
+> @@ -412,4 +421,9 @@ static struct platform_driver ls_pcie_driver =3D {
+>  		.pm =3D &ls_pcie_pm_ops,
+>  	},
+>  };
+> -builtin_platform_driver(ls_pcie_driver);
+> +module_platform_driver(ls_pcie_driver);
+> +
+> +MODULE_AUTHOR("Minghuan Lian <Minghuan.Lian@freescale.com>");
+> +MODULE_DESCRIPTION("Layerscape PCIe host controller driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_DEVICE_TABLE(of, ls_pcie_of_match);
+>
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20260112-v6-19-topic-layerscape-pcie-9d10b6542139
+>
+> Best regards,
+> --
+> Steffen Trumtrar <s.trumtrar@pengutronix.de>
+>
+>
 
-All warnings (new ones prefixed by >>):
+--
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-   arch/powerpc/net/bpf_jit_comp.c: In function 'bpf_int_jit_compile':
->> arch/powerpc/net/bpf_jit_comp.c:266:35: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-     cgctx.priv_sp = priv_stack_ptr ? (u64)priv_stack_ptr : 0;
-                                      ^
+--acibql3y7ovkmvyd
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-vim +266 arch/powerpc/net/bpf_jit_comp.c
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCaZOQ9AAKCRDMOmT6rpmt
+0tf7AQDXPoIYzicQeUoeqqXVPMOTQI08mSHXaelfkvE716R56wD/VkqipmoUM5T7
+7U7qJt9nMZfyJSOd/p5RdeiJ92XG2AI=
+=hliI
+-----END PGP SIGNATURE-----
 
-   164	
-   165	struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-   166	{
-   167		u32 proglen;
-   168		u32 alloclen;
-   169		u8 *image = NULL;
-   170		u32 *code_base;
-   171		u32 *addrs;
-   172		struct powerpc_jit_data *jit_data;
-   173		struct codegen_context cgctx;
-   174		int pass;
-   175		int flen;
-   176		int priv_stack_alloc_size;
-   177		void __percpu *priv_stack_ptr = NULL;
-   178		struct bpf_binary_header *fhdr = NULL;
-   179		struct bpf_binary_header *hdr = NULL;
-   180		struct bpf_prog *org_fp = fp;
-   181		struct bpf_prog *tmp_fp;
-   182		bool bpf_blinded = false;
-   183		bool extra_pass = false;
-   184		u8 *fimage = NULL;
-   185		u32 *fcode_base;
-   186		u32 extable_len;
-   187		u32 fixup_len;
-   188	
-   189		if (!fp->jit_requested)
-   190			return org_fp;
-   191	
-   192		tmp_fp = bpf_jit_blind_constants(org_fp);
-   193		if (IS_ERR(tmp_fp))
-   194			return org_fp;
-   195	
-   196		if (tmp_fp != org_fp) {
-   197			bpf_blinded = true;
-   198			fp = tmp_fp;
-   199		}
-   200	
-   201		jit_data = fp->aux->jit_data;
-   202		if (!jit_data) {
-   203			jit_data = kzalloc(sizeof(*jit_data), GFP_KERNEL);
-   204			if (!jit_data) {
-   205				fp = org_fp;
-   206				goto out;
-   207			}
-   208			fp->aux->jit_data = jit_data;
-   209		}
-   210	
-   211		if (!priv_stack_ptr && fp->aux->jits_use_priv_stack) {
-   212			/*
-   213			 * Allocate private stack of size equivalent to
-   214			 * verifier-calculated stack size plus two memory
-   215			 * guard regions to detect private stack overflow
-   216			 * and underflow.
-   217			 */
-   218			priv_stack_alloc_size = round_up(fp->aux->stack_depth, 16) +
-   219								2 * PRIV_STACK_GUARD_SZ;
-   220			priv_stack_ptr = __alloc_percpu_gfp(priv_stack_alloc_size, 16, GFP_KERNEL);
-   221			if (!priv_stack_ptr) {
-   222				fp = org_fp;
-   223				goto out_priv_stack;
-   224			}
-   225	
-   226			priv_stack_init_guard(priv_stack_ptr, priv_stack_alloc_size);
-   227			fp->aux->priv_stack_ptr = priv_stack_ptr;
-   228		}
-   229	
-   230		flen = fp->len;
-   231		addrs = jit_data->addrs;
-   232		if (addrs) {
-   233			cgctx = jit_data->ctx;
-   234			/*
-   235			 * JIT compiled to a writable location (image/code_base) first.
-   236			 * It is then moved to the readonly final location (fimage/fcode_base)
-   237			 * using instruction patching.
-   238			 */
-   239			fimage = jit_data->fimage;
-   240			fhdr = jit_data->fhdr;
-   241			proglen = jit_data->proglen;
-   242			hdr = jit_data->hdr;
-   243			image = (void *)hdr + ((void *)fimage - (void *)fhdr);
-   244			extra_pass = true;
-   245			/* During extra pass, ensure index is reset before repopulating extable entries */
-   246			cgctx.exentry_idx = 0;
-   247			goto skip_init_ctx;
-   248		}
-   249	
-   250		addrs = kcalloc(flen + 1, sizeof(*addrs), GFP_KERNEL);
-   251		if (addrs == NULL) {
-   252			fp = org_fp;
-   253			goto out_addrs;
-   254		}
-   255	
-   256		memset(&cgctx, 0, sizeof(struct codegen_context));
-   257		bpf_jit_init_reg_mapping(&cgctx);
-   258	
-   259		/* Make sure that the stack is quadword aligned. */
-   260		cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
-   261		cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
-   262		cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
-   263		cgctx.is_subprog = bpf_is_subprog(fp);
-   264		cgctx.exception_boundary = fp->aux->exception_boundary;
-   265		cgctx.exception_cb = fp->aux->exception_cb;
- > 266		cgctx.priv_sp = priv_stack_ptr ? (u64)priv_stack_ptr : 0;
-   267	
-   268		/* Scouting faux-generate pass 0 */
-   269		if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-   270			/* We hit something illegal or unsupported. */
-   271			fp = org_fp;
-   272			goto out_addrs;
-   273		}
-   274	
-   275		/*
-   276		 * If we have seen a tail call, we need a second pass.
-   277		 * This is because bpf_jit_emit_common_epilogue() is called
-   278		 * from bpf_jit_emit_tail_call() with a not yet stable ctx->seen.
-   279		 * We also need a second pass if we ended up with too large
-   280		 * a program so as to ensure BPF_EXIT branches are in range.
-   281		 */
-   282		if (cgctx.seen & SEEN_TAILCALL || !is_offset_in_branch_range((long)cgctx.idx * 4)) {
-   283			cgctx.idx = 0;
-   284			if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-   285				fp = org_fp;
-   286				goto out_addrs;
-   287			}
-   288		}
-   289	
-   290		bpf_jit_realloc_regs(&cgctx);
-   291		/*
-   292		 * Pretend to build prologue, given the features we've seen.  This will
-   293		 * update ctgtx.idx as it pretends to output instructions, then we can
-   294		 * calculate total size from idx.
-   295		 */
-   296		bpf_jit_build_prologue(NULL, &cgctx);
-   297		addrs[fp->len] = cgctx.idx * 4;
-   298		bpf_jit_build_epilogue(NULL, &cgctx);
-   299	
-   300		fixup_len = fp->aux->num_exentries * BPF_FIXUP_LEN * 4;
-   301		extable_len = fp->aux->num_exentries * sizeof(struct exception_table_entry);
-   302	
-   303		proglen = cgctx.idx * 4;
-   304		alloclen = proglen + FUNCTION_DESCR_SIZE + fixup_len + extable_len;
-   305	
-   306		fhdr = bpf_jit_binary_pack_alloc(alloclen, &fimage, 4, &hdr, &image,
-   307						      bpf_jit_fill_ill_insns);
-   308		if (!fhdr) {
-   309			fp = org_fp;
-   310			goto out_addrs;
-   311		}
-   312	
-   313		if (extable_len)
-   314			fp->aux->extable = (void *)fimage + FUNCTION_DESCR_SIZE + proglen + fixup_len;
-   315	
-   316	skip_init_ctx:
-   317		code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
-   318		fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
-   319	
-   320		/* Code generation passes 1-2 */
-   321		for (pass = 1; pass < 3; pass++) {
-   322			/* Now build the prologue, body code & epilogue for real. */
-   323			cgctx.idx = 0;
-   324			cgctx.alt_exit_addr = 0;
-   325			bpf_jit_build_prologue(code_base, &cgctx);
-   326			if (bpf_jit_build_body(fp, code_base, fcode_base, &cgctx, addrs, pass,
-   327					       extra_pass)) {
-   328				bpf_arch_text_copy(&fhdr->size, &hdr->size, sizeof(hdr->size));
-   329				bpf_jit_binary_pack_free(fhdr, hdr);
-   330				fp = org_fp;
-   331				goto out_addrs;
-   332			}
-   333			bpf_jit_build_epilogue(code_base, &cgctx);
-   334	
-   335			if (bpf_jit_enable > 1)
-   336				pr_info("Pass %d: shrink = %d, seen = 0x%x\n", pass,
-   337					proglen - (cgctx.idx * 4), cgctx.seen);
-   338		}
-   339	
-   340		if (bpf_jit_enable > 1)
-   341			/*
-   342			 * Note that we output the base address of the code_base
-   343			 * rather than image, since opcodes are in code_base.
-   344			 */
-   345			bpf_jit_dump(flen, proglen, pass, code_base);
-   346	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--acibql3y7ovkmvyd--
 
