@@ -1,97 +1,108 @@
-Return-Path: <linuxppc-dev+bounces-16918-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16919-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id vsMFJozXlGkgIQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16918-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 22:03:08 +0100
+	id 2BCuJ1PdlGn4IQIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16919-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 22:27:47 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1CA1508FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 22:03:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57BF150C23
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 22:27:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fFsYN6W0Zz2xHX;
-	Wed, 18 Feb 2026 08:03:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fFt5r2LFWz2xHX;
+	Wed, 18 Feb 2026 08:27:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::82f" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771362184;
-	cv=pass; b=DdcNRvvnHsxTHSc47VFLRISDhgJ0KAUdp9scznsuAxJhXgIZ2v44xPIew1Q6crDtOzJ1ptuLd0sB9DAyHDwnjg+icgORxguK760p5p7sGWnkDuuUbdzwhO8FVTzEK5ZC35XBl7hhr/Jspgx3xPPP66DTGnB3qVSM2h/4rcu5NX4IS1d0/YgM45KnHNxT96ZOO2KmgwTsKPq1a9A/Q/PiIxZwBjs+UJag6Ytry68DJQdF+jhRFrSiJuAYkzMSAEJM8bxdQjCAk6Zk8GJZF1zFXrXOToc3zYrucIuoQ2zJTYRPohWrv3S1gU79jLFaJ8gVRJsNv2zevaj+UM8tGCHvQw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771362184; c=relaxed/relaxed;
-	bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=JtJD2lJYFOnNtS7IZu5/QTXrqzkNgYabzQqYMECb90fkrUzIukGFM6rcCp6Fngew8e7frTT8WivjkWp9n5DtBcQ08IMRnDLTxLBgWmO1ItiUCV3XljIezg/l7JPiE9FKhj/UkV7KpIK+QbFm34WbY8g8neeAWquers45UQVBxqI3capnqiTw98kPf5NYNQPJSpHY+m68KIShtucjtjo4tK4lWp7SQ8ywRkVhT9cKJRWemEhLjyTzzy2gQA6Jgpc81J7g+Hu4p0SICARCsbxvVQr1tldLi5v546FZf0OQR8EblgsRq7phOqUUawB/ZzTIspZklLUb0c8Gn9mMQiiXBA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3Dz84Eie; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82f; helo=mail-qt1-x82f.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771363664;
+	cv=none; b=SeHSZnsCBYXcvB7Cei3Z47ZtQDLYugT4wJOHI6jwi822BNGKMLv0fn5LmMN/ORsUngHXjRtd024+R6ZwUZJPf2MYIqA3PpMbKdICIvBKlbHLRHSc87aoT+hnJVrVCfhoEwYhmsEODm20tkJWOuM14qCuCQActmWGu+q72She8kB3x2ovnhvrxm8vXI8IBmwOXR8x6vCJPAziNzpMy3J8eX4ptlYEgjqYkes6frVhFODp/y9rRkhkBLf15ZX+GK0Cklp5dJvKEqzkLQNNlMKBgQg4PjpvytAHwU6MH2qLlAWvsfM7LaO/DAkpf+PdQx90GkU5tkpUHMifB34DWYbdJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771363664; c=relaxed/relaxed;
+	bh=9UVwh5LX1ne7K870kYuzu1a0ArOy+98xg4U/ptRNkE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zmj+Xxz9cWk7lGERHqNSurWhkzVEhVbKyzcPZmIJGftfyLpW+3ubNCKvrY+gWrKtcvunNiNfAkJDhdfrlYGlQgkY6WFlnbS4jEPR1q5w14THf8OvuihFtdpje1xJkUjA48XWYaefWEgOKa9ntEc7QLMUvNwIltdYiONMbXt/UAKwXAyaasSwXsLPlm6zKq43VsBrAT5fvhFlwJvsMapZHoxdSSaD8he2HGjBtAAbzo+9w9moLEBhAw2Bv6urdHZI3X/IhaXw8H9CuJ7BGXoPCKwmg52N0xkGNivneBrhYL6Bgz5j1/NRprBJozW1cWGMT/A/LZsiD+WYFFFJcMkuvg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HZ+UvMiP; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3Dz84Eie;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HZ+UvMiP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82f; helo=mail-qt1-x82f.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFsYM63z0z2x99
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Feb 2026 08:03:03 +1100 (AEDT)
-Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-5033b64256dso153661cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 13:03:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771362181; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fNAZEBV1XAtQ+RrrYdFpkeTd5KW3OTHtJjJCGv8waZDZkrpXKAmiAdNudx5ahypEgB
-         hw52qHIfSlurH0zBAyewR1rDZBV5+SFTd1axLNBNAxUpX/LWcFaGew827D0eJEfye8nk
-         B991HV8JHQRXh0DSnr00iMX6dGy5iAdBFt35XECP7MbeE8zxgiS6uSjoA5K2og0+znyO
-         eklnOlJFVcvOHQ3c46BSWnCGGjXHF9om6RLLJciUy2WwdR3vok5jAGL/XrwWYmanwi+e
-         agYBCRha4OwBU1TqhAxXEyLk3/8JvnORxhZcwJe/ePa6HyinE/wj9qlVPHdTkLEKhZrr
-         FPTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-        fh=X/xI9y/W2TZhsixU61SOddJ0OZJ2V5wvnlo7FslyEs8=;
-        b=Tv61EI3br11LT5M4GcVB6th4BepmQddCaXDXeZ8DD7CVn3uNIYWYSqeNXB7P7DGlSm
-         OrAS9zeJD+210AZ/4ZDYfCdwvj2MebUslXjPtWXidwaZKarlqLlbMid1bQutCvmc96t5
-         0+3evEmobJ5Veu0mj1/OCdFmtceaWEsIW+dtLBHe6G28z+f6r1g+bRtSRwk7elpDQI9b
-         kMruhGxIiPvoUmomelMm8mGEH9aqd4hO5/qUjjFRL359cGlZQI9TShCnIuX3fiOirqjS
-         oH0z3s4LpeX9RC+lJJEd4BfadB3PpzS/z4E4K2qQcmG0OfROnIBCXtPikABWrK5TJ+sE
-         1VHw==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771362181; x=1771966981; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-        b=3Dz84Eie53AK23qcuTMFosgYPeHmn4tSz8XRo0xnb0kpI2gHubDfOexDsGZ820kEl0
-         4kQwWWbNn8NOeIUyhHESJ/2cPz6u3h0Y3sXRyPYKrDGkd3bfBiBDyawq016c75euKNAn
-         RRCgQIlaKHAM5qSxglTX4mIp1wESiq7ZfvcnAnKQ6m16Uu+2dbSaaIOeJD6q6hcv78Sf
-         qx/f41e2EKgAI3xA606I/G50dBxW7zVeFDu1TCdr6zbnzpUQXa30Dt+SgNLJejq55N/3
-         np8FWd37jok9aKkXYTaJPk1qwcvCx2IyisXxD//B/3E6OyrBAPix32NN6LT5a+1DG6zi
-         NQAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771362181; x=1771966981;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-        b=gMnLAn+FpGGvf1cG4WHCbNeSlG2M7cmV1Eyyl1D03EBvWp07TNPD6mqWUxl7FNEw57
-         6LedCJE7vm+UleCYA5Ud9mzN9tfShjzfhygLVruaPcVkqcjjaMKE6Fr9pteQ5q3FNW2v
-         nMRZeqtYLNo4Y9H8dczzFW/+bTuO8Y4wyJlVxUOwFy/hJtIjm5gZFQgcBKIHji5qK9DR
-         mDYQPnHePKJF+jWIZuEdv//dgy8Ieyl5tzAZbm+/9G6KcDoztQg8YLzG5hYxDVEyXq8r
-         rLOSIsUxBHrs4UA/9HV6npWfVuKdp6HzOv9y7F8JOzO3ztA2V6u98t7kwQtc8uJibR8q
-         lsgA==
-X-Forwarded-Encrypted: i=1; AJvYcCWhpGlO/J2M2hdDwczue7C4irAcOz+pepL2kHE/8y1h2E9LgJUHHA/BZz1uUtxFf5ojNdqOd+hwZHT8ueo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyrLF/SUD1U0unuxaRonU8839sNzZ2PHPRozl4Pr13PCP/w98PM
-	SBOCvnudl91roHMS8TJb+bqpQ7vys1u/ao4kSUYA7bVTJvKpB/IKlgTS9qzdSUDjfmjlkAqXjV+
-	1cICQNrB1yvrj15Tq7MpcjONTIoLrjhmAv/UcDHBC
-X-Gm-Gg: AZuq6aL0nxoVO3iWQZQtnHzDngV9risVLmfghQwg+H096JktY9c+OsgZjnF2ZyuvQ1W
-	Eqw1NkbyH2oy3+siCTKmf4HktF2/oV0OKA7dwRXb5gfZ3YexfYSlEX7dxoJnb6ArIyK4jzkElGJ
-	igwN4sQQBgL7JJpm25k6TKhoYWng0cYAU4jxbKIsgG/ys6j6A9OGPXWuoZ0mXcrYNpsJH+xeKew
-	fcV0mqhDe0WALSL84amkCOE7RAUZZeLnp2ceLmdQCgROTG4yP/x+XOBOAiTFNwR0ka9y6TKGlUV
-	613R625lw1/zUJa2YFXEv/4u3vjhQnnwHG59Iw==
-X-Received: by 2002:a05:622a:8c15:b0:4ed:ff79:e679 with SMTP id
- d75a77b69052e-506cdb80f2fmr23179661cf.19.1771362180478; Tue, 17 Feb 2026
- 13:03:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFt5q2GHHz2x99
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Feb 2026 08:27:43 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 048B761850;
+	Tue, 17 Feb 2026 21:27:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434F1C19425;
+	Tue, 17 Feb 2026 21:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771363659;
+	bh=qNdMPHb96ahPcc/FeBg2GRFGtCGsjvYyDufUCB6E5Ho=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HZ+UvMiPz7y6Wfbsg5SRIDmn+CDWDBq3WDUKPIFYPfrmgDfHjQ7tHHZYvBxWMJPsB
+	 c/PD0XktfttvuKxs+WJlENDTRUP8uJUYdvpCSgzgXvAFzPfb1B0rOK7s3NAuWfL7OM
+	 PDp3ZyEtU/CFNB0WzAkeTuWX12cuXeEN250jg2mphb4+0a1UOP9URjezN/AWag41Q0
+	 roA2SWQuJbNqVoB7NWp23sapC1Dm1S393B1Qqcg98UxhXC9rBuSiwP8ArfAEkppYLo
+	 6sj4h5uEjhL1y9XxP5IphJD17zDcGD3gK+k+4gZR6DYzXHK6BRPDR/D2adYfFq7DLA
+	 JcoQPGf6g5NxA==
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	linux-pci@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 0/9] PCI: endpoint differentiate between disabled and reserved BARs
+Date: Tue, 17 Feb 2026 22:27:06 +0100
+Message-ID: <20260217212707.2450423-11-cassel@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,275 +116,142 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260217163250.2326001-1-surenb@google.com> <20260217163250.2326001-3-surenb@google.com>
- <dtdfrko7uqif6flc4mefnlar7wnmrbyswfu7bvb2ar24gkeejo@ypzhmyklbeh7>
-In-Reply-To: <dtdfrko7uqif6flc4mefnlar7wnmrbyswfu7bvb2ar24gkeejo@ypzhmyklbeh7>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 17 Feb 2026 13:02:48 -0800
-X-Gm-Features: AaiRm52hFtG7L6yJLkbXYH1SBTkTSuw2iS_25yQRkmcsbZ2JjkS2e-zgf6Q_wu8
-Message-ID: <CAJuCfpGViU4dDaLtPR8U0C+=FXO=1TuU-hT3fypNQO3LGOjbcA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm: replace vma_start_write() with vma_start_write_killable()
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4061; i=cassel@kernel.org; h=from:subject; bh=qNdMPHb96ahPcc/FeBg2GRFGtCGsjvYyDufUCB6E5Ho=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDKn3NV+yyX95M1+T1HDqxGLE9Ks+cRk7p+2exh8+ZCxj pjCijkGHaUsDGJcDLJiiiy+P1z2F3e7TzmueMcGZg4rE8gQBi5OAZhI+E5GhguPHi2/Xb/y3DHB AIf6hAuN+VPmNN0usdy7vDq+avG27bYM/5S3MBlKbLy8vGB/jfcrobctfIebJrjrnqw9slP/atc TAw4A
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS(0.00)[m:Liam.Howlett@oracle.com,m:surenb@google.com,m:akpm@linux-foundation.org,m:willy@infradead.org,m:david@kernel.org,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:baolin.wang@linux.alibaba.com,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:vbabka@suse.cz,m:jannh@google.com,m:rppt@kernel.org,m:mhocko@suse.com,m:pfalcato@suse.de,m:kees@kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-s390@vger.
- kernel.org,m:ritesh.list@gmail.com,m:joshuahahnjy@gmail.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[oracle.com,google.com,linux-foundation.org,infradead.org,kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,redhat.com,arm.com,linux.dev,suse.cz,suse.com,suse.de,linux.ibm.com,ellerman.id.au,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	FORGED_SENDER(0.00)[surenb@google.com,linuxppc-dev@lists.ozlabs.org];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
+	TAGGED_FROM(0.00)[bounces-16919-lists,linuxppc-dev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[kernel.org,arndb.de,linuxfoundation.org,ti.com,google.com,nxp.com,pengutronix.de,gmail.com,axis.com,sntech.de,intel.com,renesas.com,glider.be,foss.st.com,nvidia.com,socionext.com];
+	FORGED_RECIPIENTS(0.00)[m:mani@kernel.org,m:kwilczynski@kernel.org,m:kishon@kernel.org,m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:vigneshr@ti.com,m:s-vadapalli@ti.com,m:lpieralisi@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:hongxing.zhu@nxp.com,m:l.stach@pengutronix.de,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:jesper.nilsson@axis.com,m:jingoohan1@gmail.com,m:heiko@sntech.de,m:srikanth.thokala@intel.com,m:marek.vasut+renesas@gmail.com,m:yoshihiro.shimoda.uh@renesas.com,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:christian.bruel@foss.st.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:hayashi.kunihiko@socionext.com,m:mhiramat@kernel.org,m:shuah@kernel.org,m:mmaddireddy@nvidia.com,m:den@valinux.co.jp,m:dlemoal@kernel.org,m:cassel@kernel.org,m:linux-pci@vger.kernel.org,m:linux-omap@vger.ker
+ nel.org,m:linux-arm-kernel@lists.infradead.org,m:imx@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@axis.com,m:linux-rockchip@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-tegra@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:marekvasut@gmail.com,m:geert@glider.be,m:magnusdamm@gmail.com,m:mcoquelinstm32@gmail.com,m:thierryreding@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16918-lists,linuxppc-dev=lfdr.de];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_GT_50(0.00)[51];
+	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,infradead.org:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 6F1CA1508FD
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: C57BF150C23
 X-Rspamd-Action: no action
 
-On Tue, Feb 17, 2026 at 11:19=E2=80=AFAM Liam R. Howlett
-<Liam.Howlett@oracle.com> wrote:
->
-> * Suren Baghdasaryan <surenb@google.com> [260217 11:33]:
-> > Now that we have vma_start_write_killable() we can replace most of the
-> > vma_start_write() calls with it, improving reaction time to the kill
-> > signal.
-> >
-> > There are several places which are left untouched by this patch:
-> >
-> > 1. free_pgtables() because function should free page tables even if a
-> > fatal signal is pending.
-> >
-> > 2. process_vma_walk_lock(), which requires changes in its callers and
-> > will be handled in the next patch.
-> >
-> > 3. userfaultd code, where some paths calling vma_start_write() can
-> > handle EINTR and some can't without a deeper code refactoring.
-> >
-> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
-> > vma_start_write() out of these functions and replacing it with
-> > vma_assert_write_locked(), then callers of these functions should
-> > lock the vma themselves using vma_start_write_killable() whenever
-> > possible.
-> >
-> > Suggested-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
-> > ---
-> >  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
-> >  include/linux/mempolicy.h          |  5 +-
-> >  mm/khugepaged.c                    |  5 +-
-> >  mm/madvise.c                       |  4 +-
-> >  mm/memory.c                        |  2 +
-> >  mm/mempolicy.c                     | 23 ++++++--
-> >  mm/mlock.c                         | 20 +++++--
-> >  mm/mprotect.c                      |  4 +-
-> >  mm/mremap.c                        |  4 +-
-> >  mm/vma.c                           | 93 +++++++++++++++++++++---------
-> >  mm/vma_exec.c                      |  6 +-
-> >  11 files changed, 123 insertions(+), 48 deletions(-)
-> >
->
-> ...
->
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
->
-> ...
->
-> >
-> >  static const struct mempolicy_operations mpol_ops[MPOL_MAX] =3D {
-> > @@ -1785,9 +1793,15 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigne=
-d long, start, unsigned long, le
-> >               return -EINVAL;
-> >       if (end =3D=3D start)
-> >               return 0;
-> > -     mmap_write_lock(mm);
-> > +     if (mmap_write_lock_killable(mm))
-> > +             return -EINTR;
-> >       prev =3D vma_prev(&vmi);
-> >       for_each_vma_range(vmi, vma, end) {
-> > +             if (vma_start_write_killable(vma)) {
-> > +                     err =3D -EINTR;
-> > +                     break;
-> > +             }
-> > +
-> >               /*
-> >                * If any vma in the range got policy other than MPOL_BIN=
-D
-> >                * or MPOL_PREFERRED_MANY we return error. We don't reset
-> > @@ -1808,7 +1822,6 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned=
- long, start, unsigned long, le
-> >                       break;
-> >               }
-> >
-> > -             vma_start_write(vma);
->
-> Moving this vma_start_write() up means we will lock all vmas in the
-> range regardless of if they are going to change.  Was that your
-> intention?
+Hello all,
 
-No, I missed that this would result in unnecessary locks.
+This series is written in response to the patch series from
+Manikanta Maddireddy that was posted here:
+https://lore.kernel.org/linux-pci/291dab65-3fa6-4fc8-90a2-4ad608ca015c@nvidia.com/T/#t
 
->
-> It might be better to move the locking to later in the loop, prior to
-> the mpol_dup(), but after skipping other vmas?
+The reasons why I decided to post this a new series was because the series
+above:
 
-Yes, that's the right place for it. Will move.
+1) Adds PCI device and vendor specific code to
+drivers/misc/pci_endpoint_test.c. We've worked hard to make sure that
+device specific quirks/limitations are communicated via the Capabilities
+register, so let's do the same for reserved BARs.
 
->
-> >               new->home_node =3D home_node;
-> >               err =3D mbind_range(&vmi, vma, &prev, start, end, new);
->
-> ...
->
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index bb4d0326fecb..1d21351282cf 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
->
-> ...
->
-> > @@ -2532,6 +2556,11 @@ static int __mmap_new_vma(struct mmap_state *map=
-, struct vm_area_struct **vmap)
-> >               goto free_vma;
-> >       }
-> >
-> > +     /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> > +     error =3D vma_start_write_killable(vma);
-> > +     if (error)
-> > +             goto free_iter_vma;
-> > +
-> >       if (map->file)
-> >               error =3D __mmap_new_file_vma(map, vma);
-> >       else if (map->vm_flags & VM_SHARED)
-> > @@ -2552,8 +2581,6 @@ static int __mmap_new_vma(struct mmap_state *map,=
- struct vm_area_struct **vmap)
-> >       WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
-> >  #endif
-> >
-> > -     /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> > -     vma_start_write(vma);
-> >       vma_iter_store_new(vmi, vma);
-> >       map->mm->map_count++;
-> >       vma_link_file(vma, map->hold_file_rmap_lock);
->
-> This is a bit of a nit on the placement..
->
-> Prior to this change, the write lock on the vma was taken next to where
-> it was inserted in the tree.  Now the lock is taken between vma iterator
-> preallocations and part of the vma setup.
->
-> Would it make sense to put it closer to the vma allocation itself?  I
-> think all that's needed to be set is the mm struct for the locking to
-> work?
+2) My review comment which suggested to convert all uses of BAR_RESERVED
+to BAR_DISABLED (except for pci-keystone.c) was ignored.
 
-I guess locking the vma before vma_iter_prealloc() would save us
-unnecessary alloc/free in case of a pending fatal signal. I'll move
-the lock right after vm_area_alloc() so that the entire vma setup is
-done on a locked vma.
+3) Koichiro has posted a series that allows an EPC driver to define exactly
+which hardware backed resources are provided in a BAR_RESERVED BAR. Yet,
+this nice improvement was not incorporated. (While Mankata was part of the
+discussion, he was not CC:d on the patches that actually implemented this.)
 
->
->
-> ...
->
-> > @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma, un=
-signed long address)
->
-> Good luck testing this one.
+4) The selftests should return skip instead of silent success for a
+reserved BAR.
 
-Yeah... Any suggestions for tests I should use?
+5) As Mankata points out, but did not address, BAR_RESERVED is quite
+ambiguous, so it is better to introduce a new BAR_64BIT_UPPER to more
+clearly mark the upper part of a 64-bit BAR as this, rather than reuse
+BAR_RESERVED.
 
->
-> >       struct mm_struct *mm =3D vma->vm_mm;
-> >       struct vm_area_struct *next;
-> >       unsigned long gap_addr;
-> > -     int error =3D 0;
-> > +     int error;
-> >       VMA_ITERATOR(vmi, mm, vma->vm_start);
-> >
-> >       if (!(vma->vm_flags & VM_GROWSUP))
-> > @@ -3126,12 +3157,14 @@ int expand_upwards(struct vm_area_struct *vma, =
-unsigned long address)
-> >
-> >       /* We must make sure the anon_vma is allocated. */
-> >       if (unlikely(anon_vma_prepare(vma))) {
-> > -             vma_iter_free(&vmi);
-> > -             return -ENOMEM;
-> > +             error =3D -ENOMEM;
-> > +             goto free;
-> >       }
-> >
-> >       /* Lock the VMA before expanding to prevent concurrent page fault=
-s */
-> > -     vma_start_write(vma);
-> > +     error =3D vma_start_write_killable(vma);
-> > +     if (error)
-> > +             goto free;
-> >       /* We update the anon VMA tree. */
-> >       anon_vma_lock_write(vma->anon_vma);
-> >
-> > @@ -3160,6 +3193,7 @@ int expand_upwards(struct vm_area_struct *vma, un=
-signed long address)
-> >               }
-> >       }
-> >       anon_vma_unlock_write(vma->anon_vma);
-> > +free:
-> >       vma_iter_free(&vmi);
-> >       validate_mm(mm);
-> >       return error;
->
-> Looks okay.
+6) It is possible to remove all the dw_pcie_ep_reset_bar() calls in the
+DWC based glue drivers and move it to DWC common code.
 
-Thanks for the review, Liam! I'll wait a couple of days and post the
-v3 with fixes.
 
->
-> ...
->
->
->
+Because of all of the above, I thought it was just easier to post a series
+with all of the above addressed, as it seemed easier to just show what I
+meant rather than to try to explain things with words.
+
+The thing that is missing is to add a patch for pcie-tegra194.c which
+converts the BARs to BAR_RESERVED.
+Please see patch "PCI: dw-rockchip: Describe RK3588 BAR4 DMA ctrl window"
+and do something similar to pcie-tegra194.c.
+
+If we are missing some resources (right now we only have
+PCI_EPC_BAR_RSVD_DMA_CTRL_MMIO), then I think we should simple add that
+(e.g. PCI_EPC_BAR_RSVD_MSIX).
+
+Mankata, it would be nice if you could test this series, and if you could
+provide a pcie-tegra194.c patch that adds the sizes of the eDMA regs +
+MSI-X table in BAR_2 and BAR_4.
+
+
+Kind regards,
+Niklas
+
+
+Koichiro Den (2):
+  PCI: endpoint: Describe reserved subregions within BARs
+  PCI: dw-rockchip: Describe RK3588 BAR4 DMA ctrl window
+
+Niklas Cassel (7):
+  PCI: endpoint: Introduce pci_epc_bar_type BAR_64BIT_UPPER
+  PCI: endpoint: Introduce pci_epc_bar_type BAR_DISABLED
+  PCI: dwc: Replace BAR_RESERVED with BAR_DISABLED in glue drivers
+  PCI: dwc: Disable BARs in common code instead of in each glue driver
+  PCI: endpoint: pci-epf-test: Advertise reserved BARs
+  misc: pci_endpoint_test: Give reserved BARs a distinct error code
+  selftests: pci_endpoint: Skip reserved BARs
+
+ drivers/misc/pci_endpoint_test.c              | 32 ++++++++++++-
+ drivers/pci/controller/dwc/pci-dra7xx.c       |  4 --
+ drivers/pci/controller/dwc/pci-imx6.c         | 22 +++------
+ .../pci/controller/dwc/pci-layerscape-ep.c    |  8 +---
+ drivers/pci/controller/dwc/pcie-artpec6.c     |  4 --
+ .../pci/controller/dwc/pcie-designware-ep.c   | 24 ++++++++++
+ .../pci/controller/dwc/pcie-designware-plat.c | 10 -----
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 19 +++++---
+ drivers/pci/controller/dwc/pcie-keembay.c     |  6 +--
+ drivers/pci/controller/dwc/pcie-qcom-ep.c     | 14 +-----
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c   | 16 ++-----
+ drivers/pci/controller/dwc/pcie-stm32-ep.c    | 10 -----
+ drivers/pci/controller/dwc/pcie-tegra194.c    | 20 +++------
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c | 24 +++-------
+ drivers/pci/controller/pcie-rcar-ep.c         |  6 +--
+ drivers/pci/endpoint/functions/pci-epf-test.c | 24 ++++++++++
+ drivers/pci/endpoint/pci-epc-core.c           |  6 ++-
+ include/linux/pci-epc.h                       | 45 +++++++++++++++++--
+ .../pci_endpoint/pci_endpoint_test.c          |  4 ++
+ 19 files changed, 173 insertions(+), 125 deletions(-)
+
+-- 
+2.53.0
+
 
