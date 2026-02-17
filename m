@@ -1,84 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-16899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBMQOuVilGlfDQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 13:45:25 +0100
+	id +HNhFLJnlGlFDgIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 14:05:54 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2352D14C17B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 13:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B1F14C589
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 14:05:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fFfW51WFzz2yqs;
-	Tue, 17 Feb 2026 23:45:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fFfyk0tGXz2yS4;
+	Wed, 18 Feb 2026 00:05:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771332321;
-	cv=none; b=lzAyQGpX990Qo7I15jQhtUd8kNWGebG5P1ZOOqcgIN8yt5TqsfnB9QMT3rh58Aqey7Gi9yXXUZBuz7aV1oi2tCCyPwNb3Dh0Q1Ms+dJXPoI2dCoF7zC3aDwxzSAtDbWaKrxuI8p4hEeY+dkwrlNO0xC72FaFmm19dQ7aJSxE04n7mLxw0olIpHyye6ZizB/LTC072TBYjT77VbV921FCDxovVn7A1b1FcHJUynldSzye1LdDcmvq4zYtNXGwkwa+dhyNlXMnFusq7aFNDFA4zXnuK/pwgMAL4PD/wfJgd7ODOuIYxqRyt3rZAPkgaCH2sQYL6gO0mgQ1PJJGW33Veg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.118.77.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771333549;
+	cv=none; b=Ff5zRYlZdarHDev5al8rBNHmuaL5C6AvWw5mAZaori1GfIaD/A1/dAE0VCBMgGo1Wz0cl5uotqtmY2CdwYLNMXWM4WhZK8JMFgws1Iyz7sv9q0BNTTXvOOZXxbRFgRUHbp0xg3Rg7BuYE8KIR8Q9cRFdkzzOR9Ke+Ye1n9TvXGYqMzwfah9CQNJDSQxNHE15v1WjJLikH6VXP/sloRswll0xB6NRRd3MITZRQDiLPND24cyoSJznD2xsi3GhLFg7ZDq1Abh/yfC+MzmMag/I5SKejrDH/NagQPaJvMj8EUl/6m0/q+bq1C97lbL3+r0d8tYdQYFAOEvGQNbxMg4kXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771332321; c=relaxed/relaxed;
-	bh=/3tTftym6SuHixCQlft2GwxbgPlB5hBfnIRsAIq10bo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMZjMPzanKS5xP6iOJhWCagUh7TcATkcrG4RWHL67VehEYgR+Z6KrkBPtYyJLAeaag15Jk9gd3iNbypVxCSO4U7G6RFKb+GA6U5rc/kMxLQv2Naj4M8jvT8OLU6ACYUVHMnj2kCkufDOb9yW99KojimDtCBovsQtUQAWdetPczx0ThCNPSUEDJIMbziDk5TseiiQ5brqhQqHxQxNIGbmgfRvzbZy1J8m4qw53eNgV0eCzEEmma780b1ozFIwiu2JEey/YhOomyD3hgdu63HUc7DJsuHysBTc+TihpzWpWekjnn7SdJesEdNyYiXZfe4h/EdXuLzDwqV3oIGHlouqWw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PhoLN/J8; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sayalip@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1771333549; c=relaxed/relaxed;
+	bh=kPHvBI1Pan3M4iaidTIFZnbtqSz3AZ7jPYAHqyBo5u8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=B5f3AXPnoVHr77bHo6g0wo4axH07b5HDX0taaK1Xh1ZgYiUN+beiq0pvWrmycM6vQadv1Gk/DqkV86GKRStN13Piu3pqqDXhS0m5QL7/7wmaflWpsLDR4sBzVpSam4vSNaqJiDgs0Bz2VhhuMTam6RgMWoNPYyoTc0Gm2Lq9GNPWh5rlYZCb4aq3Ojo1kd1Bqww5vcj+WLrYF/eBLE4hTn0qb+/dP1CMEBJAEltX5t/yxEa6MHd+WNronlQ2m8YYkkAP3pPx3lu/VZeG1MyEaqlZPBbGZBxwRbbSESchclWFO5VmI7PfnxRMk3wmLScHRg9BNdMIghGqIJp05iIRCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=qE2Na2wF; dkim-atps=neutral; spf=pass (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PhoLN/J8;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=qE2Na2wF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sayalip@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 573 seconds by postgrey-1.37 at boromir; Wed, 18 Feb 2026 00:05:46 AEDT
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFfW40rlhz2xjP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 23:45:19 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61H8vxPr3306870;
-	Tue, 17 Feb 2026 12:45:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/3tTftym6SuHixCQl
-	ft2GwxbgPlB5hBfnIRsAIq10bo=; b=PhoLN/J8hX3bq5tmz2EkTPLPM0jQisA0G
-	3tmDAxNtajl+AfyM4quv3cdx9vvh2Hv+J2wH8R3jD23EYBlCTRe55R6rcO/L31fG
-	mpGQSCkkvajgPVgOhF4w8o++LhcpIG+jCpGhQMDLJadDH8O0CPRtep3dzCXXZgec
-	CTq2bN9RJ/Zkk7/WVoPP7bhlhfSNmXVgQ3YFiuo9p3Z2lgLhYFTGM1gDhObBBTWJ
-	Qe/cX25W+PbvPkyrVJbaBkWlz8CtZ7MBYTD4WrhNsBkP0wTtQ0EgPcsbVGKHZVOY
-	M3ZpVj8igUKKhoOIn7MEXhZ0BSCpm5BrdhnIgtrCZpUQd3LDh8RWQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6ruv7t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 12:45:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61H8lSCF011912;
-	Tue, 17 Feb 2026 12:45:15 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb26te7c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 12:45:15 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HCjBLp52691228
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Feb 2026 12:45:11 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF794200A8;
-	Tue, 17 Feb 2026 12:45:11 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 33F98200A5;
-	Tue, 17 Feb 2026 12:45:10 +0000 (GMT)
-Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.in.ibm.com (unknown [9.109.243.201])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Feb 2026 12:45:10 +0000 (GMT)
-From: Sayali Patil <sayalip@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
-Cc: aboorvad@linux.ibm.com, sshegde@linux.ibm.com, chleroy@kernel.org,
-        riteshh@linux.ibm.com, sayalip@linux.ibm.com
-Subject: [PATCH 2/2] powerpc/selftests/copyloops: extend selftest to exercise __copy_tofrom_user_power7_vmx
-Date: Tue, 17 Feb 2026 18:14:57 +0530
-Message-ID: <20260217124457.89219-2-sayalip@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260217124457.89219-1-sayalip@linux.ibm.com>
-References: <20260217124457.89219-1-sayalip@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFfyf4Bn6z2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Feb 2026 00:05:44 +1100 (AEDT)
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260217125600euoutp01e702ba17a82df7a26cb54abe09518e80~VCfFtKJNi2750327503euoutp01K;
+	Tue, 17 Feb 2026 12:56:00 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260217125600euoutp01e702ba17a82df7a26cb54abe09518e80~VCfFtKJNi2750327503euoutp01K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1771332961;
+	bh=kPHvBI1Pan3M4iaidTIFZnbtqSz3AZ7jPYAHqyBo5u8=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=qE2Na2wFoGobnNwByWm49yVZUxp6ZyqvGOKUcTxQmO/J9J6nwYoOSde40k3tzupbf
+	 5drCH58ib86rmTAuEFK3Dh2gBz0w2T0sLKmgAdsu5bu3cX1d1C762Ho+VBd2ZtAcrr
+	 Rpa2eUVwXatWI/hNEoqzx/baF+s1uCvrB4JykOMY=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260217125600eucas1p2f5a7aaf272ec1e8419eb4f30114ae4c0~VCfFifkBN0465704657eucas1p2k;
+	Tue, 17 Feb 2026 12:56:00 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260217125557eusmtip157747204999f9293afbbfbea0aadd349~VCfCuB9mO1169311693eusmtip1R;
+	Tue, 17 Feb 2026 12:55:57 +0000 (GMT)
+Message-ID: <7131d609-b083-4264-818a-21de38c1c3ed@samsung.com>
+Date: Tue, 17 Feb 2026 13:55:56 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,193 +67,183 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v5 11/14] sparc: Use physical address DMA mapping
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Leon
+	Romanovsky <leon@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Russell
+	King <linux@armlinux.org.uk>, Juergen Gross <jgross@suse.com>, Stefano
+	Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Richard Henderson
+	<richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, Thomas
+	Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
+	<James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Geoff Levand <geoff@infradead.org>, "David S.
+ Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Thomas
+	Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+	Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, xen-devel@lists.xenproject.org,
+	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, sparclinux
+	<sparclinux@vger.kernel.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <e294484787a5032c531dcd40071b22362bddcad4.camel@physik.fu-berlin.de>
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=dvvWylg4 c=1 sm=1 tr=0 ts=699462dc cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=gZzq1o9Dtywjk6PVXYUA:9
-X-Proofpoint-GUID: _JbGyJjtRDZH0YpSo2YSrTCujRpd-_rr
-X-Proofpoint-ORIG-GUID: _JbGyJjtRDZH0YpSo2YSrTCujRpd-_rr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDEwNSBTYWx0ZWRfXwGZS5ofns1ms
- Ve5DDpVzDXFnM7m3KIU8IzNasNSKuWIBfFEbA74fiwyc/0ra5mICQAIr8xUNbNHn75O+DnIMPLO
- N/1cytqbnMB6t8f6+IEolcOM9UBIDXIxKTJbfb+FvPk8mZ13ZsdtdxO/3W1EQppnXmQyWJrgvj+
- u82gK1c7repysazLlBlGlfGOvyDDO6S8bOTattXtUI7SIQ9S8XxYup2I7Pdt0hcZtkEFSco53MM
- oS299mzRCm8Mt4LOOJsIrwUZpwhVXTtRyTbilWGpp7YAIax5VqN+1HXRkfak6VtuswLeIHWKNs2
- Tv4ZdD5NoMqvv729xuF/BPQ72qqVxj1+mmPSTAMvfjCwDj3eM93KsMYgR2p/17gEawY2ob4UJJS
- JlRzLBLVfFpzednpfjnSMUMLdMN+iqPHcPLTcBKSU7RJpRB0f8rwN4S4nYBL0YesG7s5R6lq/pB
- Z87x7KN9JeXnGfeLcIg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-17_01,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602170105
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-CMS-MailID: 20260217125600eucas1p2f5a7aaf272ec1e8419eb4f30114ae4c0
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260217123216eucas1p2d74189a3cdf08e9301bebf1840491364
+X-EPHeader: CA
+X-CMS-RootMailID: 20260217123216eucas1p2d74189a3cdf08e9301bebf1840491364
+References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+	<20251015-remove-map-page-v5-11-3bbfe3a25cdf@kernel.org>
+	<CGME20260217123216eucas1p2d74189a3cdf08e9301bebf1840491364@eucas1p2.samsung.com>
+	<e294484787a5032c531dcd40071b22362bddcad4.camel@physik.fu-berlin.de>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.20 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	MAILLIST(-0.20)[generic];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[sayalip@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16899-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	XM_UA_NO_VERSION(0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS(0.00)[m:glaubitz@physik.fu-berlin.de,m:leon@kernel.org,m:robin.murphy@arm.com,m:linux@armlinux.org.uk,m:jgross@suse.com,m:sstabellini@kernel.org,m:oleksandr_tyshchenko@epam.com,m:richard.henderson@linaro.org,m:mattst88@gmail.com,m:tsbogend@alpha.franken.de,m:James.Bottomley@HansenPartnership.com,m:deller@gmx.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:geoff@infradead.org,m:davem@davemloft.net,m:andreas@gaisler.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:iommu@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:xen-devel@lists.xenproject.org,m:linux-alpha@vger.kernel.org,m:linux-mips@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:sparclinux@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[m.szyprowski@samsung.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16901-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[34];
+	FREEMAIL_TO(0.00)[physik.fu-berlin.de,kernel.org,arm.com,armlinux.org.uk,suse.com,epam.com,linaro.org,gmail.com,alpha.franken.de,HansenPartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,csgroup.eu,infradead.org,davemloft.net,gaisler.com,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.szyprowski@samsung.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 2352D14C17B
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:mid,samsung.com:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: B4B1F14C589
 X-Rspamd-Action: no action
 
-The new PowerPC VMX fast path (__copy_tofrom_user_power7_vmx) is not
-exercised by existing copyloops selftests. This patch updates
-the selftest to exercise the VMX variant, ensuring the VMX copy path
-is validated.
+On 17.02.2026 13:27, John Paul Adrian Glaubitz wrote:
+> On Wed, 2025-10-15 at 12:12 +0300, Leon Romanovsky wrote:
+>> From: Leon Romanovsky <leonro@nvidia.com>
+>>
+>> Convert sparc architecture DMA code to use .map_phys callback.
+>>
+>> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+>> ---
+>>   arch/sparc/kernel/iommu.c     | 30 +++++++++++++++++-----------
+>>   arch/sparc/kernel/pci_sun4v.c | 31 ++++++++++++++++++-----------
+>>   arch/sparc/mm/io-unit.c       | 38 ++++++++++++++++++-----------------
+>>   arch/sparc/mm/iommu.c         | 46 ++++++++++++++++++++++---------------------
+>>   4 files changed, 82 insertions(+), 63 deletions(-)
+>>
+>> diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
+>> index da0363692528..46ef88bc9c26 100644
+>> --- a/arch/sparc/kernel/iommu.c
+>> +++ b/arch/sparc/kernel/iommu.c
+>> @@ -260,26 +260,35 @@ static void dma_4u_free_coherent(struct device *dev, size_t size,
+>>   		free_pages((unsigned long)cpu, order);
+>>   }
+>>   
+>> -static dma_addr_t dma_4u_map_page(struct device *dev, struct page *page,
+>> -				  unsigned long offset, size_t sz,
+>> -				  enum dma_data_direction direction,
+>> +static dma_addr_t dma_4u_map_phys(struct device *dev, phys_addr_t phys,
+>> +				  size_t sz, enum dma_data_direction direction,
+>>   				  unsigned long attrs)
+>>   {
+>>   	struct iommu *iommu;
+>>   	struct strbuf *strbuf;
+>>   	iopte_t *base;
+>>   	unsigned long flags, npages, oaddr;
+>> -	unsigned long i, base_paddr, ctx;
+>> +	unsigned long i, ctx;
+>>   	u32 bus_addr, ret;
+>>   	unsigned long iopte_protection;
+>>   
+>> +	if (unlikely(attrs & DMA_ATTR_MMIO))
+>> +		/*
+>> +		 * This check is included because older versions of the code
+>> +		 * lacked MMIO path support, and my ability to test this path
+>> +		 * is limited. However, from a software technical standpoint,
+>> +		 * there is no restriction, as the following code operates
+>> +		 * solely on physical addresses.
+>> +		 */
+>> +		goto bad_no_ctx;
+>> +
+>>   	iommu = dev->archdata.iommu;
+>>   	strbuf = dev->archdata.stc;
+>>   
+>>   	if (unlikely(direction == DMA_NONE))
+>>   		goto bad_no_ctx;
+>>   
+>> -	oaddr = (unsigned long)(page_address(page) + offset);
+>> +	oaddr = (unsigned long)(phys_to_virt(phys));
+>>   	npages = IO_PAGE_ALIGN(oaddr + sz) - (oaddr & IO_PAGE_MASK);
+>>   	npages >>= IO_PAGE_SHIFT;
+>>   
+>> @@ -296,7 +305,6 @@ static dma_addr_t dma_4u_map_page(struct device *dev, struct page *page,
+>>   	bus_addr = (iommu->tbl.table_map_base +
+>>   		    ((base - iommu->page_table) << IO_PAGE_SHIFT));
+>>   	ret = bus_addr | (oaddr & ~IO_PAGE_MASK);
+>> -	base_paddr = __pa(oaddr & IO_PAGE_MASK);
+>>   	if (strbuf->strbuf_enabled)
+>>   		iopte_protection = IOPTE_STREAMING(ctx);
+>>   	else
+>> @@ -304,8 +312,8 @@ static dma_addr_t dma_4u_map_page(struct device *dev, struct page *page,
+>>   	if (direction != DMA_TO_DEVICE)
+>>   		iopte_protection |= IOPTE_WRITE;
+>>   
+>> -	for (i = 0; i < npages; i++, base++, base_paddr += IO_PAGE_SIZE)
+>> -		iopte_val(*base) = iopte_protection | base_paddr;
+>> +	for (i = 0; i < npages; i++, base++, phys += IO_PAGE_SIZE)
+>> +		iopte_val(*base) = iopte_protection | phys;
 
-Changes include:
-  - COPY_LOOP=test___copy_tofrom_user_power7_vmx with -D VMX_TEST is used
-    in existing selftest build targets.
-  - Inclusion of ../utils.c to provide get_auxv_entry() for hardware
-    feature detection.
-  - At runtime, the test skips execution if Altivec is not available.
-  - Copy sizes above VMX_COPY_THRESHOLD are used to ensure the VMX
-    path is taken.
+'base_paddr' was aligned to start of a page before this patch, while 
+'phys' includes the offset within a page.
 
-This enables validation of the VMX fast path without affecting systems
-that do not support Altivec.
 
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
- .../selftests/powerpc/copyloops/.gitignore        |  4 ++--
- .../testing/selftests/powerpc/copyloops/Makefile  | 11 ++++++++---
- tools/testing/selftests/powerpc/copyloops/stubs.S |  8 --------
- .../selftests/powerpc/copyloops/validate.c        | 15 ++++++++++++++-
- 4 files changed, 24 insertions(+), 14 deletions(-)
+Could You check if the following change fixes the issue?
 
-diff --git a/tools/testing/selftests/powerpc/copyloops/.gitignore b/tools/testing/selftests/powerpc/copyloops/.gitignore
-index 7283e8b07b75..80d4270a71ac 100644
---- a/tools/testing/selftests/powerpc/copyloops/.gitignore
-+++ b/tools/testing/selftests/powerpc/copyloops/.gitignore
-@@ -2,8 +2,8 @@
- copyuser_64_t0
- copyuser_64_t1
- copyuser_64_t2
--copyuser_p7_t0
--copyuser_p7_t1
-+copyuser_p7
-+copyuser_p7_vmx
- memcpy_64_t0
- memcpy_64_t1
- memcpy_64_t2
-diff --git a/tools/testing/selftests/powerpc/copyloops/Makefile b/tools/testing/selftests/powerpc/copyloops/Makefile
-index 42940f92d832..0c8efb0bddeb 100644
---- a/tools/testing/selftests/powerpc/copyloops/Makefile
-+++ b/tools/testing/selftests/powerpc/copyloops/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- TEST_GEN_PROGS := copyuser_64_t0 copyuser_64_t1 copyuser_64_t2 \
--		copyuser_p7_t0 copyuser_p7_t1 \
-+		copyuser_p7 copyuser_p7_vmx \
- 		memcpy_64_t0 memcpy_64_t1 memcpy_64_t2 \
- 		memcpy_p7_t0 memcpy_p7_t1 copy_mc_64 \
- 		copyuser_64_exc_t0 copyuser_64_exc_t1 copyuser_64_exc_t2 \
-@@ -28,10 +28,15 @@ $(OUTPUT)/copyuser_64_t%:	copyuser_64.S $(EXTRA_SOURCES)
- 		-D SELFTEST_CASE=$(subst copyuser_64_t,,$(notdir $@)) \
- 		-o $@ $^
- 
--$(OUTPUT)/copyuser_p7_t%:	copyuser_power7.S $(EXTRA_SOURCES)
-+$(OUTPUT)/copyuser_p7:	copyuser_power7.S $(EXTRA_SOURCES)
- 	$(CC) $(CPPFLAGS) $(CFLAGS) \
- 		-D COPY_LOOP=test___copy_tofrom_user_power7 \
--		-D SELFTEST_CASE=$(subst copyuser_p7_t,,$(notdir $@)) \
-+		-o $@ $^
-+
-+$(OUTPUT)/copyuser_p7_vmx:       copyuser_power7.S $(EXTRA_SOURCES) ../utils.c
-+	$(CC) $(CPPFLAGS) $(CFLAGS) \
-+		-D COPY_LOOP=test___copy_tofrom_user_power7_vmx \
-+		-D VMX_TEST \
- 		-o $@ $^
- 
- # Strictly speaking, we only need the memcpy_64 test cases for big-endian
-diff --git a/tools/testing/selftests/powerpc/copyloops/stubs.S b/tools/testing/selftests/powerpc/copyloops/stubs.S
-index ec8bcf2bf1c2..3a9cb8c9a3ee 100644
---- a/tools/testing/selftests/powerpc/copyloops/stubs.S
-+++ b/tools/testing/selftests/powerpc/copyloops/stubs.S
-@@ -1,13 +1,5 @@
- #include <asm/ppc_asm.h>
- 
--FUNC_START(enter_vmx_usercopy)
--	li	r3,1
--	blr
--
--FUNC_START(exit_vmx_usercopy)
--	li	r3,0
--	blr
--
- FUNC_START(enter_vmx_ops)
- 	li	r3,1
- 	blr
-diff --git a/tools/testing/selftests/powerpc/copyloops/validate.c b/tools/testing/selftests/powerpc/copyloops/validate.c
-index 0f6873618552..fb822534fbe9 100644
---- a/tools/testing/selftests/powerpc/copyloops/validate.c
-+++ b/tools/testing/selftests/powerpc/copyloops/validate.c
-@@ -12,6 +12,10 @@
- #define BUFLEN (MAX_LEN+MAX_OFFSET+2*MIN_REDZONE)
- #define POISON 0xa5
- 
-+#ifdef VMX_TEST
-+#define VMX_COPY_THRESHOLD 3328
-+#endif
-+
- unsigned long COPY_LOOP(void *to, const void *from, unsigned long size);
- 
- static void do_one(char *src, char *dst, unsigned long src_off,
-@@ -81,8 +85,12 @@ int test_copy_loop(void)
- 	/* Fill with sequential bytes */
- 	for (i = 0; i < BUFLEN; i++)
- 		fill[i] = i & 0xff;
--
-+#ifdef VMX_TEST
-+	/* Force sizes above kernel VMX threshold (3328) */
-+	for (len = VMX_COPY_THRESHOLD + 1; len < MAX_LEN; len++) {
-+#else
- 	for (len = 1; len < MAX_LEN; len++) {
-+#endif
- 		for (src_off = 0; src_off < MAX_OFFSET; src_off++) {
- 			for (dst_off = 0; dst_off < MAX_OFFSET; dst_off++) {
- 				do_one(src, dst, src_off, dst_off, len,
-@@ -96,5 +104,10 @@ int test_copy_loop(void)
- 
- int main(void)
- {
-+#ifdef VMX_TEST
-+	/* Skip if Altivec not present */
-+	SKIP_IF_MSG(!have_hwcap(PPC_FEATURE_HAS_ALTIVEC), "ALTIVEC not supported");
-+#endif
-+
- 	return test_harness(test_copy_loop, str(COPY_LOOP));
- }
+diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
+index 46ef88bc9c26..edb0ffb21e2f 100644
+--- a/arch/sparc/kernel/iommu.c
++++ b/arch/sparc/kernel/iommu.c
+@@ -312,6 +312,7 @@ static dma_addr_t dma_4u_map_phys(struct device 
+*dev, phys_addr_t phys,
+         if (direction != DMA_TO_DEVICE)
+                 iopte_protection |= IOPTE_WRITE;
+
++       phys -= offset_in_page(phys);
+         for (i = 0; i < npages; i++, base++, phys += IO_PAGE_SIZE)
+                 iopte_val(*base) = iopte_protection | phys;
+
+ >> ...
+
+Best regards
 -- 
-2.52.0
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
