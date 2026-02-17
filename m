@@ -1,80 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-16889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HQqMV3Jk2lE8gEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 02:50:21 +0100
+	id qO5oHlr2k2lz+AEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 06:02:18 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C560B1486FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 02:50:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9BB148BF1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Feb 2026 06:02:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fFMzD3Nxlz2yS4;
-	Tue, 17 Feb 2026 12:50:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fFSDk0tq8z2yS4;
+	Tue, 17 Feb 2026 16:02:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771293016;
-	cv=none; b=mIfPEvbpSspxBEHOFzd4p5J784RYtjL+SID8dvQkQiqqH8PDDIoH7eKVK+AX050Ya7+Yb1+MAHJPaEg1IknU4NQYIuj7kYT7YjGvfaMRQSMf2OlRKlyRryHBPg0Af4omivENFIW32tYrzRwlW7APEycEsyZN0Amt6fkHco5KRcUrolJgsUTt4eYH4VHvb21zWN11ybTOyLHO4b/0buMQ8OuSMEBtodTyRMrdeOyWvHF7Uq0hpBCkVnglSOO1wm89S9o8EaXvYNJLT3Cmc5tYCAnLD+64YItsU560qtYbMzMOHZQsWi7yM08WX0yaN91rM6dVH55IbQ0sLHb4MnI6Jw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771304533;
+	cv=none; b=JrxVNh2EdB/FrzuB2m6gaDNUW6L5X7SLw4ZUSpcUjv1be79f6r4fTUY+slOrBuvCqSBBxMmo0E9YrpbbtjuhX+F5qYb903TU9CyjH6mIw1atJRVBwV2cveoZrFFgRsMN7XCFcaCa/KUBETWZA01FtdJvO0Qy+Ks8FxwWNn6SlFDL4i6QUDG7xRFV78fNFEE9wfn8FpfVJ0ldHNeddDrSeCS8xXCTZQBljLpCRuQKSS4DDArN8AZUWqFJ+M+vVH5JPChE/b+0FvNOrJi+ilp8iLbB32piCe3PtYza3L32hdaqRa3sV3VuYdjWR3/96/Nz7MX7OThhWQAqlN7Qe68Mgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771293016; c=relaxed/relaxed;
-	bh=1PstwpQxtpjLyVjolVxl/JKVf+1JZCc7dUYzu4wOCAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RL3psXw47xOQIPCELhlCdbwkyvrCBv5DvPs/9udZ36HI6j0rRyw4zZKO4C2on0WLdU21f58jGcH1NnK1h/qlS4s5477PkagFRWZPDolO5hdx9TOJU9fWZWjLtnHLfbNflJnqdjsfPsTcZuO3+zxConY+iM/qYIdPL9UMWWt4DYqN4dQNPxQdbpdmSNB7IP2ZMPxpV6OQk/U1u3Mupt596F4UBCA3DkmLXjMR3QO2JtqEcKKTAOXPAqfO0CLrHMmdFSqbPC55EaPJOIeJk2JWXf1vCn32HwD5Z0kdUik9bbdBZBhOElNLvLErsgcR4ZAXiuk6L0IAB81rMO7pz6srSg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ObmHvrlC; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1771304533; c=relaxed/relaxed;
+	bh=wBNenHw6cfEOAvQzXklgzBQ9ewTjhU1BT7mst5LVAQs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P/m4ohKoDcVTQLWJskb5nWXAoeaLgQHXfnVa9aRq90llYomfTWt8F8ux9jemFBqMMTKrrPSEYp02MLC7mhNEC7zdSPQS3PL2gGSOiuFvN/5l7RUwKKyj5ESANirsmLmpmKc0ZeSJ5IoLbgRLS0E+gD82BTO+q2lxQdI7I26rabdo9+OjcKBkiTPJNcpV6OUOHGY9+79rKiBJQC25FedYlWjsTB6ZJnWxHsUaDb8/yUFFZXxVQtEMU0URxlGEgk9omzm+44em4+2g6U6KbdzZxCqB1IGLoyGYa7tsubkefrYpInPsGi8RoU9GnULsSOy/pPmQe+85UrwuYpQdU9+0cQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hiKTU0G1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ObmHvrlC;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hiKTU0G1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFMz90Kwrz2xN5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 12:50:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771293013; x=1802829013;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tB2iANIoliVRoxJY0Yh1Zbwf52Y1p61Ktt0sl8ORDoc=;
-  b=ObmHvrlC1CsSzk2B+QyRbBG/VKDa8CNVlmOBvsWhXs8rMzyViX+m+942
-   JGY404uEdQ58rz7o3nxu+xSLgXbf+aCKt6bPpykhjsMUvWY0nX+cYrwwC
-   7NvD5i9xba9an8jQAOGaU3tUz6mkQ+vsG4RdW8qG2UYtiVkHkSAzqg/KC
-   0tLh7VaDvAEPEeHMdaWW1s/tOcQrk0fI/Do1pUmGo87IplwuNbgNZxNwH
-   ary7s4spBXnDCUj8usIZDYCvaFrCJGl6XptSgamThpmvUbiG8gcUTUHbB
-   7M63u5Ar0clzEJ/o37XYfWxJ7w737azyRuR5J+R9eNHCIoFJg2Gku2dQv
-   g==;
-X-CSE-ConnectionGUID: Lxp7QN8hRGy8BPMsma1Tvg==
-X-CSE-MsgGUID: 34vg5GqHQqaLH1MLW5CSDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="82996457"
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; 
-   d="scan'208";a="82996457"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 17:50:06 -0800
-X-CSE-ConnectionGUID: 2I/HuGqsSpOki0MF7JxgGQ==
-X-CSE-MsgGUID: f9SWCtP8QayNuqmJGWLWnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; 
-   d="scan'208";a="217714744"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 16 Feb 2026 17:50:03 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vsADw-000000010Ts-2bJt;
-	Tue, 17 Feb 2026 01:50:00 +0000
-Date: Tue, 17 Feb 2026 09:49:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: adubey@linux.ibm.com, bpf@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@kernel.org, eddyz87@gmail.com,
-	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev,
-	chleroy@kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
-Subject: Re: [PATCH 1/2] powerpc64/bpf: Implement JIT support for private
- stack
-Message-ID: <202602170941.f1KIvBuf-lkp@intel.com>
-References: <20260216152234.36632-1-adubey@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fFSDh2hMJz2xN5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Feb 2026 16:02:11 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61H0TFnY2169858;
+	Tue, 17 Feb 2026 05:02:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=wBNenH
+	w6cfEOAvQzXklgzBQ9ewTjhU1BT7mst5LVAQs=; b=hiKTU0G1VhxDo/dbjRYMbh
+	TPYC6fx/Vd3tR3CXhY4fNDUpTDFENQknw/HwJC/B8eBXbxtO9lcoVD5VSr6us8LL
+	j15snDe26nUsPSIpfbwKs+wTq63DF2+IoWx9PZTflcTm8UXsgJ+v886+QCJI3BPU
+	iAEapIpHL9UW6tDVFqUCi4eWoHSCfF3YeMShLLdpc9WV/phZRO2dxmwRaZUFn7HI
+	hdqjhrpiUVefPpf6V+lD8FC0/A4CIQk0kJUr7wmfj4EnxPwCO1OBBim22zTNpuDY
+	cgzaX3J18zOXDvRuJZZgwCCd11lJ+wNaD0MBDUjrTCTvbHLlX8cUdb1HPrWwwyXw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6rtgfp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Feb 2026 05:02:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61H3HGmx001883;
+	Tue, 17 Feb 2026 05:02:08 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb2b9483-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Feb 2026 05:02:07 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61H526AS40960292
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Feb 2026 05:02:06 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4BDD32004B;
+	Tue, 17 Feb 2026 05:02:06 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6FC7320043;
+	Tue, 17 Feb 2026 05:02:04 +0000 (GMT)
+Received: from [9.111.28.248] (unknown [9.111.28.248])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Feb 2026 05:02:04 +0000 (GMT)
+Message-ID: <185d7a42-f7b4-44e1-a129-f5989d211c74@linux.ibm.com>
+Date: Tue, 17 Feb 2026 10:32:03 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,287 +85,155 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260216152234.36632-1-adubey@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Linux PPC] KVM PR and KVM HV do not work if the kernel was
+ compiled with PREEMPT
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+        mad skateman <madskateman@gmail.com>,
+        Christian Zigotzky <info@xenosoft.de>
+References: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=dvvWylg4 c=1 sm=1 tr=0 ts=6993f651 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=5H1sMmDSAAAA:20
+ a=NEAV23lmAAAA:8 a=APaD-8RfXa1xi9PzJvEA:9 a=QEXdDO2ut3YA:10
+ a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-GUID: GDtg5XZmQt2SZ8acK7rOhukiX0uZPPwS
+X-Proofpoint-ORIG-GUID: uk-4j0MspZbrINpgX170yUzwRmc9VZY3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDAzNSBTYWx0ZWRfX7nrASHnQdK2k
+ 59MbhTyZW/Ve1H5/V38S/5fQibf5PEBljGTgqyLlPFE9cV8EYy5BDA62VhShY29x/G2bQQ05c0U
+ FtkT4wYL7reXLRH7fyEMP4zuiv7RatFNpfC07gjxIIJXLXTQcUSYjg1nGWuozR0un0GfTORpiF+
+ t/tDGGOOBOgIl4RSIeWomBcq+iNlIx/JNy6gaeUUZWOzbCwpvipybdXQFsNuMY5As9AnNHsXkxz
+ raCNXZjOPTbRyfmsbahoifIV0Q+YFwHq223jIK+fN1TorZDHpIPnRqdkhdUa+lLd/LQ5WQv7vyY
+ tLGMeXtVMuuJW06R4hSnOHHPF3YrVe3abatR0sVDHy1zVIYE2YBXcor9bEZi94VpafDAwHHTaN9
+ e4G6UppvIsIHqvcgFaEFPVH13l+t1gBss5aseGIgImnx40rbPsw5iiCB9fuAlnWxqLWRpype4Nd
+ yWyykFqlmXGwaoxF4nA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-16_08,2026-02-16_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 clxscore=1011 malwarescore=0 phishscore=0 suspectscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602170035
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.21 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
-	TAGGED_FROM(0.00)[bounces-16889-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16890-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:bpf@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,m:chleroy@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:chzigotzky@xenosoft.de,m:linuxppc-dev@lists.ozlabs.org,m:kvm-ppc@vger.kernel.org,m:rtd2@xtra.co.nz,m:hypexed@yahoo.com.au,m:madskateman@gmail.com,m:info@xenosoft.de,s:lists@lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url]
-X-Rspamd-Queue-Id: C560B1486FE
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 7E9BB148BF1
 X-Rspamd-Action: no action
 
-Hi,
 
-kernel test robot noticed the following build warnings:
 
-[auto build test WARNING on bpf-next/master]
-[also build test WARNING on bpf/master powerpc/next linus/master next-20260216]
-[cannot apply to bpf-next/net powerpc/fixes v6.19]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On 2/14/26 7:32 PM, Christian Zigotzky wrote:
+> Hello,
+> 
+> KVM PR and KVM HV do not work if the kernel was compiled with PREEMPT.
+> 
+> The entire FSL Cyrus+ board freezes when using KVM HV with PREEMPT.
+> 
+> The guest kernel doesn't boot if we use KVM PR with a PREEMPT kernel on 
+> the PA Semi Nemo board.
+> 
+> We were previously able to disable PREEMPT in the kernel configuration, 
+> but the latest git kernels now enable it by default and it is no longer 
+> possible to disable it.
+> 
+> I created a patch for disabling PREEMPT today. [1]
+> 
+> Is it possible to let us decide whether to activate PREEMPT or not?
+> 
+> Thanks in advance,
+> 
+> Christian
+> 
+> [1] https://raw.githubusercontent.com/chzigotzky/kernels/ 
+> a74fa6179eaeafcea7ad89f0e61c30ace038daf2/patches/X1000/ 
+> Kconfig.preempt.patch
+> [2] Bug report: https://github.com/chzigotzky/kernels/issues/19
 
-url:    https://github.com/intel-lab-lkp/linux/commits/adubey-linux-ibm-com/selftests-bpf-Enable-private-stack-tests-for-powerpc64/20260216-182353
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-patch link:    https://lore.kernel.org/r/20260216152234.36632-1-adubey%40linux.ibm.com
-patch subject: [PATCH 1/2] powerpc64/bpf: Implement JIT support for private stack
-config: powerpc64-randconfig-r133-20260217 (https://download.01.org/0day-ci/archive/20260217/202602170941.f1KIvBuf-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602170941.f1KIvBuf-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602170941.f1KIvBuf-lkp@intel.com/
+Hi.
 
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/net/bpf_jit_comp.c:266:43: sparse: sparse: cast removes address space '__percpu' of expression
---
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes address space '__percpu' of expression
->> arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __percpu *priv_frame_ptr @@     got void * @@
-   arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse:     expected void [noderef] __percpu *priv_frame_ptr
-   arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse:     got void *
-   arch/powerpc/net/bpf_jit_comp64.c:1476:41: sparse: sparse: cast truncates bits from constant value (8000000000000000 becomes 0)
-   arch/powerpc/net/bpf_jit_comp64.c:1476:41: sparse: sparse: cast truncates bits from constant value (8000000000000000 becomes 0)
-   arch/powerpc/net/bpf_jit_comp64.c:1478:41: sparse: sparse: cast truncates bits from constant value (c000000000000000 becomes 0)
-   arch/powerpc/net/bpf_jit_comp64.c:1478:41: sparse: sparse: cast truncates bits from constant value (c000000000000000 becomes 0)
+Do you have any trace why it is stuck? That would be useful.
 
-vim +/__percpu +266 arch/powerpc/net/bpf_jit_comp.c
 
-   164	
-   165	struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-   166	{
-   167		u32 proglen;
-   168		u32 alloclen;
-   169		u8 *image = NULL;
-   170		u32 *code_base;
-   171		u32 *addrs;
-   172		struct powerpc_jit_data *jit_data;
-   173		struct codegen_context cgctx;
-   174		int pass;
-   175		int flen;
-   176		int priv_stack_alloc_size;
-   177		void __percpu *priv_stack_ptr = NULL;
-   178		struct bpf_binary_header *fhdr = NULL;
-   179		struct bpf_binary_header *hdr = NULL;
-   180		struct bpf_prog *org_fp = fp;
-   181		struct bpf_prog *tmp_fp;
-   182		bool bpf_blinded = false;
-   183		bool extra_pass = false;
-   184		u8 *fimage = NULL;
-   185		u32 *fcode_base;
-   186		u32 extable_len;
-   187		u32 fixup_len;
-   188	
-   189		if (!fp->jit_requested)
-   190			return org_fp;
-   191	
-   192		tmp_fp = bpf_jit_blind_constants(org_fp);
-   193		if (IS_ERR(tmp_fp))
-   194			return org_fp;
-   195	
-   196		if (tmp_fp != org_fp) {
-   197			bpf_blinded = true;
-   198			fp = tmp_fp;
-   199		}
-   200	
-   201		jit_data = fp->aux->jit_data;
-   202		if (!jit_data) {
-   203			jit_data = kzalloc(sizeof(*jit_data), GFP_KERNEL);
-   204			if (!jit_data) {
-   205				fp = org_fp;
-   206				goto out;
-   207			}
-   208			fp->aux->jit_data = jit_data;
-   209		}
-   210	
-   211		if (!priv_stack_ptr && fp->aux->jits_use_priv_stack) {
-   212			/*
-   213			 * Allocate private stack of size equivalent to
-   214			 * verifier-calculated stack size plus two memory
-   215			 * guard regions to detect private stack overflow
-   216			 * and underflow.
-   217			 */
-   218			priv_stack_alloc_size = round_up(fp->aux->stack_depth, 16) +
-   219								2 * PRIV_STACK_GUARD_SZ;
-   220			priv_stack_ptr = __alloc_percpu_gfp(priv_stack_alloc_size, 16, GFP_KERNEL);
-   221			if (!priv_stack_ptr) {
-   222				fp = org_fp;
-   223				goto out_priv_stack;
-   224			}
-   225	
-   226			priv_stack_init_guard(priv_stack_ptr, priv_stack_alloc_size);
-   227			fp->aux->priv_stack_ptr = priv_stack_ptr;
-   228		}
-   229	
-   230		flen = fp->len;
-   231		addrs = jit_data->addrs;
-   232		if (addrs) {
-   233			cgctx = jit_data->ctx;
-   234			/*
-   235			 * JIT compiled to a writable location (image/code_base) first.
-   236			 * It is then moved to the readonly final location (fimage/fcode_base)
-   237			 * using instruction patching.
-   238			 */
-   239			fimage = jit_data->fimage;
-   240			fhdr = jit_data->fhdr;
-   241			proglen = jit_data->proglen;
-   242			hdr = jit_data->hdr;
-   243			image = (void *)hdr + ((void *)fimage - (void *)fhdr);
-   244			extra_pass = true;
-   245			/* During extra pass, ensure index is reset before repopulating extable entries */
-   246			cgctx.exentry_idx = 0;
-   247			goto skip_init_ctx;
-   248		}
-   249	
-   250		addrs = kcalloc(flen + 1, sizeof(*addrs), GFP_KERNEL);
-   251		if (addrs == NULL) {
-   252			fp = org_fp;
-   253			goto out_addrs;
-   254		}
-   255	
-   256		memset(&cgctx, 0, sizeof(struct codegen_context));
-   257		bpf_jit_init_reg_mapping(&cgctx);
-   258	
-   259		/* Make sure that the stack is quadword aligned. */
-   260		cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
-   261		cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
-   262		cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
-   263		cgctx.is_subprog = bpf_is_subprog(fp);
-   264		cgctx.exception_boundary = fp->aux->exception_boundary;
-   265		cgctx.exception_cb = fp->aux->exception_cb;
- > 266		cgctx.priv_sp = priv_stack_ptr ? (u64)priv_stack_ptr : 0;
-   267	
-   268		/* Scouting faux-generate pass 0 */
-   269		if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-   270			/* We hit something illegal or unsupported. */
-   271			fp = org_fp;
-   272			goto out_addrs;
-   273		}
-   274	
-   275		/*
-   276		 * If we have seen a tail call, we need a second pass.
-   277		 * This is because bpf_jit_emit_common_epilogue() is called
-   278		 * from bpf_jit_emit_tail_call() with a not yet stable ctx->seen.
-   279		 * We also need a second pass if we ended up with too large
-   280		 * a program so as to ensure BPF_EXIT branches are in range.
-   281		 */
-   282		if (cgctx.seen & SEEN_TAILCALL || !is_offset_in_branch_range((long)cgctx.idx * 4)) {
-   283			cgctx.idx = 0;
-   284			if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-   285				fp = org_fp;
-   286				goto out_addrs;
-   287			}
-   288		}
-   289	
-   290		bpf_jit_realloc_regs(&cgctx);
-   291		/*
-   292		 * Pretend to build prologue, given the features we've seen.  This will
-   293		 * update ctgtx.idx as it pretends to output instructions, then we can
-   294		 * calculate total size from idx.
-   295		 */
-   296		bpf_jit_build_prologue(NULL, &cgctx);
-   297		addrs[fp->len] = cgctx.idx * 4;
-   298		bpf_jit_build_epilogue(NULL, &cgctx);
-   299	
-   300		fixup_len = fp->aux->num_exentries * BPF_FIXUP_LEN * 4;
-   301		extable_len = fp->aux->num_exentries * sizeof(struct exception_table_entry);
-   302	
-   303		proglen = cgctx.idx * 4;
-   304		alloclen = proglen + FUNCTION_DESCR_SIZE + fixup_len + extable_len;
-   305	
-   306		fhdr = bpf_jit_binary_pack_alloc(alloclen, &fimage, 4, &hdr, &image,
-   307						      bpf_jit_fill_ill_insns);
-   308		if (!fhdr) {
-   309			fp = org_fp;
-   310			goto out_addrs;
-   311		}
-   312	
-   313		if (extable_len)
-   314			fp->aux->extable = (void *)fimage + FUNCTION_DESCR_SIZE + proglen + fixup_len;
-   315	
-   316	skip_init_ctx:
-   317		code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
-   318		fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
-   319	
-   320		/* Code generation passes 1-2 */
-   321		for (pass = 1; pass < 3; pass++) {
-   322			/* Now build the prologue, body code & epilogue for real. */
-   323			cgctx.idx = 0;
-   324			cgctx.alt_exit_addr = 0;
-   325			bpf_jit_build_prologue(code_base, &cgctx);
-   326			if (bpf_jit_build_body(fp, code_base, fcode_base, &cgctx, addrs, pass,
-   327					       extra_pass)) {
-   328				bpf_arch_text_copy(&fhdr->size, &hdr->size, sizeof(hdr->size));
-   329				bpf_jit_binary_pack_free(fhdr, hdr);
-   330				fp = org_fp;
-   331				goto out_addrs;
-   332			}
-   333			bpf_jit_build_epilogue(code_base, &cgctx);
-   334	
-   335			if (bpf_jit_enable > 1)
-   336				pr_info("Pass %d: shrink = %d, seen = 0x%x\n", pass,
-   337					proglen - (cgctx.idx * 4), cgctx.seen);
-   338		}
-   339	
-   340		if (bpf_jit_enable > 1)
-   341			/*
-   342			 * Note that we output the base address of the code_base
-   343			 * rather than image, since opcodes are in code_base.
-   344			 */
-   345			bpf_jit_dump(flen, proglen, pass, code_base);
-   346	
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+My initial take is cond_resched is a nop. So we might be stuck there.
+Eventually it should have come out though.
+
+Could you please give the below patch a try and let me know?
+Note: This likely still needs lazy bit handling. So keep in preempt=full.
+(Not tested)
+
+
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 7667563fb9ff..fe215d1177fe 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4901,7 +4901,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+         }
+  
+         if (need_resched())
+-               cond_resched();
++               schedule();
+  
+         kvmppc_update_vpas(vcpu);
+  
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 9a89a6d98f97..54963c1d8b58 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -86,7 +86,7 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
+         while (true) {
+                 if (need_resched()) {
+                         local_irq_enable();
+-                       cond_resched();
++                       schedule();
+                         hard_irq_disable();
+                         continue;
+                 }
 
