@@ -1,74 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-16927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16934-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GH+BFLe5lWm7UQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Feb 2026 14:08:07 +0100
+	id 4KQWAC3ElWmTUgIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16934-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Feb 2026 14:52:45 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E6C15685B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Feb 2026 14:08:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D02156E0A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Feb 2026 14:52:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fGGyn5Nzqz2yrn;
-	Thu, 19 Feb 2026 00:08:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fGHxr398qz3bsL;
+	Thu, 19 Feb 2026 00:52:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771420081;
-	cv=none; b=W4a5AswlGwP0edZI2cJOaWD58OHpcTxqFaDM65eZqPV7BYpzcgcRGp/xLW2CV0k6kWFAjhHoeZmyWeT0hRr+gSrrJK5i9XrVuvC1A68plpyS8A+4sCv+jdiRvsFGOcfkPKqKcBI/bccWxHKNyf50vxGSWaiBhJhqoynV784n6u6aJMuGJyN7JnKKys5S003aUK5910KUpIJzBUZrz8CYELo0hDJsmlUjV9HqCS8DFZmTl/1u9Pyjvlo1oqqkQWtOPgFGg+6irEM34XvkndqXsubXz+ql5zb5ii1qq/LUP2rzyWYKvrpoG9zukkB2KSD6A/MUZMPIGD6s5VBWPpg8+g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771422736;
+	cv=none; b=W+GE4jQTdZCxnP4f5Rr7KiUlra0OTNtlpulLYVDlkhVbic96b2FFBRTZDAu0G84MmWOB88idERPBe3lRnhiDlHBsGpRV0/OVQB3u8/bEL46hSHdyCagqHf+eXBi93agqdjTwUTE/bghvvtdOJhXquFL0JExbzxQKBog8rLaQ5Hph1hbFbyHGK20t5UpuAIxmDzkeqPhDpWA0zAaD1hfQUGrO7XuWZ6OkKUIaZUWHhhMgZt5nUtgw/HUgyTNlEmCMHHBYmSzdSvE6cGMb9SVtZ4/sn0pgnz/g+05g9/N/26tsnLIemkWJFzRaHbImG69nDizGqMxqmUpBjgSSi9kHkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771420081; c=relaxed/relaxed;
-	bh=MRGYwwW7dZPASMBAQbEnUUAmVM7Dk5+BeMxteCPdDpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dgosjmt90kJKD6nd7D5zGkf3B/Wpseq/ftRnl6blEHymdUsd71gP5DPxuOd4ZP1Q0jdN3bECtVLfuAZnEhWSUCbMpcb0FeCRFE6VyB4d2wQ0k4FoJsFpzSVThiSKLuENz1s48Jw035ocnd5pfuzX5pdkxj+HGBG+6im9URpvSn+2HLA7+ABsSS7kmBvCR1pf/neQzaH3dA7bGMOiTocOtCKft48odG85cV+wXDZOsa12mDSoRhXFUoXbpO3zIG8jOy22MQvBnH+Og9+vNeDOsrZxvtABGg7m79y7xpGrP1rUfiIAYOJ5wFqW/10H1YdhNtj5eIZoCJ95emJFahpZWg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	t=1771422736; c=relaxed/relaxed;
+	bh=kurWLclCU1p6CObL3Fr6bH3QHzP1TichbnZiIf7g35w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kzwkf9LIAYue6BKeqFp9WjfN2bsBTCyl9GIeDIiiRfLIxzG+OpjbhLsEaA6oZow4ZvH9f4bAoLunJgEk2Yfx06ZmwswOKYtVxdlRX8FPn3VDtQFKAMzyJ6mVJ72mtHRTOx/JOWaW8wr7jU9H8PNek/AQUIeIK+Tmxn66+A5qGwrxNeWbhQ7JjeVbnrbgVoWQKhnDd4rGaQsVfIA5gCLeatpqXGhvAqXeSmu6noJHxRqSorES2rFUQBf3dqwHsMc2nexsH432lOVHniECs3wIXxxOUYikjsiu7/L7QmG0JINvMMh553DR6xWMoAhp1G6dDpcawlTu4im1ATzITsU60Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JEI/nWjo; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JEI/nWjo;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fGGyd2TC9z2x99
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Feb 2026 00:07:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MRGYwwW7dZPASMBAQbEnUUAmVM7Dk5+BeMxteCPdDpY=; b=jt3wPQRhLZbn4iPv8TKFakFnNd
-	8Gnijfv23M8CBuaPT69BRUwG1x2G0CjlMJvSY6UYI/JS39Dzrg4EGSmimCAQhdRTFyTSJ6utoS57c
-	LHiKYdiX5Rr3LReSI880z4nIeBHa/10dKYxt6MwSyf7jVkhN8XSoufBePpdcTeZT/RAbcoKx+UQB2
-	CbsvvNEHV603uZVde4B6xz1tbSwntTNoW6utsGgcv/OE3sa4Ol+sF0BJeiQx6666E05koInrZO1yx
-	P2jsec9FGpHU+MlYSFJx23LqWaoVns3jq1hEwOnc1+bCjy0g6s6zbjiqFC9r0bCpFRFSISfEbKfW+
-	yD7yl16Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vshH1-000000063U6-30XM;
-	Wed, 18 Feb 2026 13:07:23 +0000
-Date: Wed, 18 Feb 2026 13:07:23 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>, akpm@linux-foundation.org,
-	david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	vbabka@suse.cz, jannh@google.com, rppt@kernel.org, mhocko@suse.com,
-	pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com,
-	imbrenda@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mm: use vma_start_write_killable() in
- process_vma_walk_lock()
-Message-ID: <aZW5i4cqU1qUy3aa@casper.infradead.org>
-References: <20260217163250.2326001-1-surenb@google.com>
- <20260217163250.2326001-4-surenb@google.com>
- <20260217191530.13857Aae-hca@linux.ibm.com>
- <CAJuCfpGxsX6kZAzZJZo7aGNxEbeqOhTV8epF+sHXyqUFOP1few@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fGHxm1dt5z3bnq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Feb 2026 00:52:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 23F76600AE;
+	Wed, 18 Feb 2026 13:52:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7141C116D0;
+	Wed, 18 Feb 2026 13:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771422728;
+	bh=w4EKK/R480qSeLevM8joRM/MvxRl22C1On+/P+fDFn0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JEI/nWjoAYErKmbf5xhGmzXnRXgp/Y5A5qRkYOJ91Z8T03wm+J4uX4Eqz1Pv3qGhE
+	 lTak/thcVjyvClUlD4q46Z9JrlyR3wTbRlNA1+lpgIJIr+EDoM0zBPINYpJaO/2hM2
+	 Sr6u5DqTmi3EUL3gGS5K92iNgjM/A/BWuRqBhVTpv3/Z5iCRT6FkPiO0rSaJR/AgBy
+	 7TO9wwB0DginuYOJvJVJHbUN8zm0rp2eJdgEkk50UENjYvVQAN/cP6RR9wy1Aj0Akb
+	 dNsuQNn3k8wEOWTah9dSwLH3FK33bTDiJF6NLsYJe46JDKxGft3FJlRoabJE3GitUI
+	 0jKmoiZlsCNNQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vshyI-0000000Bu02-33K3;
+	Wed, 18 Feb 2026 13:52:06 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/6] fsl-mc: Move fsl_over to device MSI
+Date: Wed, 18 Feb 2026 13:51:57 +0000
+Message-ID: <20260218135203.2267907-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,55 +77,103 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpGxsX6kZAzZJZo7aGNxEbeqOhTV8epF+sHXyqUFOP1few@mail.gmail.com>
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: ioana.ciornei@nxp.com, tglx@kernel.org, chleroy@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16927-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[willy@infradead.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[42];
-	FORGED_RECIPIENTS(0.00)[m:surenb@google.com,m:hca@linux.ibm.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:vbabka@suse.cz,m:jannh@google.com,m:rppt@kernel.org,m:mhocko@suse.com,m:pfalcato@suse.de,m:kees@kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-s390@vger.kernel.org,m:joshuahah
- njy@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[maz@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16934-lists,linuxppc-dev=lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ioana.ciornei@nxp.com,m:tglx@kernel.org,m:chleroy@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,linux-foundation.org,kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,oracle.com,redhat.com,arm.com,linux.dev,suse.cz,google.com,suse.com,suse.de,ellerman.id.au,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,casper.infradead.org:mid]
-X-Rspamd-Queue-Id: C2E6C15685B
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_PROHIBIT(0.00)[0.18.0.0:email,0.4.0.0:email,0.10.0.0:email,0.16.0.0:email,0.12.0.0:email];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,0.14.0.0:email,0.6.0.0:email,0.8.0.0:email]
+X-Rspamd-Queue-Id: 24D02156E0A
 X-Rspamd-Action: no action
 
-On Tue, Feb 17, 2026 at 12:31:32PM -0800, Suren Baghdasaryan wrote:
-> Hmm. My patchset is based on mm-new. I guess the code was modified in
-> some other tree. Could you please provide a link to that patchset so I
-> can track it? I'll probably remove this patch from my set until that
-> one is merged.
+Over the past few years, I have become increasingly annoyed by this
+sort of messages in my boot log:
 
-mm-new is a bad place to be playing; better to base off mm-unstable.
+[    0.067861] fsl-mc MSI: ITS@0x100100040000 domain created
+[    0.073352] fsl-mc MSI: ITS@0x100100060000 domain created
+[    0.078841] fsl-mc MSI: ITS@0x100100080000 domain created
+[    0.084328] fsl-mc MSI: ITS@0x1001000a0000 domain created
+[    0.089815] fsl-mc MSI: ITS@0x1001000c0000 domain created
+[    0.095303] fsl-mc MSI: ITS@0x1001000e0000 domain created
+[    0.100792] fsl-mc MSI: ITS@0x100100100000 domain created
+[    0.106281] fsl-mc MSI: ITS@0x100100120000 domain created
+
+While this is useful on fsl-mc systems, this is completely irrelevant
+on 99.99999% of the arm64 machines, which know nothing about the
+Freescale stuff. Including all of my machine -- bar *one*.
+
+Global MSI domains such as the above have been obsoleted for the past
+two years, but nobody at NXP seems to have got the message.
+
+The obvious solution is to delete some code! While my first port of
+call would be to just 'git rm -r drivers/bus/fsl-mc' (only kidding!),
+a less invasive solution is to drag that code into the present times.
+Which is what this series is doing by converting the whole thing to
+device MSI, reusing the platform MSI infrastructure instead of
+duplicating it.
+
+This results in the expected cleanup, and kills the last user of the
+non-device-MSI stuff on arm64. You're welcome.
+
+Marc Zyngier (6):
+  fsl-mc: Remove MSI domain propagation to sub-devices
+  fsl_mc: Add minimal infrastructure to use platform MSI
+  irqchip/gic-v3-its: Add fsl_mc device plumbing to the msi-parent
+    handling
+  fsl_mc: Switch over to per-device platform MSI
+  fsl_mc: Remove legacy MSI implementation
+  platform-msi: Remove stale comment
+
+ drivers/base/platform-msi.c                 |   4 -
+ drivers/bus/fsl-mc/dprc-driver.c            |  14 +-
+ drivers/bus/fsl-mc/fsl-mc-bus.c             |   4 +-
+ drivers/bus/fsl-mc/fsl-mc-msi.c             | 142 +++--------------
+ drivers/bus/fsl-mc/fsl-mc-private.h         |   2 +-
+ drivers/irqchip/Kconfig                     |   6 -
+ drivers/irqchip/Makefile                    |   1 -
+ drivers/irqchip/irq-gic-its-msi-parent.c    |   7 +-
+ drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c | 168 --------------------
+ include/linux/fsl/mc.h                      |   6 +-
+ 10 files changed, 33 insertions(+), 321 deletions(-)
+ delete mode 100644 drivers/irqchip/irq-gic-v3-its-fsl-mc-msi.c
+
+-- 
+2.47.3
+
 
