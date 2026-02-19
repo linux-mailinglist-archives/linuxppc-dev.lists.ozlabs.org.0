@@ -1,120 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-16966-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16951-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gD8CEfx/l2kOzQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16966-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Feb 2026 22:26:20 +0100
+	id 2EVsNO9Wl2lPxAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16951-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Feb 2026 19:31:11 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAE0162C6D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Feb 2026 22:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348C2161B19
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Feb 2026 19:31:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fH5z55vD7z3bkq;
-	Fri, 20 Feb 2026 08:26:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fH2565ScNz30GV;
+	Fri, 20 Feb 2026 05:31:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c112::7" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771524899;
-	cv=pass; b=CSpE00uLuSdj/CeuV40nGF7Qx7cV+kR4SKd9a95iQoZpssoY69bIwctwDEQVVoZvv0pR/btmEuk1MJEtycj1GUhpJaXpY8Xz4XMLA16YDn7OiJpNVLe+D369WtjjdUDOi7gVn/r5xGPYv4Sf0qBRIbZIP4nfuDAVY+FYOH+sBTZZKJLJFBZuPRRDVm2W6XkTkwumIF008Z2WvPb+inpcp98QCU4NR/b33erKz8NlXwQ0dNF3F1tJHFMLd0u4Y7tLQ3EHsgkZHdFnwOB4yrwfpx4dNwp0LHIgfZwYfrVvIlvph1UGeeQ7H/j/UT02Nc761JpRJ2RLgDUwXiMgOrHQYA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771524899; c=relaxed/relaxed;
-	bh=ULdBrUgJJf3AqL7P5yzGnoRBrsfbngQm05zIK5QlUds=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NTteCKF/rCWQWuvwmqBdoOV6JlU8HrDeEjahICeSbvgESG5T2ntigyhgbSdU0EHf3293MaeouC/2/HICXYHRRP5knWnBUEVsjREUuiL8kh/O6BcLkdHY32P8SUg4lPI8QSJ2nWyvT/SAwL8NBS/9S7xij635jUQjlKYmFzf8b4EXu1IdBxF88RaDPMZ39O5usE3y4SzVPQx7c3waaV5bBVPSrUak/qZr8FNQyVB+SktEsqtqxRptQcD1d3i8BDTY1gc8GriqYpBQ1ZJ8qYOjW5QXeXUJk0nYyQWauIpH6PH51KkgMCFg8kU5XksS5CMDKCmOq0QB8g+hjK5rF1RlXg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bV61MuHw; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c112::7; helo=cy3pr05cu001.outbound.protection.outlook.com; envelope-from=ynorov@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771525866;
+	cv=none; b=QIsrsIgVyiD1W6eOFiWUkF0JOk+vimpEHqOhJz7f2Sf3KSFHIaT0mLmae4+fG53KeE+0/dQe6fobnwvBgsvK5YsY2EMtwfZU61CzixAQZGJ2D7VO6pHglz9n6Ylic0cab/Wzp782yo07Imgu1oFzSGrtEdNYIXuMMLYYuYhDDL8mRDxE5VzdWSvC54b7ggrXZV4HX6eKcbFvsETQy24Do8+lZ4xjxbKqhzfWy+xDY1fLlEzs+TBNko1qX7pgy4z8FsX39LRjhMXoeztdo4HxcZiYz3ktO9RobwsD/iRufcUQYlPLsrRGrRI09rvfExz09qFGROheoCAhwAGq2O75mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771525866; c=relaxed/relaxed;
+	bh=UyqtE5dFClD4qUnTIg5kBZRFtx9J4UpArQv5TR4phSc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ofU3ff0FqoM306D/70FPJZ+Gg0jiMUyhjPmtv4j1Q3ocvNYIGdgsxKNN8+V/0eTjuCyl0Os8NTKPpl5hBKtek/xPXvM8mliA538Qzcw7GEtlY0VwBqJI4a5M3uCspPlwBkxt2Z5AtuQYoU/g4SdM7meEOSiDpxLlT2jIz4C9DoesoV7pBSjrA9nUZ+1AzbWRQ6/2uBWQwvXZ3NTQ3DbWb3wYw6SbzUlYjeZWrXOX9fOJRHl0efYWySurqKXPTRHlGqV6lcDfR+SaOckqK/CPNpgOjqRgFMa9J73EZ++Ka4P+4e7e25rjlt6in2GiLuKOvtY46KKhrYor7vwwWNMfMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SFWg1clY; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bV61MuHw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SFWg1clY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:c112::7; helo=cy3pr05cu001.outbound.protection.outlook.com; envelope-from=ynorov@nvidia.com; receiver=lists.ozlabs.org)
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c112::7])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fH1kV4cFMz2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 05:14:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PIsBlLTE2etv3qWbFxAnQ8KbnkJfArG+Cv8TuwtBVnXr6B6hT4RzQkyHXPav/dssGfCWr60cdqXP3XNK8BWpbRP4+Wy0DIUwDiltmUJrGXz/Lr0LopXFWOHn/a/mIs573of/apXYdNh3OqEEdkyTXN273CFpE1oger7mgAC0r1OiawN8tuzgkI5v7NnLF8PUbbqulxJa2DiMi53BzHBjy52pX3DZEfqZJnseE2tQdX57wTZwkFRXpMdtkBO1wW8d8JL0N10zY3LBzhdlL0w/f4sY5d6DJS4wymjm6QlL9ytCoEmAmFpVVy541OdZ3Lkgr51GUsV98Puo4KVORhVdVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ULdBrUgJJf3AqL7P5yzGnoRBrsfbngQm05zIK5QlUds=;
- b=GTEZraW6xVSMJMmlSaaglPqdkFZzsATeX1cZWVm4EP6CEgqWk6ZrI7Rr5WCMkxTDq+OQgQUhW/D95ehaoDG0lMY+XAO4tIcmN5yWzXl1sisjp9uybzCkwBJ2jjd5hRNrnV6JQEaCUlx2nW+x1D8DRPasaxangTZdqW18pB6W3HCZkoHz/OTJKc0ogoJapXVDwvhwA1HEzH4YnIkBTiUH/29yP/C8Axm8GNnrx6DOsRPQ1lNDzkRMZHK8WM90SCcUKgb89RdqDsYePyZyHn39K+ZXkcsL85IHl1kFRaxlkfGuQOBHYYMvZEKyaIZfskLS4bA5rg8+jSN9EPfuZ+7cEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ULdBrUgJJf3AqL7P5yzGnoRBrsfbngQm05zIK5QlUds=;
- b=bV61MuHwBph0L5YvLwmD5052v6EA5Krq4sR28ITciCK1VCIE+RtM8KQPHXGiyAeSl14+wLNni5LvHicn+TkG+e+7FldFKtsJYYyfp/SW3zDZ4U/hPiPfff+3auPxvdCbjhvzByUsDkTZbmuCsdhmrAv+DBD32Y8zrQKlLJF8ZtZSj/67r2K5KgNh3zKzVYyzgneCj4bNmVoegv5c/ESqKyPa1Ar6CRf8J4VJjR6QE/D9qBroZ6JEmuw/sqV/HwnRhsfoAx8n1ATUo5/PwQVMkfmulR2VtsOIkOeV4G8ywPzD3soxOgZNbCsq2niiZI1uxoyKOMouq6MKwghN7CESWQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
- by CH3PR12MB8877.namprd12.prod.outlook.com (2603:10b6:610:170::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Thu, 19 Feb
- 2026 18:14:39 +0000
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9632.010; Thu, 19 Feb 2026
- 18:14:39 +0000
-From: Yury Norov <ynorov@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Antoine Tenart <atenart@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Jerin Jacob <jerinj@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Mike Leach <mike.leach@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tom Rix <trix@redhat.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Yajun Deng <yajun.deng@linux.dev>,
-	Yury Norov <yury.norov@gmail.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	hariprasad <hkelam@marvell.com>,
-	coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org
-Cc: Yury Norov <ynorov@nvidia.com>
-Subject: [PATCH 12/12] bitmap: drop bitmap_print_to_pagebuf()
-Date: Thu, 19 Feb 2026 13:14:04 -0500
-Message-ID: <20260219181407.290201-13-ynorov@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260219181407.290201-1-ynorov@nvidia.com>
-References: <20260219181407.290201-1-ynorov@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN0PR04CA0115.namprd04.prod.outlook.com
- (2603:10b6:408:ec::30) To PH0PR12MB8800.namprd12.prod.outlook.com
- (2603:10b6:510:26f::12)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fH2511VRLz2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 05:31:00 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61J9ACWk1261180;
+	Thu, 19 Feb 2026 18:30:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UyqtE5
+	dFClD4qUnTIg5kBZRFtx9J4UpArQv5TR4phSc=; b=SFWg1clY7vnfwxc2JH30jJ
+	GJyI4qt6fn1359Gi0VIHaY13aqwYWLOj6niHzBfsHP5AavkHlDE/vcNM2azVxa07
+	0Zel6Es13bpMv4TGzSTxPKyEjvfE5AhzRlvYMEuPDIAjrJ27RKQJChBMjT8ZMFyI
+	E3lShnVceGQMb/zRm3DsYqC0D0i6SEwdDkv74HM220HMvNTpB/+6OriXCGBjEbhP
+	mJhjlRD7I+qgk8g3wBrUGqLGBcVEVm2RApSFTCYTPi+Wez+l9FuCSEuNL0bF3XNq
+	cZx7xJ40MSy+Ykw0yUWGf+8teGiGPXVQnxjyG+r4bMFA0nWqqWOFb9Cb+bNiV8jA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6s7h9u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 18:30:23 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61JI5k01015697;
+	Thu, 19 Feb 2026 18:30:21 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb45dbya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 18:30:21 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61JIUHLX29229328
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Feb 2026 18:30:17 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C524720043;
+	Thu, 19 Feb 2026 18:30:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 66FC720040;
+	Thu, 19 Feb 2026 18:30:07 +0000 (GMT)
+Received: from [9.111.92.82] (unknown [9.111.92.82])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Feb 2026 18:30:07 +0000 (GMT)
+Message-ID: <9413517d-963b-4e6d-b11b-b440acd7cb5a@linux.ibm.com>
+Date: Fri, 20 Feb 2026 00:00:06 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -128,236 +85,327 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|CH3PR12MB8877:EE_
-X-MS-Office365-Filtering-Correlation-Id: 807c0036-96bc-4c52-fc04-08de6fe2bedf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SbWiriWEbcf51nIJ35nrCbq0VoQZCNtKmr/rMfuuwiqcA1iOMFssd73PdpkD?=
- =?us-ascii?Q?bmw80kaqnbyGns176EKMDqTNZwEZUO6TTvlGZHH1NZjmWOEfX4+d7tC6YA04?=
- =?us-ascii?Q?mfFBH+gR6l79N0jkFh7TyVi8KBD4NTym0cwKLn8Qo8e7EeLgqj4GmU1J273p?=
- =?us-ascii?Q?vRRqpsYePfU5uL+TLDmccnDZwR9ra/RrR5Y4ywBs4XBS5u42sIR4wtYG8TpK?=
- =?us-ascii?Q?YOvNG1RIQzAChPdb3udwPjbbb2SlIp6PfZ8umOoCIEfSGHPTfnjPr7Pr8NQG?=
- =?us-ascii?Q?kNxlfMXP0A8iTihInYb/lQL4DNz7Kh/oW3S7lcVRADWerAmRHO5hMjbvPf68?=
- =?us-ascii?Q?AaAOxB/GkcF+PTW59ptPSAyVgrjby+hCMmx1vAZ48EvQvuGgGF/J33LyDyKz?=
- =?us-ascii?Q?EanMoOebjV/7BNSo4bgvR3sB+y9m6nHS1yPzON6heFOMTHfCiJjZrtSiCZoY?=
- =?us-ascii?Q?ZBqPkjMQHhEvLMukgi6FZoy4lxxup9WfwaHsRG9InArk7P7k8eDFSLCRxpSV?=
- =?us-ascii?Q?P3AhgEoBZveB1U2sYgvXpY5EujP1yUuMclBfBibOqMyKJDL4rUNA3Hl1YLF4?=
- =?us-ascii?Q?hBik9kYakpABDEOdMAJTU/6CmQdbOx0HN8dXhJx/qwU0otjbh9zV+MytscLi?=
- =?us-ascii?Q?MRmSDQn3u2t+WVfdfaKooz/TeTVIYGHn4UNEXv3YQ0N/2jRf+NXfQL25PKfc?=
- =?us-ascii?Q?/723+8u1B+4JTqGspgyQ/+jMInBPihW8TSiDnaDqT4Usu1lojeDqZM+F3MG0?=
- =?us-ascii?Q?4MhBLwmkmBES1bqkcUxW8+g1pkXU9S/d6bRTC+lflzYJg0KbjbfuWZQYBT8J?=
- =?us-ascii?Q?8ipONOVQB7ORzmR0TcIUI66oqlqhZJYuQTEV4UobQYGRCGeJHY+w/ji43SWa?=
- =?us-ascii?Q?E1IzIMtaLrGlbdnNGp8MANkpiMSxhm7OHibJmsxHK53DG+Ibgg7lwjeFHcu2?=
- =?us-ascii?Q?Qll4EG3c03TloYomzUz3qmTvi5R1dqrnXQ8og11uffn2JW7cePi521dvTYTv?=
- =?us-ascii?Q?W7zHXlxDaFi/V/WkE5yz5UnfF275zDPcKG9oc/EhpYjY5YPTrZPpPjykoue9?=
- =?us-ascii?Q?6c9YN0/Zv4vrP6zvOvMTRKuRLMZxEeW9b7B9mD9rWwk5M+7syh8FBAW2pe0o?=
- =?us-ascii?Q?tHivp2g2eNwqXZ64BKZlRKU7wtF/f9DcSGxrRgjUF4EeoBDUyv3ahF5lf41M?=
- =?us-ascii?Q?QE29toa+NZhgLsf44c/q5DHAh7xhBM49Zwwq5mKcfUcq/mTAJmpuAuAo6K4k?=
- =?us-ascii?Q?QzxchpGOuAe1uCMGz4Tg7OXPfxA5nw6lnhov0acUahqmxpXan4NJAj3xJ+wO?=
- =?us-ascii?Q?KNyfdlm246mlJ4+BlKvESzTjg0ig0vIOH5MmeE7E/AVqQpvyHa0BZWFnaE6x?=
- =?us-ascii?Q?wSRMUz+3c1likYb7/M1G2gmHpExIVxdqQtCYGI4YLrjgQ77FspjYZ4MrtZ1A?=
- =?us-ascii?Q?Tos9BLwnyMZMg0yEQw54JmlOCtwetMwPsI5ThWGtF9aUlWugrLAYg7TJGKzQ?=
- =?us-ascii?Q?YnEZpR77uPRywv6SojV6W1DLUq7/5rqBonpoV/IRA2Znk/guEAgzWg5EDsks?=
- =?us-ascii?Q?IPgsg64VtGdWAK4FSavNUPpkHFEGMMeFVko05xY7ayppfD+8BH73hOYk0Pv4?=
- =?us-ascii?Q?PA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xwnbcz0jEsAJwo2uYPcn8BvdIcszVwkGtt1iznF/U/GJax48C3h56yyCciJx?=
- =?us-ascii?Q?n4yW9d28C6COwy2D9++nm0ikZf3wgJFBbgKxk/XWV3Vn/VGmMNAOL5jitR6O?=
- =?us-ascii?Q?Xz0F0hEj5vjPfYKbP9BV7NW7hvMorO77NiL0m8e5hPBNISntimMS394YuSBj?=
- =?us-ascii?Q?qbld95i2v5Lk3ncXSuPONJI6g229Y8UMxXBctfBNhLG9R9ieq+vB78CnZB6X?=
- =?us-ascii?Q?CKQ6nv+bQqiIyJ2FXJEbRJZ/6Djmse9f3Qt+/lY3ft3Tlz0J09Gg4WZUWe5h?=
- =?us-ascii?Q?81NxP8ThxTwHjBYGE1KowGzQ8nCujs++9uFYMJvxSnfeGsbcUJEBfcKFNvlq?=
- =?us-ascii?Q?j/PC8F6feY3KxuZZ2txrJsJ4yJnCkLYG4JN/bFJmUgUY/gvUCfrpeqhzD6i/?=
- =?us-ascii?Q?zXNupSKFVgKj/9NZvNwMhVT9iZJf+BwpKVze/X+1C95ZLH1KomvejrIucK+O?=
- =?us-ascii?Q?i7zq6pGZIR9VCiSmvsDnMK+3XJzfibyxnQl53tenpzju4mtgfanG2BxrR498?=
- =?us-ascii?Q?mFSIjXp4llubeoqtQZStP5R4OOFRJmOmE3072sL6OoU8fzl4cEewXrs2KMvf?=
- =?us-ascii?Q?KG/+9wMZLhcvdD3p/SkWRPa170MhOO+1aiv8yKJXzGuGQL9+bt+t8QIeJcnx?=
- =?us-ascii?Q?0t8S0O1n0eJSfEMqE3yJ1USLOZXX4eeEibfsrtH+2S16UoUH9hDRVcW06d/a?=
- =?us-ascii?Q?YqoYc0lVSizIazNA82cSh+CVwdPitVIGqW7kSF/xdOc9Lz1dO4OztRbH4p5f?=
- =?us-ascii?Q?zJSZzTGqdLPt55T3hU6Ak7jU0RfzzXv2GV1BQWPLy4AzU5uxTHMU8efR2FvW?=
- =?us-ascii?Q?Exi75x6ffv5S2z9TSFdSFV8aJ97ApBuYSsZobUJz2YG5AJX7t/t3Hxnu5LQS?=
- =?us-ascii?Q?QSYxYZOZGaSTvn5ktpm/TuZ14ldv+Eaf72jQZ6pd6HSWqGR133a3tNoT1y/B?=
- =?us-ascii?Q?R/8xGOB0Oz955fZ7hWrDSRWgQszhftK4Egw4cKKzAWrh82XubRsu7vBbIvdG?=
- =?us-ascii?Q?+dzKdFV05fAeYEBeNv28t2goiR7nXvrCKET218ejgeFpC9JZWx0xrtQdnTlo?=
- =?us-ascii?Q?s/cUv5FIUbniCDDUrInlXtvQzs64400i48J20zw9SSjnMI562Gj8dYf9BDAQ?=
- =?us-ascii?Q?4Kt+VcjM4QoJB+kpE7fEH+BXik6s+rAEjn9lCrRnimsB6fMuXGbW+wZnuL1K?=
- =?us-ascii?Q?Zx/YpVszYPr9dkcqqatdrkDUy+jnDCnm0Y+NeepO4uLAJ/y3KAJYOyH0NPWw?=
- =?us-ascii?Q?CzhxgoIyl8vbCwj0pHNgTx3cJnyxf0EdFzWyvfEpwKyobw3+NpwZrz+HvuOX?=
- =?us-ascii?Q?zRPbqXo0o3bMB+4CoYZqbSaiKqJHWjm48OGUcn/bebR9kFGpboF6rTa5+MBw?=
- =?us-ascii?Q?QvE5K9313S+NQ1jwn38sBumqwzD96184PoYs5LzrVQ/CbCr1NtdawOZ+1ocf?=
- =?us-ascii?Q?9PnJ3PUovsabWwDLCAqPU/IbuB44iD7HbbtymvBc3DCPhYuBuNWpheYNs5IP?=
- =?us-ascii?Q?qx7jMwQvHFg342xTmRZgfCk8+rf8MKPxQGr5GaNUfB/rTD4pGFjAq0XWgHZI?=
- =?us-ascii?Q?g5cu4x3Zk+820JIu3GeMdzLLzwZQ+wdKmq4vWQwdWI0tTJpeX12DZPmteuuj?=
- =?us-ascii?Q?upAEuhXqkJVS/TnV7cTtsbo4HpBjK1kbsdrh9TbFC5b+u4ySj3wl2EmesYpv?=
- =?us-ascii?Q?BOboCaWLzJR+Lwp2AwVyztoosjpt1vqLWC7Gek1qdcJ+jPsBELBXWJ3oHWhS?=
- =?us-ascii?Q?5zrYqEe7RdNB70j6WgYZMqxQbU8LT59Sk3f1yyT0K/akX0LGBjGl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 807c0036-96bc-4c52-fc04-08de6fe2bedf
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 18:14:39.0329
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3bioaco1tNd3mW+rjo4wtJOR0itiVHJzaVDXbBo/aduMRpT4rdc1gV+OjjE/MH2iknGzN8Nhyc1tcFRZ9ejywA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8877
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/15] powerpc/time: Prepare to stop elapsing in
+ dynticks-idle
+To: Frederic Weisbecker <frederic@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Joel Fernandes <joelagnelf@nvidia.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Kieran Bingham <kbingham@kernel.org>, Mel Gorman <mgorman@suse.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Paul E . McKenney"
+ <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20260206142245.58987-1-frederic@kernel.org>
+ <20260206142245.58987-5-frederic@kernel.org>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260206142245.58987-5-frederic@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=dvvWylg4 c=1 sm=1 tr=0 ts=699756bf cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=YJB6otqPPJUw7w8ZA6oA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: wBr2Fja_KVXT4_1MKa1HvqQ-fZlDiO8G
+X-Proofpoint-ORIG-GUID: 0riturGGUpWqAjVXmFdvyORGCGQiEQj9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDE2NCBTYWx0ZWRfXydBM+OSLWTzC
+ ZXK3WUprw2QRv0CstNwfm1HYMX09fQc9mgkhfmkAeYae0qdpXwTYM2fTlEGcxaxiS3ph0VWCZIY
+ dXPnepPQ8PSxKduvuvQtq8HT/njmynffdUIClnWG5BvjEju0vZwrHWcJVMq85gYQf3KapPljO+O
+ uWju3HnVtoEcV6YCBUrho8+uZm5qjE8oggcTXLzzgrzb4OzOIrwf3RfnxxnPYoym7PTbgGDDqCv
+ Ev+o3/YrxQTD9A6ydZur6C18ZLRUz9SokEpx0p+KrHT6k7nLP4JGu9qDEWjtpiJO18Lmkdtv4wx
+ KDyBtbLse6zROCdEJ6eTsp2PUdhxK3lgANAw+965RN6cCwIPWZ0QoGtdxvMbFlKiCAOGwmHnD/0
+ LMTlzF8iSkZ8CITcxADOqNh9xfH5zpcK2sEV6TZTSW1eMjIZKcmvqCSH5vy5VObjdsIMstZVPv0
+ iK7e9YgDm58GOlOhDBQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-19_04,2026-02-19_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602190164
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,davemloft.net,infradead.org,linux.intel.com,lunn.ch,linux-foundation.org,linaro.org,google.com,marvell.com,arm.com,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,rasmusvillemoes.dk,fomichev.me,intel.com,linux.dev,lists.linaro.org,lists.infradead.org,lists.ozlabs.org];
-	FORGED_SENDER(0.00)[ynorov@nvidia.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:chleroy@kernel.org,m:davem@davemloft.net,m:peterz@infradead.org,m:rafael@kernel.org,m:alexander.shishkin@linux.intel.com,m:andrew+netdev@lunn.ch,m:akpm@linux-foundation.org,m:atenart@kernel.org,m:brauner@kernel.org,m:daniel.lezcano@linaro.org,m:edumazet@google.com,m:gakula@marvell.com,m:mingo@kernel.org,m:kuba@kernel.org,m:james.clark@linaro.org,m:jerinj@marvell.com,m:lcherian@marvell.com,m:lukasz.luba@arm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:mike.leach@linaro.org,m:mdf@kernel.org,m:npiggin@gmail.com,m:pabeni@redhat.com,m:linux@rasmusvillemoes.dk,m:horms@kernel.org,m:sdf@fomichev.me,m:sbhatta@marvell.com,m:sgoutham@marvell.com,m:suzuki.poulose@arm.com,m:trix@redhat.com,m:yilun.xu@intel.com,m:yajun.deng@linux.dev,m:yury.norov@gmail.com,m:rui.zhang@intel.com,m:hkelam@marvell.com,m:coresight@lists.linaro.org,m:linux-arm-kernel@lists.infradead.org,m:linux-fpga@vger.kernel.org,m:linux-pm@vger.kernel.org,m:linuxppc-dev@l
- ists.ozlabs.org,m:netdev@vger.kernel.org,m:ynorov@nvidia.com,m:andrew@lunn.ch,m:yurynorov@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16951-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,linutronix.de,google.com,gmail.com,arm.com,redhat.com,siemens.com,nvidia.com,suse.de,ellerman.id.au,infradead.org,goodmis.org,linaro.org,163.com,vger.kernel.org,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FORGED_RECIPIENTS(0.00)[m:frederic@kernel.org,m:linux-kernel@vger.kernel.org,m:maddy@linux.ibm.com,m:chleroy@kernel.org,m:rafael@kernel.org,m:agordeev@linux.ibm.com,m:anna-maria@linutronix.de,m:bsegall@google.com,m:boqun.feng@gmail.com,m:borntraeger@linux.ibm.com,m:dietmar.eggemann@arm.com,m:hca@linux.ibm.com,m:mingo@redhat.com,m:jan.kiszka@siemens.com,m:joelagnelf@nvidia.com,m:juri.lelli@redhat.com,m:kbingham@kernel.org,m:mgorman@suse.de,m:mpe@ellerman.id.au,m:neeraj.upadhyay@kernel.org,m:npiggin@gmail.com,m:paulmck@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:urezki@gmail.com,m:vschneid@redhat.com,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:viresh.kumar@linaro.org,m:jackzxcui1989@163.com,m:linux-pm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16966-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ynorov@nvidia.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,nvidia.com:mid,nvidia.com:email,Nvidia.com:dkim]
-X-Rspamd-Queue-Id: 6BAE0162C6D
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 348C2161B19
 X-Rspamd-Action: no action
 
-Now that all users of the function are switched to the alternatives,
-drop the function.
 
-Signed-off-by: Yury Norov <ynorov@nvidia.com>
+
+On 2/6/26 7:52 PM, Frederic Weisbecker wrote:
+> Currently the tick subsystem stores the idle cputime accounting in
+> private fields, allowing cohabitation with architecture idle vtime
+> accounting. The former is fetched on online CPUs, the latter on offline
+> CPUs.
+> 
+> For consolidation purpose, architecture vtime accounting will continue
+> to account the cputime but will make a break when the idle tick is
+> stopped. The dyntick cputime accounting will then be relayed by the tick
+> subsystem so that the idle cputime is still seen advancing coherently
+> even when the tick isn't there to flush the idle vtime.
+> 
+> Prepare for that and introduce three new APIs which will be used in
+> subsequent patches:
+> 
+> _ vtime_dynticks_start() is deemed to be called when idle enters in
+>    dyntick mode. The idle cputime that elapsed so far is accumulated.
+> 
+> - vtime_dynticks_stop() is deemed to be called when idle exits from
+>    dyntick mode. The vtime entry clocks are fast-forward to current time
+>    so that idle accounting restarts elapsing from now.
+> 
+> - vtime_reset() is deemed to be called from dynticks idle IRQ entry to
+>    fast-forward the clock to current time so that the IRQ time is still
+>    accounted by vtime while nohz cputime is paused.
+> 
+> Also accumulated vtime won't be flushed from dyntick-idle ticks to avoid
+> accounting twice the idle cputime, along with nohz accounting.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+
+Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+
+> ---
+>   arch/powerpc/kernel/time.c | 41 ++++++++++++++++++++++++++++++++++++++
+>   include/linux/vtime.h      |  6 ++++++
+>   2 files changed, 47 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+> index 4bbeb8644d3d..18506740f4a4 100644
+> --- a/arch/powerpc/kernel/time.c
+> +++ b/arch/powerpc/kernel/time.c
+> @@ -376,6 +376,47 @@ void vtime_task_switch(struct task_struct *prev)
+>   		acct->starttime = acct0->starttime;
+>   	}
+>   }
+> +
+> +#ifdef CONFIG_NO_HZ_COMMON
+> +/**
+> + * vtime_reset - Fast forward vtime entry clocks
+> + *
+> + * Called from dynticks idle IRQ entry to fast-forward the clocks to current time
+> + * so that the IRQ time is still accounted by vtime while nohz cputime is paused.
+> + */
+> +void vtime_reset(void)
+> +{
+> +	struct cpu_accounting_data *acct = get_accounting(current);
+> +
+> +	acct->starttime = mftb();
+
+I figured out why those huge values happen.
+
+This happens because mftb is from when the system is booted.
+I was doing kexec to start the new kernel and mftb wasn't getting
+reset.
+
+I thought about this. This is concern for pseries too, where LPAR's
+restart but system won't restart and mftb will continue to run instead of
+reset.
+
+I think we should be using sched_clock instead of mftb here.
+Though we need it a few more places and some cosmetic changes around it.
+
+Note: Some values being huge exists without series for few CPUs, with series it
+shows up in most of the CPUs.
+
+So I am planning send out fix below fix separately keeping your
+series as dependency.
+
 ---
- include/linux/bitmap-str.h |  1 -
- lib/bitmap-str.c           | 42 +++++---------------------------------
- 2 files changed, 5 insertions(+), 38 deletions(-)
+  arch/powerpc/include/asm/accounting.h |  4 ++--
+  arch/powerpc/include/asm/cputime.h    | 14 +++++++-------
+  arch/powerpc/kernel/time.c            | 22 +++++++++++-----------
+  3 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/bitmap-str.h b/include/linux/bitmap-str.h
-index 53d3e1b32d3d..abe7a69a846f 100644
---- a/include/linux/bitmap-str.h
-+++ b/include/linux/bitmap-str.h
-@@ -5,7 +5,6 @@
- #include <linux/types.h>
- 
- int bitmap_parse_user(const char __user *ubuf, unsigned int ulen, unsigned long *dst, int nbits);
--int bitmap_print_to_pagebuf(bool list, char *buf, const unsigned long *maskp, int nmaskbits);
- int bitmap_print_bitmask_to_buf(char *buf, const unsigned long *maskp, int nmaskbits,
- 				loff_t off, size_t count);
- int bitmap_print_list_to_buf(char *buf, const unsigned long *maskp, int nmaskbits,
-diff --git a/lib/bitmap-str.c b/lib/bitmap-str.c
-index a357342d5d6c..49f4118c5cd3 100644
---- a/lib/bitmap-str.c
-+++ b/lib/bitmap-str.c
-@@ -39,32 +39,6 @@ int bitmap_parse_user(const char __user *ubuf,
- }
- EXPORT_SYMBOL(bitmap_parse_user);
- 
--/**
-- * bitmap_print_to_pagebuf - convert bitmap to list or hex format ASCII string
-- * @list: indicates whether the bitmap must be list
-- * @buf: page aligned buffer into which string is placed
-- * @maskp: pointer to bitmap to convert
-- * @nmaskbits: size of bitmap, in bits
-- *
-- * Output format is a comma-separated list of decimal numbers and
-- * ranges if list is specified or hex digits grouped into comma-separated
-- * sets of 8 digits/set. Returns the number of characters written to buf.
-- *
-- * It is assumed that @buf is a pointer into a PAGE_SIZE, page-aligned
-- * area and that sufficient storage remains at @buf to accommodate the
-- * bitmap_print_to_pagebuf() output. Returns the number of characters
-- * actually printed to @buf, excluding terminating '\0'.
-- */
--int bitmap_print_to_pagebuf(bool list, char *buf, const unsigned long *maskp,
--			    int nmaskbits)
--{
--	ptrdiff_t len = rest_of_page(buf);
--
--	return list ? scnprintf(buf, len, "%*pbl\n", nmaskbits, maskp) :
--		      scnprintf(buf, len, "%*pb\n", nmaskbits, maskp);
--}
--EXPORT_SYMBOL(bitmap_print_to_pagebuf);
--
- /**
-  * bitmap_print_to_buf  - convert bitmap to list or hex format ASCII string
-  * @list: indicates whether the bitmap must be list
-@@ -101,7 +75,7 @@ static int bitmap_print_to_buf(bool list, char *buf, const unsigned long *maskp,
-  * @off: in the string from which we are copying, We copy to @buf
-  * @count: the maximum number of bytes to print
-  *
-- * The bitmap_print_to_pagebuf() is used indirectly via its cpumap wrapper
-+ * The sprintf("%*pbl") is used indirectly via its cpumap wrapper
-  * cpumap_print_to_pagebuf() or directly by drivers to export hexadecimal
-  * bitmask and decimal list to userspace by sysfs ABI.
-  * Drivers might be using a normal attribute for this kind of ABIs. A
-@@ -111,18 +85,11 @@ static int bitmap_print_to_buf(bool list, char *buf, const unsigned long *maskp,
-  *		struct device_attribute *attr, char *buf)
-  *   {
-  *	...
-- *	return bitmap_print_to_pagebuf(true, buf, &mask, nr_trig_max);
-+ *	return scnprintf(buf, rest_of_page(buf), nr_trig_max, &mask);
-  *   }
-  *
-  * show entry of attribute has no offset and count parameters and this
-  * means the file is limited to one page only.
-- * bitmap_print_to_pagebuf() API works terribly well for this kind of
-- * normal attribute with buf parameter and without offset, count::
-- *
-- *   bitmap_print_to_pagebuf(bool list, char *buf, const unsigned long *maskp,
-- *			   int nmaskbits)
-- *   {
-- *   }
-  *
-  * The problem is once we have a large bitmap, we have a chance to get a
-  * bitmask or list more than one page. Especially for list, it could be
-@@ -149,7 +116,7 @@ static int bitmap_print_to_buf(bool list, char *buf, const unsigned long *maskp,
-  *
-  * The role of cpumap_print_bitmask_to_buf() and cpumap_print_list_to_buf()
-  * is similar with cpumap_print_to_pagebuf(),  the difference is that
-- * bitmap_print_to_pagebuf() mainly serves sysfs attribute with the assumption
-+ * scnprintf("%*pb[l]") mainly serves sysfs attribute with the assumption
-  * the destination buffer is exactly one page and won't be more than one page.
-  * cpumap_print_bitmask_to_buf() and cpumap_print_list_to_buf(), on the other
-  * hand, mainly serves bin_attribute which doesn't work with exact one page,
-@@ -158,7 +125,8 @@ static int bitmap_print_to_buf(bool list, char *buf, const unsigned long *maskp,
-  *
-  * WARNING!
-  *
-- * This function is not a replacement for sprintf() or bitmap_print_to_pagebuf().
-+ * This function is not a replacement for sprintf().
-+ *
-  * It is intended to workaround sysfs limitations discussed above and should be
-  * used carefully in general case for the following reasons:
-  *
+diff --git a/arch/powerpc/include/asm/accounting.h b/arch/powerpc/include/asm/accounting.h
+index 6d79c31700e2..50f120646e6d 100644
+--- a/arch/powerpc/include/asm/accounting.h
++++ b/arch/powerpc/include/asm/accounting.h
+@@ -21,8 +21,8 @@ struct cpu_accounting_data {
+  	unsigned long steal_time;
+  	unsigned long idle_time;
+  	/* Internal counters */
+-	unsigned long starttime;	/* TB value snapshot */
+-	unsigned long starttime_user;	/* TB value on exit to usermode */
++	unsigned long starttime;	/* Time value snapshot */
++	unsigned long starttime_user;	/* Time value on exit to usermode */
+  #ifdef CONFIG_ARCH_HAS_SCALED_CPUTIME
+  	unsigned long startspurr;	/* SPURR value snapshot */
+  	unsigned long utime_sspurr;	/* ->user_time when ->startspurr set */
+diff --git a/arch/powerpc/include/asm/cputime.h b/arch/powerpc/include/asm/cputime.h
+index aff858ca99c0..eb6b629b113f 100644
+--- a/arch/powerpc/include/asm/cputime.h
++++ b/arch/powerpc/include/asm/cputime.h
+@@ -20,9 +20,9 @@
+  #include <asm/time.h>
+  #include <asm/param.h>
+  #include <asm/firmware.h>
++#include <linux/sched/clock.h>
+  
+  #ifdef __KERNEL__
+-#define cputime_to_nsecs(cputime) tb_to_ns(cputime)
+  
+  /*
+   * PPC64 uses PACA which is task independent for storing accounting data while
+@@ -44,20 +44,20 @@
+   */
+  static notrace inline void account_cpu_user_entry(void)
+  {
+-	unsigned long tb = mftb();
++	unsigned long now = sched_clock();
+  	struct cpu_accounting_data *acct = raw_get_accounting(current);
+  
+-	acct->utime += (tb - acct->starttime_user);
+-	acct->starttime = tb;
++	acct->utime += (now - acct->starttime_user);
++	acct->starttime = now;
+  }
+  
+  static notrace inline void account_cpu_user_exit(void)
+  {
+-	unsigned long tb = mftb();
++	unsigned long now = sched_clock();
+  	struct cpu_accounting_data *acct = raw_get_accounting(current);
+  
+-	acct->stime += (tb - acct->starttime);
+-	acct->starttime_user = tb;
++	acct->stime += (now - acct->starttime);
++	acct->starttime_user = now;
+  }
+  
+  static notrace inline void account_stolen_time(void)
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 18506740f4a4..fb67cdae3bcb 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -215,7 +215,7 @@ static unsigned long vtime_delta(struct cpu_accounting_data *acct,
+  
+  	WARN_ON_ONCE(!irqs_disabled());
+  
+-	now = mftb();
++	now = sched_clock();
+  	stime = now - acct->starttime;
+  	acct->starttime = now;
+  
+@@ -299,9 +299,9 @@ static void vtime_flush_scaled(struct task_struct *tsk,
+  {
+  #ifdef CONFIG_ARCH_HAS_SCALED_CPUTIME
+  	if (acct->utime_scaled)
+-		tsk->utimescaled += cputime_to_nsecs(acct->utime_scaled);
++		tsk->utimescaled += acct->utime_scaled;
+  	if (acct->stime_scaled)
+-		tsk->stimescaled += cputime_to_nsecs(acct->stime_scaled);
++		tsk->stimescaled += acct->stime_scaled;
+  
+  	acct->utime_scaled = 0;
+  	acct->utime_sspurr = 0;
+@@ -321,28 +321,28 @@ void vtime_flush(struct task_struct *tsk)
+  	struct cpu_accounting_data *acct = get_accounting(tsk);
+  
+  	if (acct->utime)
+-		account_user_time(tsk, cputime_to_nsecs(acct->utime));
++		account_user_time(tsk, acct->utime);
+  
+  	if (acct->gtime)
+-		account_guest_time(tsk, cputime_to_nsecs(acct->gtime));
++		account_guest_time(tsk, acct->gtime);
+  
+  	if (IS_ENABLED(CONFIG_PPC_SPLPAR) && acct->steal_time) {
+-		account_steal_time(cputime_to_nsecs(acct->steal_time));
++		account_steal_time(acct->steal_time);
+  		acct->steal_time = 0;
+  	}
+  
+  	if (acct->idle_time)
+-		account_idle_time(cputime_to_nsecs(acct->idle_time));
++		account_idle_time(acct->idle_time);
+  
+  	if (acct->stime)
+-		account_system_index_time(tsk, cputime_to_nsecs(acct->stime),
++		account_system_index_time(tsk, acct->stime,
+  					  CPUTIME_SYSTEM);
+  
+  	if (acct->hardirq_time)
+-		account_system_index_time(tsk, cputime_to_nsecs(acct->hardirq_time),
++		account_system_index_time(tsk, acct->hardirq_time,
+  					  CPUTIME_IRQ);
+  	if (acct->softirq_time)
+-		account_system_index_time(tsk, cputime_to_nsecs(acct->softirq_time),
++		account_system_index_time(tsk, acct->softirq_time,
+  					  CPUTIME_SOFTIRQ);
+  
+  	vtime_flush_scaled(tsk, acct);
+@@ -388,7 +388,7 @@ void vtime_reset(void)
+  {
+  	struct cpu_accounting_data *acct = get_accounting(current);
+  
+-	acct->starttime = mftb();
++	acct->starttime = sched_clock();
+  #ifdef CONFIG_ARCH_HAS_SCALED_CPUTIME
+  	acct->startspurr = read_spurr(acct->starttime);
+  #endif
 -- 
 2.43.0
 
