@@ -1,57 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-16978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCbmMgPfl2nW9gIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 05:11:47 +0100
+	id 0NSjL8IBmGnC/AIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 07:40:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57641648BA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 05:11:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E251116500B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 07:40:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fHGy95JCtz3cGg;
-	Fri, 20 Feb 2026 15:10:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fHLG571ccz30Lv;
+	Fri, 20 Feb 2026 17:39:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771560657;
-	cv=none; b=h5ByTfsvgWJ/nlz7VWmRrARN6Cip9YrQ0MBoShhHq2RMLp1OTlBtBYETJUggJFKwERE0VuX8c9316QhDgWQI2HMzcweZNkgU5VPEq8GoHUxgOBvSWG17dI9Xxv6k2NUF9Qn0QfsmJjxvC+OqHl0QU5cD5N7bIOtwunYFQIvXBNLHH9AxUagLgTZNrSyDuriPtPskkmxkiHcFEpR0iU4dRXmSVLszBXtAUuIJ/20W6s578JzgNlRU27kcwY7gbzn+JthatUXZqQ0mCeWG5pRQ9P0UeG737FCnJYtah2YTxhfn3K5wmfTGUUej8QNZXMHhXzVrDLtzH0H+IxDS5JDeSA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771569597;
+	cv=none; b=dz0SGUbo+d9LQBFs4MGr2FpNdpixUlOoxgRUVhpBZDXutDfTP+HZT4QPB+guWmQntG60IEHiZUu7HLaWxnHD/UPd1udXMSXzlLcx+QimWCr7r3xAIvE92emN3CH2Z93/fCGbFWTlyr8QoUoyj3OiTEVTc940+KghxKmtNqwUapGDO6wZ2GtJ3pLRvUtrnwy02LedSqf52ioA/OPjpUYydHBXue8p9SDB5iOpG8GNZpumFMgmG9UELRLO9qxt65uzWf5lRsLNLGkC2MqOH+C6sxYrWXcGlvEaw5JsjgOmiJQJLwMaHi6umUCpxRN3/TM0KxiYmDNRDhQo6OprxGapBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771560657; c=relaxed/relaxed;
-	bh=/A0Yxvye63cj+hpAab8QOVcalyFGH3t35eHSGcH62hs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JiVNP+7alo7xUNQY8L1strFHXQ1noaLYZhH/2gnQGqsAFRALGQG89L27JzQjsyqH9nN4ISloehUCOHNbMBE/Oi9et7yZawqdNKSqVwRAY+eMJs3PzmjWUHii7ZHcmwUhKLsasNlNpHKDmHmcVPWkVKTbGpPDxCYO1nxZjkcaKU2xxTuQfw9Y30u4CMC4hJKPkVFFegU0AQMFGeuASrjRgUMWlVkQ1pnx1MvHDZOoJppkNMpQwc/Ts5qyMoAsXdxEX7yBqw4Z5VYa6UwntHSmaYjEiWZy9JnYtbKBD/oo5ewPRQMMrqH8jvJ/SYUdyYsblxUs/ZZkU6ndo8vpoXK5OQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N1VrZuK9; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1771569597; c=relaxed/relaxed;
+	bh=29qfjcnNBM005rcFcRM9Mlnqau4pUDoC+BuBV+nTMUc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=klWmxzHpFAWusDLxZv9f48WfXGBrRL3PLtTzLmOCnUyZiIzTlON/7L+Y4wbO9MK7Xd/4Y9QPEKZkWwIzayq7CgRwJ8LMFTD5Gg0fB4K/qah2JY4/rcs/cRURc0hnbLJntGgCIE3gFDPdgGcHSxITjOsWMlAQ56XY0WCqFoL1qKSExWgH9aJ2BGDq48lJCT2UALvv+xFF58yqeFh+WyudTG7RXoEQSX7V1k+iZW6nq0EVZ2o9J4//FAYn/ozYRImNN3cMtTcLBBFLHP2NTA+YITkOEg3+g6Vn8K1brlX0VlL0qChfLAJoQDYHAepZzaBpeWl03J0STFmvitAze1wQOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rOJ476mx; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N1VrZuK9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rOJ476mx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHGy85pC4z30N8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 15:10:56 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA55A6185D;
-	Fri, 20 Feb 2026 04:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD7FC116D0;
-	Fri, 20 Feb 2026 04:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771560654;
-	bh=Wl/q2I9MW4EAYAIqkkPs9cMuPySyeP7Ys0yLcRoxiik=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=N1VrZuK9lrvi+0jv5UrnpCwpMzW70T8EtjcsHnyvYb/C3ysXhXnwcXh0J1BUrz/fQ
-	 FXvJgc0MX5grtuvCDCjFOveYmh43k7YKrhJKjA6KNPY5GbthY3tSAB5Rd8DWyI60O4
-	 60LGpZhdpz2TPplFhz9GOt22IkO9j9SafKfb23NhzY6Pqtbyy2AyC4nRduEnajg21H
-	 pPrMunHoqFuSELpIJz/FNzbQUBVTQ/4/r5X9keCr5k8mekJQPLFSEN/1VTk4FKKX96
-	 mGvQFqOn+07PQ7stZW8usaIlrYxFaew9yX4CoBIDJ2elY6T+mswJuAAcc8jX+e9rPf
-	 2Anz+jmhWYL+g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FEBA3809A88;
-	Fri, 20 Feb 2026 04:11:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHLG451Vrz2yrl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 17:39:56 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61JL3N4S1368445;
+	Fri, 20 Feb 2026 06:39:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=29qfjcnNBM005rcFcRM9Mlnqau4pUDoC+BuBV+nTM
+	Uc=; b=rOJ476mx8ZF7GGfKluUbSOzcCoiNxXf0H1dWinmIL6HROCmUoIj/24sFH
+	ZHTyD2hmAGGeJVycdmjmCBbDaZU9z0Xp2tbL3I+xH3/8N36QdxdYjrCWjK7gVTYS
+	mR8mYqF0rgz/bd9FOIyCEEDkvKODNFYYvXS/7hgutN9mu+g5yG2d7aWZnNZk/jf1
+	lH2lHlIzQzo2F7h3BP8IwbINHCqbdnwkeznjgavFnwqQScFkyGi0LM5MqdAZWg+b
+	RyU73uTBo5IyvqDfhHR/AeEhA0vqWhxlf0WuXzvrJNcwbH7a+9YDAJU+wiNthPAw
+	kLPwhyyG3hko2W5rbjDniX1GWUYCA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjrcfk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Feb 2026 06:39:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61K48c2T030217;
+	Fri, 20 Feb 2026 06:39:40 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb45fc3j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Feb 2026 06:39:40 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61K6dbEi58720516
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Feb 2026 06:39:37 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 102F320040;
+	Fri, 20 Feb 2026 06:39:37 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DF80F20043;
+	Fri, 20 Feb 2026 06:39:34 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.64.63])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Feb 2026 06:39:34 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: bpf@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+        Abhishek Dubey <adubey@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH v2 0/5] powerpc64/bpf: various fixes
+Date: Fri, 20 Feb 2026 12:09:28 +0530
+Message-ID: <20260220063933.196141-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,111 +95,89 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 3.5] arm: make initialization of zero page independent of
- the
- memory map (was Re: [PATCH v2 22/28] arch, mm: consolidate initialization of
- nodes, zones and memory map)
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <177156066278.189817.13783312336351868850.git-patchwork-notify@kernel.org>
-Date: Fri, 20 Feb 2026 04:11:02 +0000
-References: <aVpWpLV4Dut5Muo2@kernel.org>
-In-Reply-To: <aVpWpLV4Dut5Muo2@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-riscv@lists.infradead.org, klarasmodin@gmail.com,
- akpm@linux-foundation.org, alexs@kernel.org, agordeev@linux.ibm.com,
- andreas@gaisler.com, bp@alien8.de, bcain@kernel.org, chleroy@kernel.org,
- catalin.marinas@arm.com, davem@davemloft.net, dave.hansen@linux.intel.com,
- david@kernel.org, dinguyen@kernel.org, geert@linux-m68k.org,
- guoren@kernel.org, hca@linux.ibm.com, deller@gmx.de, chenhuacai@kernel.org,
- mingo@redhat.com, johannes@sipsolutions.net, glaubitz@physik.fu-berlin.de,
- corbet@lwn.net, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- linmag7@gmail.com, mattst88@gmail.com, jcmvbkbc@gmail.com,
- mpe@ellerman.id.au, mhocko@suse.com, monstr@monstr.eu, muchun.song@linux.dev,
- osalvador@suse.de, palmer@dabbelt.com, pratyush@kernel.org, richard@nod.at,
- linux@armlinux.org.uk, shorne@gmail.com, surenb@google.com,
- tsbogend@alpha.franken.de, tglx@linutronix.de, gor@linux.ibm.com,
- vgupta@kernel.org, vbabka@suse.cz, will@kernel.org, x86@kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: YpvBFMoqO0EH8mHwcZsgfW9HCDNU-Jnr
+X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=699801ad cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=6UyuRm9t2VcF-Ioa368A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIwMDA1MiBTYWx0ZWRfX/XfwhNLPk7Sm
+ oPTOmVEFARAT/3eLG8INHRxw7cdMG6nGDnW8pg/3nWERWrLPtXRJI5InW1ymk3wiczo3gNer/V4
+ skwUXf4+XgHODElCg5m8x0/5uvGBRA2ZVz+1lYOqiW1DO15FR9Mft1dTGPG2qDMNjuoU1vDevY/
+ AbyYwu7jcXAsm26rFljZk1zxNFAuFnKEI2K40/NmB0VI8PVJ/g27urdRnVIM1fYN4rQ+SxSULud
+ cjTDAGNKspChkiRXaxOGRbhsFZFbyoaAmAdyNe68bqOFSZ47+8D9ciGjhn8aHU+co8jgdLC07q8
+ KCz2LwGaGwFHaodfMfAWZrEchLhIOnG5GccyV0IzqAVLsO16Aab6bgeKQtTjmITVWhFD7w8lvhf
+ VZvAEgnGbfv0noA9AHENTNRjSk1xNauACJfiR0ag65eEIUCEnDHCR7wnzDjFUKPKHPLrhbYSXro
+ furllbhDZb50wgb3CqA==
+X-Proofpoint-GUID: YpvBFMoqO0EH8mHwcZsgfW9HCDNU-Jnr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-19_06,2026-02-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602200052
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16978-lists,linuxppc-dev=lfdr.de,linux-riscv];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com,linux-foundation.org,kernel.org,linux.ibm.com,gaisler.com,alien8.de,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,lwn.net,oracle.com,ellerman.id.au,suse.com,monstr.eu,linux.dev,suse.de,dabbelt.com,nod.at,armlinux.org.uk,google.com,alpha.franken.de,linutronix.de,suse.cz,vger.kernel.org,lists.linux-m68k.org,kvack.org,lists.ozlabs.org,lists.linux.dev];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:linux-riscv@lists.infradead.org,m:klarasmodin@gmail.com,m:akpm@linux-foundation.org,m:alexs@kernel.org,m:agordeev@linux.ibm.com,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:chleroy@kernel.org,m:catalin.marinas@arm.com,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:hca@linux.ibm.com,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:corbet@lwn.net,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:muchun.song@linux.dev,m:osalvador@suse.de,m:palmer@dabbelt.com,m:pratyush@kernel.org,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tsbogend@alpha.franken.de,m:tglx@linutronix.de,m:gor@linux.ibm.com,m:vgupta@kernel.org,
- m:vbabka@suse.cz,m:will@kernel.org,m:x86@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-m68k@lists.linux-m68k.org,m:linux-mips@vger.kernel.org,m:linux-mm@kvack.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sh@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-um@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:sparclinux@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16979-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[66];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: E57641648BA
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: E251116500B
 X-Rspamd-Action: no action
 
-Hello:
+List of fixes for powerpc64 BPF JIT:
+- Patches 1 & 2 fix issues with existing powerpc64 JIT and are tagged
+  for -stable.
+- Patches 3 & 4 resolve issues with bpf2bpf tailcall support added
+  recently.
+- Patch 5 resolves an issue reported by bot+bpf-ci@kernel.org while
+  adding exceptions support on powerpc64 BPF JIT.
 
-This patch was applied to riscv/linux.git (fixes)
-by Andrew Morton <akpm@linux-foundation.org>:
+Changes since v1:
+- Addressed couple of review comments from bot+bpf-ci@kernel.org
+  in patch 3 & 5.
 
-On Sun, 4 Jan 2026 14:01:40 +0200 you wrote:
-> Andrew,
-> 
-> Can you please stick this between patch 3 (arm: introduce
-> arch_zone_limits_init()) and patch 4 (arm64: introduce
-> arch_zone_limits_init())?
-> 
-> From 35d016bbf5da7c08cc5c5547c85558fc50cb63aa Mon Sep 17 00:00:00 2001
-> From: Klara Modin <klarasmodin@gmail.com>
-> Date: Sat, 3 Jan 2026 20:40:09 +0200
-> Subject: [PATCH] arm: make initialization of zero page independent of the
->  memory map
-> 
-> [...]
 
-Here is the summary with links:
-  - [3.5] arm: make initialization of zero page independent of the memory map (was Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes, zones and memory map)
-    https://git.kernel.org/riscv/c/18b7cc70dea8
+Hari Bathini (5):
+  powerpc64/bpf: do not increment tailcall count when prog is NULL
+  powerpc64/bpf: fix the address returned by bpf_get_func_ip
+  powerpc64/bpf: use consistent tailcall offset in trampoline
+  powerpc64/bpf: remove BPF redzone protection in trampoline stack
+  powerpc64/bpf: fix handling of BPF stack in exception callback
 
-You are awesome, thank you!
+ arch/powerpc/net/bpf_jit.h        |   5 --
+ arch/powerpc/net/bpf_jit_comp.c   | 118 +++++++++++++-----------------
+ arch/powerpc/net/bpf_jit_comp64.c |  74 ++++++++++++-------
+ 3 files changed, 96 insertions(+), 101 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
 
