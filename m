@@ -1,77 +1,123 @@
-Return-Path: <linuxppc-dev+bounces-16990-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16991-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBxzBYI2mGkkDAMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16990-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 11:25:06 +0100
+	id yBU8HRBJmGk6FQMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16991-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 12:44:16 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A96166CDF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 11:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF568167588
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 12:44:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fHRFn6fYfz30Lv;
-	Fri, 20 Feb 2026 21:25:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fHT125N6pz30Lv;
+	Fri, 20 Feb 2026 22:44:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771583101;
-	cv=none; b=iwdVrq/Ul6yJ5SpIgJgZGY8Mqbdf4A7kaVa4xt+hELQH/K/E/w1rfVmaN8jGgGR/+U4j33cqlcoN2W+EuH5V8ldcnYNs/eEimvl/WSjaLkqISRwmUQ5hrH6HUrs+XrFXjNxc9pkuCltmxFKxyrqx1YHJG23SoUue7GEo+R5WszqYgKpspMn2CzhFW8cyZKqGsnxOHAP4wUg55KnJTgGnQKnskbotE9zHZPmOHOTHAzfczpOWYmcFxmxG6PFM7W++0hatnjGkAm/0Irz11581TCvfrrziLYhtEuK/c4KbvNmYd2g9omVTpJZZMtQy7FgLeYRQ51JPNXMvrbZGUf2geg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::441"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771587846;
+	cv=none; b=U9B34imQCQUvYCdVyAVNbZS/0X5r4/mV5p4BTc24FyLmA8gSNyDh5W4PgVYpDQ1uF15XcFqSoOv/ulcxsotdSOoH6gsFjFXThbMtKEKPoMPdaCM1XsxFS8hQNWLZBV7UTsJMUpx8f3nLpzu0nZJ6m7UuxjmaNsoXG2bBud+o1a3FQ3rcI7JTWWWHtMU8bS4IPaQHHuHfBUnJtTiIRf4fqjIPQJsH5dOKJmmubvTDTnXtC702sJyLUI0PV81X+8/lzQfWeg+3avQHqyEyK4MD6XDADQURrvqESNlykNWqN1q8mLyfthnbL+0XB0BHuY/wRxxpLq/zjr6fdWzLLpDmTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771583101; c=relaxed/relaxed;
-	bh=/qT1A6st+sJn+AkAuCoObzoRhuFFt8SNTEcmhpXmNho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TvmY4zmE6o56Zav40f9zuZaq8vedMex7+U1BIQZIQQUI+WQDAKfIUHJcIsltBRsvb0vbM2YSbx7zbmuoRXGFmUfcYhduL6NvG9UDgtl49eBkWtJ7//GODox6DKnY4uvSqNQIFjx9h4SFGUrvTYXq/EV3iSaset7nfcfcOcbVADHKbWqlzb4SGSyceTGpuDREH0MHnEmJCbpyt/r0sFYdLmuudAapSEEc5vuORt0R7OWgZzNl+ALCjHCKHuQ5yKeAVMEmmJma7E3irw6w/nIkpSJdYSDQAdbOUfgNhlZkMjLGZdpv1AUJVthqv/84vwa2oG6MJJGIyrgwqomv8bcaEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JtMYCL2e; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1771587846; c=relaxed/relaxed;
+	bh=wBX6cnPwCpCSH4iNWjZA4c3kEfk5E/AuDIwwlVfhzyo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bw8SmN3pp0a9rnN8S2NWRit3T2EQaKQxSXTfP0TsdVoJikjNx2hZ9lOQn74doHwgubhE9Y3BeJJQBJzygFiVxguwv4Cj8ci7yZeWpGMx1gCvQQ5hfFubzVwuizkHG5W/SS/3q+/WFPOKrHclUlWgaKbXyxLZOwij36LtaPj/QciGdrw3noQRbAs659vWzlVGNqdn5BavNjWDq0ocZpnDGAcdkOX85PcuuVKlL3A8VU8oei+THeNRPZk0K9KGr3ZSgCKUnLJxRvVmyhTV0aXDv5wLVpHM7Cad1/np1FqhhOnA0HgYUANlWgFFk9elMmdGNJN42pfl0+Jm+r1dHaWtEA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=fwmtmAGg; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JtMYCL2e;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=fwmtmAGg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHRFm68SSz2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 21:25:00 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61JL4h5s1273450;
-	Fri, 20 Feb 2026 10:24:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/qT1A6
-	st+sJn+AkAuCoObzoRhuFFt8SNTEcmhpXmNho=; b=JtMYCL2e6NxUmEYHUOJfG9
-	n31/LNHs5uEEWWoeuE7tseaxe7VBgdel+LCb74diMMNPgx28Ik7fnAxm2aG+DezM
-	e6nr+fw8ut8d64bt/tUq8i1OxCFIHhlSqVxCGr+M7V17HJIPEatPVqtIwWAyNdqk
-	DdGtna0V3+IdAKFwcF9T81bfGaXS7KYnVXSubxBTIeuoZdx0FStfBAmrzHPK3mNl
-	yHaZYWRIcyNk1fXHk8SHSbetg3jsmkGVuJkGdRgGWOKfw1Wg6JE0JqUQjeTWt145
-	HcqGcJg5MkjK2uZwJIuTVJZH4YouN7JSY1c3MjiYZHqiaASWTXNm10nq6ShDZThg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6v2gkg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Feb 2026 10:24:52 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61KABInb001419;
-	Fri, 20 Feb 2026 10:24:51 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb2br0k9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Feb 2026 10:24:51 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61KAOlAA51184016
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Feb 2026 10:24:47 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3A1B20073;
-	Fri, 20 Feb 2026 10:24:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C52B2006A;
-	Fri, 20 Feb 2026 10:24:46 +0000 (GMT)
-Received: from [9.43.64.63] (unknown [9.43.64.63])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Feb 2026 10:24:45 +0000 (GMT)
-Message-ID: <21a8553a-82c8-46f1-93cb-fbdb6ed32377@linux.ibm.com>
-Date: Fri, 20 Feb 2026 15:54:45 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHT103zg0z2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 22:44:03 +1100 (AEDT)
+Received: by mail-wr1-x441.google.com with SMTP id ffacd0b85a97d-435f177a8f7so1888974f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 03:44:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771587835; x=1772192635; darn=lists.ozlabs.org;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wBX6cnPwCpCSH4iNWjZA4c3kEfk5E/AuDIwwlVfhzyo=;
+        b=fwmtmAGgK6haVmP6KjLOzd27mae5sg9LQxIa7lIWts7GqJ+QqGt3Qv15ko5a77rhhB
+         zSZOHLMdI0515hmqPxHPmBRArwIPoN8W6kMCY1CL25rj3TcclUDfhF5Mo1S8TWgBuF53
+         zIjzyG241RtuI7Jl1SJ38j/kB2V6ll8ovBTRkWVtWQ5Y7XaMGfJnphVc8S9wZosQW0wo
+         hlxM/7xhjgKafhkOXGXK0NrGKbYiIw6c9Zl5Qn4Df5j0OPtTwSepuAoxHb7/RKJok3RX
+         7Pht8Baeuw+4nSVisCjMxCSfRnzfi7udwyMGduSpHreSLRp6fWt1g3hmX54KoBE7i0rT
+         XNug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771587835; x=1772192635;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wBX6cnPwCpCSH4iNWjZA4c3kEfk5E/AuDIwwlVfhzyo=;
+        b=Y1pJuqxRV5Pj+Qguba654tmC37SzIZ8frZz3jtr+nJcUyeGDiJQSXVUxWjebOuked6
+         Kr3Ad6+dX8Ep8hHXbvQyCcTTIqbaXpEVy5LuTnxDeKy3AzLsalg3Eu/On4t8bxkRF3jU
+         qHF115dRDd7MCbd/HGYsJXS8wJK97jiWmV0lyEgU5NwNK6wGR5c8YT7YBnc/oL2042am
+         gZkXPnIGYcrioccEIyPZ4b9XXm+1w/qQL3Y9JX7JPpIKyS/+vd4x8D/DubBFE0i6dNtl
+         keDV2FoPc9uyMhVdFLoTsXjyWltmDRRBxTFJhSnnxh02E6aQLsu1dZ/WDCS/phvzHSrv
+         QVpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXWa7iUyY2Z+6IaO2dharC8cgXZ99vnZLYjdELMC6RGyBSrjrTRCX0WshB+m0kMQduv+Um7gj7FdRDCgA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzmpJyXcQcpA/eCtqy0JFU+5C48OK4YCJE8DPcAmBq4F/X47b7D
+	8fhxS07T3q7CMZxvBP0ykAVFeW4wtxowS03cIIrSp/TyP1AYVViC/N/YbSIl/s+ltiU=
+X-Gm-Gg: AZuq6aICHuURYjvd3D4ztLeWu+QzEsJbhCtAcsdq7TufIkHmPXrX982Qla5odqat6PQ
+	0jnoaqOU9tS1ICx2JQKXtafBHBPU6+ygEmrNMCqoF3IhMSmuuAPZeYm7PszHxzAUbE6jyaJG/dJ
+	PVJk36/77hBP6mjgBs+3SsxCk8A/bSKKVf+DIKUW/9yPSYqGJBzI1j0jLwI8QpCTjaXVrS6lMhd
+	BY1BecvNg00U6OdTrnqY4c/0HUTy9XZQg8AoS23vTfO0L/bPSwdK/zAt3IVvDTMcHw9QT1D7rWK
+	rc53tIs4UcVjMi+u7VbT4yFBaC1VpKk9e4bGckcxmuXX/7az+A1QpEdi61jjaKOM2jEFHPcPqs7
+	ALY1UlAXnAPNJ0uvDcao9EeRnki3iHBtDpjlZ9vlLdIWbbWai5F4I2H7bD7rDAWBU7Sg6x+Mlfm
+	e6Utvknvvma9G6FCjXoqIyM3Om1WxJ8UWDLFqg/JX/M1h1gM47Jg7/BBQkhP6ojw==
+X-Received: by 2002:a5d:5f93:0:b0:435:e060:8071 with SMTP id ffacd0b85a97d-4379db61767mr35206496f8f.16.1771587835206;
+        Fri, 20 Feb 2026 03:43:55 -0800 (PST)
+Received: from ?IPv6:2804:5078:822:3100:58f2:fc97:371f:2? ([2804:5078:822:3100:58f2:fc97:371f:2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796a5d156sm60289350f8f.5.2026.02.20.03.43.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 03:43:54 -0800 (PST)
+Message-ID: <f074138f16e49e9966512cce2c07724ae9a77975.camel@suse.com>
+Subject: Re: [PATCH 00/19] printk cleanup - part 3
+From: Marcos Paulo de Souza <mpdesouza@suse.com>
+To: Richard Weinberger <richard@nod.at>, Anton Ivanov	
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jason Wessel <jason.wessel@windriver.com>,
+ Daniel Thompson	 <danielt@kernel.org>, Douglas Anderson
+ <dianders@chromium.org>, Petr Mladek	 <pmladek@suse.com>, Steven Rostedt
+ <rostedt@goodmis.org>, John Ogness	 <john.ogness@linutronix.de>, Sergey
+ Senozhatsky <senozhatsky@chromium.org>,  Jiri Slaby <jirislaby@kernel.org>,
+ Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Kees Cook	
+ <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"	
+ <gpiccoli@igalia.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy	 <christophe.leroy@csgroup.eu>, Andreas Larsson
+ <andreas@gaisler.com>,  Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue	
+ <alexandre.torgue@foss.st.com>, Jacky Huang <ychuang3@nuvoton.com>, 
+ Shan-Chun Hung <schung@nuvoton.com>, Laurentiu Tudor
+ <laurentiu.tudor@nxp.com>
+Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	sparclinux@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Date: Fri, 20 Feb 2026 08:43:42 -0300
+In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+Autocrypt: addr=mpdesouza@suse.com; prefer-encrypt=mutual;
+ keydata=mDMEZ/0YqhYJKwYBBAHaRw8BAQdA4JZz0FED+JD5eKlhkNyjDrp6lAGmgR3LPTduPYGPT
+ Km0Kk1hcmNvcyBQYXVsbyBkZSBTb3V6YSA8bXBkZXNvdXphQHN1c2UuY29tPoiTBBMWCgA7FiEE2g
+ gC66iLbhUsCBoBemssEuRpLLUFAmf9GKoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgk
+ QemssEuRpLLWGxwD/S1I0bjp462FlKb81DikrOfWbeJ0FOJP44eRzmn20HmEBALBZIMrfIH2dJ5eM
+ GO8seNG8sYiP6JfRjl7Hyqca6YsE
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.58.3 (by Flathub.org) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,130 +131,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/crash: adjust the elfcorehdr size
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>
-References: <20260218050105.391285-1-sourabhjain@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20260218050105.391285-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E+/AZKdl c=1 sm=1 tr=0 ts=69983674 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=pGLkceISAAAA:8 a=3KUUrtHc1-Y8H4gNG1cA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIwMDA4OCBTYWx0ZWRfXwcb1UD0kk/q2
- N5OhoEOUePk3q2fQMuFuZl4Gnh0+uoDWaXyFVA+F1rTuVNAHGLPpaYYAj1Cmd3GLAfoxQgvhKo8
- vRSaA3N89BcDQYAZQoSm7RUmSYpz2qhZyM6FsT0c8syGsvQpm+zQ4ecfSeY5poGI0a58b82Lh19
- +7DCzJDYMJbeGb1+nWAClynw3INzlqyjBqSHJ18bSsTfX2TlReCkPV6nhCioBidATrumZJzlIjS
- nK6AkbA+RI7vHulmEjJh7zQD/UfwoOQRmylhtSsnHmuXb/XQ9MKSrK0472JI4Bk8L5k/iSnfuDh
- ch1fCiQo23j/Rs79NeEK3cdtR6e6i8o5vamTbbpRr9ZBco6p+todlRCkfjzjTqv8x5JXDgxF5kN
- OqUMB8jdfxpUNLps+V1PLdCspgT5PZPcouO2xx1SSaN63UNPj9QlkysCDO7vtSOy2rITn4uK7p3
- Ah3srQYQyWQXvQAaZCw==
-X-Proofpoint-ORIG-GUID: qD3ONe9FmBj3TCFnm6Oq2iTHpPbT34Gb
-X-Proofpoint-GUID: ck8-6cr1kZsES9EWoIslVfoKZLljB0bK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-20_01,2026-02-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0
- suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602200088
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [-0.61 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,ellerman.id.au:email];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com];
-	TAGGED_FROM(0.00)[bounces-16990-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mahesh@linux.ibm.com,m:mpe@ellerman.id.au,m:ritesh.list@gmail.com,m:shivangu@linux.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[nod.at,cambridgegreys.com,sipsolutions.net,linuxfoundation.org,windriver.com,kernel.org,chromium.org,suse.com,goodmis.org,linutronix.de,debian.org,lunn.ch,davemloft.net,google.com,redhat.com,linux-m68k.org,intel.com,igalia.com,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,gaisler.com,linux.intel.com,foss.st.com,nuvoton.com,nxp.com];
+	FORGED_SENDER(0.00)[mpdesouza@suse.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[45];
+	FORGED_RECIPIENTS(0.00)[m:richard@nod.at,m:anton.ivanov@cambridgegreys.com,m:johannes@sipsolutions.net,m:gregkh@linuxfoundation.org,m:jason.wessel@windriver.com,m:danielt@kernel.org,m:dianders@chromium.org,m:pmladek@suse.com,m:rostedt@goodmis.org,m:john.ogness@linutronix.de,m:senozhatsky@chromium.org,m:jirislaby@kernel.org,m:leitao@debian.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:geert@linux-m68k.org,m:kees@kernel.org,m:tony.luck@intel.com,m:gpiccoli@igalia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:andreas@gaisler.com,m:alexander.shishkin@linux.intel.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:ychuang3@nuvoton.com,m:schung@nuvoton.com,m:laurentiu.tudor@nxp.com,m:linux-um@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:kgdb-bugreport@lists.sourceforge.net,m:linux-serial@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-m68k@lists.linu
+ x-m68k.org,m:linux-hardening@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:sparclinux@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-arm-kernel@lists.infradead.org,m:linux-fsdevel@vger.kernel.org,m:andrew@lunn.ch,m:mcoquelinstm32@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16991-lists,linuxppc-dev=lfdr.de];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.981];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mpdesouza@suse.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 16A96166CDF
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email]
+X-Rspamd-Queue-Id: BF568167588
 X-Rspamd-Action: no action
 
+T24gU2F0LCAyMDI1LTEyLTI3IGF0IDA5OjE2IC0wMzAwLCBNYXJjb3MgUGF1bG8gZGUgU291emEg
+d3JvdGU6Cj4gVGhlIHBhcnRzIDEgYW5kIDIgY2FuIGJlIGZvdW5kIGhlcmUgWzFdIGFuZCBoZXJl
+WzJdLgo+IAo+IFRoZSBjaGFuZ2VzIHByb3Bvc2VkIGluIHRoaXMgcGFydCAzIGFyZSBtb3N0bHkg
+dG8gY2xhcmlmeSB0aGUgdXNhZ2UKPiBvZgo+IHRoZSBpbnRlcmZhY2VzIGZvciBOQkNPTiwgYW5k
+IHVzZSB0aGUgcHJpbnRrIGhlbHBlcnMgbW9yZSBicm9hZGx5Lgo+IEJlc2lkZXMgaXQsIGl0IGFs
+c28gaW50cm9kdWNlcyBhIG5ldyB3YXkgdG8gcmVnaXN0ZXIgY29uc29sZXMKPiBhbmQgZHJvcCB0
+aGVzIHRoZSBDT05fRU5BQkxFRCBmbGFnLiBJdCBzZWVtcyB0b28gbXVjaCwgYnV0IGluIHJlYWxp
+dHkKPiB0aGUgY2hhbmdlcyBhcmUgbm90IGNvbXBsZXgsIGFuZCBhcyB0aGUgdGl0bGUgc2F5cywg
+aXQncyBiYXNpY2FsbHkgYQo+IGNsZWFudXAgd2l0aG91dCBjaGFuZ2luZyB0aGUgZnVuY3Rpb25h
+bCBjaGFuZ2VzLgo+IAo+IFRoaXMgcGF0Y2hzZXQgaW5jbHVkZXMgYSBwYXRjaCBmcm9tIHBhcnQg
+MiB0aGF0IG5lZWRlZCBtb3JlIHdvcmsgWzNdLAo+IGFzCj4gc3VnZ2VzdGVkIGJ5IFBldHIgTWxh
+ZGVrLgo+IAo+IFRoZXNlIGNoYW5nZXMgd2VyZSB0ZXN0ZWQgYnkgcmV2ZXJ0aW5nIGY3OWIxNjNj
+NDIzMQo+ICgiUmV2ZXJ0ICJzZXJpYWw6IDgyNTA6IFN3aXRjaCB0byBuYmNvbiBjb25zb2xlIiIp
+LCBhbmQgdXNlZCBxZW11IHRvCj4gdGVzdAo+IHN1c3BlbmQvcmVzdW1lIGN5Y2xlcywgYW5kIGV2
+ZXJ5dGhpbmcgd29ya2VkIGFzIGV4cGVjdGVkLgo+IAo+IFBTOiBiNCAtLWF1dG8tdG8tY2MgYWRk
+ZWQgYSBidW5jaCBvZiBwZW9wbGUgYXMgQ0MsIHNvIEknbSBub3Qgc3VyZSBpZgo+IEkgc2hvdWxk
+IHJlbW92ZSBzb21lIG9yIG5vdCwgc28gSSdtIGxlYXZpbmcgdGhlIGxpc3QgYXMgaXQgaXMuIElm
+IHRoZQo+IHBhdGNoc2V0IG5lZWRzIGEgdjIsIGFuZCB5b3UgZmVlbCB0aGF0IHlvdSBkb24ndCBu
+ZWVkIHRvIGNvcGllZCwganVzdAo+IGxldCBtZSBrbm93Lgo+IAo+IFRoYW5rcyBmb3IgY2hlY2tp
+bmcgdGhlIHBhdGNoZXMsIGFuZCBoYXBweSBob2xpZGF5cyEKPiAKPiBbMV06Cj4gaHR0cHM6Ly9s
+b3JlLmtlcm5lbC5vcmcvbGttbC8yMDI1MDIyNi1wcmludGstcmVuYW1pbmctdjEtMC0wYjg3ODU3
+N2YyZTZAc3VzZS5jb20vI3QKPiBbMl06Cj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgt
+c2VyaWFsLzIwMjUxMTIxLXByaW50ay1jbGVhbnVwLXBhcnQyLXYyLTAtNTdiOGI3ODY0N2Y0QHN1
+c2UuY29tLwo+IFszXToKPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1zZXJpYWwvYVNn
+ZXFNM0RXdlI4LWNNWUBwYXRod2F5LnN1c2UuY3ovCj4gCj4gU2lnbmVkLW9mZi1ieTogTWFyY29z
+IFBhdWxvIGRlIFNvdXphIDxtcGRlc291emFAc3VzZS5jb20+Cj4gLS0tCj4gTWFyY29zIFBhdWxv
+IGRlIFNvdXphICgxOSk6Cj4gwqDCoMKgwqDCoCBwcmludGsvbmJjb246IFVzZSBhbiBlbnVtIHRv
+IHNwZWNpZnkgdGhlIHJlcXVpcmVkIGNhbGxiYWNrIGluCj4gY29uc29sZV9pc191c2FibGUoKQo+
+IMKgwqDCoMKgwqAgcHJpbnRrOiBJbnRyb2R1Y2UgY29uc29sZV9pc19uYmNvbgo+IMKgwqDCoMKg
+wqAgcHJpbnRrOiBEcm9wIGZsYWdzIGFyZ3VtZW50IGZyb20gY29uc29sZV9pc191c2FibGUKPiDC
+oMKgwqDCoMKgIHByaW50azogUmVpbnRyb2R1Y2UgY29uc29sZXNfc3VzcGVuZGVkIGdsb2JhbCBz
+dGF0ZQo+IMKgwqDCoMKgwqAgcHJpbnRrOiBBZGQgbW9yZSBjb250ZXh0IHRvIHN1c3BlbmQvcmVz
+dW1lIGZ1bmN0aW9ucwo+IMKgwqDCoMKgwqAgcHJpbnRrOiBJbnRyb2R1Y2UgcmVnaXN0ZXJfY29u
+c29sZV9mb3JjZQo+IMKgwqDCoMKgwqAgZHJpdmVyczogbmV0Y29uc29sZTogTWlncmF0ZSB0byBy
+ZWdpc3Rlcl9jb25zb2xlX2ZvcmNlIGhlbHBlcgo+IMKgwqDCoMKgwqAgZGVidWc6IGRlYnVnX2Nv
+cmU6IE1pZ3JhdGUgdG8gcmVnaXN0ZXJfY29uc29sZV9mb3JjZSBoZWxwZXIKPiDCoMKgwqDCoMKg
+IG02OGs6IGVtdTogbmZjb24uYzogTWlncmF0ZSB0byByZWdpc3Rlcl9jb25zb2xlX2ZvcmNlIGhl
+bHBlcgo+IMKgwqDCoMKgwqAgZnM6IHBzdG9yZTogcGxhdGZvcm06IE1pZ3JhdGUgdG8gcmVnaXN0
+ZXJfY29uc29sZV9mb3JjZSBoZWxwZXIKPiDCoMKgwqDCoMKgIHBvd2VycGM6IGtlcm5lbDogdWRi
+ZzogTWlncmF0ZSB0byByZWdpc3Rlcl9jb25zb2xlX2ZvcmNlIGhlbHBlcgo+IMKgwqDCoMKgwqAg
+c3BhcmM6IGtlcm5lbDogYnRleHQ6IE1pZ3JhdGUgdG8gcmVnaXN0ZXJfY29uc29sZV9mb3JjZSBo
+ZWxwZXIKPiDCoMKgwqDCoMKgIHVtOiBkcml2ZXJzOiBtY29uc29sZV9rZXJuLmM6IE1pZ3JhdGUg
+dG8gcmVnaXN0ZXJfY29uc29sZV9mb3JjZQo+IGhlbHBlcgo+IMKgwqDCoMKgwqAgZHJpdmVyczog
+aHd0cmFjaW5nOiBzdG06IGNvbnNvbGUuYzogTWlncmF0ZSB0bwo+IHJlZ2lzdGVyX2NvbnNvbGVf
+Zm9yY2UgaGVscGVyCj4gwqDCoMKgwqDCoCBkcml2ZXJzOiB0dHk6IHNlcmlhbDogbXV4LmM6IE1p
+Z3JhdGUgdG8gcmVnaXN0ZXJfY29uc29sZV9mb3JjZQo+IGhlbHBlcgo+IMKgwqDCoMKgwqAgZHJp
+dmVyczogdHR5OiBzZXJpYWw6IG1hMzVkMV9zZXJpYWw6IE1pZ3JhdGUgdG8KPiByZWdpc3Rlcl9j
+b25zb2xlX2ZvcmNlIGhlbHBlcgo+IMKgwqDCoMKgwqAgZHJpdmVyczogdHR5OiBlaHZfYnl0ZWNo
+YW46IE1pZ3JhdGUgdG8gcmVnaXN0ZXJfY29uc29sZV9mb3JjZQo+IGhlbHBlcgo+IMKgwqDCoMKg
+wqAgZHJpdmVyczogYnJhaWxsZTogY29uc29sZTogRHJvcCBDT05fRU5BQkxFRCBjb25zb2xlIGZs
+YWcKPiDCoMKgwqDCoMKgIHByaW50azogUmVtb3ZlIENPTl9FTkFCTEVEIGZsYWcKPiAKPiDCoGFy
+Y2gvbTY4ay9lbXUvbmZjb24uY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgfMKgwqAgNSArLQo+IMKgYXJjaC9wb3dlcnBjL2tlcm5lbC91ZGJnLmPC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgNCArLQo+IMKg
+YXJjaC9zcGFyYy9rZXJuZWwvYnRleHQuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHzCoMKgIDQgKy0KPiDCoGFyY2gvdW0vZHJpdmVycy9tY29uc29sZV9rZXJu
+LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoCAzICstCj4gwqBhcmNoL3Vt
+L2tlcm5lbC9rbXNnX2R1bXAuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB8wqDCoCAyICstCj4gwqBkcml2ZXJzL2FjY2Vzc2liaWxpdHkvYnJhaWxsZS9icmFpbGxl
+X2NvbnNvbGUuYyB8wqDCoCAxIC0KPiDCoGRyaXZlcnMvaHd0cmFjaW5nL3N0bS9jb25zb2xlLmPC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoCA0ICstCj4gwqBkcml2ZXJzL25l
+dC9uZXRjb25zb2xlLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIHzCoCAxMyArLS0KPiDCoGRyaXZlcnMvdHR5L2Vodl9ieXRlY2hhbi5jwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDQgKy0KPiDCoGRyaXZlcnMvdHR5
+L3NlcmlhbC9tYTM1ZDFfc2VyaWFsLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoCA0
+ICstCj4gwqBkcml2ZXJzL3R0eS9zZXJpYWwvbXV4LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDQgKy0KPiDCoGRyaXZlcnMvdHR5L3R0eV9pby5j
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzC
+oMKgIDYgKy0KPiDCoGZzL3Byb2MvY29uc29sZXMuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgMSAtCj4gwqBmcy9wc3RvcmUv
+cGxhdGZvcm0uY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCB8wqDCoCA2ICstCj4gwqBpbmNsdWRlL2xpbnV4L2NvbnNvbGUuaMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDE0Mwo+ICsrKysrKysrKysr
+KysrKysrKystLS0tLQo+IMKga2VybmVsL2RlYnVnL2RlYnVnX2NvcmUuY8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDYgKy0KPiDCoGtlcm5lbC9kZWJ1
+Zy9rZGIva2RiX2lvLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCB8wqDCoCA2ICstCj4gwqBrZXJuZWwvcHJpbnRrL25iY29uLmPCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxNyArLS0KPiDCoGtlcm5lbC9w
+cmludGsvcHJpbnRrLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCB8IDE0MCArKysrKysrKysrKystLQo+IC0tLS0tLS0tLQo+IMKgMTkgZmlsZXMgY2hh
+bmdlZCwgMjMwIGluc2VydGlvbnMoKyksIDE0MyBkZWxldGlvbnMoLSkKClRoaXMgcGF0Y2hzZXQs
+IHdpdGhvdXQgdGhlIHJlY2VudCBjbGVhbnVwIGZyb20gUGV0ciBNbGFkZWsgWzFdLCBoYXMgYQpy
+ZWdyZXNzaW9uLiBJJ2xsIHdhaXQgZm9yIGl0IHRvIGJlIG1lcmdlZCBmaXJzdCBiZWZvcmUgc2Vu
+ZGluZyBhIG5ldwp2ZXJzaW9uIG9mIHRoaXMgcGF0Y2hzZXQuIFRoYW5rcyBmb3IgYWxsIHRoZSBy
+ZXZpZXdzIQoKWzFdOgpodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzIwMjYwMjA2MTY1MDAy
+LjQ5NjcyNC0xLXBtbGFkZWtAc3VzZS5jb20vCgo+IC0tLQo+IGJhc2UtY29tbWl0OiA5M2Q2NTU4
+NzQ3OWNmYzk3YzBkN2U0MWI1ZThjNjM3OGNhNjgxNjMyCj4gY2hhbmdlLWlkOiAyMDI1MTIwMi1w
+cmludGstY2xlYW51cC1wYXJ0My1lYTExNmIxMWIzYTYKPiAKPiBCZXN0IHJlZ2FyZHMsCj4gLS3C
+oCAKPiBNYXJjb3MgUGF1bG8gZGUgU291emEgPG1wZGVzb3V6YUBzdXNlLmNvbT4K
 
-
-On 18/02/26 10:31 am, Sourabh Jain wrote:
-> With crash hotplug support enabled, additional memory is allocated to
-> the elfcorehdr kexec segment to accommodate resources added during
-> memory hotplug events. However, the kdump FDT is not updated with the
-> same size, which can result in elfcorehdr corruption in the kdump
-> kernel.
-> 
-> Update elf_headers_sz (the kimage member representing the size of the
-> elfcorehdr kexec segment) to reflect the total memory allocated for the
-> elfcorehdr segment instead of the elfcorehdr buffer size at the time of
-> kdump load. This allows of_kexec_alloc_and_setup_fdt() to reserve the
-> full elfcorehdr memory in the kdump FDT and prevents elfcorehdr
-> corruption.
-> 
-> Fixes: 849599b702ef8 ("powerpc/crash: add crash memory hotplug support")
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
->   arch/powerpc/kexec/file_load_64.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index e7ef8b2a2554..ed76326f4b57 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -460,7 +460,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
->   	}
->   
->   	image->elf_load_addr = kbuf->mem;
-
-> -	image->elf_headers_sz = headers_sz;
-> +	image->elf_headers_sz = kbuf->memsz;
-
-A comment here explaining why memsz is used instead of headers_sz and
-also, another comment where memsz is set, as to why extra memory size
-is accounted under it, improves readability...
-
-Regardless..
-
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 
