@@ -1,56 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-16977-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OI1FBPzel2ni9gIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16977-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 05:11:40 +0100
+	id wCbmMgPfl2nW9gIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 05:11:47 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258E51648A9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 05:11:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57641648BA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Feb 2026 05:11:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fHGy34QM5z3cD7;
-	Fri, 20 Feb 2026 15:10:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fHGy95JCtz3cGg;
+	Fri, 20 Feb 2026 15:10:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771560651;
-	cv=none; b=UW3a/Kvz5BwqUcJ1VnYtI+VYpt3tDpA/DJKr95dVTcKbItzFF2u5iCf9zfyLRpOsG1HNdLlBArSASBgSO1XfaVmMB/e3vsGFOx0P88EqmTwj6KlD1b2nCFarxreMt7kYnEDNMODlrGlRIFObVt770kblOMa/QJjjURu6QrqXuRUG11WNvMmc2u5CspYviZkwWzxj2kUjpo+Vdgvu28KrS05hHGmnXSuwFcMZAqly+GviGkRxF8ZRDxsZ6hkeCa7dHG3FbBcYtkOaDD/Rb4fExGEPVGk+qpSQ3fV7NYLGWJ5DCVitPllOjbvoC1qmUDpTSIuK/LB2PsvvmEQ87Zz7nA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771560657;
+	cv=none; b=h5ByTfsvgWJ/nlz7VWmRrARN6Cip9YrQ0MBoShhHq2RMLp1OTlBtBYETJUggJFKwERE0VuX8c9316QhDgWQI2HMzcweZNkgU5VPEq8GoHUxgOBvSWG17dI9Xxv6k2NUF9Qn0QfsmJjxvC+OqHl0QU5cD5N7bIOtwunYFQIvXBNLHH9AxUagLgTZNrSyDuriPtPskkmxkiHcFEpR0iU4dRXmSVLszBXtAUuIJ/20W6s578JzgNlRU27kcwY7gbzn+JthatUXZqQ0mCeWG5pRQ9P0UeG737FCnJYtah2YTxhfn3K5wmfTGUUej8QNZXMHhXzVrDLtzH0H+IxDS5JDeSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771560651; c=relaxed/relaxed;
-	bh=hEuOIOFl+OXtTAi2wvB7QvE0SEEnhMLEIyOpRWgzlTQ=;
+	t=1771560657; c=relaxed/relaxed;
+	bh=/A0Yxvye63cj+hpAab8QOVcalyFGH3t35eHSGcH62hs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=I8rl98g3U+rBtgrhSasTuTRpLvZIeW7/lmmcBIjLatEsc00n3cmUXCs+TF7xE07JdWN/dnO0Zwf1fddz1nECRm0Cok/DrmvH2WLkL82fxx+vrWYBdm60EGP2MShI3O5aHspXzCpJURLWhQ0AH5PjZMk6JggWhgtKqcSQJT+aj+P6Ay+pWNAqpSMYBuks+9xsU8koXQd2X4mPxXwJ1CudNGsfh1RxzL6EhBAszFAjSM2atmVTI3H5WBbobOverALOPsbiWof0Jvfv7ZWrmuF7nZihqeCcRZBe0VKyA7Ep3IY1++aKFqfiy10mBeIh9ygRojcWIuMPBTgGkpYC5G+qTg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YQ0aOCCb; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=JiVNP+7alo7xUNQY8L1strFHXQ1noaLYZhH/2gnQGqsAFRALGQG89L27JzQjsyqH9nN4ISloehUCOHNbMBE/Oi9et7yZawqdNKSqVwRAY+eMJs3PzmjWUHii7ZHcmwUhKLsasNlNpHKDmHmcVPWkVKTbGpPDxCYO1nxZjkcaKU2xxTuQfw9Y30u4CMC4hJKPkVFFegU0AQMFGeuASrjRgUMWlVkQ1pnx1MvHDZOoJppkNMpQwc/Ts5qyMoAsXdxEX7yBqw4Z5VYa6UwntHSmaYjEiWZy9JnYtbKBD/oo5ewPRQMMrqH8jvJ/SYUdyYsblxUs/ZZkU6ndo8vpoXK5OQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N1VrZuK9; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YQ0aOCCb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N1VrZuK9;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHGy25Kk5z3cFm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 15:10:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHGy85pC4z30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Feb 2026 15:10:56 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC5606184F;
-	Fri, 20 Feb 2026 04:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94005C116D0;
-	Fri, 20 Feb 2026 04:10:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DA55A6185D;
+	Fri, 20 Feb 2026 04:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD7FC116D0;
+	Fri, 20 Feb 2026 04:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771560648;
-	bh=PDGCDysOegPLK/FytUAeu19yfLdHed/5Qq2CJVsDdvs=;
+	s=k20201202; t=1771560654;
+	bh=Wl/q2I9MW4EAYAIqkkPs9cMuPySyeP7Ys0yLcRoxiik=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YQ0aOCCbuBRr/Aj8Xu6A2nQTmM3iuzSUGERzFgZbv6JdPxvdz+pC4pQ7N+j3/AeDI
-	 ZR1+txPjQ18ja/OqZDa5/Nv4iP8tYkbr0J5tyqjvHLDgH87Rd2ShE1YzmIdowzD/RD
-	 CsPYoHLNtIYdNoA3PjI4oImf1wHzn1ACCU1aY4WmuUFHjoSbr1VEqO81cRnWBfE1Fl
-	 DtF5oGuWhKxoo/nfAA+KyC/Cal3t7yAW3TFJKawNjmzwjn3ZBgsbHgfplzpD3KNJeR
-	 8FbCY63LhQSnD4N4iCdVyw9b+7gQBNb4B3wZrehtaZVPNIMqMLJEjzFqPXwYkXzjTS
-	 NlPxhLiM8yB3A==
+	b=N1VrZuK9lrvi+0jv5UrnpCwpMzW70T8EtjcsHnyvYb/C3ysXhXnwcXh0J1BUrz/fQ
+	 FXvJgc0MX5grtuvCDCjFOveYmh43k7YKrhJKjA6KNPY5GbthY3tSAB5Rd8DWyI60O4
+	 60LGpZhdpz2TPplFhz9GOt22IkO9j9SafKfb23NhzY6Pqtbyy2AyC4nRduEnajg21H
+	 pPrMunHoqFuSELpIJz/FNzbQUBVTQ/4/r5X9keCr5k8mekJQPLFSEN/1VTk4FKKX96
+	 mGvQFqOn+07PQ7stZW8usaIlrYxFaew9yX4CoBIDJ2elY6T+mswJuAAcc8jX+e9rPf
+	 2Anz+jmhWYL+g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD393809A88;
-	Fri, 20 Feb 2026 04:10:58 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FEBA3809A88;
+	Fri, 20 Feb 2026 04:11:04 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -66,103 +66,106 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 00/21] paravirt: cleanup and reorg
+Subject: Re: [PATCH 3.5] arm: make initialization of zero page independent of
+ the
+ memory map (was Re: [PATCH v2 22/28] arch, mm: consolidate initialization of
+ nodes, zones and memory map)
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177156065679.189817.6221298327341838079.git-patchwork-notify@kernel.org>
-Date: Fri, 20 Feb 2026 04:10:56 +0000
-References: <20251127070844.21919-1-jgross@suse.com>
-In-Reply-To: <20251127070844.21919-1-jgross@suse.com>
-To: =?utf-8?b?SsO8cmdlbiBHcm/DnyA8amdyb3NzQHN1c2UuY29tPg==?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, luto@kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- peterz@infradead.org, will@kernel.org, boqun.feng@gmail.com,
- longman@redhat.com, jikos@kernel.org, jpoimboe@kernel.org,
- pawan.kumar.gupta@linux.intel.com, boris.ostrovsky@oracle.com,
- xen-devel@lists.xenproject.org, ajay.kaher@broadcom.com,
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- linux@armlinux.org.uk, catalin.marinas@arm.com, chenhuacai@kernel.org,
- kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
- rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, linux-arm-kernel@lists.infradead.org,
- pbonzini@redhat.com, vkuznets@redhat.com, sstabellini@kernel.org,
- oleksandr_tyshchenko@epam.com, daniel.lezcano@linaro.org, oleg@redhat.com
+ <177156066278.189817.13783312336351868850.git-patchwork-notify@kernel.org>
+Date: Fri, 20 Feb 2026 04:11:02 +0000
+References: <aVpWpLV4Dut5Muo2@kernel.org>
+In-Reply-To: <aVpWpLV4Dut5Muo2@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-riscv@lists.infradead.org, klarasmodin@gmail.com,
+ akpm@linux-foundation.org, alexs@kernel.org, agordeev@linux.ibm.com,
+ andreas@gaisler.com, bp@alien8.de, bcain@kernel.org, chleroy@kernel.org,
+ catalin.marinas@arm.com, davem@davemloft.net, dave.hansen@linux.intel.com,
+ david@kernel.org, dinguyen@kernel.org, geert@linux-m68k.org,
+ guoren@kernel.org, hca@linux.ibm.com, deller@gmx.de, chenhuacai@kernel.org,
+ mingo@redhat.com, johannes@sipsolutions.net, glaubitz@physik.fu-berlin.de,
+ corbet@lwn.net, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ linmag7@gmail.com, mattst88@gmail.com, jcmvbkbc@gmail.com,
+ mpe@ellerman.id.au, mhocko@suse.com, monstr@monstr.eu, muchun.song@linux.dev,
+ osalvador@suse.de, palmer@dabbelt.com, pratyush@kernel.org, richard@nod.at,
+ linux@armlinux.org.uk, shorne@gmail.com, surenb@google.com,
+ tsbogend@alpha.franken.de, tglx@linutronix.de, gor@linux.ibm.com,
+ vgupta@kernel.org, vbabka@suse.cz, will@kernel.org, x86@kernel.org,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,kernel.org,lists.linux.dev,lists.ozlabs.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,microsoft.com,infradead.org,gmail.com,oracle.com,lists.xenproject.org,broadcom.com,armlinux.org.uk,arm.com,xen0n.name,linux.ibm.com,ellerman.id.au,csgroup.eu,dabbelt.com,eecs.berkeley.edu,ghiti.fr,linaro.org,goodmis.org,google.com,suse.de,epam.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-16978-lists,linuxppc-dev=lfdr.de,linux-riscv];
 	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com,linux-foundation.org,kernel.org,linux.ibm.com,gaisler.com,alien8.de,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,lwn.net,oracle.com,ellerman.id.au,suse.com,monstr.eu,linux.dev,suse.de,dabbelt.com,nod.at,armlinux.org.uk,google.com,alpha.franken.de,linutronix.de,suse.cz,vger.kernel.org,lists.linux-m68k.org,kvack.org,lists.ozlabs.org,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16977-lists,linuxppc-dev=lfdr.de,linux-riscv];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:=?utf-8?b?SsO8cmdlbiBHcm/DnyA8amdyb3NzQHN1c2UuY29tPg==?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,m:linux-riscv@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:x86@kernel.org,m:linux-hyperv@vger.kernel.org,m:virtualization@lists.linux.dev,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:luto@kernel.org,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:kys@microsoft.com,m:haiyangz@microsoft.com,m:wei.liu@kernel.org,m:decui@microsoft.com,m:peterz@infradead.org,m:will@kernel.org,m:boqun.feng@gmail.com,m:longman@redhat.com,m:jikos@kernel.org,m:jpoimboe@kernel.org,m:pawan.kumar.gupta@linux.intel.com,m:boris.ostrovsky@oracle.com,m:xen-devel@lists.xenproject.org,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:bcm-kernel-feedback-list@broadcom.com,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.i
- bm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:juri.lelli@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:rostedt@goodmis.org,m:bsegall@google.com,m:mgorman@suse.de,m:vschneid@redhat.com,m:linux-arm-kernel@lists.infradead.org,m:pbonzini@redhat.com,m:vkuznets@redhat.com,m:sstabellini@kernel.org,m:oleksandr_tyshchenko@epam.com,m:daniel.lezcano@linaro.org,m:oleg@redhat.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:linux-riscv@lists.infradead.org,m:klarasmodin@gmail.com,m:akpm@linux-foundation.org,m:alexs@kernel.org,m:agordeev@linux.ibm.com,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:chleroy@kernel.org,m:catalin.marinas@arm.com,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:hca@linux.ibm.com,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:corbet@lwn.net,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:muchun.song@linux.dev,m:osalvador@suse.de,m:palmer@dabbelt.com,m:pratyush@kernel.org,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tsbogend@alpha.franken.de,m:tglx@linutronix.de,m:gor@linux.ibm.com,m:vgupta@kernel.org,
+ m:vbabka@suse.cz,m:will@kernel.org,m:x86@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-m68k@lists.linux-m68k.org,m:linux-mips@vger.kernel.org,m:linux-mm@kvack.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sh@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-um@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:sparclinux@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FROM_NO_DN(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[57];
+	RCPT_COUNT_GT_50(0.00)[66];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,alien8.de:email]
-X-Rspamd-Queue-Id: 258E51648A9
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: E57641648BA
 X-Rspamd-Action: no action
 
 Hello:
 
-This series was applied to riscv/linux.git (fixes)
-by Borislav Petkov (AMD) <bp@alien8.de>:
+This patch was applied to riscv/linux.git (fixes)
+by Andrew Morton <akpm@linux-foundation.org>:
 
-On Thu, 27 Nov 2025 08:08:23 +0100 you wrote:
-> Some cleanups and reorg of paravirt code and headers:
+On Sun, 4 Jan 2026 14:01:40 +0200 you wrote:
+> Andrew,
 > 
-> - The first 2 patches should be not controversial at all, as they
->   remove just some no longer needed #include and struct forward
->   declarations.
+> Can you please stick this between patch 3 (arm: introduce
+> arch_zone_limits_init()) and patch 4 (arm64: introduce
+> arch_zone_limits_init())?
 > 
-> - The 3rd patch is removing CONFIG_PARAVIRT_DEBUG, which IMO has
->   no real value, as it just changes a crash to a BUG() (the stack
->   trace will basically be the same). As the maintainer of the main
->   paravirt user (Xen) I have never seen this crash/BUG() to happen.
+> From 35d016bbf5da7c08cc5c5547c85558fc50cb63aa Mon Sep 17 00:00:00 2001
+> From: Klara Modin <klarasmodin@gmail.com>
+> Date: Sat, 3 Jan 2026 20:40:09 +0200
+> Subject: [PATCH] arm: make initialization of zero page independent of the
+>  memory map
 > 
 > [...]
 
 Here is the summary with links:
-  - [v4,05/21] paravirt: Remove asm/paravirt_api_clock.h
-    https://git.kernel.org/riscv/c/68b10fd40d49
-  - [v4,06/21] sched: Move clock related paravirt code to kernel/sched
-    (no matching commit)
-  - [v4,10/21] riscv/paravirt: Use common code for paravirt_steal_clock()
-    https://git.kernel.org/riscv/c/ee9ffcf99f07
+  - [3.5] arm: make initialization of zero page independent of the memory map (was Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes, zones and memory map)
+    https://git.kernel.org/riscv/c/18b7cc70dea8
 
 You are awesome, thank you!
 -- 
