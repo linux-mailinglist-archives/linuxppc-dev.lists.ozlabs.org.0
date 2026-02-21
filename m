@@ -1,108 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-16997-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +2leOv1CmWk5SQMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16997-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 06:30:37 +0100
+	id ee2nM2kmmmnfZAMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 22:40:57 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D7A16C2D2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 06:30:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E41016DF33
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 22:40:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fHwgW5SnXz2yrn;
-	Sat, 21 Feb 2026 16:30:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fJLC95w7Yz2xNT;
+	Sun, 22 Feb 2026 08:40:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.50 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771651831;
-	cv=pass; b=Ts+B3ac2zGT95gZdAFiOYdm4j7JeNX8y2ojwmDU09NO5nYSaP3vIf51yLsTne2ZoBO7Up6LjRENoi7qZ0l3+GiQZVVw2hhYk75iSQ/xKaovmtmhwhakuWW3xftIs+MQ/n6UpWLnBSy71JJy5mCXR9pPCOP+TaZDKkaoxp8MpP1/5gIKm3T4p8A1/q087pqPk3nCKjvsdqwGZ3ridVt/ObVDXHRxeQOfHw6ugAVV46ArJ+cgRho3LwFn73a59dS8YXuyUbvaRkbAbkpOOvNNWhRv7RKHzRvPeF9SX7nIf5L+iYX0z1mH6nRfWX/V3dg8aHIVkv71GGAT8o84IryxfFA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771651831; c=relaxed/relaxed;
-	bh=xiZA9x3OPQVYWcCMaB4GuifGnS/I0Xs2MqxxsnNhDkg=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=cacLrwIOMLXajBQYgbfEou9JLAnzdk3T3fLeNCs1hL3O2+EWisr54kRIba+erc+1MT7nxHSHBstHxDROMRotCxnT1WtrhVCkUO0G/jUb7SYUz8CDfbMvI7lDrV0AEk+t4Mfk6jigJrTs/t0rWetBqSJAj+/U5blfKJA2GOaqbuVzRTo7NJ9jqmRyyKuuy7WQlbfbP9fhdwTvNxG1ukvO5TrNVkXF/y9lQmDAgU01Ipv5xpttyZ5Swmg0a9Y6gaxYsk0JAb+0aA917Zt4NowMmgNvfzlctDB0WIibVMiY94Lt0QehF8oWnlM9pVxlj9eLh3Fh80XX6eyEYRlYxK8Ghw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=LRGnpI8/; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=csbqOM7V; dkim-atps=neutral; spf=pass (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=LRGnpI8/;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=csbqOM7V;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.81
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771692285;
+	cv=none; b=UQKzgufBaXB/N0IJnG6ZshDThjLDTF6PZEHoFbI2nDCDZ+tOQcBcTJGHCDKX3SOpYq69IyQr4P93q3qNjEsP/nOWOkPUTfFGT75npXniM0B3+7RvBUKvFUNclL+wbUNT2qhpg/NH6wuknjBG3nVBM5vdXdq1eXbaqi0bGDosCH+rQxFsoVrMc+luZT8N0RyL20nScIRuOamrOaGM7ZLAvevbbe5dh20bP3ucRM1jcahI0I80C4L1+mf+u4cKGl+qrnlHj5LuEYNPvgioSl5Fq3nueRV6uSS67h++Lp71ko+pJYgy+iZQv/yxK0YgdXxACVEzcQe9DNKbRzZNKwvT9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771692285; c=relaxed/relaxed;
+	bh=eE2b6J8MoKoJciV+vNZFu4wv1hIVgksS6b0uGzsvRYo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ga/vBoaJTtt7XYaz48549m6c4p5n22jhHh21ZEtNuH8bXle/5nRwVbJ+tL1qFnx4TNGzL9ApDdiYbdTN2FV6/uS2yxs6NG9G5YoBKKeCXPCZ4elCb+UFpH37o7fE0oyN1qIbmhGLwAEK+w3jcXLlgYNYUdtmUuplZzAUA5wedxcT7zk9SztrCQxp7tNlWz/0Dy7li+1Z8S+oK24DCJRFgnUuRxhyoSxN6tMAlJJZmAoBISUTOB4RNCHsTBCxE0WmSEN8AIbKXlhJXSEy5pEglTC+UTSSJswElRfWlVyn8o0Y6m4MLcp/RW1pf2b6rwQllO2v6r0kbansMsTQ+I13Jg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=gaohan@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=gaohan@iscas.ac.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 474 seconds by postgrey-1.37 at boromir; Sun, 22 Feb 2026 03:44:43 AEDT
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fHwgS0lS6z2xlr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Feb 2026 16:30:25 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1771651819; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=SfRp1dRaWeeEqpo+5Fw/kPzAAp81PAV10Xl3SfKuJNlw2xNc1bbrY/7wKHIathyIvs
-    P1dVHl6vzK7MVFGGLEtv29p1/DVwp9VaKTeg9rYBcnEWj/Fum5u2OAzSTO4WR3X/hz/P
-    PpJ4C0cLmdkZT0OT/7ljqWWTSVN8hJrphvKvTTa2r9/woT+McSj4VCAxosDpFx/OWjxn
-    ZWx6PqI0Fo6U/TGy4yC6YRzHSGVEy21EeCK9aDzBIZQ/LRY4CAZR3vCeBAXZTxb+SimS
-    8zaE+x+vJdCCBUWU3MHglP7m7mG7g83FWeEJ/VgLSZwx15sB8c7uEXPsiEiNnsiuUzdY
-    dheg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1771651819;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=xiZA9x3OPQVYWcCMaB4GuifGnS/I0Xs2MqxxsnNhDkg=;
-    b=TitQ7QEJWQ32r+IvuwiVOurqmoXJOoUdUG7w41vL30Ks92G91Ok+S3fIdqAAKo9O9U
-    TP15Eu73LnUFtYCX8fUfIdpdlZMlD2tMVTjpFTDVISWiGIJ/KC8jfmQsK35HDwmKQXJ3
-    od2rSTYlS1p+rgT64/h33rz3Pfy/3s8a90H17LzXhCMoZnPaYv8nCyS6Kde3DrO70aFF
-    1MdRCVE0FmghS4+64K/m6m4UTH7imCrocgKpBTHv96FkdBzEJkB5PohGlpVudb5K77VM
-    hP+4CRzedK1HX/hXbpEg/wjq7maGFLyiHDiC6LaKnqmJQDd4ImNmomJgA6u9cngFemvz
-    g9Bg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1771651819;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=xiZA9x3OPQVYWcCMaB4GuifGnS/I0Xs2MqxxsnNhDkg=;
-    b=LRGnpI8/yHS481WpwxjWL5B/7tcjSGqvByvmBzu9km3uMpuMBk59ei81W1qfHzWUhR
-    WID1uk1ZhMnwgpNM8Y7DGMvxCu9iOTheb/0wnqFsGHPb0g6A89vHrQH1zQnrDmnCNgGf
-    2mxvAIkOpZLUElxtOUhBoA6WYqslO9mV8oE9svQtvAvth2AIyG+SKQOOfHOdc70jPyz9
-    qisl4mPRaDiS1PxDzAjvxc80LeF4Lb0iPYEa2AjKwpXTXAE7OqcwQVAxjXeP+2dRipmw
-    IAEUGGiJw273rX8sigy93/AcglsLmrWaenQyEHHMLzib0fi201eFGxVF0nc9DXLlaccw
-    23lQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1771651819;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=xiZA9x3OPQVYWcCMaB4GuifGnS/I0Xs2MqxxsnNhDkg=;
-    b=csbqOM7Vi04DhAntFW8BsxnGc9zeaJfPeSF/88AbgIsyuwoByIxdfyWPQQLVztbfIN
-    kmNaj6jIfyVgK3cwB9DA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIi+m7Bzg"
-Received: from void-ppc.a-eon.tld
-    by smtp.strato.de (RZmta 55.0.1 DYNA|AUTH)
-    with ESMTPSA id e9337f21L5UIc3u
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sat, 21 Feb 2026 06:30:18 +0100 (CET)
-Subject: [Linux PPC] KVM PR and KVM HV do not work if the kernel was compiled
- with PREEMPT
-To: Shrikanth Hegde <sshegde@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
-References: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
- <185d7a42-f7b4-44e1-a129-f5989d211c74@linux.ibm.com>
- <40154f6a-39da-959d-e039-5ab9ff62db3c@xenosoft.de>
- <709b864f-9daa-4a48-b3d6-39baedce63b2@linux.ibm.com>
- <dbbb7998-5245-170f-626b-81bc75a32591@xenosoft.de>
- <843b7c60-23f1-47d0-b4e8-2147c3e40c23@linux.ibm.com>
- <2a27e6fc-7eb4-41a5-ba88-58f6a22625b5@xenosoft.de>
- <1d79ec6f-ce7f-4432-80e0-a54fa1668642@linux.ibm.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Organization: A-EON Open Source
-Message-ID: <caeed62f-0e36-4868-e593-887d7f33ce50@xenosoft.de>
-Date: Sat, 21 Feb 2026 06:30:18 +0100
-X-Mailer: BrassMonkey/33.9.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fJCdR4CBtz2xm5
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Feb 2026 03:44:43 +1100 (AEDT)
+Received: from smtpclient.apple (unknown [58.38.117.196])
+	by APP-03 (Coremail) with SMTP id rQCowABnTOMQ35lplLf9CA--.17993S2;
+	Sun, 22 Feb 2026 00:36:33 +0800 (CST)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,181 +48,144 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-In-Reply-To: <1d79ec6f-ce7f-4432-80e0-a54fa1668642@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCHv2 2/2] sparc/pci: Initialize msi_addr_mask for OF-created
+ PCI devices
+From: Han Gao <gaohan@iscas.ac.cn>
+In-Reply-To: <20260220070239.1693303-3-nilay@linux.ibm.com>
+Date: Sun, 22 Feb 2026 00:36:22 +0800
+Cc: Han Gao <gaohan@iscas.ac.cn>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org,
+ sparclinux@vger.kernel.org,
+ wangruikang@iscas.ac.cn,
+ tglx@kernel.org,
+ maddy@linux.ibm.com,
+ mpe@ellerman.id.au,
+ npiggin@gmail.com,
+ chleroy@kernel.org,
+ gjoyce@ibm.com,
+ helgaas@kernel.org,
+ davem@davemloft.net,
+ andreas@gaisler.com,
+ "Han Gao (Revy)" <rabenda.cn@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <47EB6E53-3E20-4E95-A329-928E5BDDFB81@iscas.ac.cn>
+References: <20260220070239.1693303-1-nilay@linux.ibm.com>
+ <20260220070239.1693303-3-nilay@linux.ibm.com>
+To: Nilay Shroff <nilay@linux.ibm.com>
+X-Mailer: Apple Mail (2.3864.400.21)
+X-CM-TRANSID:rQCowABnTOMQ35lplLf9CA--.17993S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1fXr18CFWkJr1UWFWDtwb_yoW8CF4Upr
+	Z7CFn3trWUt347Ga9xAr1UZFyjgan8u3s3Wr98K34IqryI9r10vrnrWrWjkw4jqrsYka1F
+	va9YvrWjqw1DWaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_JwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUeq2_UUUUU=
+X-Originating-IP: [58.38.117.196]
+X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiBgwFDGmZySEWPgAAsz
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[xenosoft.de,reject];
+X-Spamd-Result: default: False [-0.01 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[xenosoft.de:s=strato-dkim-0002,xenosoft.de:s=strato-dkim-0003];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-16997-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sshegde@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm-ppc@vger.kernel.org,m:maddy@linux.ibm.com,m:rtd2@xtra.co.nz,m:hypexed@yahoo.com.au,m:madskateman@gmail.com,m:info@xenosoft.de,s:lists@lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_SENDER(0.00)[chzigotzky@xenosoft.de,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17000-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	FORGED_SENDER(0.00)[gaohan@iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_RECIPIENTS(0.00)[m:gaohan@iscas.ac.cn,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:sparclinux@vger.kernel.org,m:wangruikang@iscas.ac.cn,m:tglx@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:gjoyce@ibm.com,m:helgaas@kernel.org,m:davem@davemloft.net,m:andreas@gaisler.com,m:rabenda.cn@gmail.com,m:nilay@linux.ibm.com,m:rabendacn@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[iscas.ac.cn,lists.ozlabs.org,vger.kernel.org,kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,ibm.com,davemloft.net,gaisler.com];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	HAS_XOIP(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chzigotzky@xenosoft.de,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[xenosoft.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gaohan@iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	MID_RHS_MATCH_FROM(0.00)[];
+	APPLE_MAILER_COMMON(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xenosoft.de:mid,xenosoft.de:dkim]
-X-Rspamd-Queue-Id: 55D7A16C2D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 8E41016DF33
 X-Rspamd-Action: no action
 
-On 17/02/26 12:34, Shrikanth Hegde wrote:
->
->
-> On 2/17/26 3:56 PM, Christian Zigotzky wrote:
->> On 17/02/26 11:17 Madhavan Srinivasan wrote:
->>>
->>> On 2/17/26 3:14 PM, Christian Zigotzky wrote:
->>>> On 17/02/26 10:03, Shrikanth Hegde wrote:
->>>>>
->>>>>
->>>>> On 2/17/26 2:22 PM, Christian Zigotzky wrote:
->>>>>> Hi,
->>>>>>
->>>>>> Thank you for your patch. I tested the latest git kernel with 
->>>>>> your patch today. Unfortunately the system freezes while booting 
->>>>>> the VM with KVM HV.
->>>>>>
->>>>>> Cheers,
->>>>>> Christian
->>>>>>
->>>>>>
->>>>> Would it be possible to share the console log or boot log of KVM 
->>>>> to the
->>>>> point it freezes?
->>>>
->>>> Unfortunately there aren't any error messages.
->>>>
->>>> I also tried it with:
->>>>
->>>> gdb --args qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel 
->>>> uImage-7.0-preempt -drive 
->>>> format=raw,file=void-live-powerpc-20230317- 
->>>> updated2.img,index=0,if=virtio -netdev user,id=mynet0 -device 
->>>> virtio- net,netdev=mynet0 -append "rw root=/dev/vda" -device 
->>>> virtio-gpu-pci - device virtio-mouse-pci -device 
->>>> virtio-keyboard-pci -enable-kvm -smp 4
->>>>
->>>> and with gdb in the guest:
->>>>
->>>> qemu-system-ppc64 -s -S -M ppce500 -cpu e5500 -m 1024 -kernel 
->>>> uImage-7.0-preempt -drive 
->>>> format=raw,file=void-live-powerpc-20230317- 
->>>> updated2.img,index=0,if=virtio -netdev user,id=mynet0 -device 
->>>> virtio- net,netdev=mynet0 -append "rw root=/dev/vda" -device 
->>>> virtio-gpu-pci - device virtio-mouse-pci -device 
->>>> virtio-keyboard-pci -enable-kvm -smp 4
->>>>
->>>> The system freezed without any error messages.
->
-> Anything on host console?
->
->>> can you please share the config.
->>> I tried kvm-hv in my power8/power9 and seems to boot fine without 
->>> any issues with today's upstream
->>> Maddy
->> Here are the configs.
->>
->> With PREEMPT: https://github.com/chzigotzky/kernels/blob/ 
->> d50d259ca63dd2b3b9a9eaabc82e5cc69c8cc9f0/configs/e5500_defconfig
->>
->> Without PREEMPT: https://github.com/chzigotzky/kernels/blob/main/ 
->> configs/e5500_defconfig
->>
->> - Christian
->
-> I looked at the code. there was one more place where cond_resched was 
-> there.
->
-> If possible give the below try.
-> (Note: Didn;t replicate your issue)
->
+Tested and passed on SPARC Enterprise T5220.=20
+
+Without this patch, the e1000e would use intx.
+
+Tested-by: Han Gao <gaohan@iscas.ac.cn <mailto:gaohan@iscas.ac.cn>> # on =
+SPARC Enterprise T5220
+
+> On Feb 20, 2026, at 15:02, Nilay Shroff <nilay@linux.ibm.com> wrote:
+>=20
+> Recent changes replaced the use of no_64bit_msi with msi_addr_mask,
+> which is now expected to be initialized to DMA_BIT_MASK(64) during PCI
+> device setup. On SPARC systems, this initialization was inadvertently
+> missed for devices instantiated from device tree nodes, leaving
+> msi_addr_mask unset for OF-created pci_dev instances. As a result,
+> MSI address validation fails during probe, causing affected devices
+> to fail initialization.
+>=20
+> Initialize pdev->msi_addr_mask to DMA_BIT_MASK(64) in
+> of_create_pci_dev() so that MSI address validation succeeds and PCI
+> device probing works as expected.
+>=20
+> Fixes: 386ced19e9a3 ("PCI/MSI: Convert the boolean no_64bit_msi flag =
+to a DMA address mask")
+> Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
 > ---
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 7667563fb9ff..bf0ca49c9915 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4825,10 +4825,13 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
->          vc->runner = vcpu;
->          if (n_ceded == vc->n_runnable) {
->              kvmppc_vcore_blocked(vc);
-> -        } else if (need_resched()) {
-> +        } else if (need_resched() || spin_needbreak(&vc->lock)) {
->              kvmppc_vcore_preempt(vc);
->              /* Let something else run */
-> -            cond_resched_lock(&vc->lock);
-> +            spin_unlock(&vc->lock);
-> +            schedule();
-> +            //cond_resched_lock(&vc->lock);
-> +            spin_lock(&vc->lock);
->              if (vc->vcore_state == VCORE_PREEMPT)
->                  kvmppc_vcore_end_preempt(vc);
->          } else {
-> @@ -4901,7 +4904,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, 
-> u64 time_limit,
->      }
->
->      if (need_resched())
-> -        cond_resched();
-> +        schedule();
->
->      kvmppc_update_vpas(vcpu);
->
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 9a89a6d98f97..54963c1d8b58 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -86,7 +86,7 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
->      while (true) {
->          if (need_resched()) {
->              local_irq_enable();
-> -            cond_resched();
-> +            schedule();
->              hard_irq_disable();
->              continue;
->          }
->
-Hello Shrikanth,
-
-I tested your patch today. The patched preempt kernel boots on my e5500 
-host and in an e5500 VM. Unfortunately my guest and host freeze after 
-loading the VirtIO-GPU.
-
-Thanks for your help,
-
-Christian
-
--- 
-Sent with BrassMonkey 33.9.1 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.9.1)
+> arch/sparc/kernel/pci.c | 7 +++++++
+> 1 file changed, 7 insertions(+)
+>=20
+> diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
+> index b290107170e9..a4815d544781 100644
+> --- a/arch/sparc/kernel/pci.c
+> +++ b/arch/sparc/kernel/pci.c
+> @@ -355,6 +355,13 @@ static struct pci_dev *of_create_pci_dev(struct =
+pci_pbm_info *pbm,
+> dev->error_state =3D pci_channel_io_normal;
+> dev->dma_mask =3D 0xffffffff;
+>=20
+> + /*
+> + * Assume 64-bit addresses for MSI initially. Will be changed to =
+32-bit
+> + * if MSI (rather than MSI-X) capability does not have
+> + * PCI_MSI_FLAGS_64BIT. Can also be overridden by driver.
+> + */
+> + dev->msi_addr_mask =3D DMA_BIT_MASK(64);
+> +
+> if (of_node_name_eq(node, "pci")) {
+> /* a PCI-PCI bridge */
+> dev->hdr_type =3D PCI_HEADER_TYPE_BRIDGE;
+> --=20
+> 2.52.0
+>=20
+>=20
 
 
