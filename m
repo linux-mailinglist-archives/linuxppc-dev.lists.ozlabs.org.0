@@ -1,174 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-16998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOcXNfDsmWmcXQMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 18:35:44 +0100
+	id kCrJMO0lmmnCZAMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 22:38:53 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC90416D65E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 18:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7650316DF1D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Feb 2026 22:38:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fJDmB1Kjwz3020;
-	Sun, 22 Feb 2026 04:35:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fJL8m4P8Nz2xNT;
+	Sun, 22 Feb 2026 08:38:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=67.231.144.234 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771695338;
-	cv=pass; b=KUuPbrlll2WqkY1XYbtwax9iuohpgYXiq663dgYjhsNwxsVC2tOZ9Wv00j7t2flvvp2zWSrtC/MQIqtgtpJBtvt6v4nN1RihthDYuYhYRbBdoEl6YF4ZWE8OwWeAt63Dx1XpiJxc/kO1axHMhylDmec2m8NaevedZyJCP+hvVi5ZKrQU2TvmR840H/ywC/7foQtsWV1NaosYp+KML3Bk4Urk7Wczzm+Ws0Msq9b8Rkr77OQ3pvdFAXcLlQWw8aHnJknYMRV5XxJZEBCR49WfaCDhpBJeKNm1MCh2J29eyiJvI90OfWjWRrImhQhsN96S8zwaCrRoZ8GODvX79rpyQg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771695338; c=relaxed/relaxed;
-	bh=0LaV/FjuOer6p7tidwkdo+drc2Agn1EWIBUWUBt40yc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=n6ior+IyAdS6bM1V+7uxOtsZAI+LUqgGunLR1Ue5geCo+bSArEYl37xu9+Tin/Ti1CmFx/NhGqNhyqfyIfy1je/ezvEQWKyhLt9cBJtMAZnqJFbm2VXTpyAmU27EoQ8RKjgOdYtr+yjwLWXiKokdCz01LAytQ+2L3Egi5Co8pGhhAEorTIjGQRFdtCREutyfg+NbehlkJVoQ7jbUVfmHsTyzuMAUn06E/rTHBVbBT3GQIMFpb+ulthUT5R99SToyNdTgSbzszYgt9l4oxFZWIyhRYcQNP34qbM7IUKZgqB7yvDCxvmncQcvfV7/eL5CWwZ22KXvrZaVdQu0gPPfmOw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=ciena.com; dkim=pass (2048-bit key; unprotected) header.d=ciena.com header.i=@ciena.com header.a=rsa-sha256 header.s=06252019 header.b=tE/X3sUh; dkim-atps=neutral; spf=pass (client-ip=67.231.144.234; helo=mx0a-00103a01.pphosted.com; envelope-from=prvs=15128ee2e2=mnassiri@ciena.com; receiver=lists.ozlabs.org) smtp.mailfrom=ciena.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=ciena.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771709928;
+	cv=none; b=KmKWCkyYsmDkR38ELN/WaQx26oZsbNm8DGRJ0RPwGluf+SXFjfS+16EuywrDjm1HGoBGpf9q3qnSPNdTzUIUH7A698GiCbCQMU0RkvKQ63w+CDetigX41WlHzufyfq6yAA1dHSPtSQYlQbshw2mKMYOfaDd6Uro9RRW8E6SlOTYIbADD4JGDe7h93MgEdnTiZrAzxPMpI21fvYoYwkGT/9PXBhFd5pCsDey+MGSzDjoWfULEEtVUYZ6lBf+6gQy5DtQIBVtfg4rHzi+Qai4aRiEot3TFeSJFWiosquu5qLeIcdXMmWnKqXbvLkhM+MyScTSd9o1LnS1Lv5G4wp77zQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771709928; c=relaxed/relaxed;
+	bh=6cNXAdyyBSwZ6HHNLhtCMamgS2JtSisLhXs31ZqqLAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iLIcxAbUcSzahZkPh0W3bFBt0gIqJfL2t4Dz8HXNPoh93GQFANwX1Td8DC3d7xOkVZi0BwK3ddAGqJm80YtGNtUtOsxvVHJBarPB/7RcPFutnwerY2LsExIQWFiX/Wq28d940oVr4fxtUn/a6eXvQMQE1FHkrGhxWgLDxxztignoRYTlWlCA4e7Urn4BVQjU5jeQLxvSJW3+xRu9Y5wR+qKMcDmfSBWGm3n2oVicKJ+Yc9tz2i4bqTyv5u7R9z9TKROBrGRYlFpvxwr19RS+85s+NUrWrGnXiL+vd7rAO2eo5HHpCtYFB4HUNbz8Dsu6AQ0xnupiMnrIttocEVDwdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RpvIeLgC; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ciena.com header.i=@ciena.com header.a=rsa-sha256 header.s=06252019 header.b=tE/X3sUh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RpvIeLgC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ciena.com (client-ip=67.231.144.234; helo=mx0a-00103a01.pphosted.com; envelope-from=prvs=15128ee2e2=mnassiri@ciena.com; receiver=lists.ozlabs.org)
-Received: from mx0a-00103a01.pphosted.com (mx0a-00103a01.pphosted.com [67.231.144.234])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fJDm76Rk8z2xlr
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Feb 2026 04:35:34 +1100 (AEDT)
-Received: from pps.filterd (m0174892.ppops.net [127.0.0.1])
-	by mx0a-00103a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61LFDogB2235856;
-	Sat, 21 Feb 2026 12:34:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ciena.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=06252019; bh=0LaV/FjuOer6p7tidwkdo+drc
-	2Agn1EWIBUWUBt40yc=; b=tE/X3sUhe8vB47UudM3bl3w4foAlBG82kfgiRi0KO
-	FbMqp0qg6paVghITpmw+Nk61bkCHD1lfOFKHvN7gTCCMBXc6Y4Dp9D2y96j2rq+a
-	2gX7LqVL27claGczkY4jFh+nF7NlcwdGX4jBLKxn8ljRwu0NH1sRZrwrb1RrHoMt
-	AY0V1usuvKnW4R5+njkGatHicNQhL+wV5fr6/g8bymDKqG8wlp0xldPd7wUuPO3d
-	Vrj2fE81jqXHoCYvDOur02CKdPtwBxKh5QIVX6QeEDapYZbqtAOpkzPnVIfQ7CCa
-	r4/6Ll2eH8EVzw1Vdk/CFubBDH6pI2D8wwJcTqzPcD0NQ==
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010030.outbound.protection.outlook.com [52.101.56.30])
-	by mx0a-00103a01.pphosted.com (PPS) with ESMTPS id 4cfaavrf7p-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 21 Feb 2026 12:34:47 -0500 (EST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MxLyZq28Brje4HGp4raMiI65V/DjG/8irxWg3QE6dCA/UBStBo78uYNPGBl1/wH3ZHWaCsslGWYCEJQbKJmehfczPGm7lCJVu3//NU6tET0fiwl4e/tRpBvE6lLlUdznwt1ow5hhYJRmsDHDB/p72hBaRGX3E5j5yUjzN3SSFEdBqPzjXqqhoevv35SGctBR9sUsrYVRmmmH1jmFUjOvZ9wcqS6sjAz5i7mdZ2qHUqNPcAzP4OcheKmSzA/Esqsgeax3jHeo0mIEQzUglMEWb8O158eKM4Ep4kOJUUZ+7VsZtYYRNpxk65X9J6gdXNChjrV+ZFJK7bLSnAUUZuMgig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0LaV/FjuOer6p7tidwkdo+drc2Agn1EWIBUWUBt40yc=;
- b=g7hOeL2yKfh4F8mEk2IO8KzL1HQ+HW2llcgcW1EIcQo3OKPtKoMOt9RueGA+byGOHqhyhF52PUl0SvQVkRE+CgejidskcxwijUylUbNPiH+rlR2KYLPhiz0pecwmtmn3rOIAKeN28vG1U7r7D5ZCcWwOBGFW0fE0QJa+j/V5ppjtppv5I3t6pe7Aa2Rw7VEp+bfHXCt+M+s2Dmrjlz8NKmRhzqKQbF5qNu87B+tB1KXf9g7Pr1iDXjDFSukSlkxaJz3lSScXyZYhgP/VXysqSE+MBioV61vJf4g3b0HtnJ/zNBJIgx7cXev8gWit529p6fnraVKypKkeE10wCfdRlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ciena.com; dmarc=pass action=none header.from=ciena.com;
- dkim=pass header.d=ciena.com; arc=none
-Received: from CH2PR04MB6821.namprd04.prod.outlook.com (2603:10b6:610:94::20)
- by LV3PR04MB9257.namprd04.prod.outlook.com (2603:10b6:408:26c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Sat, 21 Feb
- 2026 17:34:45 +0000
-Received: from CH2PR04MB6821.namprd04.prod.outlook.com
- ([fe80::e0d3:6fd8:6c82:3103]) by CH2PR04MB6821.namprd04.prod.outlook.com
- ([fe80::e0d3:6fd8:6c82:3103%6]) with mapi id 15.20.9632.017; Sat, 21 Feb 2026
- 17:34:44 +0000
-From: "Nassiri, Mohammad" <mnassiri@ciena.com>
-To: Hari Bathini <hbathini@linux.ibm.com>,
-        "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-CC: "linux-trace-users@vger.kernel.org" <linux-trace-users@vger.kernel.org>,
-        "michael@ellerman.id.au" <michael@ellerman.id.au>,
-        "masami.hiramatsu@linaro.org" <masami.hiramatsu@linaro.org>,
-        Christophe Leroy
-	<christophe.leroy@csgroup.eu>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>
-Subject: Re: [**EXTERNAL**] Re: [PPC][Tracing] Missing syscalls:* ftrace/perf
- events on PowerPC vs x86
-Thread-Topic: [**EXTERNAL**] Re: [PPC][Tracing] Missing syscalls:* ftrace/perf
- events on PowerPC vs x86
-Thread-Index: AQHcoEcGeCnVUQeYJUiohhPZh5dZMLWH762AgACHazCAAsSIAIACMCsq
-Date: Sat, 21 Feb 2026 17:34:44 +0000
-Message-ID:
- <CH2PR04MB6821998651F4F3C1853C36BFC569A@CH2PR04MB6821.namprd04.prod.outlook.com>
-References:
- <CH2PR04MB6821DAF7C6684BB990A0288BC56DA@CH2PR04MB6821.namprd04.prod.outlook.com>
- <b9ddf051-f6eb-489a-b199-6d47f5a21395@linux.ibm.com>
- <CH2PR04MB682162D39BB7E7EB0F0695AFC56AA@CH2PR04MB6821.namprd04.prod.outlook.com>
- <38e1160d-26ea-4432-9ca4-1c606dd187ac@linux.ibm.com>
-In-Reply-To: <38e1160d-26ea-4432-9ca4-1c606dd187ac@linux.ibm.com>
-Accept-Language: en-CA, en-US
-Content-Language: en-CA
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH2PR04MB6821:EE_|LV3PR04MB9257:EE_
-x-ms-office365-filtering-correlation-id: 3f590a0b-65a3-4a62-a054-08de716f80c7
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|31052699007|39142699007|366016|376014|13003099007|38070700021|8096899003|7053199007;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Zlo1SCyi3x3oXPub4KJgqoYUKgdU1u9MUjkk88RoVncDPEiAsrs/O6avggLI?=
- =?us-ascii?Q?D3xKcgVVgSJEO03lGZk2eVetdeqyBGZ4ECmV+qL8E7u+sy96yv3eAPtqBadp?=
- =?us-ascii?Q?Xd4LyZHMMnvw4bFRztMwEFRriNAvYvxnVcnHdKrr1eKfqsRKo3Uj8E+LQwgA?=
- =?us-ascii?Q?9qJlcJYToM95UUicttdCiD/0zxphvqrLO7IneLsdqOLVAA11CD4uPgINwCQW?=
- =?us-ascii?Q?vAVOQ5u7ph7mrS36rJr+Gij/imoZ1l9ImefWqkk7jFwVpmIHB9+xwcEVEGx1?=
- =?us-ascii?Q?+2Rc4kGgei4Fe0x4XovgLTA5gk9qOodRBhhiQZM6PZF6w49iXWAaHMhisfMR?=
- =?us-ascii?Q?Mu1/qZk+hP9KZfvoRKR7UhDpVNcpUYGtV8oyI2o4Cexnqe757cpOs9sK9ID9?=
- =?us-ascii?Q?08AZ0BrCcC0Hg/qhqxYh+lruABza7kEFHL3ZGPLZh20ReQKFnISKwk3STd7N?=
- =?us-ascii?Q?NblWVhDq5J8FxJt1qbfi4bGRG95bG4PKIaUC1tJhCogb9PrCW1AUhj1N2zUN?=
- =?us-ascii?Q?xoBFGlXFIruf9R9h5UlEDxnINFhItXmMxZOLUhekLXDaGKuGXdRpITAwlE5B?=
- =?us-ascii?Q?mexC2B5xQQOxfVkTVKuv825KPVsDskOIZj+aRBseRLKQFP/4nm3mdHLmDjr4?=
- =?us-ascii?Q?krRhfdy1WfbTWkqYLcejdBjQbttfBudQEXAs5jZ9d2JqD4/E1Rha+nEDjx54?=
- =?us-ascii?Q?ZWmntVdjvDd8YwB9nArruTgCWk2i85iNFxhE+OhlZE4zajYZyCdffgqpNXWJ?=
- =?us-ascii?Q?xxROiwbgDCz7SwfqpXwvDFy9mi7zQ8AHmxe6yA22ngWqoMvDd7HzM741kok/?=
- =?us-ascii?Q?dZdsVmqaK6yDZoP26JsD8ULiW7Npf0f+P0ueFqIRiQyg5v+wqzh7D2Vm5Aff?=
- =?us-ascii?Q?BTund4HIeAjaUn9cgJDVt7VozgGUUOJjutdgjIl1JyJ7y7QuFcNtyudWQ8WA?=
- =?us-ascii?Q?cq5c7kCjvLcbvmC8T4qvPqjcz0qQfXz1OqFJCjL8q0HbDRd3Nt6AJWce6faf?=
- =?us-ascii?Q?gpYg55v90CfOapwr3wm2SQ60Z2o1lLkYqOMx0/T5z25jXuAUROV0utcpNgj6?=
- =?us-ascii?Q?GVm2H5zG09mKRsWGtuuQxh28p8COOa+WnyPrml6BKx6BJyqHak1VFcLcEN36?=
- =?us-ascii?Q?8D6HJQNUJVfpjUwVMU9Oe82clKNESh3NXL8eIayyI3nZfGfyh74WKHbCl36u?=
- =?us-ascii?Q?tpBptarMCgWASEfuzH4aEz0/RBY+SEWgb0eWzLCHOlkP9UcbhzsQMf8fw2LU?=
- =?us-ascii?Q?U2E2lh7fGugbwKdJXp69qfxM1dgcWs3YIRkd2G3nTlAAROvbapBB8RTDVZ+a?=
- =?us-ascii?Q?jzM2gVorArSSokooFszh99sb6GUiQ1R3YFtHioTqMT8o4OhHcK4oAVAHxp/F?=
- =?us-ascii?Q?z9Ob9VGYqXo+Adrpwn+pveDsnfCh0VGPN5Zryb0lLiSRvuRI2ZW8T7pKtd4Z?=
- =?us-ascii?Q?APpU8c0jh4V9iBaNfiRdV3IM3X7i8b8vml6n3mlu8WWRUveoGjVQj/wa5YuQ?=
- =?us-ascii?Q?ZrrhlqFS+Pr3VqTpUFcPpWdd4uyyI188TyTJibGh/gKsPYqYZhStZiV1TvOC?=
- =?us-ascii?Q?HlEBFV/zfJW31AIfZ/9v0zIkhzqLCPNCnrUpdJZr?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR04MB6821.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(31052699007)(39142699007)(366016)(376014)(13003099007)(38070700021)(8096899003)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Fm2x+lUao9VcspU+E13RCuWbgxdFSMnau6p3HzS6vA3BNgHwoPZvMhQt73GJ?=
- =?us-ascii?Q?I3sY0OVUdn+6BKpZta+lm3wZFHyw6QmZNvk9V5jOrNWWgjluvkW45DW03c4g?=
- =?us-ascii?Q?dk/bQTf+ACJ576bteNB6PGdYB+soIi3OLsBiqZfnDHK1Kg/UwIrFf3GzasJ3?=
- =?us-ascii?Q?u/rbse84UdY+BjEENUX+nS2zThW7STR9Px5hU6TOpKtRp8H4x+AtKeHfX5rr?=
- =?us-ascii?Q?6jb/cv4qWyPU6nBWFW5DMU5tuGkP26NxhhFBkuFgxFZVMNUCAUbAAOoN4TCm?=
- =?us-ascii?Q?k/N0r8ek7jz0b1UWhPt3V+cucA9aQjOf8RzEz+oXLwrlBpmKnkA/iUMGAQ+6?=
- =?us-ascii?Q?n9jrIdISAlXCgjbQmUy9UvYvfPRpxqKQ/zaytV/yguRJjFSQFniVassTLsFB?=
- =?us-ascii?Q?VGrlw0RUnFpmPFJpyiGHK0cXcZnNBtcXu1kkofzQeT6cTTnbKU9hFBCFwldK?=
- =?us-ascii?Q?9XS9K4WgLsQRQhyzBN+mbEgYUtYZKeUmRr/iSm2PCzP9FApiqVc/VDG37X9t?=
- =?us-ascii?Q?ttayoOUqibmvhz6KFJF88nkNxqM2by74Ua6ERB+kItb5p335Wlg94KIUA6rz?=
- =?us-ascii?Q?yjpqUfBkHJXFsayq4RNjrOXzSrUJszU+SXYav0qAqqzpXstrYNX7RBtrlepJ?=
- =?us-ascii?Q?CQvdfa42Ir92o6FPCv+7e96LsUkrRQzecKA/JUxp7l3I+wTc0USzKkz/wmO7?=
- =?us-ascii?Q?DVIiuRrQGQpOwGDXx1Px8/xAI1+2ozA0lXMobMUTdTUfPL8jk2gVYyMcKz+S?=
- =?us-ascii?Q?IFUKZ82V/LJAYplzVVGNu70s1pzbeaMr/ySHIpWUsbBlMpdoLA5KQkIk7DyE?=
- =?us-ascii?Q?9MrgKi3E1x47Z/knHSK9xZsZkTHmEDWZGzW8/+kFMI2AwT6QuoKVTarumPTF?=
- =?us-ascii?Q?XNdj89SfULEXjEEJrVCXrZ3n+Kp3KFnB/J1tfLLRG84IB1QxNUnVB3+8DuUX?=
- =?us-ascii?Q?JM4OAHHcFiOjovCXgHOPunfSEU8Kqk2h8MsJ8CTffM1SEeYjDdzaX+c5BIAm?=
- =?us-ascii?Q?PQMajtDfhCCnDAVfmsZDwirTiJyPaTPN8c2aFtOFH+15VVseJcpoCFPn5Cns?=
- =?us-ascii?Q?bsvl84BDopUQWKjbQoonvvlTg+plXvw1DjQw5S7p/hNg6vp6a1o/fzDO0rNH?=
- =?us-ascii?Q?YTJeO11Xg6u7ms60BTVUcYEsErW4m/x1wVquxZ0DvHXmcJphfMBMTKAsADtk?=
- =?us-ascii?Q?Dn/y2afFFvrWB6TsrqdtVgGv7hNx3/7wwO2iGOKwpFXxstGigeq9NM4s6k6R?=
- =?us-ascii?Q?pKPTypH+P4Dl13h7drevWl+I4y/gOkJcIIud3u6fWAdlzF6PxBgOFiv5LuD1?=
- =?us-ascii?Q?l2IIir04C9ZTGGlmBDOAq42c4GEvKOxDCtszkfE+5yO9ah+bk3LLVhOsa/WO?=
- =?us-ascii?Q?XiYddaWUHbOpqTqciJ+bxD7T83rMXz00cpJZE7WNrkNwHM/OmDoJbByOuErr?=
- =?us-ascii?Q?PKA6rVxahweJyBTXPMAss9H4Cg4ojAHqYYfOSHrXCKfcgrUlQUtDWIui4Q3o?=
- =?us-ascii?Q?ENWVmRRs7EoeRfNSmQWh0SJJIMb+i7wwNQ9Ap5R9NI2s3EXzdY8HaaaoIre4?=
- =?us-ascii?Q?YXro5QX6/d6PofX+ZB7uwIHQQEYliF8653yaYoy3iU889EoPc5Ng6I+Aio9E?=
- =?us-ascii?Q?k1LEx9RR6ya2/R7pgo/99LGgUqqmzDhcboHPf1+nUr4aMBEzTf99gnIGbutK?=
- =?us-ascii?Q?hBQyXSEDk4h2ks4j2Iv/OzOcagw2OST8wru0E3R9FkInF4l2?=
-Content-Type: multipart/alternative;
-	boundary="_000_CH2PR04MB6821998651F4F3C1853C36BFC569ACH2PR04MB6821namp_"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fJL8k4s54z2xN2
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Feb 2026 08:38:46 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2212844317;
+	Sat, 21 Feb 2026 21:38:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1BAC4CEF7;
+	Sat, 21 Feb 2026 21:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771709923;
+	bh=6f/BlOCaBHYHn12tHM4Bu5uqu60c5HeyFZykyfi11cE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RpvIeLgCkECuxu/6gXgTQN2VJvSNRxp9H8NYfUdN96cKwgGi5TbrmXVpqRCoCmv0U
+	 8OmVb/vAvTcOeCQNkRiA6vTqRcn92yFQi7lxqql889K9VGxhBd2S3Lrj2uruF0W3N1
+	 q3LW64Hu0Jzi9dPzsRlC27O5F+KqMpmiiRlL3h9J6chn3swUA+7qCqSMMa9Du9alRE
+	 n1uxljy0MYxcWwo+BPYiNoKWc70PEpCrYmTd15UI34v+JYgQMoWBOrCxOrEnrqaV3n
+	 FPWWMoa5bu7H3KoDUUcK3RIt06OjrYY/5chzuNfvAD15oxT3h127uPEAVN2/0On/Hr
+	 JnQUEuIrWpOoA==
+Date: Sat, 21 Feb 2026 22:38:29 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 15/17] module: Introduce hash-based integrity checking
+Message-ID: <aZol1Rsa2tX-WNaZ@derry.ads.avm.de>
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-15-0b932db9b56b@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -182,283 +98,324 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: ciena.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR04MB6821.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f590a0b-65a3-4a62-a054-08de716f80c7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2026 17:34:44.8800
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 457a2b01-0019-42ba-a449-45f99e96b60a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QxfpTlGCEUWx+You+VwTPv+t8LSoWEtWlvVVDD08XiC7XImWwstUNe6yf/BxFykUjZhC+oEsVw88PiswHMMcdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR04MB9257
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIxMDE2NiBTYWx0ZWRfX1iHxu9Rj3PEY
- O7d2iXGWEyiLCCDmZUsFgTdMz4JAvBS3beAs2VWp/56g0m2YdTwWsaKT9wqTq7ANPmT9Yggudr3
- WCROb4RqiUDv5ymXX8tKLZONJx37CYZ3NQp6eZJQFd0v4ImNQjpv1tpN3cCeUQvlUQWY3RXcHnC
- Wyj7ZGlJvCz4CVCmwAdpZvwsAf3tRDpjnbK6SguvpkJdjRkqHzNRGusWaJ+l6Oh3d9R4BxNclsj
- jQQZlfcOcQPuLc07w1fnHxF/QcefxPArE6PVG3TH7SLSmY4M7gEo0Bk4OCXTftQXHqKAJIufpls
- +iU+d8FyFdtIfXTw7luQE1P3jnUYb2RtrdH0F6BS80jh+V/27aKmqepR0S94Wt6IyzRwkaF/G2v
- JgKwpW475EiUSo05vS5Ei4zGF14DiviGOxY+tWTQlr2y3o5Z3bMY1SSL7UlUOpWwqw4fLvvC0q+
- 4oJLJ3CjtYOLys4kjdA==
-X-Proofpoint-ORIG-GUID: ua1nKvO7pjvBnUlHzBJ72VtRAE_3syPA
-X-Authority-Analysis: v=2.4 cv=KutAGGWN c=1 sm=1 tr=0 ts=6999ecb7 cx=c_pps
- a=lJB3plHzOIAfJWf+6KWQLg==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=HzLeVaNsDn8A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VAHoBZaOFNLaZKSTEpSs:22 a=asf1GtvIhB2b7_af8tXQ:22
- a=P-IC7800AAAA:8 a=VwQbUJbxAAAA:8 a=7d_E57ReAAAA:8 a=VnNF1IyMAAAA:8
- a=FmoMKUsJAAAA:8 a=voM4FWlXAAAA:8 a=KKAkSRfTAAAA:8 a=1UX6Do5GAAAA:8
- a=pGLkceISAAAA:8 a=meVymXHHAAAA:8 a=hRciKv5lfsncZIoD-pkA:9 a=CjuIK1q_8ugA:10
- a=f1JhAmQPGwJBN0WpxtcA:9 a=vGJqD6S_LPHq5YyW:21 a=frz4AuCg-hUA:10
- a=_W_S_7VecoQA:10 a=d3PnA9EDa4IxuAV0gXij:22 a=jhqOcbufqs7Y1TYCrUUU:22
- a=IC2XNlieTeVoXbcui8wp:22 a=cvBusfyB2V15izCimMoJ:22 a=Et2XPkok5AAZYJIKzHr1:22
- a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-GUID: ua1nKvO7pjvBnUlHzBJ72VtRAE_3syPA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-21_04,2026-02-20_04,2025-10-01_01
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260113-module-hashes-v4-15-0b932db9b56b@weissschuh.net>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ciena.com,reject];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[ciena.com:s=06252019];
-	MIME_GOOD(-0.10)[multipart/alternative,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,ellerman.id.au,linaro.org,csgroup.eu,gmail.com,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-16998-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_SENDER(0.00)[mnassiri@ciena.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-trace-users@vger.kernel.org,m:michael@ellerman.id.au,m:masami.hiramatsu@linaro.org,m:christophe.leroy@csgroup.eu,m:npiggin@gmail.com,m:rostedt@goodmis.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ciena.com:+];
-	NEURAL_SPAM(0.00)[0.986];
+	TAGGED_FROM(0.00)[bounces-16999-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kernel.org,m:dmitrykasatkin
+ @gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mnassiri@ciena.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	FORGED_SENDER(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,suse.com,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,ciena.com:email,ciena.com:dkim,CH2PR04MB6821.namprd04.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: AC90416D65E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[link-vmlinux.sh:url,derry.ads.avm.de:mid,breakpoint.cc:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 7650316DF1D
 X-Rspamd-Action: no action
 
---_000_CH2PR04MB6821998651F4F3C1853C36BFC569ACH2PR04MB6821namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Hi Thomas,
 
-Hi Hari,
+On Tue, Jan 13, 2026 at 01:28:59PM +0100, Thomas Weiﬂschuh wrote:
+> The current signature-based module integrity checking has some drawbacks
+> in combination with reproducible builds. Either the module signing key
+> is generated at build time, which makes the build unreproducible, or a
+> static signing key is used, which precludes rebuilds by third parties
+> and makes the whole build and packaging process much more complicated.
+> 
+> The goal is to reach bit-for-bit reproducibility. Excluding certain
+> parts of the build output from the reproducibility analysis would be
+> error-prone and force each downstream consumer to introduce new tooling.
+> 
+> Introduce a new mechanism to ensure only well-known modules are loaded
+> by embedding a merkle tree root of all modules built as part of the full
+> kernel build into vmlinux.
+> 
+> Non-builtin modules can be validated as before through signatures.
+> 
+> Normally the .ko module files depend on a fully built vmlinux to be
+> available for modpost validation and BTF generation. With
+> CONFIG_MODULE_HASHES, vmlinux now depends on the modules
+> to build a merkle tree. This introduces a dependency cycle which is
+> impossible to satisfy. Work around this by building the modules during
+> link-vmlinux.sh, after vmlinux is complete enough for modpost and BTF
+> but before the final module hashes are
+> 
+> The PKCS7 format which is used for regular module signatures can not
+> represent Merkle proofs, so a new kind of module signature is
+> introduced. As this signature type is only ever used for builtin
+> modules, no compatibility issues can arise.
+> 
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> ---
+>  .gitignore                                   |   1 +
+>  Documentation/kbuild/reproducible-builds.rst |   5 +-
+>  Makefile                                     |   8 +-
+>  include/asm-generic/vmlinux.lds.h            |  11 +
+>  include/linux/module_hashes.h                |  25 ++
+>  include/linux/module_signature.h             |   1 +
+>  kernel/module/Kconfig                        |  21 +-
+>  kernel/module/Makefile                       |   1 +
+>  kernel/module/hashes.c                       |  92 ++++++
+>  kernel/module/hashes_root.c                  |   6 +
+>  kernel/module/internal.h                     |   1 +
+>  kernel/module/main.c                         |   4 +-
+>  scripts/.gitignore                           |   1 +
+>  scripts/Makefile                             |   3 +
+>  scripts/Makefile.modfinal                    |  11 +
+>  scripts/Makefile.modinst                     |  13 +
+>  scripts/Makefile.vmlinux                     |   5 +
+>  scripts/link-vmlinux.sh                      |  14 +-
+>  scripts/modules-merkle-tree.c                | 467 +++++++++++++++++++++++++++
+>  security/lockdown/Kconfig                    |   2 +-
+>  20 files changed, 685 insertions(+), 7 deletions(-)
+> 
+[...]
 
-I could find and resolve the syscall tracing issue.
+> diff --git a/kernel/module/hashes_root.c b/kernel/module/hashes_root.c
+> new file mode 100644
+> index 000000000000..1abfcd3aa679
+> --- /dev/null
+> +++ b/kernel/module/hashes_root.c
+> @@ -0,0 +1,6 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +#include <linux/module_hashes.h>
+> +
+> +/* Blank dummy data. Will be overridden by link-vmlinux.sh */
+> +const struct module_hashes_root module_hashes_root __module_hashes_section = {};
+> diff --git a/kernel/module/internal.h b/kernel/module/internal.h
+> index e2d49122c2a1..e22837d3ac76 100644
+> --- a/kernel/module/internal.h
+> +++ b/kernel/module/internal.h
+> @@ -338,6 +338,7 @@ void module_mark_ro_after_init(const Elf_Ehdr *hdr, Elf_Shdr *sechdrs,
+>  			       const char *secstrings);
+>  
+>  int module_sig_check(struct load_info *info, const u8 *sig, size_t sig_len);
+> +int module_hash_check(struct load_info *info, const u8 *sig, size_t sig_len);
+>  
+>  #ifdef CONFIG_DEBUG_KMEMLEAK
+>  void kmemleak_load_module(const struct module *mod, const struct load_info *info);
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index 2a28a0ece809..fa30b6387936 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -3362,8 +3362,10 @@ static int module_integrity_check(struct load_info *info, int flags)
+>  
+>  	if (IS_ENABLED(CONFIG_MODULE_SIG) && sig_type == PKEY_ID_PKCS7) {
+>  		err = module_sig_check(info, sig, sig_len);
+> +	} else if (IS_ENABLED(CONFIG_MODULE_HASHES) && sig_type == PKEY_ID_MERKLE) {
+> +		err = module_hash_check(info, sig, sig_len);
+>  	} else {
+> -		pr_err("module: not signed with expected PKCS#7 message\n");
+> +		pr_err("module: not signed with signature mechanism\n");
+>  		err = -ENOPKG;
 
-The root cause was that within my toolchain and the PPC64_ELF_ABI_v1, the s=
-ymbol resolver can provide data symbols without a leading dot (e.g., sys_re=
-ad instead of .sys_read). In our system running kernel v5.10.x, this was ca=
-using a mismatch that prevented ftrace from correctly mapping metadata to s=
-yscall numbers.
+To prevent others from running into the same issue:
 
-https://elixir.bootlin.com/linux/v5.10.174/source/arch/powerpc/include/asm/=
-ftrace.h#L78
+My first test got stuck here, as I tested with virtme-ng, which symlinks
+modules from build tree to /lib/modules/$(uname -r)/..., resulting in
 
-I could fix this by modifying the matching function to be dot-agnostic.
+    [   15.956855] module: not signed with signature mechanism
+    modprobe: ERROR: could not insert 'efivarfs': Package not installed
 
-Also found the fix in the upstream:
-https://lore.kernel.org/all/20221201161442.2127231-1-mjeanson@efficios.com/
-
-We might need to backport this to earlier 5.x stable version.
-
--- Mohammad
-
-________________________________
-From: Hari Bathini <hbathini@linux.ibm.com>
-Sent: February 20, 2026 2:54 AM
-To: Nassiri, Mohammad <mnassiri@ciena.com>; linuxppc-dev@lists.ozlabs.org <=
-linuxppc-dev@lists.ozlabs.org>
-Cc: linux-trace-users@vger.kernel.org <linux-trace-users@vger.kernel.org>; =
-michael@ellerman.id.au <michael@ellerman.id.au>; masami.hiramatsu@linaro.or=
-g <masami.hiramatsu@linaro.org>; Christophe Leroy <christophe.leroy@csgroup=
-.eu>; Nicholas Piggin <npiggin@gmail.com>; rostedt@goodmis.org <rostedt@goo=
-dmis.org>
-Subject: Re: [**EXTERNAL**] Re: [PPC][Tracing] Missing syscalls:* ftrace/pe=
-rf events on PowerPC vs x86
+As the modules_install step was missing, modules were not being signed.
 
 
+[...]
+> diff --git a/scripts/modules-merkle-tree.c b/scripts/modules-merkle-tree.c
+> new file mode 100644
+> index 000000000000..a6ec0e21213b
+> --- /dev/null
+> +++ b/scripts/modules-merkle-tree.c
+> @@ -0,0 +1,467 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Compute hashes for modules files and build a merkle tree.
+> + *
+> + * Copyright (C) 2025 Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+> + * Copyright (C) 2025 Thomas Weiﬂschuh <linux@weissschuh.net>
+> + *
+> + */
+> +#define _GNU_SOURCE 1
+> +#include <arpa/inet.h>
+> +#include <err.h>
+> +#include <unistd.h>
+> +#include <fcntl.h>
+> +#include <stdarg.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <stdbool.h>
+> +#include <stdlib.h>
+> +
+> +#include <sys/stat.h>
+> +#include <sys/mman.h>
+> +
+> +#include <openssl/evp.h>
+> +#include <openssl/err.h>
+> +
+> +#include "ssl-common.h"
+> +
+> +static int hash_size;
+> +static EVP_MD_CTX *ctx;
+> +
+> +struct module_signature {
+> +	uint8_t		algo;		/* Public-key crypto algorithm [0] */
+> +	uint8_t		hash;		/* Digest algorithm [0] */
+> +	uint8_t		id_type;	/* Key identifier type [PKEY_ID_PKCS7] */
+> +	uint8_t		signer_len;	/* Length of signer's name [0] */
+> +	uint8_t		key_id_len;	/* Length of key identifier [0] */
+> +	uint8_t		__pad[3];
+> +	uint32_t	sig_len;	/* Length of signature data */
+> +};
+> +
+> +#define PKEY_ID_MERKLE 3
+> +
+> +static const char magic_number[] = "~Module signature appended~\n";
 
-On 18/02/26 7:26 pm, Nassiri, Mohammad wrote:
->> You should see syscall enter/exit tracepoints on v5.10.x without syscall
->> wrapper patchset referred above. Are you using v5.10.250 ?
->> Also, would help, if you can share the .config you used.
-> Hi Hari,
+This here will be the forth definition of struct module_signature,
+increasing the risk of unwanted diversion.  I second Petr's suggestion
+to reuse a _common_ definition instead.
 
-Hi Mohammad,
+(Here, even include/linux/module_signature.h could be included itself.)
 
->
-> No, I'm not using the latest v5.10.250. I tested on two versions --- v5.1=
-0.174 and v5.10.239 --- and I still see the issue on both.
-> For your reference, here is a grep from my .config showing most of the tr=
-acing options I enabled while troubleshooting this issue.
+> +
+> +struct file_entry {
+> +	char *name;
+> +	unsigned int pos;
+> +	unsigned char hash[EVP_MAX_MD_SIZE];
+> +};
+> +
+> +static struct file_entry *fh_list;
+> +static size_t num_files;
+> +
+> +struct leaf_hash {
+> +	unsigned char hash[EVP_MAX_MD_SIZE];
+> +};
+> +
+> +struct mtree {
+> +	struct leaf_hash **l;
+> +	unsigned int *entries;
+> +	unsigned int levels;
+> +};
+> +
+> +static inline void *xcalloc(size_t n, size_t size)
+> +{
+> +	void *p;
+> +
+> +	p = calloc(n, size);
+> +	if (!p)
+> +		errx(1, "Memory allocation failed");
+> +
+> +	return p;
+> +}
+> +
+> +static void *xmalloc(size_t size)
+> +{
+> +	void *p;
+> +
+> +	p = malloc(size);
+> +	if (!p)
+> +		errx(1, "Memory allocation failed");
+> +
+> +	return p;
+> +}
+> +
+> +static inline void *xreallocarray(void *oldp, size_t n, size_t size)
+> +{
+> +	void *p;
+> +
+> +	p = reallocarray(oldp, n, size);
+> +	if (!p)
+> +		errx(1, "Memory allocation failed");
+> +
+> +	return p;
+> +}
+> +
+> +static inline char *xasprintf(const char *fmt, ...)
+> +{
+> +	va_list ap;
+> +	char *strp;
+> +	int ret;
+> +
+> +	va_start(ap, fmt);
+> +	ret = vasprintf(&strp, fmt, ap);
+> +	va_end(ap);
+> +	if (ret == -1)
+> +		err(1, "Memory allocation failed");
+> +
+> +	return strp;
+> +}
 
-OK. Tried v5.10.250 as well as v5.10.174 with the similar config
-options. Could see syscall enter/exit tracepoints..
+Please consider moving these x* functions into scripts/include/xalloc.h
+for reuse.  (I am sure someone else wrote this already, but I can't find
+it...)
 
-- Hari
+> 
+> 
 
---_000_CH2PR04MB6821998651F4F3C1853C36BFC569ACH2PR04MB6821namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+thanks for all your efforts for reproducibility!
 
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<span class=3D"elementToProof">Hi </span>Hari<span class=3D"elementToProof"=
->,</span></div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<span class=3D"elementToProof">I could find and resolve the syscall tracing=
- issue.</span></div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<span class=3D"elementToProof">The root cause was that within </span>my<spa=
-n class=3D"elementToProof">&nbsp;toolchain and the PPC64_ELF_ABI_v1, the sy=
-mbol resolver can provide data symbols without a leading dot (e.g., sys_rea=
-d instead of .sys_read). In our system running
- kernel v5.10.x, this was causing a mismatch that prevented ftrace from cor=
-rectly mapping metadata to syscall numbers.</span></div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<span class=3D"elementToProof">https://elixir.bootlin.com/linux/v5.10.174/s=
-ource/arch/powerpc/include/asm/ftrace.h#L78</span><br>
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-I could f<span class=3D"elementToProof">ix this by modifying the matching f=
-unction to be dot-agnostic.&nbsp;</span></div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-Also found the fix in the upstream:</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<span class=3D"elementToProof"><a href=3D"https://lore.kernel.org/all/20221=
-201161442.2127231-1-mjeanson@efficios.com/">https://lore.kernel.org/all/202=
-21201161442.2127231-1-mjeanson@efficios.com/</a></span></div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-We might need to backport this to earlier 5.x stable version.</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
--- Mohammad</div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<div id=3D"appendonsend"></div>
-<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
-<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
-yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Hari Bathini &lt;hbat=
-hini@linux.ibm.com&gt;<br>
-<b>Sent:</b> February 20, 2026 2:54 AM<br>
-<b>To:</b> Nassiri, Mohammad &lt;mnassiri@ciena.com&gt;; linuxppc-dev@lists=
-.ozlabs.org &lt;linuxppc-dev@lists.ozlabs.org&gt;<br>
-<b>Cc:</b> linux-trace-users@vger.kernel.org &lt;linux-trace-users@vger.ker=
-nel.org&gt;; michael@ellerman.id.au &lt;michael@ellerman.id.au&gt;; masami.=
-hiramatsu@linaro.org &lt;masami.hiramatsu@linaro.org&gt;; Christophe Leroy =
-&lt;christophe.leroy@csgroup.eu&gt;; Nicholas Piggin &lt;npiggin@gmail.com&=
-gt;;
- rostedt@goodmis.org &lt;rostedt@goodmis.org&gt;<br>
-<b>Subject:</b> Re: [**EXTERNAL**] Re: [PPC][Tracing] Missing syscalls:* ft=
-race/perf events on PowerPC vs x86</font>
-<div>&nbsp;</div>
-</div>
-<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
-">
-<div class=3D"PlainText"><br>
-<br>
-On 18/02/26 7:26 pm, Nassiri, Mohammad wrote:<br>
-&gt;&gt; You should see syscall enter/exit tracepoints on v5.10.x without s=
-yscall<br>
-&gt;&gt; wrapper patchset referred above. Are you using v5.10.250 ?<br>
-&gt;&gt; Also, would help, if you can share the .config you used.<br>
-&gt; Hi Hari,<br>
-<br>
-Hi Mohammad,<br>
-<br>
-&gt; <br>
-&gt; No, I'm not using the latest v5.10.250. I tested on two versions --- v=
-5.10.174 and v5.10.239 --- and I still see the issue on both.<br>
-&gt; For your reference, here is a grep from my .config showing most of the=
- tracing options I enabled while troubleshooting this issue.<br>
-<br>
-OK. Tried v5.10.250 as well as v5.10.174 with the similar config<br>
-options. Could see syscall enter/exit tracepoints..<br>
-<br>
-- Hari<br>
-</div>
-</span></font></div>
-</body>
-</html>
+As I have no clue about that:  Is the patent for merkle trees [1] a
+problem when integrating that here?
 
---_000_CH2PR04MB6821998651F4F3C1853C36BFC569ACH2PR04MB6821namp_--
+Can you verify if I get the mechanics roughly correct?
+
+  * Modules are merkle tree leaves.  Modules are built and logically
+    paired by the order from modules.order; a single left-over module is
+    paired with itself.
+
+  * Hashes of paired modules are hashed again (branch node hash);
+    hashes of pairs of branch nodes' hashes are hashed again;
+    repeat until we reach the single merkle tree root hash
+
+  * The final merkle tree root hash (and the count of tree levels) is
+    included in vmlinux
+
+
+'make && find . -name '*.ko' -exec rm {} \; && make' does not rebuild
+the in-tree modules.  Shifting the module-hashes support from
+scripts/link-vmlinux.sh to scripts/Makefile.vmlinux might (make it
+easier) to fix this again.
+
+Kind regards,
+Nicolas
+
+
+
+[1]: https://worldwide.espacenet.com/patent/search/family/022107098/publication/US4309569A?q=pn%3DUS4309569
+
+
+-- 
+Nicolas
 
