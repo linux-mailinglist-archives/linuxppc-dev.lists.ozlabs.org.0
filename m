@@ -1,62 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17059-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17060-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBAkBypanGmzEgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17059-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 14:46:18 +0100
+	id qIZ3OwxcnGmzEgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17060-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 14:54:20 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EF8177332
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 14:46:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917B81776D0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 14:54:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fKMZZ2grrz30FD;
-	Tue, 24 Feb 2026 00:46:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fKMls0N6tz2yFc;
+	Tue, 24 Feb 2026 00:54:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771854374;
-	cv=none; b=a8VkPr3KoOjHfmMXjH0QJGn5+DHnLMjrJfHv8C7heJrV4NF4lzSRW2oC+H5YR+wkvTQlrCCxdH/rgomdZg7YJf3ym+CezeMrKQTj6hjqSrY3Vx1ozSfaVkqrkrPeJy9lbQtMamNqHr/RHwxHLrtYTNsl9FylrfoRy8zmIWGqfVzZARRbLPDk9NgKmN7Agus2zJC8bfKvnwwACqA77dRvWi0yMck6etMEbYOSh5cpg8dxWO8BxudI8JVBPzFCoJIDFZEnIw1lQHaZr9vPkNSMrgZpBQNbGbf8YaKi8nVpakkrH88fIS2ZFvJiUT4hNHFG3tTmfA2JR87ubH4xj0gBvg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771854856;
+	cv=none; b=ZecoYwjVxmPDDAjpg/JhHN4e8J+VddTymTmmtxsNVgKdauDHjYuka041z/pU9VVtws5KOUbSdOn8LQ8zzm9IypwaVsD+Zy02m0uXpooPzgbClZPE/qRNuGEINs3dJ7wUCb8Ttl+HrlPEEa67wStFDI7/Vmoh7+maz9KlwGT5niZE2O9jBEmokzCyDxvjMU8M/R/ahPg02JJkXF1mg0kAeaxi7FNPfW1gwrSzdg/ZagUtk4rpbX/RW7Bweh5jzS8FZoo6k/D2bpQh5z3lUCQFFh2P5VNGIrgCOQ9I/YCItAKp4fDVKs8hHg16hQe/U/ZODKi2IVnvxZhKUGp4B4lpzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771854374; c=relaxed/relaxed;
-	bh=Z+Cpj50sruElmHklNhyHuwozFbgXojBuiZpoYG3iicM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NNIonAulYgi05K5omUfaxGRsYw1QHwRTF1YMROGCnkP0bjZrpiZTcRUpHutoreqEyMrlG5YRHtBTzSq0aPDUBDE0KvAg+qD7EQlSxDhELcFq4sAJRINDSZcPfK65eUfYe1wDXmTDDGxoKaLroBF8WXmNLTfMKaGeXA7R0dNliImYN6bu0LdgWmnj8MMAihgPApwuFnDfubEg1HU/N6cv2C0lFUHmqWIDElQQ/qqafB7r+9QqEjryRRzYFI7tXJO/isKzls3opOsQ77kXb8C3H/JizR9Ag5bn3cUzQ1buZp0hUKtMOmqwVGdNuUyfCvIC+OYQaBziECpCWu6/c2BxHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GEhfoMxg; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=brgl@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1771854856; c=relaxed/relaxed;
+	bh=TI4W58jR+3C1//PDYAuyDr0Z6iRNVdMXhQfmV3T4CNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a1UanC5tQrt7qvJgArwR+0tYurYlA4l1kVbi6+ib2bIM8iElYD6GOIVlS3KV+ou8/TA3po9dxBoqsuM973HnKplD4Aj72gBOOf7n6FcdSyMAVgY/JnKt09EtxNvqI/BA2/Wdv0cZ88zPo1bibxPZIOv5GVdBPSywK06WB6lsR/I+FX9s3ch4wYzFyhmDI/9bUTcYdls1AF3fcweX7KVXsyiOtNm5BEIwZW3Nxd0wsoUvgTG7ZztMHBA6JaCQYfAE69X2n/jXGcNZY4X2s5LFgcj0+PRLEOH/xvzxduPU7aLDF3luz3ybemDCi+ZH+JQ3yUcwSXEu0vChUVgcQlBOEg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jkG5vNAo; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GEhfoMxg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jkG5vNAo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=brgl@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKMZY34zPz2yDk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 00:46:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKMlr01RXz2xN8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 00:54:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B156143CB1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 13:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E12C19424
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 13:46:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C2A060018;
+	Mon, 23 Feb 2026 13:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A4EC19424;
+	Mon, 23 Feb 2026 13:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771854371;
-	bh=xHD4QsgF9yMDfM9DNpu+nmQETYKEDBFK3tSyRcSPFXU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GEhfoMxgLPcp6nwBkt61gmLigCTkVgwWzwT0WQNgF2v2B5l7cMU1ELQLt3YHmIdBn
-	 5SAQ9FzxXxdkTsua8QRJaj+XmvK4QG19qdTYwSzCjypit9H1KiTPwRh7FtCZ6tkqcX
-	 WXpeV/sajncXIUIIM0tJHwJ+863yKm8QK5ecZ7hYMEBA+EhmHfW947NBkxOv/P6+k/
-	 5GU11vmBKyLibQb0nd9eewN2w9Z4NQ7gR1ADROg8pSR6Ed5Wd9ZTSFn/kjg+XTxOHP
-	 BfaZYFe56E19NFL/uM6za8z+9EKP3PS01Q5PvG/36tELIOBRvrtFao503jbbYj73m9
-	 ywb3HTeKvIDsw==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59e62834439so4862244e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 05:46:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW1Lm5deqeRNFoIH+Dbt0E0JiSm8Ut/dpobu85m/oh+wCZcK9vy77KRWrlgoGTw356DkX5t7/jEe6SBHKo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yximc0DgTRddBgSHsWRrZMUiWOqYtlmH+iX8Rg1CqEfauyssXHJ
-	bHPA1c76sZMR8Tha7GUKQVVYXzEDf2LnLPwPtzmMVce+FCMjgz97FNW5Vv5FkA9sDhEAwO2sppi
-	8OTHnxZ/A1rrkZZEJLllJnpfd7Gcmm9fEy95k+9khaQ==
-X-Received: by 2002:a05:6512:1553:20b0:5a0:ef6b:f613 with SMTP id
- 2adb3069b0e04-5a0ef6bf704mr1540983e87.1.1771854370177; Mon, 23 Feb 2026
- 05:46:10 -0800 (PST)
+	s=k20201202; t=1771854853;
+	bh=BkbVqrxwslwfCuDaT1JocKp3CNCm6IksZzE7xGY/xTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jkG5vNAooI9mXtVVkTGsqErbsf3ihx17bubrXaOQq22tESBMK+KAaN0yBwz44d13x
+	 6+QUU+7VRfU4h7OQGFaHFJZRWLBnD0SkcStaAmLcanSkND5o9ypxpjpVoe+2zeQ63C
+	 1SqqxtYxfF3rLYsMtMFjFxSQPypf4EBk8eemEDpq4+lsNXPjruCVgGxwUaqsrHtHKr
+	 lhZgt+pZ+T4fjPiEp4I/bHP/1kNUs4Ll+UTbqANeIJP4/srbBe95/iHjwYCntGvRL/
+	 gqHcS3elMXcNG1yWvyoOdQCeVESf79qfTIbJoRsZAiftw2lQoYsmJyQphs480F/1Iv
+	 SEsS030xzeatA==
+Message-ID: <d289cacf-043d-46f9-9337-b6249b294c24@kernel.org>
+Date: Mon, 23 Feb 2026 14:54:10 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,127 +63,180 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com>
- <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com> <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
-In-Reply-To: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Mon, 23 Feb 2026 14:45:58 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MeC-MTzEOVw0j4Kq9T0bSXk2gKJr=jn2jO8tqfS7BEteQ@mail.gmail.com>
-X-Gm-Features: AaiRm53YdoncmLlrYwWxzOjKhAAi91ZYzJ0VCyHsDsiPleMxR8Z5ZNNGKc2eDc4
-Message-ID: <CAMRc=MeC-MTzEOVw0j4Kq9T0bSXk2gKJr=jn2jO8tqfS7BEteQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] soc: renesas: don't access of_root directly
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] fsl-mc: Move fsl_over to device MSI
+To: Marc Zyngier <maz@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+References: <20260218135203.2267907-1-maz@kernel.org>
+ <kukzdg7cym2cwytx3zgbu5ik2cw7c2zq7irwp6q6o4jzupjzla@qgkrv7emus6f>
+ <86ms0za8e0.wl-maz@kernel.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <86ms0za8e0.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17059-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER(0.00)[brgl@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linuxfoundation.org,pengutronix.de,gmail.com,glider.be,sholland.org,vger.kernel.org,lists.ozlabs.org,lists.infradead.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FORGED_RECIPIENTS(0.00)[m:geert@linux-m68k.org,m:bartosz.golaszewski@oss.qualcomm.com,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:chleroy@kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@lists.infradead.org,m:imx@lists.linux.dev,m:linux-renesas-soc@vger.kernel.org,m:linux-sunxi@lists.linux.dev,m:geert@glider.be,m:magnusdamm@gmail.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17060-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:maz@kernel.org,m:ioana.ciornei@nxp.com,m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,mail.gmail.com:mid,linux-m68k.org:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: 27EF8177332
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 917B81776D0
 X-Rspamd-Action: no action
 
-On Mon, Jan 19, 2026 at 8:25=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
-k.org> wrote:
->
-> Hi Bartosz,
->
-> On Mon, 19 Jan 2026 at 11:40, Bartosz Golaszewski
-> <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> > Don't access of_root directly as it reduces the build test coverage for
-> > this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper funct=
-ions
-> > to retrieve the relevant information.
-> >
-> > Suggested-by: Rob Herring <robh@kernel.org>
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
->
-> Thanks for your patch!
->
-> > --- a/drivers/soc/renesas/renesas-soc.c
-> > +++ b/drivers/soc/renesas/renesas-soc.c
-> > @@ -6,6 +6,7 @@
-> >   */
-> >
-> >  #include <linux/bitfield.h>
-> > +#include <linux/cleanup.h>
-> >  #include <linux/io.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_address.h>
-> > @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
-> >         const char *soc_id;
-> >         int ret;
-> >
-> > -       match =3D of_match_node(renesas_socs, of_root);
-> > +       struct device_node *root __free(device_node) =3D of_find_node_b=
-y_path("/");
-> > +       if (!root)
-> > +               return -ENOENT;
-> > +
-> > +       match =3D of_match_node(renesas_socs, root);
->
-> I am not so fond of these of_find_node_by_path("/") + something replaceme=
-nts.
-> What about adding an of_match_root() helper?
->
+Hi Marc,
 
-I removed other instances from this series but not this one. I don't
-want to grow this series with even more new helpers. How about
-addressing this separately?
+Le 23/02/2026 à 14:37, Marc Zyngier a écrit :
+> On Fri, 20 Feb 2026 15:41:03 +0000,
+> Ioana Ciornei <ioana.ciornei@nxp.com> wrote:
+>>
+>> On Wed, Feb 18, 2026 at 01:51:57PM +0000, Marc Zyngier wrote:
+>>> Over the past few years, I have become increasingly annoyed by this
+>>> sort of messages in my boot log:
+>>>
+>>> [    0.067861] fsl-mc MSI: ITS@0x100100040000 domain created
+>>> [    0.073352] fsl-mc MSI: ITS@0x100100060000 domain created
+>>> [    0.078841] fsl-mc MSI: ITS@0x100100080000 domain created
+>>> [    0.084328] fsl-mc MSI: ITS@0x1001000a0000 domain created
+>>> [    0.089815] fsl-mc MSI: ITS@0x1001000c0000 domain created
+>>> [    0.095303] fsl-mc MSI: ITS@0x1001000e0000 domain created
+>>> [    0.100792] fsl-mc MSI: ITS@0x100100100000 domain created
+>>> [    0.106281] fsl-mc MSI: ITS@0x100100120000 domain created
+>>>
+>>> While this is useful on fsl-mc systems, this is completely irrelevant
+>>> on 99.99999% of the arm64 machines, which know nothing about the
+>>> Freescale stuff. Including all of my machine -- bar *one*.
+>>>
+>>> Global MSI domains such as the above have been obsoleted for the past
+>>> two years, but nobody at NXP seems to have got the message.
+>>
+>> I do admit that I wasn't aware that this neeeded work. In the future,
+>> please let me know of this kind of things and I will do the work.
+> 
+> I guess Thomas did too good a job not breaking fsl-mc when both PCI
+> and platform MSIs were rewritten, hence you missing on the good stuff!
+> 
+>>
+>>>
+>>> The obvious solution is to delete some code! While my first port of
+>>> call would be to just 'git rm -r drivers/bus/fsl-mc' (only kidding!),
+>>> a less invasive solution is to drag that code into the present times.
+>>> Which is what this series is doing by converting the whole thing to
+>>> device MSI, reusing the platform MSI infrastructure instead of
+>>> duplicating it.
+>>>
+>>> This results in the expected cleanup, and kills the last user of the
+>>> non-device-MSI stuff on arm64. You're welcome.
+>>
+>> Thanks!
+>>
+>> Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> # LX2160ARDB, LS2088ARDB
+>> Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+> 
+> Thanks for giving it a go.
 
-> However, in the previous patch you used a different strategy:
->
-> -       if (!of_match_node(imx8_soc_match, of_root))
-> +       if (!of_machine_device_match(imx8_soc_match))
->
+Don't know what is your merge plan. I wanted to push it to soc fsl tree 
+but it doesn't apply on top of v7.0-rc1:
 
-Because here, we really need the match structure later into the function.
+$ LANG= b4 shazam -l 20260218135203.2267907-1-maz@kernel.org
+Grabbing thread from 
+lore.kernel.org/all/20260218135203.2267907-1-maz@kernel.org/t.mbox.gz
+Checking for newer revisions
+Grabbing search results from lore.kernel.org
+Analyzing 14 messages in the thread
+Analyzing 0 code-review messages
+Checking attestation on all messages, may take a moment...
+---
+   ✓ [PATCH 1/6] fsl-mc: Remove MSI domain propagation to sub-devices
+     + Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Tested-by: Sascha Bischoff <sascha.bischoff@arm.com> (✓ DKIM/arm.com)
+     + Link: 
+https://lore.kernel.org/r/20260218135203.2267907-2-maz@kernel.org
+   ✓ [PATCH 2/6] fsl_mc: Add minimal infrastructure to use platform MSI
+     + Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Tested-by: Sascha Bischoff <sascha.bischoff@arm.com> (✓ DKIM/arm.com)
+     + Link: 
+https://lore.kernel.org/r/20260218135203.2267907-3-maz@kernel.org
+   ✓ [PATCH 3/6] irqchip/gic-v3-its: Add fsl_mc device plumbing to the 
+msi-parent handling
+     + Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Tested-by: Sascha Bischoff <sascha.bischoff@arm.com> (✓ DKIM/arm.com)
+     + Link: 
+https://lore.kernel.org/r/20260218135203.2267907-4-maz@kernel.org
+   ✓ [PATCH 4/6] fsl_mc: Switch over to per-device platform MSI
+     + Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Tested-by: Sascha Bischoff <sascha.bischoff@arm.com> (✓ DKIM/arm.com)
+     + Link: 
+https://lore.kernel.org/r/20260218135203.2267907-5-maz@kernel.org
+   ✓ [PATCH 5/6] fsl_mc: Remove legacy MSI implementation
+     + Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Tested-by: Sascha Bischoff <sascha.bischoff@arm.com> (✓ DKIM/arm.com)
+     + Link: 
+https://lore.kernel.org/r/20260218135203.2267907-6-maz@kernel.org
+   ✓ [PATCH 6/6] platform-msi: Remove stale comment
+     + Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com> (✓ DKIM/nxp.com)
+     + Tested-by: Sascha Bischoff <sascha.bischoff@arm.com> (✓ DKIM/arm.com)
+     + Link: 
+https://lore.kernel.org/r/20260218135203.2267907-7-maz@kernel.org
+   ---
+   ✓ Signed: DKIM/kernel.org
+---
+Total patches: 6
+---
+Applying: fsl-mc: Remove MSI domain propagation to sub-devices
+Applying: fsl_mc: Add minimal infrastructure to use platform MSI
+Applying: irqchip/gic-v3-its: Add fsl_mc device plumbing to the 
+msi-parent handling
+Patch failed at 0003 irqchip/gic-v3-its: Add fsl_mc device plumbing to 
+the msi-parent handling
+error: patch failed: drivers/irqchip/irq-gic-its-msi-parent.c:186
+error: drivers/irqchip/irq-gic-its-msi-parent.c: patch does not apply
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+hint: When you have resolved this problem, run "git am --continue".
+hint: If you prefer to skip this patch, run "git am --skip" instead.
+hint: To restore the original branch and stop patching, run "git am 
+--abort".
+hint: Disable this message with "git config set advice.mergeConflict false"
 
-Bart
+
+Let me know how you want to proceed.
+
+Thanks
+Christophe
 
