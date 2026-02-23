@@ -1,97 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-17018-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17019-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDSlIcu6m2nl5QMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17018-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 03:26:19 +0100
+	id F/zVIlrNm2nD7QMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17019-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 04:45:30 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD5F171640
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 03:26:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C91171A8E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 04:45:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fK4V00yHBz3bTf;
-	Mon, 23 Feb 2026 13:26:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fK6FK5cfqz3bTf;
+	Mon, 23 Feb 2026 14:45:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771813576;
-	cv=none; b=I0/3ZUjwAJrisejIyCRYTJcceaygjCLkXUqhJd7YyNa1ZcTWDxHZwhFeGH0CuaZfyLPs3hvsEuVhldCdRCLo39yZoEcQO0Zdc+EaS+bfX4sgG9fJypGeE58hNtCxHWB+k0v1dq2XyZ8J3aqLaG0UeHY7a8YDV+2lqTWUEKu77c9urp9Fr7Tys80SHJxPyrnPCWh/4yDgD0XTRvFgMzkslAkj8Zy16Eb/a10EMezTw6m9XOtOdgK043RE33rJYOBQbZWYga6b4JVO22uXcAB7IaUs9DXeQs+seiRMgy33185n0/CC3d5sL5a7SH1JzGISriw2kF9z4J8nDOWZYZaWNw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771818325;
+	cv=none; b=cY/wFiJSd6GhYf3g7UdQQJXYC2ci1b24vBCze5iTVc//OkXm+FtbSwrfJKwY1fyWdv/zFgdENKBJ4QsJdkGEq+/8r+xyMFJqb0E8zjKkpqljgddrwcr/YMXe8KUFE3TVoWlYcvTbEPQb/8kS7iXndMosvBQTLBd9uBv7B2VlCwgyvlHQpX/EEzuFDC+2KDlXXz7cfFsTIP7Hj/7i1ejeWAHpV2pjJC8VkX7DYEnnvQ6bR3MOYz1aUWyjL7zH+IwneDbKVoG+rnCaHRmbg3w8lgIXmeEDVSLyIF4pgQ/AWIGQpMy70vi4n614Ykz71w3C1GQSCGMUwkFZq2YLnE15Cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771813576; c=relaxed/relaxed;
-	bh=LoSianPV+m24sY+kS7ttUM3HGhiAlDaIi5Lhm7XMZI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=omGlOiSu6bhkF4tbwwBssFdIy6nRiO/82Xr/D9M4DNiFlfpNdMwRfyH9tpzKDMKsE4UjkzYAGkpFq8cXlFUl/wiXQKlnR/KYuhmrIglxqZeWFikudlgXyceIV+w/v0wqR9OxzY2DK2v6OuiMtXMt8svpC7SBbpTgMyGHM+TWF52MyGlPmauhK2f7d7oAROoORJMoHC54APox7CO0mAtLu2l335UAmCK25q8TQf0DqyZ46VWUTP6ukPH583nsew8u1/POabwkLu/vJHnxy6yypYHTrIPFOmbDgPxAx9Ce3e1Sj5GXx+IZG/ItneeMyJYgzN8iX+7uRt67Bup4ydH2+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LMHRwD77; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1771818325; c=relaxed/relaxed;
+	bh=RyYSL2ov6C3u3yqvGVc58oTwjWdV5IlojIEozCfjRo8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PsTQcO2QccXw8m7LkThjt7NPDwD/LWlr2OI520auYzdfn8eq/HKYU7l589syFh43+RM0AWzxa5+oelB22fsBoI/hpx7Kg4I6jTYvMd0TOvwSflDfxVXIaj7VlvwEcRhn4KXmEtVvPGdcK+3CzPORnbcFx6tABwHisZGEZxaLUTd/169M7ydh38XmTNgFgB6/Izg2YjfVcs64OvAoKGom6deKPPNsUAq4O83yiz4O9T1qEhUv1tCJQIM1LVVusHFWAI6rEDy0hAIiHzLodN/vh9YPz+oMwKxoV/STVwBaUFZscCfdYCrmQsP96SNg0X1Kaj74arRCXGYTRtUwXObIdQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aDW2PS3c; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LMHRwD77;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aDW2PS3c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fK4Tz30K8z2xSG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 13:26:15 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-824484dba4dso2731580b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Feb 2026 18:26:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771813573; x=1772418373; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LoSianPV+m24sY+kS7ttUM3HGhiAlDaIi5Lhm7XMZI4=;
-        b=LMHRwD777uH8Q+Uisv3GIRV5NNK69CBR2RVp6+amCbFkEnuz1hsBx2HFXmLT+dNeZJ
-         xeO/przcPDYzUgj7cV5I/gqq4fPrHYq+klB1MbNNdq842CRF+tSJWmfHUqPhPLQeKbaE
-         Jw2JfcEw7oLSFL7K4KB3pzw985vwuoiEIj3rjbs9Tvq4LY0W+2NIcQapO74bDvwsd4nV
-         /CemK2IuQ1YuEntiTebhFGbwhKjE1PHdRzBAQVSs5VXkR7l9pvtekunqT/3K3WxBdwZ0
-         iT0vJbPXxzrd37HOOIgTFrDX8tbm4bQCSiEx7l67NevjGLeIyOAH6+qcMiTmfoTA4U7i
-         wrtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771813573; x=1772418373;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LoSianPV+m24sY+kS7ttUM3HGhiAlDaIi5Lhm7XMZI4=;
-        b=Nt1NiCPWtIdWtiJUqWyzTum7VyLKK1BsxiI7YgiLP3A66Nix5rBleuz8lfNbRofJBz
-         x7Bguo6s2/hI3Lmgav42iFSCaJusNlDHH//y0CiLIGu+Yn26AL/4uWNOQpHm1dj0Q6NW
-         t3XmTI6i2HkGlTFWJbQPknaL3f8OpCUJWek1T1scr+PBxnf9PHjPvPY6zjUgrmqJM07d
-         1kSY5TGHAMKihOPMlU0jixOja6xtCldRgTkgfzlmZ5c1HlyfqU1sFulL5Bv6uIA0L/iB
-         Cxwse0CDmcFbOhKJdYA6/hL/uTW/iJIFVJ7RYqyGabmvtk48f6Hzt4f6s3psoQjb6Ku3
-         EuxA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2LfIwhnZv3Oli5pika09+Zo44EjbnOUZgVLoHCW/HDtHvQxYi5LzWtTSRGk9JfAyTr3pYvCvVu/0fTTc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx6ubBLZPyG1tzfe8/yuKWVNpnwwjluJmQIQSiiSOQpSlQCWRTl
-	bw2nsmXJKRSoFMzLb6KrIZBflmkrTBcxgDJ8heL5lzUjZjqAZ0FTVL28
-X-Gm-Gg: AZuq6aKd5zR9um1WbRBKOFhGZXKESKB7opvTSJGGZ+uDrF0j8l2kIm0FvCyb40kiIYp
-	fVw7Y6EFx10NSUq2Se9QiPbDLgcXzKOo8vznR58FeuYo4F/Hzi0iJY0zKtzNDV95wptGZTjxhca
-	NIHTmd32KoijEqmZm5NXbeQzpqJ2iQHZ7ewOKi0DcVq8bEt1ZPnzFoEC0yqirrzZ8THKX9Ywgox
-	JF9/39WJ2lonEZqlw3nIIFYTIA0+rfni10f9UR29SRM224VfmWZbbn5sKZuB+MxvBD94JNRft6e
-	wGy5zTfhgEL6AHtmMkTjDx6GVcrw2lO7ds012d2rdJhqnj7OHX7t2I04GxyxRr+kFsrp2hkKvpZ
-	g/mvW+A5DbCMK+rG/o1WQI6XftLrzzN+6WfiirfOJUwRxmasqBEuBx56X54PT7+p9HaGw2U1aR4
-	cxfgHxlL2TNUqpI2HAWnCaLj8qsiNui8L8ZKriiOtHpG3yYqJws/f7vx9oC3GQakw9gy8AEA==
-X-Received: by 2002:a05:6a00:3696:b0:824:a635:4181 with SMTP id d2e1a72fcca58-826da8ee305mr6643441b3a.15.1771813573069;
-        Sun, 22 Feb 2026 18:26:13 -0800 (PST)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.163.47])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8bc6e8sm5846159b3a.49.2026.02.22.18.26.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 18:26:12 -0800 (PST)
-Date: Mon, 23 Feb 2026 07:56:02 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>, Alice Ryhl <aliceryhl@google.com>, 
-	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
-Message-ID: <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260210090023.2587534-1-mkchauras@gmail.com>
- <20260210090023.2587534-3-mkchauras@gmail.com>
- <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
- <aZtT4MH0Q8Ic9ZiM@luna>
- <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fK6FJ3wjMz2xlv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 14:45:23 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61MJFcMa2615756;
+	Mon, 23 Feb 2026 03:45:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RyYSL2
+	ov6C3u3yqvGVc58oTwjWdV5IlojIEozCfjRo8=; b=aDW2PS3cByWWhIvZ7L+Bk0
+	21zT5Y94/sbIkDpo2M3s7CmUAxGVP2PCCN9JsUoSW1SKVZIclgIPSIez5SQ0IxX1
+	Z41MiMf3QWDDVqGw/NTDIddgy2n65g6quADBSrLSV+YNx17n7pKGr02VgnOZ0nvZ
+	rVGCUt4gyHnROxn+FnhJ4TxjY7gMJYvKojUKNDALHVQfJgxIlhrRxEhwhFWwD1cp
+	F3KEFsgy8gl1jYHNIMl5Vam7vRbTaBtkqJZB4QXo3X5JLDB3+9TYeY8eyi7k4b0y
+	FAqa0f8sBcncSuK4j0Yka+5zmdCv0W6thCLs41FocIWGbcWkOK386Fk/+33I+aLw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf471nn0s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 03:45:21 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61MN8P3r030385;
+	Mon, 23 Feb 2026 03:45:20 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfrhk36gp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 03:45:20 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61N3jIMw45220136
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Feb 2026 03:45:18 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 26B9C20043;
+	Mon, 23 Feb 2026 03:45:18 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA11020040;
+	Mon, 23 Feb 2026 03:45:13 +0000 (GMT)
+Received: from [9.124.222.94] (unknown [9.124.222.94])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Feb 2026 03:45:13 +0000 (GMT)
+Message-ID: <d0342f0e-633f-4299-966a-27e4c0050da3@linux.ibm.com>
+Date: Mon, 23 Feb 2026 09:15:12 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,80 +85,160 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Linux PPC] KVM PR and KVM HV do not work if the kernel was
+ compiled with PREEMPT
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+        mad skateman <madskateman@gmail.com>,
+        Christian Zigotzky <info@xenosoft.de>
+References: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
+ <185d7a42-f7b4-44e1-a129-f5989d211c74@linux.ibm.com>
+ <40154f6a-39da-959d-e039-5ab9ff62db3c@xenosoft.de>
+ <709b864f-9daa-4a48-b3d6-39baedce63b2@linux.ibm.com>
+ <dbbb7998-5245-170f-626b-81bc75a32591@xenosoft.de>
+ <843b7c60-23f1-47d0-b4e8-2147c3e40c23@linux.ibm.com>
+ <2a27e6fc-7eb4-41a5-ba88-58f6a22625b5@xenosoft.de>
+ <1d79ec6f-ce7f-4432-80e0-a54fa1668642@linux.ibm.com>
+ <caeed62f-0e36-4868-e593-887d7f33ce50@xenosoft.de>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <caeed62f-0e36-4868-e593-887d7f33ce50@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 3F2JuIXyLO7ZJjv4yYD4iiIXOi8YIsaV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDAyOSBTYWx0ZWRfXzrNJq3YQZKnY
+ 2hgb6pYpRSorP6VnZIiFzkrj0I1SJa6BXbe8AGOI5Eh3wc+kOv2kQ9XVDk7u8iFhSIC35EEcawj
+ qUFeyDiv6vpk312XP2ZJIWtj+pIOHFCB7cT63zexMVGn6ihD4ZfXgM6ss+OnZLfRZX0trHlgwMp
+ C3TcvZhgfyA0nRBKizJwTZpa17kgqXFLsH2oF3iQXGAqw4oRP/D438HUjHfdkxM1bpF7n7HTjIg
+ sDm6JSIe/b0AK9PaawhiWXvD9DEL6Bd0JE9/CZhZ+weP7PpcpshJysGVQJKNFXq0NFX2Jp5mEvj
+ pJQQvMWY4+kokNXelB3BBE/zhP9ftb30f0JGNT0jkEFuSXOzOdVODzD5kmLenDXVStQR8UpJNFm
+ QQkuGdnURdANi36QkTYtuXzfhzkk/9eZXtUr2EhpR29FspK8VtP04RO2SLOa11gxPtyoW8l0FkD
+ UrI74xpktUSvF6hYOpQ==
+X-Authority-Analysis: v=2.4 cv=R7wO2NRX c=1 sm=1 tr=0 ts=699bcd51 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=LpcYUoi4WhtTY--kXmYA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: AwVlqX4TNhBbZR4cJm0A8rsBXpk1O0Z2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_01,2026-02-20_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602230029
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-17019-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:miguel.ojeda.sandonis@gmail.com,m:linkmauve@linkmauve.fr,m:aliceryhl@google.com,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:miguelojedasandonis@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-17018-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS(0.00)[m:chzigotzky@xenosoft.de,m:linuxppc-dev@lists.ozlabs.org,m:kvm-ppc@vger.kernel.org,m:maddy@linux.ibm.com,m:rtd2@xtra.co.nz,m:hypexed@yahoo.com.au,m:madskateman@gmail.com,m:info@xenosoft.de,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linkmauve.fr,google.com,kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,linkmauve.fr:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 9BD5F171640
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: C4C91171A8E
 X-Rspamd-Action: no action
 
-On Sun, Feb 22, 2026 at 08:11:17PM +0100, Miguel Ojeda wrote:
-> On Sun, Feb 22, 2026 at 8:07 PM Link Mauve <linkmauve@linkmauve.fr> wrote:
-> >
-> > Should we come back to describing the target like I did in my first
-> > patch[1] in scripts/generate_rust_target.rs, or should I bring that to
-> > Rust to create a powerpc-unknown-unknown-softfloat target upstream?  Or
-> > is there a better third solution I’m not thinking of?
-> 
-> We are trying to stop using the custom target specs, so we should ask
-> upstream to give you a built-in target you can use (or equivalently, a
-> flag to do what you need, but I think the idea is to not have such a
-> flag).
-> 
-> i.e. even if you used the custom target JSON, we would still need to
-> ask, since the goal is to remove that script entirely.
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
 
-Sorry for the spam, my earlier message got rejected.
+Hi Christian.
 
-I think, disabling altivec, fpu and vsx with compiler flag will work.
 
-What are your opinion on this?
+>> If possible give the below try.
+>> (Note: Didn;t replicate your issue)
+>>
+>> ---
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 7667563fb9ff..bf0ca49c9915 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -4825,10 +4825,13 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
+>>          vc->runner = vcpu;
+>>          if (n_ceded == vc->n_runnable) {
+>>              kvmppc_vcore_blocked(vc);
+>> -        } else if (need_resched()) {
+>> +        } else if (need_resched() || spin_needbreak(&vc->lock)) {
+>>              kvmppc_vcore_preempt(vc);
+>>              /* Let something else run */
+>> -            cond_resched_lock(&vc->lock);
+>> +            spin_unlock(&vc->lock);
+>> +            schedule();
+>> +            //cond_resched_lock(&vc->lock);
+>> +            spin_lock(&vc->lock);
+>>              if (vc->vcore_state == VCORE_PREEMPT)
+>>                  kvmppc_vcore_end_preempt(vc);
+>>          } else {
+>> @@ -4901,7 +4904,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, 
+>> u64 time_limit,
+>>      }
+>>
+>>      if (need_resched())
+>> -        cond_resched();
+>> +        schedule();
+>>
+>>      kvmppc_update_vpas(vcpu);
+>>
+>> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+>> index 9a89a6d98f97..54963c1d8b58 100644
+>> --- a/arch/powerpc/kvm/powerpc.c
+>> +++ b/arch/powerpc/kvm/powerpc.c
+>> @@ -86,7 +86,7 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
+>>      while (true) {
+>>          if (need_resched()) {
+>>              local_irq_enable();
+>> -            cond_resched();
+>> +            schedule();
+>>              hard_irq_disable();
+>>              continue;
+>>          }
+>>
+> Hello Shrikanth,
+> t
+> I tested your patch today. The patched preempt kernel boots on my e5500 
+> host and in an e5500 VM. Unfortunately my guest and host freeze after 
+> loading the VirtIO-GPU.
+> 
+> Thanks for your help,
+> 
+> Christian
 
-Regards,
-Mukesh
+Glad it helps you to boot into.
+
+Since you said even host freezes, host maybe crashing.
+Do you have the console log when you load the VirtIO-GPU?
 
