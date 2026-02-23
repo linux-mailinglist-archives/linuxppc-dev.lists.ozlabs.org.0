@@ -1,98 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17061-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17062-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKUqBe1ynGmcGAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17061-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 16:31:57 +0100
+	id eIz8F119nGm6IQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17062-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 17:16:29 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263E7178C16
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 16:31:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DC71798B2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 17:16:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fKPwT24dbz30FD;
-	Tue, 24 Feb 2026 02:31:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fKQvp6Fzcz30FD;
+	Tue, 24 Feb 2026 03:16:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::122e" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771860713;
-	cv=pass; b=LgeW1PgHUTbTqkE5QBwbYzaf2SpBn1Q8Fp9nxv2dlyPRDTe4ZqyhYI9hqEmfehcnDlAgWWhXqVMoZ831bLZCFsFUuV4ZwNTNoMaC6c+4INIzf15tIO2QRkWdgnT0Uz2/RXSwAdbZPvWFwqxIdYo52rGTsdH4AMvXGPJvOGCyWlIkB/PBgxHGusSrPygZU10cn05YMU74R9+QJQKRfxaWPYZzT+DKV9Jt6Ft1yfS2u3Z4vvKSrJQDlhS/n9VU7uhXmiPko8j2zY5O/Ig1Aeb/FY5nUDk0IAMRnh0MEfkUgsQ7dJU3Y9DBoHP48TnubvdVcvR3hn4nHBkPl99aBhD/sw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771860713; c=relaxed/relaxed;
-	bh=pAk8ejtYqNKil504XGxzm+aHwjMu2ZLiZ7Drb8rL6K4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=irmUTrkyQkWoZDMaHHPQ2Eq1FAwbs4PNbr4OjEot7YDFcFpvyk6kZXQ2rbPZTyikUof0YxbZUcbW2ijSs5uUUjYvG6HJ8FtpnHSCMd34Y7wELOkV5djuW0Ynww2eDzSfJtsY1PsdYLdjjJa1tSua1b6dGM0kCOF36W69aX7MTpFUn04Z2QDqJ6IDeZHUv9g7U8Duz3fMc9WRVAhlZtpHsaHH3E+UT/hyomcRetv/i1d9liSD8Us8nfGO1NR2dtBSRrVYDEX8+x1dJTmtpGIvjVAs728nbCtTafwc2/4ZvQdCT3UV7uVSiImGMTHFFD+zn6pVpJarN2VWsecuDRl4hg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X8B9RZqg; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::122e; helo=mail-dl1-x122e.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771863382;
+	cv=none; b=H15stXC7bw/sxTN9Aw7BCuSyiZ0LWDp+L+ERjnkvNMSs5SKMz5AZkejagBK0rAFZQ7EG6Z8eTzFM7hfPky2kdRwhEQyAgGEtJXySsVZkIQp79Eqh3ufdSEJ3S5lxk9NYWo5ghTK+PoEFu/BFLI+R4sTTOPht/Wv8smUmlmpNB6Wqn0wa18XPPrbJb/LzhSy0GFvZjpuBl7wDqniRR77bidWOUjOf/P8FwE2i5A7jz40IpEF2hzICZywhdVH0TDCB6oekpqyP5CPuy2t33pYZK0woq7/QKH/tEU1Q1F7UWmp7xxU+XV7PDSnP8jcvCmpzgPtXWj2+ELqJuJH8gPKQEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771863382; c=relaxed/relaxed;
+	bh=/UiaVJeeeOQJmnUUx+L2e4aO0o5iKiM4tnaLZvpL68g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hy8alNl/uZTh8rN5X3We9jcufxdGUSCouG1ZkH0MS4wTUGSZjoOTakGrlJXB2zpz7tstL2/fyneK0hYnhp/3DzN3GiGa8N7Bm6T3nG1Y4ryrObGxbAJRY0txtkwCR5nofsRLIygHOH46awEpA9VB1g3T6NoBHqnhdlG+tb0hWSL9f6Kggmxh04IdffCqvRIizTfFqf1vtKFhdU7P7yn2iQ5rB3fjBeKAJCPF0tTVHZJWK95mR5+uKYTzqU/F4ScnORnF2pfhe9mGo1R0w2aB03kE3q6lTHRWNiUJWhA19Km/o932WVuhsutbl5KDgFfhuyCC6n9lYRmd3/XhZDS3CQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lm/Ir+vc; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X8B9RZqg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lm/Ir+vc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::122e; helo=mail-dl1-x122e.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-dl1-x122e.google.com (mail-dl1-x122e.google.com [IPv6:2607:f8b0:4864:20::122e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKPwS0tKkz2yDk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 02:31:51 +1100 (AEDT)
-Received: by mail-dl1-x122e.google.com with SMTP id a92af1059eb24-12739fe9a0eso244011c88.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 07:31:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771860709; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QnT7o3flV/4hf6vWILJhAv4n9OFojIyyGh/Dzf3LhVv4eFlVHijczo6O2fhX+74z+s
-         VOyIdMKChLXBFSA7VlnrdTGcOrkEy6Va5KxjPayaca0FLouWPGjoKShYgTiNKdVt0aNZ
-         biaOR+AxqcZL9zELAlggzbTEbrGEblwIWx1/fFHgZcsL/7CEefL7fgpnpRaSepYr1sd+
-         B8yULFlYw+QAA0uW5DCRyKI7/+9+16UDQQ/6m7vKJ+KuFQLpjHAVCMP9ut7xZ+xPvuEC
-         l1sL1/jKBvndiRLfdlK/mJvCUR92xeCssPxm/jE4NffgLgKDxs4En2KYtZwqZyFYl2YS
-         qk4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pAk8ejtYqNKil504XGxzm+aHwjMu2ZLiZ7Drb8rL6K4=;
-        fh=hH8JQPPC5Mlb7EExpgtHSWmxgelHiYVI6wOWI448V3E=;
-        b=B2VL4/EdFFbnDJDevaoQ9oBbZ7ibpHK9aZwVexnxoxnkRw+9n9FTcCJszy+Ej2L/rc
-         Q1s43QT39ypQ2tkXHbIx4SP8IvrWQvaoxfoic8WfRzkTgN2Odb1hEBZ939mmPJfvcvdQ
-         9rAHyrhqdil5w71yYsNvzeF+fsBdopqQwOLWVBwAF6RMj5O7e8kpTPoU/TasuBOSTAub
-         BgQcIqBCvqn1W+/dpEzxiaCgBlc46wftsUa8P8v4EvE8TktKGCTtEhao9U1dXRoEpEyg
-         nD8Xttt/jvsM9RLGFmf2bQ96OC3MPNnB/+7QGQKOHxZJbZuuWxRdOKzRNMyJhysNA4Fn
-         LeAg==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771860709; x=1772465509; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pAk8ejtYqNKil504XGxzm+aHwjMu2ZLiZ7Drb8rL6K4=;
-        b=X8B9RZqg1idvL57BHSjxCExcaCzutgKncCuwfUHXBFgjcoBK7QSnkCXYIJBS+spLrR
-         An8DzwTQGHWLt1ei/DKME34exlzLMgCp3UMS3t23Ht0gIN1mKmeZHHccRG7dU3uCmdmp
-         r9qicyhEgXvC2FIpFZaazeXlP+T7m7v+SxMbHeiRiMkSHLCkSIDkW4OQE3qlWnp3X47x
-         IgbtfKA2i4KKXV2qToQ9VE4TmuQERb9IfqYxGGNpNAob7XkJEtuVcGJpakmugDmQeOOa
-         uiCpbKE3ZnJKFm115DDnplWVzGm9zoDXrlMGg0DndjuODGTwt9DYHwoRbHYUAK0Y4APK
-         IRhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771860709; x=1772465509;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pAk8ejtYqNKil504XGxzm+aHwjMu2ZLiZ7Drb8rL6K4=;
-        b=mcmpibFFULhWCYJVsxU8bjFEafS8fhi+EAN018aiIGwGg7dK/hm+5EQotCSfNyaZjY
-         vsnoD1P3K6F6wkyEp+wrhWzht7I6HGtkPFvhi4rRqIOzxp3f93Wo9BJdM05/xVutKNF1
-         rVgecmNaMJmZKs/YJ/qw7vJbo0ODq0lOif2m8w/D0kcK1dvG6lUjZZGy6PiPSMnyGpnA
-         bgqlkEJ7G1uyOHHpw0HTLstlTOmo6la4lpz4qflWclAN5yCHvhpZ6qghOE7pxgYNnvE5
-         td/19mQW1G6ugytUsTB1s9PqrXcTTyjpmZCmjC19OXnWcyXmfaR7wjK8j4ttoed6loCS
-         l5ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXSynz4db/31XDr3Fp1Yi1p7nB4iAUcrBR0YPUIBFxDlyaeQ1wA5rHoDEnmeNtTm2rL/nC2HRTzRzRBTC0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxfOLM4Ar41O6NjCaYkKB91SyOs9snsonPnqlp7a7xeBzH7Jtcj
-	OXSdZm5pxjCld1iZuwO8Te1izNoeHfgjjh+t+DhHBl8M3Luvmqc8JvfYb7b07g7IZwIIOS5PgvK
-	spO8mB9xgfEW10VmPFJKxNBF3UhhaUgE=
-X-Gm-Gg: ATEYQzxZg1hCgC2G1wWShbd8dhsVEwVyeuy7v5fBSHGVQNr5judGoXtxLf0T3c1vgEc
-	9Q5ICc6iTSpWTQjOfW7gCXHPwYb0ne8fuukP3q9H4JnRqorDPKyAmd4y0ycRonkXRKf3s1qr6Qb
-	BVsR39471nvbYIxCg+8HlKs1AdToJoLfLXPwAJlMcTj6v1TgKDrCnvxyravAmuWlenvkETr6C1P
-	1M12BxBlEikR6JMZ8Zc9IC8BS40lMq/DVnwUTy14VWdGhrHP685/IfPxpyy+y4KFnSGfXZD0IxX
-	NDO+SHz0MELub8Qyqh07OusEkeQlNb+VZpWHGbYSRvOxdJfI7nRBQ6dH0RdnHyZkxHPQPJn6D5K
-	+UqvEZKIPK8rXd8yX5oAgLA+4
-X-Received: by 2002:a05:7300:e207:b0:2b7:1008:9f2e with SMTP id
- 5a478bee46e88-2bd7bdaec6cmr1877425eec.7.1771860708535; Mon, 23 Feb 2026
- 07:31:48 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKQvn2p6Kz2yDk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 03:16:21 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1249244056;
+	Mon, 23 Feb 2026 16:16:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE72C116C6;
+	Mon, 23 Feb 2026 16:16:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771863378;
+	bh=9JBeH7cRemY2uqM6ZDX/nXNUAvQrJ8Fr8vmuN0HFcI4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lm/Ir+vche8iTl6XhPS0GouZun+tZOLYdBGzcyyG0ygbzNjx8afI9Nz4L4YtQqVAw
+	 L7ZQ7pDZ3gaWLb6Qul8yrWt6MyN/Ncsx/yenyXe0G7aXWCG54VFdu0mx+X6zje7COX
+	 XEJaY+ZnGfc75MWIz1/A5pttxWXYU6C5BONj+3xpZoofXWS0dkDk5KdXNJzysLD8C8
+	 mh9EFg+GhstVxQ0fwB0wDfvCmdp0slrt/Qrnlj74UtibyBW712ksIyGKFR4M6w0rZP
+	 jWGQFdCM/rMnpLawlWRdN5X44PPEzw4avAZq+hXefgZuWqzU2Ox2OnD0b/jKqgIeea
+	 EU+NgodHersKQ==
+Message-ID: <37e62ad6-8922-4022-8660-38b818ae9cca@kernel.org>
+Date: Mon, 23 Feb 2026 17:16:05 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,106 +63,150 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260210090023.2587534-1-mkchauras@gmail.com> <20260210090023.2587534-3-mkchauras@gmail.com>
- <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
- <aZtT4MH0Q8Ic9ZiM@luna> <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
- <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-In-Reply-To: <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Feb 2026 16:31:36 +0100
-X-Gm-Features: AaiRm52K4i0fpTeiP2c0ziG19k4_bQVuvrLcSD-qpk6IrkIxs1psp6f0fzvc-cQ
-Message-ID: <CANiq72mg+D4QZmBhrNj7dB+V3GHsQoZT2cSG1ffHYDYJWXyopQ@mail.gmail.com>
-Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
-To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>, Alice Ryhl <aliceryhl@google.com>, ojeda@kernel.org, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
-	jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	Ralf Jung <post@ralfj.de>, Jubilee Young <workingjubilee@gmail.com>, 
-	Matthew Maurer <mmaurer@google.com>, David Wood <david@davidtw.co>, Wesley Wiser <wwiser@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] mm: don't special case !MMU for is_zero_pfn() and
+ my_zero_pfn()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
+ <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20260209144058.2092871-1-rppt@kernel.org>
+ <20260209144058.2092871-2-rppt@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260209144058.2092871-2-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:mkchauras@gmail.com,m:linkmauve@linkmauve.fr,m:aliceryhl@google.com,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:post@ralfj.de,m:workingjubilee@gmail.com,m:mmaurer@google.com,m:david@davidtw.co,m:wwiser@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[miguelojedasandonis@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17061-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17062-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:chleroy@kernel.org,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.li
+ nux.dev,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MIME_TRACE(0.00)[0:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_GT_50(0.00)[52];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linkmauve.fr,google.com,kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org,ralfj.de,davidtw.co];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 263E7178C16
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 95DC71798B2
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 3:26=E2=80=AFAM Mukesh Kumar Chaurasiya
-<mkchauras@gmail.com> wrote:
->
-> I think, disabling altivec, fpu and vsx with compiler flag will work.
->
-> What are your opinion on this?
+On 2/9/26 15:40, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> nommu architectures have empty_zero_page and define ZERO_PAGE() and
+> although they don't really use it to populate page tables, there is no
+> reason to hardwire !MMU implementation of is_zero_pfn() and my_zero_pfn()
+> to 0.
+> 
+> Drop #ifdef CONFIG_MMU around implementations of is_zero_pfn() and
+> my_zero_pfn() and remove !MMU version.
+> 
+> While on it, make zero_pfn __ro_after_init.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-It is really up to upstream Rust -- for us, i.e. the kernel, it
-usually doesn't really matter much how things like that are
-accomplished: whether via flags, a built-in target, a custom target,
-etc. However, we need to know what the path to stability is.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-My understanding (but I may be wrong) is that upstream Rust prefer we
-use built-in targets for softfloat instead of disabling via
-`-Ctarget-feature` (and that the other options may go away soon and/or
-will never be stable) -- at least for some cases. For instance, for
-arm64, please this recent change kernel-side regarding `neon` as an
-entry point:
-
-  446a8351f160 ("arm64: rust: clean Rust 1.85.0 warning using softfloat tar=
-get")
-
-So please ask upstream Rust (probably in their Zulip, e.g. in
-t-compiler or rust-for-linux channels) what you should do for powerpc.
-They will likely be happy with a PR adding the target (or whatever
-they decide) as Alice mentions. And until we reach that minimum
-version (in a year or more), we can use something else meanwhile. But
-at least we will have a way towards the end goal, if that makes sense.
-
-In case it helps, let me Cc Ralf, Jubilee and Matthew who were
-involved in some of that discussion in the past, plus the compiler
-leads.
-
+-- 
 Cheers,
-Miguel
+
+David
 
