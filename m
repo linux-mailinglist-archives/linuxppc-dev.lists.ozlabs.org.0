@@ -1,75 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17072-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17073-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKgqAnmrnGklJwQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17072-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 20:33:13 +0100
+	id 0P7NEsGsnGlyJwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17073-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 20:38:41 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C9817C6A7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 20:33:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7F117C75B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Feb 2026 20:38:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fKWGs2gy9z3bf3;
-	Tue, 24 Feb 2026 06:33:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fKWP951Qzz3bf8;
+	Tue, 24 Feb 2026 06:38:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771875189;
-	cv=none; b=lrWW1vy9Pgs2K96RXZoMz5dIgYLLZ0JozoPvevYvg4LmqaOQtAhXI+pAI+7SOu3zRHVbnFur4mJBhBAhrhJQmyNJx+bC0mq01u+Q4FpjC/ocl/nrM04sSGpO+RETXW66D09ewiJctVoxsDz9PI2gAYRVZV4HmDMNUfUuDABUjiHuxVIWgie4P0+PhwYTFiHdrBU83QPkGVu34lGLlVCPJqFXIp+563eSfvWmHDp2+OSr0eiO2TXTaPubg1pLb3a0t7zygkNTOiCx6/upA9uhOgeSero8+3X3riIEpd+8sAMM2/1mMfsmwI5n2YMfhcwSP6XWrLP24ZWQbQ4UL6nIMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771875517;
+	cv=none; b=mUsKb5bt1OAUiPRel72xsFY0jhN+4eC3zmamRPlhuODPFq04ss9ijcUIrd0eLRlbH4rd0vsTfQ9Y2dOpNHLsVI/sjnwyVpIUmSBe08h8toS46ddolYWhxqJXB/MT/ZCT+i9AuNZp9wyvEcslTpIZ1zKHCK7jK4+Hvjx6zMBcKSJ3URObE6DKxAPEQOFNYljdyLwngfz6uHRanjsomshS9lIYkbWwEczFW/KIfSKgvXoHK74QY6tXKqZfzEFQYVTC73Z33F2UYq7H8SAhLXeZB7wKnoQOZ/f9eL2I4iYhfE1Fhlgauok9G50hSqwXLM1NcjH5c1VI21ihKYPO+EAyJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771875189; c=relaxed/relaxed;
-	bh=+HAthEMD6C8u01c3UOpX9clz4coYeUnj/3U5RORe4cs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=KA/9Bcx+ieJ79BFbeG6VL6RkR54lkmY/bykNo+B6hYSFWbaOOuH2dgPCRWEhV+l1KzDnKtu8XHOWWo7Du6mHMTsy/BVvvfKAgk7zRcb+DF45AAjsjs63uTkW3QXGhIoWa3lOQfaI02k0tiwDrOleHr6h+WopVp0hjNxxuYxACn3Afwo/VJOugxUcK/vs/bKn6i6VcgXbUQy/g69WErkB8bjxjjRLz4dc6xbclksru1BU+1B/zVbSadFvGck2QQ7LBUh/WLxQVySLW2MW8Y1N2F3S0giqjvz+9QpgOTWKO3LilO+Tvf+xNyrgsf9yxhdAH+9UQc3Rx/mGDdipU0IS4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KL5ZFkgq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1771875517; c=relaxed/relaxed;
+	bh=frmOihMdlevhvbIRfSO4T5TgcRqEXXD2lVTybbuUx3g=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=E3bG8fTu5MUUYLSbo03JyPd6Pxk0GCyOT5wPQE+7A7EuRYOx9cAnnEdeHcHE2zs0/EoKvijjkSiRqPTovt3XFKC9zGxrGqVoa+De86T/Q+bWXFY+axioetSD76wFvytGK1PEypC76hea1v5HXPPR4MES2fkk/Au5k5Zc5oS8WbR6hQStIuIotjflOmE+M2nurRGmTDtTuKNvZkQr4wB+1/h8Si7Wx/NEdh/UI+0BBC9DUHZdZEYznguEpcvoZqDy+Fyzl1bfErvPIwOr+caEsG964Zy9qAgMXnpeK89fHU8qEeXi+Qv4GtiWKr60qfkJcZP/yj+WIYde2x/AkyeG2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ll3WpHA+; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KL5ZFkgq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ll3WpHA+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKWGr3fdYz3bW7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 06:33:08 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NITKG23172107;
-	Mon, 23 Feb 2026 19:32:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+HAthE
-	MD6C8u01c3UOpX9clz4coYeUnj/3U5RORe4cs=; b=KL5ZFkgqbKK8ko+Ncz0rsk
-	OPQtmpgf3kPFesiDhR/mxfHNGaEG+eGum+khcj68nFWXs/4WHDXQlJ3EpZUhbPrw
-	JkvKzfC4H9xNcWZCcLtj4YcmsW3kgu2BAaizYaho1a1hIMAOkT+VBiqAnumaAUQS
-	8QSqNFcxui/QchcbmUKA0oCggUEHfqumMxzlidkAMj02bzufd0RQ/4oFANqhDFLU
-	9HafE6IfPOcQ++fs0D7m9Rz7U2QPanqgn8EtlAyjZCDOb8lYcz/dUgzowNGx0VQY
-	SgoBgo173eFueWUxPgWl9lMiVhmUOxvtv/re6sPZGFHqJ84CTRXIA1gyL5Ta/fbg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4cqrhhk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Feb 2026 19:32:41 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61NG6JRs030298;
-	Mon, 23 Feb 2026 19:32:40 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfrhk5xhu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Feb 2026 19:32:40 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61NJWdQW20120074
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Feb 2026 19:32:40 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A2FE35805F;
-	Mon, 23 Feb 2026 19:32:39 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A15BA58043;
-	Mon, 23 Feb 2026 19:32:38 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Feb 2026 19:32:38 +0000 (GMT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKWP84R82z3bW7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 06:38:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 73AA64075C;
+	Mon, 23 Feb 2026 19:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0928EC116C6;
+	Mon, 23 Feb 2026 19:38:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771875514;
+	bh=0liSLOp6O8LEmoBc+kVOuEi4d/b1OtVGMfSEM2HKyxs=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ll3WpHA+az0TrUwt/tb1x5lQmtK9ncSnpChC5MZjsXQ1ggTuESy1eQmoDyR0pOXm6
+	 vhyU67p+3MoLkCwZ+WwmbZuA6ELVBoctCPaUGF2+6xUSTQB9jRt+Dr6fruq14aru2n
+	 G2thhx7MAaHvePD6HZLUM65tYXq9NHV75TzOolmLq8au0owD98yyQPdO2CSMkSVU35
+	 4ROW/8YBXCBfA+90Hc0Vlyb1kIcsEUrk5KkHg3dj83sGhh5PZueC5l6jydDyYF9ufH
+	 tH2Fzv9MDN9bF1gJbPRDH7o8llBD52knx7vKxbblV130ux8CxX32I6jhymj6Dk3Lpp
+	 z3CPjIoRVGZIQ==
+Message-ID: <2536c3e7-18d2-47cb-88c6-36f94c61c1c6@kernel.org>
+Date: Mon, 23 Feb 2026 20:38:29 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,168 +63,134 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 24 Feb 2026 01:02:38 +0530
-From: adubey <adubey@linux.ibm.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: bpf@vger.kernel.org, hbathini@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        martin.lau@kernel.org, eddyz87@gmail.com, yonghong.song@linux.dev,
-        clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH 2/2] selftests/bpf: Enable private stack tests for
- powerpc64
-In-Reply-To: <1956c912-c880-4214-9bc3-e205902459b5@kernel.org>
-References: <20260216152234.36632-1-adubey@linux.ibm.com>
- <20260216152234.36632-2-adubey@linux.ibm.com>
- <1956c912-c880-4214-9bc3-e205902459b5@kernel.org>
-Message-ID: <4cfdd14fac3c4091c6616decfc5d6ab9@linux.ibm.com>
-X-Sender: adubey@linux.ibm.com
-Organization: IBM
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Linux PPC] 7.0-rc1: e500_mmu.c:923:26: error: assignment to
+ 'struct tlbe_priv *' from incompatible pointer type 'struct tlbe_ref *'
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Kees Cook <keescook@chromium.org>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+ mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+References: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
+ <185d7a42-f7b4-44e1-a129-f5989d211c74@linux.ibm.com>
+ <40154f6a-39da-959d-e039-5ab9ff62db3c@xenosoft.de>
+ <709b864f-9daa-4a48-b3d6-39baedce63b2@linux.ibm.com>
+ <dbbb7998-5245-170f-626b-81bc75a32591@xenosoft.de>
+ <843b7c60-23f1-47d0-b4e8-2147c3e40c23@linux.ibm.com>
+ <2a27e6fc-7eb4-41a5-ba88-58f6a22625b5@xenosoft.de>
+ <1d79ec6f-ce7f-4432-80e0-a54fa1668642@linux.ibm.com>
+ <caeed62f-0e36-4868-e593-887d7f33ce50@xenosoft.de>
+ <d0342f0e-633f-4299-966a-27e4c0050da3@linux.ibm.com>
+ <2cbd1e19-ac99-29c3-ab89-3c58a9863e5a@xenosoft.de>
+ <2d2d4735-04e0-46a0-93c6-654507fe2ae1@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <2d2d4735-04e0-46a0-93c6-654507fe2ae1@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: EXtVg3WTOAebkMJ6Cyw6AXFkRhwBRc3L
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDE2NiBTYWx0ZWRfX2rC4xsxuUKjX
- xb2ITekNjn3DAZocQdBP7qq8+tfePxbCdSi2X5fZetY7yGEiI8cB4pzyrLY54YKyHfw6ymnynJR
- d6u8jzIkMW4vlA/PmtDdzzJWsCEQuxrHXuQzHD1kshmwWvH64UxOQxvkDv0pJjHx5ODgCprSOXm
- 9cVqyDzTvm8FFOcXzJBdPAvro5ntVD/OT8FYX2dWlM8gZxCgtMuswTxxKhHQE446h5ovAVUDemj
- 4CHHDx2mx1rvg7+n0DYOdCNMuQynycG1rvzkYENVROTfoXytmqvSo9EKVObq7zwW9vUNZiSFg0T
- ERogrBcunTlJlrDii/6bRVIWUxzNhQ7nQYatvR13jKvYlmArCw+OYQYqZs0fzwwPrLpAtDtVE2v
- c9JDltkZAsbj1X6o5pi9tR0ACLhB+HQg3tGKWWDjl/2LIa59Ehss77ERWhtedWcAk5jFjRm+Drz
- vjaWWUPcf7vg5u2Xn+w==
-X-Proofpoint-GUID: gUw0PTrM_Pjy2ZOqm6Xa5dgujYzcmh57
-X-Authority-Analysis: v=2.4 cv=bbBmkePB c=1 sm=1 tr=0 ts=699cab5a cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=qmUj5T3_vRBoYhgTJiUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-23_04,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602230166
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17072-lists,linuxppc-dev=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	FORGED_SENDER(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:bpf@vger.kernel.org,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17073-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:chzigotzky@xenosoft.de,m:sshegde@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm-ppc@vger.kernel.org,m:maddy@linux.ibm.com,m:keescook@chromium.org,m:rtd2@xtra.co.nz,m:hypexed@yahoo.com.au,m:madskateman@gmail.com,m:info@xenosoft.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: F0C9817C6A7
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 5F7F117C75B
 X-Rspamd-Action: no action
 
-On 2026-02-23 16:41, Christophe Leroy (CS GROUP) wrote:
-> Le 16/02/2026 à 16:22, adubey@linux.ibm.com a écrit :
->> From: Abhishek Dubey <adubey@linux.ibm.com>
->> 
->> With support of private stack, relevant tests must pass
->> on powerpc64.
->> 
->> #./test_progs -t struct_ops_private_stack
->> #434/1   struct_ops_private_stack/private_stack:OK
->> #434/2   struct_ops_private_stack/private_stack_fail:OK
->> #434/3   struct_ops_private_stack/private_stack_recur:OK
->> #434     struct_ops_private_stack:OK
->> Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
->> 
->> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
->> ---
->>   tools/testing/selftests/bpf/progs/struct_ops_private_stack.c   | 3 
->> ++-
->>   .../selftests/bpf/progs/struct_ops_private_stack_fail.c        | 3 
->> ++-
->>   .../selftests/bpf/progs/struct_ops_private_stack_recur.c       | 3 
->> ++-
->>   3 files changed, 6 insertions(+), 3 deletions(-)
->> 
->> diff --git 
->> a/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c 
->> b/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c
->> index dbe646013811..1df1111cd029 100644
->> --- a/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c
->> +++ b/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c
->> @@ -7,7 +7,8 @@
->>     char _license[] SEC("license") = "GPL";
->>   -#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
->> +#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64) \
->> +				|| defined(__TARGET_ARCH_powerpc)
+
+
+Le 23/02/2026 à 19:07, Christophe Leroy (CS GROUP) a écrit :
+> +Kees
 > 
-> Won't this also trigger the test on powerpc/32 ?
-We have patch ready marking test separation b/w 32/64-bit ppc.
-Planning to post it immediately after few concurrent patches are frozen.
-With current tag, yes it does invoke on 32 bit. Our intent is to
-support private stack for ppc64 only in this series.
+> Hello,
 > 
+> Le 23/02/2026 à 17:48, Christian Zigotzky a écrit :
+>> Hello,
+>>
+>> Compiling issue for e5500 machines for the RC1 of kernel 7.0:
+>>
+>> arch/powerpc/kvm/e500_mmu.c: In function 'kvmppc_e500_tlb_init':
+>> arch/powerpc/kvm/e500_mmu.c:923:26: error: assignment to 'struct 
+>> tlbe_priv *' from incompatible pointer type 'struct tlbe_ref *' [- 
+>> Werror=incompatible-pointer-types]
+>>    923 |  vcpu_e500->gtlb_priv[0] = kzalloc_objs(struct tlbe_ref,
+>>        |                          ^
+>> arch/powerpc/kvm/e500_mmu.c:928:26: error: assignment to 'struct 
+>> tlbe_priv *' from incompatible pointer type 'struct tlbe_ref *' [- 
+>> Werror=incompatible-pointer-types]
+>>    928 |  vcpu_e500->gtlb_priv[1] = kzalloc_objs(struct tlbe_ref,
+>>
+>> Temporary solution: # CONFIG_VIRTUALIZATION is not set
+>>
+>> Please solve this issue.
+>>
 > 
->>   bool skip __attribute((__section__(".data"))) = false;
->>   #else
->>   bool skip = true;
->> diff --git 
->> a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c 
->> b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c
->> index 3d89ad7cbe2a..e09c1a8782b4 100644
->> --- 
->> a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c
->> +++ 
->> b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c
->> @@ -7,7 +7,8 @@
->>     char _license[] SEC("license") = "GPL";
->>   -#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
->> +#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64) \
->> +				|| defined(__TARGET_ARCH_powerpc)
->>   bool skip __attribute((__section__(".data"))) = false;
->>   #else
->>   bool skip = true;
->> diff --git 
->> a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c 
->> b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c
->> index b1f6d7e5a8e5..791800835673 100644
->> --- 
->> a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c
->> +++ 
->> b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c
->> @@ -7,7 +7,8 @@
->>     char _license[] SEC("license") = "GPL";
->>   -#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
->> +#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64) \
->> +				|| defined(__TARGET_ARCH_powerpc)
->>   bool skip __attribute((__section__(".data"))) = false;
->>   #else
->>   bool skip = true;
--Abhishek
+> Must be one of:
+> 
+> 189f164e573e Convert remaining multi-line kmalloc_obj/flex GFP_KERNEL uses
+> bf4afc53b77a Convert 'alloc_obj' family to use the new default 
+> GFP_KERNEL argument
+> 69050f8d6d07 treewide: Replace kmalloc with kmalloc_obj for non-scalar 
+> types
+> 
+
+Can you try following change:
+
+diff --git a/arch/powerpc/kvm/e500_mmu.c b/arch/powerpc/kvm/e500_mmu.c
+index 48580c85f23b..75ed1496ead5 100644
+--- a/arch/powerpc/kvm/e500_mmu.c
++++ b/arch/powerpc/kvm/e500_mmu.c
+@@ -920,12 +920,12 @@ int kvmppc_e500_tlb_init(struct kvmppc_vcpu_e500 
+*vcpu_e500)
+  	vcpu_e500->gtlb_offset[0] = 0;
+  	vcpu_e500->gtlb_offset[1] = KVM_E500_TLB0_SIZE;
+
+-	vcpu_e500->gtlb_priv[0] = kzalloc_objs(struct tlbe_ref,
++	vcpu_e500->gtlb_priv[0] = kzalloc_objs(struct tlbe_priv,
+  					       vcpu_e500->gtlb_params[0].entries);
+  	if (!vcpu_e500->gtlb_priv[0])
+  		goto free_vcpu;
+
+-	vcpu_e500->gtlb_priv[1] = kzalloc_objs(struct tlbe_ref,
++	vcpu_e500->gtlb_priv[1] = kzalloc_objs(struct tlbe_priv,
+  					       vcpu_e500->gtlb_params[1].entries);
+  	if (!vcpu_e500->gtlb_priv[1])
+  		goto free_vcpu;
+
+---
+Christophe
 
