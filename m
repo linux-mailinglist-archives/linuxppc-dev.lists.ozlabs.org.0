@@ -1,55 +1,126 @@
-Return-Path: <linuxppc-dev+bounces-17116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17118-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGfYKaPNnWn4SAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 17:11:15 +0100
+	id QPPuCgzPnWn4SAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17118-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 17:17:16 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DF9189988
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 17:11:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1B8189AC1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 17:17:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fL2lN02hRz3cVX;
-	Wed, 25 Feb 2026 03:11:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fL2tJ4LDVz3cWy;
+	Wed, 25 Feb 2026 03:17:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771949471;
-	cv=none; b=LIvQ09tKPvdtRZ4ExCQZKOFN4/Pc1SLfsgprs3Z63Lz/nlxGlrDa7iY93X/u04rYXZsyKYLmXCafsaT/B7BBKlaAQZybCHaRrcHJcbs6h1MnaffUVhRFnSNMGQeQBPDAg+Gla2MOIwkVqyzwfoJ7r0mgoyDU0EgGh21PecXd+1Tmmnua0HzELmZSIi6dUp03IWmyaiPKGqj81LBlNEdPrsbR/CiWrpIwV7TLggjqXrMeSlhfB5C3y0oS7FiwWKoUw2rWDIV0ULG3O2tSDUp0UCd3uZJ5vlZsWZGQkzteMv1QYP7zpiw5QRo/mrKay4I+Ctj7dZoBFxfeagGzYKaCag==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771949832;
+	cv=none; b=YPSoOnueQiu1aLyFILpikbsS+/cRp7L22dkFwlH8HMuuwvSHbWlJuWH+GRB9bH89/TpkmN+noMySI8c6XPOK/MejeIrJZIZa9qLHwgitUs0AHiUkaUMH1eoxf587mWyOTT0U5ePsSrnTZnHCpdVsYfyYdGn5jsf8L4ryJAjviKF6+RpkNwsQrRofCmrxztDwoSWvvyNlO//7V9kF/MXaDl/9svWFTGEgLMLS8avsNckvBwOteIG7DlKhnN8vYKVPnKxpSO9quL8Q/pe4BMfpfRwLoxT3aCO6+rUQexUsaeHeUJyV2g3Qnrai0KefZKqSf90/dO/N62XZPjTVPzPVow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771949471; c=relaxed/relaxed;
-	bh=MGxPgbd1Y1eKUe4oqApKFPkyBU1147l5ua5MacsPo4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZLNPWs/+goTqvI9hjNCXJOeLKaK6O8o9w3lpmgVtS0/L+t9hVkKRqHvn3n4jhwrJcLJsixmhpEBXuMwOnPYpslVJCwR18f4N7OPCN7Vl8nWjc3e8RM9Y4QkvUHmsA1l7KojdeR/5Nu90oQWHIKBgPRKt/Gqoa3IRdFaduKqps7DDGeshnTgi4leSyWuZEJtxUq4BHwKFCheq3VdwwMgy5iOd/1J+oHnyEegAweLS5SW58kN8o67VTXU5xq/yuv+AKimU62gsYZMrHJwwvFLZY4GsX3v/1ev8rr/AY72ulzSr2p+k63ZghCxPgLAq1p8dHUnFleW2clypoqM09YR/EQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M9/c75dG; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1771949832; c=relaxed/relaxed;
+	bh=NPLGxYtKAl2lhKKNtOfe8iy6bfv+S/34HO6rlrpilBw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HByIRgC8+6Xysj1hvKNHCFjmSc17TG1FS5EiboGjYm8eZ/rYkgQuYC1ZEHeQASpcGonO8sRb3S1Cv+/kflUJrQ8CdaMV4iy0VakA8+Kct5ZSlZ9FP+RwaVS6u+qj5zXJOspsF2CW8llOKtbABVS0Insf5Oa9BDqlzhc2fRFKW9m+ZDP84v2SHDu0stQaIdSQvXFutMci3OJxuVdyCv/Bkeqy31RlMv7F//nivQfMxKqwg69rJ5YAJPJaU9SGech8+4gRHP+q6uN3eBQRnMGgFx8ByE3zZNnOZI4p4gE4Fi24WWxrxh/G1PFklHkp6b0zQ8I4VH5skGtvUhgUh65Y3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dE5DsgJe; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M9/c75dG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dE5DsgJe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL2lM1mWCz3cR1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 03:11:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL2tH1dXGz3cVK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 03:17:11 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 642FC61119;
-	Tue, 24 Feb 2026 16:11:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A80DC116D0;
-	Tue, 24 Feb 2026 16:11:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 176BA6111B;
+	Tue, 24 Feb 2026 16:17:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2CAC116D0;
+	Tue, 24 Feb 2026 16:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771949468;
-	bh=fdhBT8l/JcKIXS2ne2lkmrwsuR/CTkT5ozhsuLKERZs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M9/c75dG8dszOV0z1Be56sld1x/t2ZfPsTWRDI1P85Kk523WNOmba2nuMGKc+1Jku
-	 M856aa+x0L/FpI2uLf1hx4XYG3e6JlSkl02y6jCbB8Ky35lWiOog5eECUG5FqzLJ1f
-	 gZAy3eoMsogHzIThoAmlfOCcdUlWhFL77GKhTJDIoG07WLzl/chn5dHkFtnkkLOHeR
-	 pQPXkmYgU6FbGH2Z4wiDmFKQR3fWW1gWw8ffZh+kdvgI0BF66s4lOFYzfcPf8WeZDF
-	 1j+9jtzdwHADBkrH3xGU6vBW53yyCiwzPtZjBJTGd0SXDCVrhh5oOBlMxJDC6nRkmA
-	 hdsf7LRfmjK6Q==
-Message-ID: <c43286ec-90fb-4d3f-830a-e3644be3c310@kernel.org>
-Date: Tue, 24 Feb 2026 17:11:03 +0100
+	s=k20201202; t=1771949828;
+	bh=SXv8kNok4zxMnc5pPBCN8E77XIiooRBkXlI+BOUS8Dc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dE5DsgJe4eWwAhLUkc52afWpncNFQHm3ITfjxXTQs8pZ3HAdZoxX3E9+yw84PuWfc
+	 8hv0jBSBocClUd7acb2nBgtY0uf3R+6IJ9CaSBzL6ITcI6T+FBM4oFlesEeJM8ib+K
+	 5uZ/5NDfic7g+vqbPRCzSUckWiK+3QDVPDhtTPlOjE84675xU/g2iZz6oR/8YvKW4l
+	 4AL1i725kN9lXS1UU2SngsrbrekRgSdTqNC7/UOua/J6J9V+z4azuGI6LX2qWBuTwE
+	 SZwRe4f0R4aadCnfUfk4peBnSm5w+WJWSP6gTO15tqNeDIuiLzQBAAPazq1vUyzKiJ
+	 dizgCboB6pIOA==
+Date: Tue, 24 Feb 2026 17:14:52 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 15/17] module: Introduce hash-based integrity checking
+Message-ID: <aZ3OfJJSJgfOb0rJ@levanger>
+Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Fabian =?iso-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?iso-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-15-0b932db9b56b@weissschuh.net>
+ <aZol1Rsa2tX-WNaZ@derry.ads.avm.de>
+ <0d70db8d-702b-46ec-a010-298fe6515aab@t-8ch.de>
+ <aZyfcDCWOBJJztQ2@levanger>
+ <06054e9a-2b7a-4063-98b8-7d6c539e543f@t-8ch.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,102 +134,158 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] net/ibmveth: fix comment typos in ibmveth.c
-To: Dave Marquardt <davemarq@linux.ibm.com>,
- Abhilekh Deka <abhindeka@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260224153601.17534-1-abhindeka@gmail.com>
- <87v7fmyvjv.fsf@linux.ibm.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <87v7fmyvjv.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <06054e9a-2b7a-4063-98b8-7d6c539e543f@t-8ch.de>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.21 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17116-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:davemarq@linux.ibm.com,m:abhindeka@gmail.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:nnac123@linux.ibm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[linux.ibm.com,gmail.com];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-17118-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kernel.org,m:dmitrykasatkin
+ @gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	FORGED_SENDER(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.989];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,suse.com,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: B1DF9189988
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: EC1B8189AC1
 X-Rspamd-Action: no action
 
+On Mon, Feb 23, 2026 at 10:43:30PM +0100, Thomas Weiﬂschuh wrote:
+> On 2026-02-23 19:41:52+0100, Nicolas Schier wrote:
+> > On Mon, Feb 23, 2026 at 08:53:29AM +0100, Thomas Weiﬂschuh wrote:
+> > > On 2026-02-21 22:38:29+0100, Nicolas Schier wrote:
+> > > > On Tue, Jan 13, 2026 at 01:28:59PM +0100, Thomas Weiﬂschuh wrote:
+[...]
+> > > > [...]
+> > > > > diff --git a/scripts/modules-merkle-tree.c b/scripts/modules-merkle-tree.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..a6ec0e21213b
+> > > > > --- /dev/null
+> > > > > +++ b/scripts/modules-merkle-tree.c
+> > > > > @@ -0,0 +1,467 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > > > > +/*
+> > > > > + * Compute hashes for modules files and build a merkle tree.
+> > > > > + *
+> > > > > + * Copyright (C) 2025 Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+> > > > > + * Copyright (C) 2025 Thomas Weiﬂschuh <linux@weissschuh.net>
+> > > > > + *
+> > > > > + */
+> > > > > +#define _GNU_SOURCE 1
+> > > > > +#include <arpa/inet.h>
+> > > > > +#include <err.h>
+> > > > > +#include <unistd.h>
+> > > > > +#include <fcntl.h>
+> > > > > +#include <stdarg.h>
+> > > > > +#include <stdio.h>
+> > > > > +#include <string.h>
+> > > > > +#include <stdbool.h>
+> > > > > +#include <stdlib.h>
+> > > > > +
+> > > > > +#include <sys/stat.h>
+> > > > > +#include <sys/mman.h>
+> > > > > +
+> > > > > +#include <openssl/evp.h>
+> > > > > +#include <openssl/err.h>
+> > > > > +
+> > > > > +#include "ssl-common.h"
+> > > > > +
+> > > > > +static int hash_size;
+> > > > > +static EVP_MD_CTX *ctx;
+> > > > > +
+> > > > > +struct module_signature {
+> > > > > +	uint8_t		algo;		/* Public-key crypto algorithm [0] */
+> > > > > +	uint8_t		hash;		/* Digest algorithm [0] */
+> > > > > +	uint8_t		id_type;	/* Key identifier type [PKEY_ID_PKCS7] */
+> > > > > +	uint8_t		signer_len;	/* Length of signer's name [0] */
+> > > > > +	uint8_t		key_id_len;	/* Length of key identifier [0] */
+> > > > > +	uint8_t		__pad[3];
+> > > > > +	uint32_t	sig_len;	/* Length of signature data */
+> > > > > +};
+> > > > > +
+> > > > > +#define PKEY_ID_MERKLE 3
+> > > > > +
+> > > > > +static const char magic_number[] = "~Module signature appended~\n";
+> > > > 
+> > > > This here will be the forth definition of struct module_signature,
+> > > > increasing the risk of unwanted diversion.  I second Petr's suggestion
+> > > > to reuse a _common_ definition instead.
+> > > 
+> > > Ack.
+> > > 
+> > > > (Here, even include/linux/module_signature.h could be included itself.)
+> > > 
+> > > I'd like to avoid including internal headers from other components.
+> > > We could move it to an UAPI header. Various other subsystems use those
+> > > for not-really-UAPI but still ABI definitions.
+> > 
+> > Yeah, ack.
+> 
+> What exactly is the 'ack' for?
+> * Avoiding to include internal headers?
+> * Moving the definition to UAPI headers?
+
+ah, sorry.  I think reduction of duplicated definitions is good; moving
+these definitions to UAPI headers sounds like a valid compromise to me.
 
 
-Le 24/02/2026 √† 17:07, Dave Marquardt a √©crit¬†:
-> Abhilekh Deka <abhindeka@gmail.com> writes:
+> (...)
 > 
->> Correct spelling mistakes in comments:
->> - Fix misspelling of gro_receive
->> - Fix misspelling of Partition
->>
->> Signed-off-by: Abhilekh Deka <abhindeka@gmail.com>
->> ---
->>   drivers/net/ethernet/ibm/ibmveth.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 3108bf50576f..b2a578e6ff31 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
->> @@ -355,7 +355,7 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
->>   
->>   		/*
->>   		 * If multi rx buffers hcall is no longer supported by FW
->> -		 * e.g. in the case of Live Parttion Migration
->> +		 * e.g. in the case of Live Partition Migration
->>   		 */
->>   		if (batch > 1 && lpar_rc == H_FUNCTION) {
->>   			/*
->> @@ -480,7 +480,7 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
->>   	 */
->>   	if (!reuse) {
->>   		/* remove the skb pointer to mark free. actual freeing is done
->> -		 * by upper level networking after gro_recieve
->> +		 * by upper level networking after gro_receive
->>   		 */
->>   		adapter->rx_buff_pool[pool].skbuff[index] = NULL;
+> > > > Can you verify if I get the mechanics roughly correct?
+> > > > 
+> > > >   * Modules are merkle tree leaves.  Modules are built and logically
+> > > >     paired by the order from modules.order; a single left-over module is
+> > > >     paired with itself.
+> > > > 
+> > > >   * Hashes of paired modules are hashed again (branch node hash);
+> > > >     hashes of pairs of branch nodes' hashes are hashed again;
+> > > >     repeat until we reach the single merkle tree root hash
+> > > > 
+> > > >   * The final merkle tree root hash (and the count of tree levels) is
+> > > >     included in vmlinux
+> > > 
+> > > The merkle tree code was written by Sebastian so he will have the best
+> > > knowledge about it. But this is also my understanding.
+> > 
+> > I'd like to see some (rough) description in Documentation or in a commit
+> > message at least, otherwise future me will have to ask that again.
 > 
-> I'm not quite sure why this was a v3 of this patch, but anyway.
-> 
-> Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-> 
+> Ack in general. I'd prefer to document it in a source code comment,
+> though. That feels like the best fit to me.
 
-I guess because there was a v2 5 minutes before with a misspelled 
-subject "[PATCH v2] net/ibmveth: fix comment typos in imbveth.c"
+Great, thanks.
+
+-- 
+Nicolas
 
