@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-17134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17135-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOEXN8oRnmlsTQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 22:02:02 +0100
+	id WFGhN1EYnmmcTQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17135-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 22:29:53 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCE618C929
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 22:02:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F311118CC5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 22:29:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fL9Bv35VCz2xQB;
-	Wed, 25 Feb 2026 08:01:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fL9q21Gncz3cMD;
+	Wed, 25 Feb 2026 08:29:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771966919;
-	cv=none; b=CsV6W/rDocbD7ktDAfdQ05YnCsjXLK2Vs3r/yc8IVVJiJT9PVsAnsLCfDNDXFG+TGKCnAS46FKGcNUi40Icg/n5KUokvU2kF9wNd8CHd//glZ8i0/janfIE/qFuCxhFoUlXB9r0FQtlFNubn/rbwi0iOHAI3GUoKY4X/CufY+ZFUanLZvMvNTXK8Cgu1GPTMlXlRNPfp6Iy1Zcyuxanj3uoGLgtvRLGGfo6K/f0TAA4R6pMsiSsu3ELe5AVYpcDDHx5DO4nuqjzkLWfaAdtUgLcnmYhtCSNcxjTGJF+SQYiKD2zc/0ECA4NDyEduP4Mpp7L5w1gqt6jU7bGIlhMVYg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771968590;
+	cv=none; b=FbUDkwH1Qb3aBejL/tEhFvOmzrJd0NKxejOzkiHuQ3n7QGuIq78Dr7xHowdzwpKD81elSj154dq3v+FzGOGnuWA8rc33w7yxBNM/QKj6P2nDCYGKQr9lPZaCvS9GbyPl4zuww5wFJhhUUypshX5GJWtFtmc2zO/ZV37+AsXW2/ioLfwuicFA32FmFsn/rD2bG/+BrvG7HevAqtIRAUHnG+/6ZMDOQ4z8RpI/zMjl5FAY9mgmFmolx6sBqJepphOzoQNZjJfZgS6BtSR5PRqsoDFsPnxaNG0ovhJK56nuTsHefEAicUHJJFq6zBv6Gn6R39kt5J1/Gbixm1vhhov/GQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771966919; c=relaxed/relaxed;
-	bh=lE840fOf2zf4Dgfox0H0BhhA8SZtLuHDg7mTvLDv3eY=;
+	t=1771968590; c=relaxed/relaxed;
+	bh=q10+uC/aYDkdKm829ZpOBGZg/BCmUVy0TnhE+fQq53I=;
 	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=XnB5lP2iW0UPgZMLp4xKiN/z+8KPWnSB7U9fMIiWUWa6/wkyMkoMpIjL1gd0O41weHchWOIpVGTXc35nmZYOozZiyjft3XlbJ95gyEN7FUJQtY6BLIhbQYQfODD4UMdldB2p0Ns6h1ugDLfciFXwqrajeo+KRhafBUpHIjKUDDRzOaUTlKwWEVkntkndyVCWQPccGuJeUbrXYnNWPURSR4+sL1tQqZ4o4EjzRKxtQf5JSalzQipTAlThP0LKRr/4Cj6dxKq8Wv/+zYGXSwLNuscnbszOy1dkX1soWYrpDguWw2kM03hYHjHVB4ML85fZoZxKRri5elyFUyZs8wsnjQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cNJrq7MS; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Subject:From:To:Cc:Date; b=JyYNZURUZNe1mMvS8k6Xsva8xDQRkZbsHxDt2l6UU6XTZiJFgeq1WftGusF5olK4fUglceCShHuXapFjNAlwbduINLpihVHj3Aj+JakQZvWxmlYAORx8lLS2LZxwhwg1E2BzgcNd7H+jwTSw0hS9UeYwixFeKyQJby8w1sUFBfPVUHkPQzvKPxBEySp8BS3xfUcfFMETxVOrwE0L+OOvTUvfTu5RMNsTum8jBnLNAThKB7lie8fSHTmI/8ZGZJksBacGcdwswoKkfZQB9SAwMy7ZsWEU6oFJOWmxUr3fJdQtWkibSSpI2GlxTdHoT9z1/in6JBmk0mOWnZhpLPH2rQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jc6BIQKZ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cNJrq7MS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jc6BIQKZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL9Bt1dX9z2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 08:01:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL9q06TdKz2xN2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 08:29:48 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF60760053;
-	Tue, 24 Feb 2026 21:01:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ABCC116D0;
-	Tue, 24 Feb 2026 21:01:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 66E2B60053;
+	Tue, 24 Feb 2026 21:29:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD53C116D0;
+	Tue, 24 Feb 2026 21:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771966914;
-	bh=RsPVPaopC3BXTr46mcSYS7S0dKw/uRjutei23T7qobo=;
+	s=k20201202; t=1771968586;
+	bh=75wFjdLGpHCy36wy8xROygNeEyyiavbM5IBG1ytvkKs=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=cNJrq7MSne/g/e1PNiCNGRpmnDJokkDLcgx5wBC9XvtlP0Hzbzt5bwO1SiZb6lP2f
-	 HNqlj7tkMyGgA3qNI3iiKUHNxAZeXaA38o+/ffqVxKYmWXWVbxyv7OR9YRDuBpKPr3
-	 vKyTF47Fj4CjzUYYw4fLJtXCmdZftRICoGqW//98YXFGwArwFREWYliCeCQfIBTCHp
-	 PkGXv3ydXjc05SeUdf1r2bkwgguR5SNEZMg/roV4FSGfuA7+daia/ykBWPwvGBmxgy
-	 Ti72dkJ/Ar6dnJS8rxkABhp9sm65r46ePRDyz1ATdTbvvdId/RAb2TNiE/GDh7wy7N
-	 IYq/OWmP1/WeQ==
-Content-Type: multipart/mixed; boundary="===============1101494537671284616=="
+	b=jc6BIQKZhDP0Fw8ryEyJuwTU9nb3PVbbMInrmC86lfEXFQgDCmRHLxTlcrfqleLGK
+	 bW7AW+h+lH394daVpxBnzCdO5vliuMNTKUIzMa206/I2pZQSfq5VNaMBfq9gM2erse
+	 oMWanjnulqaGMccx74WsG87tuqnOSYs0umeizAMeCVOSP/9J+MdDLK1h29IJWDnUrd
+	 pdEooMBOtNPk8JcZtDlpjn2suLhT/gk2TiDOc7sp+L/UmSbSDovYAgkYLByy3FMfxf
+	 ZNJxwsq8VnionIo7TZkDrRncKA7LdEfmsr0w2hrDHdZb+/lnr+1GpSgM1eFT/2eQs7
+	 /S5ORyr0PR6kw==
+Content-Type: multipart/mixed; boundary="===============4812018571603848610=="
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,14 +62,14 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <90202a7fb1a4fd05e2b5dae0d662fcbfeeef483fbe555305eaf15b75aad15a24@mail.kernel.org>
-In-Reply-To: <20260225010950.20218-2-adubey@linux.ibm.com>
-References: <20260225010950.20218-2-adubey@linux.ibm.com>
-Subject: Re: [PATCH 1/4] powerpc64/bpf: Add support for instruction array
+Message-Id: <29abe0604fd96a4e172f6ff49dacddb3f207c2e84959e0d93223ca30ba90d77f@mail.kernel.org>
+In-Reply-To: <20260225013627.22098-2-adubey@linux.ibm.com>
+References: <20260225013627.22098-2-adubey@linux.ibm.com>
+Subject: Re: [PATCH 1/4] powerpc/bpf: Move out dummy_tramp_addr after Long branch stub
 From: bot+bpf-ci@kernel.org
 To: adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org
 Cc: bpf@vger.kernel.org,hbathini@linux.ibm.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,maddy@linux.ibm.com,adubey@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 24 Feb 2026 21:01:53 +0000 (UTC)
+Date: Tue, 24 Feb 2026 21:29:44 +0000 (UTC)
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
@@ -79,12 +79,12 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17134-lists,linuxppc-dev=lfdr.de,bpf-ci];
+	TAGGED_FROM(0.00)[bounces-17135-lists,linuxppc-dev=lfdr.de,bpf-ci];
 	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
@@ -104,100 +104,144 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.kernel.org:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: EFCE618C929
+X-Rspamd-Queue-Id: F311118CC5D
 X-Rspamd-Action: no action
 
---===============1101494537671284616==
+--===============4812018571603848610==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 > diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index 52162e4a7f84..9c27740650b5 100644
 > --- a/arch/powerpc/net/bpf_jit_comp.c
 > +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -318,6 +318,12 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
->  		jit_data->hdr = hdr;
->  	}
->
+
+[ ... ]
+
+> +	/* Relative offset of dummy_tramp_addr wrt start of long branch stub */
+> +	tramp_idx = long_branch_stub_idx + 7;
 > +	/*
-> +	 * The bpf_prog_update_insn_ptrs function expects addrs to
-> +	 * point to the first byte of the jitted instruction.
+> +	 * Image layout need not be considered 8-byte aligned.
+> +	 * Lower 3 bits must be clear for 8-bytes alignment.
+> +	 * Adjust offset for padding NOP before dummy_tramp_addr
 > +	 */
-> +	bpf_prog_update_insn_ptrs(fp, addrs, fimage);
+> +	tramp_needs_align = (((unsigned long)&image[tramp_idx]) & 7) != 0;
+> +	tramp_load_offset = tramp_needs_align ? 24 : 20;
 
-Is addrs still valid at this point?  Looking at the code above, in the
-final-pass path where (!fp->is_func || extra_pass) is true, addrs has
-already been freed:
+Can the alignment check produce different results between the sizing
+pass and the code generation pass?
 
-bpf_int_jit_compile() {
-    ...
-    if (!fp->is_func || extra_pass) {
-        ...
-        bpf_prog_fill_jited_linfo(fp, addrs);
-out_addrs:
-        kfree(addrs);
-        kfree(jit_data);
-        fp->aux->jit_data = NULL;
-    } else {
-        jit_data->addrs = addrs;
-        ...
-        jit_data->hdr = hdr;
-    }
+During the sizing pass, bpf_int_jit_compile() calls
+bpf_jit_build_epilogue(NULL, &cgctx), so image is NULL here.
+&image[tramp_idx] evaluates to (tramp_idx * 4), and the alignment
+decision depends only on the parity of tramp_idx.
 
-    bpf_prog_update_insn_ptrs(fp, addrs, fimage);  /* <-- here */
-    ...
-}
+During code generation, image is code_base, which may or may not be
+8-byte aligned. bpf_jit_binary_pack_alloc() uses alignment=4 with a
+random start offset, so roughly half the time code_base will have
+bit 2 set. When it does, the alignment check flips:
 
-The kfree(addrs) happens before this call.  The NULL check inside
-bpf_prog_update_insn_ptrs() does not catch this because kfree()
-does not set the pointer to NULL, so offsets[xlated_off] would read
-from freed memory.
+    sizing pass (image=NULL, tramp_idx odd):
+        ((tramp_idx * 4) & 7) = 4, tramp_needs_align = true
 
-The x86 JIT avoids this by placing bpf_prog_update_insn_ptrs() inside
-the if (image) block before the addrs are freed:
+    code gen pass (code_base bit 2 set, tramp_idx odd):
+        (((unsigned long)code_base + tramp_idx * 4) & 7) = 0,
+        tramp_needs_align = false
 
-arch/x86/net/bpf_jit_comp.c:bpf_int_jit_compile() {
-    ...
-    bpf_prog_update_insn_ptrs(prog, addrs, image);
-    ...
-    /* addrs freed later */
-    kvfree(addrs);
-}
+This means the sizing pass may emit a NOP that the code generation
+pass omits (or vice versa), causing the stub to be a different size
+than what was computed during sizing.
 
-Should this call be moved before the out_addrs label, similar to
-how x86 does it?
+> +	EMIT(PPC_RAW_LL(_R12, _R12, tramp_load_offset));
+> +	EMIT(PPC_RAW_MTCTR(_R12));
+> +	EMIT(PPC_RAW_MTLR(_R11));
+> +	EMIT(PPC_RAW_BCTR());
+> +
+> +	/* align dummy_tramp_addr to 8 bytes */
+> +	if (tramp_needs_align)
+> +		EMIT(PPC_RAW_NOP());
+> +
+> +	if (image)
+> +		*((unsigned long *)&image[ctx->idx]) = (unsigned long)dummy_tramp;
+> +
+> +	ctx->idx += SZL / 4;
+> +
+>  	if (!bpf_jit_ool_stub) {
+>  		bpf_jit_ool_stub = (ctx->idx - ool_stub_idx) * 4;
+>  		bpf_jit_long_branch_stub = (ctx->idx - long_branch_stub_idx) * 4;
+>  	}
 
-Additionally, for CONFIG_PPC64_ELF_ABI_V1 where FUNCTION_DESCR_SIZE
-is 24, the addrs offsets are relative to code_base, not fimage:
+Because the conditional NOP makes the stub size variable,
+bpf_jit_long_branch_stub now depends on whether tramp_needs_align
+was true when it was first set. This global is set once during the
+first program's sizing pass and reused for all subsequent programs.
 
-    code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
-    fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
+Since each BPF program has a different body size (different N for
+long_branch_stub_idx), and each allocation may have different
+code_base alignment, the stub size can vary per-program. But
+bpf_arch_text_poke() uses the fixed global to compute the branch
+target:
 
-Would the image argument need to be (fimage + FUNCTION_DESCR_SIZE)
-rather than fimage to produce the correct absolute addresses in
-insn_array->ips[]?
+    create_branch(&old_inst, ip,
+                  bpf_func_end - bpf_jit_long_branch_stub,
+                  branch_flags);
 
->  out:
->  	if (bpf_blinded)
->  		bpf_jit_prog_release_other(fp, fp == org_fp ? tmp_fp : org_fp);
+If this program's actual stub size differs from the global by 4
+bytes, the branch lands one instruction before or after the intended
+mflr r11 at the stub entry.
+
+In the old code, the stub had a fixed layout with no conditional
+instructions, so bpf_jit_long_branch_stub was the same for all
+programs.
+
+[ ... ]
+
+> @@ -1161,6 +1180,8 @@ static void do_isync(void *info __maybe_unused)
+>  *	mtctr	r12
+>  *	mtlr	r11 // needed to retain ftrace ABI
+>  *	bctr
+> + *	nop         // optinonal, mem align dummy_tramp field
+> + *	.long	<branch_addr>/<dummy_tramp>
+
+Typo: "optinonal" should be "optional".
+
+Also, the comment block above this still shows the old load offset:
+
+ *	ld	r12, -16(r12)
+
+This should reflect the new forward offset (20 or 24).
+
+[ ... ]
+
+>  	/*
+>  	 * Long branch stub:
+>  	 *	mflr	r11
+>  	 *	bcl	20,31,$+4
+> -	 *	mflr	r12
+> -	 *	ld	r12, -8-SZL(r12)
+> +	 *	mflr	r12		// lr/r12 stores current pc
+> +	 *	ld	r12, 20(r12)	// offset(dummy_tramp_addr) from prev inst. is 20
+
+The hardcoded 20 in this comment is only correct when no alignment
+NOP is needed. When tramp_needs_align is true, the offset is 24.
+
 
 ---
 AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22368663191
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22369534987
 
 AI-authorship-score: low
-AI-authorship-explanation: Standard kernel patch conventions with specific upstream references; no AI-generation indicators.
-issues-found: 2
+AI-authorship-explanation: Domain-specific code with detailed hardware debugging output in the cover letter suggests manual engineering work.
+issues-found: 3
 issue-severity-score: high
-issue-severity-explanation: Use-after-free on addrs array in normal JIT success path can corrupt insn_array jump targets, leading to crashes or undefined behavior.
+issue-severity-explanation: Alignment check uses NULL image pointer during sizing pass, causing variable stub sizes that break the bpf_jit_long_branch_stub global used by bpf_arch_text_poke to compute branch targets, potentially causing incorrect JIT code execution.
 
---===============1101494537671284616==--
+--===============4812018571603848610==--
 
