@@ -1,90 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-17082-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17083-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNdIBvMBnWkeMgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17082-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 02:42:11 +0100
+	id 2LlJBvgCnWkxMgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17083-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 02:46:32 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9451809E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 02:42:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B94180ABB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 02:46:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fKgSX5n96z3cBb;
-	Tue, 24 Feb 2026 12:42:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fKgYc1GH0z3cBx;
+	Tue, 24 Feb 2026 12:46:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771897324;
-	cv=none; b=RBUygdkUOTY7DlJJDY6rUaV+qCsPN5ufmV8cBNOhrekZeqZXFLd49dySt9NUWfG1unGP1ZdYKn7X3O7gG35FbnDmnWMspIApWpp8IEF0CFNgnBSukX196N68DKMC/HCb4i0Gfxhx2VksuXFCbJSEr0u1I5ITiGV9nVqrYsmdwRTAANpHfcB9BZqFowbJ4zHHDcbWZfTUMrqTwEzzEk1QoptOpDoRaTNCDi+ZNwYypTA6/bjmRhvHGFl451dapJofSsE8ykd+m04MM17gsiDY1Xqw7tHkIC1M+NV0CnZS3msmvPrBMs3mroTTWaz1/gc4ivcr46xPvY33vBL9efHDXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771897588;
+	cv=none; b=TjnjcBVQe+rb7fDc6lmIVgim9h4CUnrcb27EA62hg7l0NamshaWJXWLAX59OyOeAMLJ77nILFG3w9WSrzaApz2SCWGv8w8m388jEU5Lat9541IF0hvDkOtwGk8n2xR7J9wx+5zYIp9/oqtchPB1LXKtDErTdAlRI9D12FcGn337xCpPJ63GPsaQCoFl4SAkCgszXuQHFqgZz09fNhIqc5dW/LTpOsfCdzOUAoCoPh0eqt+Tbm/G3UKBkNgMKDfPaisryTb7Dbvt7NBwAB2LGjZj1i/s3RHCFrUYI7VjxFBLFybAIDLOUDSqzwOP3kTGu6gEsakOwDN5BHchqkfoNFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771897324; c=relaxed/relaxed;
-	bh=6P7RESrYIJDhZprgcR69A/7lKYelhyEQG3ywd9xm4QQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bubZ/2CyYus9exaJudNNi+mOJ5UMrfOn0B/i3Qex6U9IEjw2Xqu0EQD72Iqp33Y1pEmELHrAdWxR2qdiwirkNYEzDJCSciWvwQBDl9IDi/rjSoIm2VYtBbVJZQeIJun8ru9IBNZQcqZnfyGlB5aZxgkcejzwmtvydHQYHcRIKD/dudcstNSdylSY6uuIuog+QvEaRjLcoZLyDeJRk7YixyQukcAzL0Az91iJ8xiCciVxxHF62EfJxyXkRT2QWb+VcNjCp9PXdN/dYQRWnt2sWOWFDVOVZHqCxf3olFqaIbNYiUWoyplDwbl5ROXnsiWrKvAUGe4xe6d9Bk3+Rxt8tA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ij9GBGq9; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1771897588; c=relaxed/relaxed;
+	bh=pyCuepEEE5VZwezz+EwCnELSbh3qvdwdxfgg+cxEJD8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AaLMSWyTqA/zgyThcOecqVlDZLQ7GnnRJfQiAPfKdpgy29aWD/re6q55g3dAxhHEtPLtBeMhgQabIywuBeQCC+mWBsDLGy3eR5XN4nC4rcxiFM0vRCHNDLn0B6ExZFw+YYIB2E0LW6Y7grECbnrz+jkPk0DOqmAan1XkZ6TMUTtLvNS8dGMC3+Rklu2uvVnYRF+7IByDMlNoP6FyqGRRVyK6fHvNpnnXQfewgZUEPOiwiTfymvpwSyS24sZ3pUKwAKBLMODXHBv+sj5MW7ZGloDd6Aw1IMyvgQ2O0li19rAo1d+LjzfLF/O9lsKilME5/WsZ4P0r6Qgbgwe68ui7aw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gp6s3yCl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ij9GBGq9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gp6s3yCl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKgSW4f2Rz3cB5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 12:42:02 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-2ad3f12a496so26488715ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 17:42:02 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKgYb1kbSz3cB5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 12:46:27 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-2aad1bb5058so51634405ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 17:46:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771897320; x=1772502120; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1771897585; x=1772502385; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6P7RESrYIJDhZprgcR69A/7lKYelhyEQG3ywd9xm4QQ=;
-        b=ij9GBGq9puZW4a+p7nCmq1Rn190hmUkmpu91B7eweoyZ0d8UmrLaSQFI1AezyYx4+P
-         Wp2SFy+4BHYUYex5qpmiJjrymHIPXkblW6jyMnYemZDMeCqhcnAn8Wz8oUH4TvZuijDd
-         xj1/JBgRSq2L8l5vvcLr6Z8nPRczeuWYae+aqB2N5Uv8cBpgcDVeygjalHcrb19QP5V/
-         PSXYmj5Vlawf01PdB1UtC7shlGUKIdJMohfsIYLAZSwMC1Wc5U2j0CHY9wmCowwQY+14
-         +QfzbTHDifFGjEK95/eXuASeCMH9BcAHQKVt2HHkf9nNUD7AwcQC8vLnJp3KeqIC+yzU
-         X/Jg==
+        bh=pyCuepEEE5VZwezz+EwCnELSbh3qvdwdxfgg+cxEJD8=;
+        b=gp6s3yClAEbuQBELXueHt4aZ/x1SdSqqMXZp6Sw/6cd3ubfQdoOb2XkJnV9PD4hnSe
+         NMXDit/pQCsLUwRSGPeJ5qcnsZApE7B72UJFOJD3/kyfGfqz0Dm8MzobNXEMp4SAJyhk
+         syOMwDAo0g2kMUHEpCIq81kbX7tAuhJ1X+NDmSbT6C5Bk9IFvusVHtWYnNTJJAlDyPPN
+         KbxGXm+RFgwpFYp27bYG1ZTgRn7IS0QgWSOYT0zupbUooFWn+GCNJgnv7GQ8afK2fZ4r
+         lojryPPBuYIvg56g0xI8/CLoUNbJYU29Bo/o7SLTyZ1daxIGwAXPlXwMtDPHn+KAB4ri
+         A9Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771897320; x=1772502120;
+        d=1e100.net; s=20230601; t=1771897585; x=1772502385;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6P7RESrYIJDhZprgcR69A/7lKYelhyEQG3ywd9xm4QQ=;
-        b=nNHo9HdloN84h21DxMUPD0QRZZZZ+IgOSNf2QXZ/0URxoTE6HCE66iQCVxC+bsNVQF
-         TNGSdh+TiIyh99p5kAcyJhBLEhPuQs1LxpbAOEmu1d9O60Hy7s3wsLQ9WBVqXfKiRbqE
-         M4qqK3fFoncgucnleaw2tEkDJlw6gVJHUrC8CGbCOfzXTTB6gDGZ9q7Nm07Yvh9w8x1B
-         fUQY0IBqCujmkyz2Nd9py2AZUopK1r5mpV/JyfExKjDpppzFyHOmKeX8GsCBqY3VcWaV
-         K5VonRebmWOXXV4b5qGDNjxfJpfKL1bEkR29xcmfVpQjNpEJ3SZRygYfHdB5APhyBWMd
-         V56g==
-X-Forwarded-Encrypted: i=1; AJvYcCWSF+6BuR4sKrq4KaBol6fIUY6Z12jFRnX8YPjaAGlXLUNpGHV5m/tjHp5d7kFoPXr5vzBMDZ3r13HdoQk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwBRojVurPR5HTMx9AlDpyWxfOrwsEAgUma5mJiZlxBTfF70DRX
-	lg8yP7uN7uRK6mhP38ZfSHm++N0DonUy7RYFl6VToQwwxa/8dSDaC5VC
-X-Gm-Gg: ATEYQzxMBrrTGKO2qYhyTvvrZ6G+b92RHBhwTXmCSfxC7w3XJcQkd0kXuIWOvzLmwSW
-	UisuIPV9wDHEUn9/8Z+mO4AmejCKy39Iem4raxFI7abLjqIUCUylMNJ3RP+w7duJAQOBspUAxT/
-	Z3Pmx6C5b8zIFn0K0UGkBkBDAFXN8D22XTCYiA6P+H7n8bCyrxGFiWF78f2MTd/F0phAlHkpbr4
-	B98Qg2VT0xBB/JSErINU2OdmpjkchGuMbimtsd3tw5IDleBpxjtJrAma0SVGvfRcWrPRBAWTb+9
-	qW+evT5xUzIzPWfWLOs0MQNMi8K8JbWtXCBQV9TjZ9bGqR0qIuIM3j0MiJq4b0WVWAhWbNQRdRg
-	Y9qvzE0C1ilKdmb6zpwsbG6QJHXTqGUHHafOsZvoAG3tnTRtaSCGrrOiR0mr2S6Ib/KogWxCOie
-	DNbqMffCLzqNuG+N1mNQWSy4JmvTaMXgvFdTCbv4nZPU1f+EAFZQPAOQ==
-X-Received: by 2002:a17:903:2390:b0:2aa:d327:beff with SMTP id d9443c01a7336-2ad5f701d04mr164763405ad.6.1771897319835;
-        Mon, 23 Feb 2026 17:41:59 -0800 (PST)
+        bh=pyCuepEEE5VZwezz+EwCnELSbh3qvdwdxfgg+cxEJD8=;
+        b=KWuLDYSDIrl7yDKpnTDfZLw48/O7SVmPiRjhn56IuSh9wIuHSv6Zn48daxTF5WDoHj
+         N04jeZv0sjPQ8ICThLPeu0BBKaWsodASW7+eN3wjNfDLr+2F/SfNxoYGGUIJgVHW2VVp
+         2mzNNCsDSD5F5XLacXmmshrSlA+lfVLVgKGS2kAAbqRLX8+eDhozERTPrpFh8V2QiDNU
+         4DoTFhTHnmvvguU5JgyrR1DRin6sPtp+eZ0Cm1K0dEjIVN6b2THOHxLJBFQ3HC4OjHig
+         ay3z/ArTSjXKPtQM82zhMAlV3XLbQuwwC4yn0s0vLBH55rok7JteuQUf1gCnn2Rf8IiY
+         NyEg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkXzmCzUSa+BbN9J1eFq+b6unIw/SISkPJ2LKeEOVijsCThHImVpvDWmCKaaIO63BYKzzeRerj7lS6mXA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YygResT0MHvdnJXPArfZz01ZVMnYf8zi7qS/HRRA/IhMFL/qHu8
+	7J75OLuyF4ZlS2o6sPuZolXHAsZ6vAgxUPpOWzvtE5BbBBiCxpow0pTt
+X-Gm-Gg: ATEYQzxIXuU2+sd/fZwRhzOrFipMnXhOEoGmJL2TQZxKoBd63SC5V0VuZDCmga2fdU/
+	TOBgfBwmF9aeueQdBRnO9Q0mLM43yiHqtHP5xXPrA1XdkQGt0JDMs2T5sy8L5DMV4TCQFnfoqr6
+	sthaHwXSjiS9NpGwfXlaLotTtHUH7pqLHrYyvvbYZlX8ppUKP9N40BO97TBKNMyRM/7ifgz7y9+
+	5Agc7H/p+DBq46SCc3zzCOoed4nsT1ASnGjojO1dEJ96WdtJNA6+qqzjhCZAdZKjx3cxo6wTmh8
+	SOUsPTYkgfXGxUyQ5HT5XgMlW+E3d4FxRPg6InlAwSneDF+XsUPk0FuFhmn66YkHOIJO+fMaUhL
+	YcnKfjvXZKIx7jZq5rHPi1O9TUjXNr7RhhKbwKr/ZnKn3ZgqkYxumY/o88ug1CDsMaBGC6emWb1
+	XK5PaN/YLpwUvHd0dni7q1cvOC95uN216QQOQR4unGmVMVpIq7fcfsiQ==
+X-Received: by 2002:a17:903:32c7:b0:2aa:d320:e969 with SMTP id d9443c01a7336-2ad743fb337mr101422045ad.8.1771897585096;
+        Mon, 23 Feb 2026 17:46:25 -0800 (PST)
 Received: from ryzen ([2601:644:8000:56f5::8bd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-358d79bf6d8sm367577a91.2.2026.02.23.17.41.58
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad75044c72sm88143715ad.86.2026.02.23.17.46.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 17:41:59 -0800 (PST)
+        Mon, 23 Feb 2026 17:46:24 -0800 (PST)
 From: Rosen Penev <rosenp@gmail.com>
 To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE QUICC ENGINE UCC ETHERNET DRIVER),
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC FS_ENET DRIVER),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] net: freescale: ucc_geth: call of_node_put once
-Date: Mon, 23 Feb 2026 17:41:41 -0800
-Message-ID: <20260224014141.352642-1-rosenp@gmail.com>
+Subject: [PATCH net-next] net: fs_enet: allow nvmem to override MAC address
+Date: Mon, 23 Feb 2026 17:46:06 -0800
+Message-ID: <20260224014607.353378-1-rosenp@gmail.com>
 X-Mailer: git-send-email 2.53.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -109,22 +110,23 @@ X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-17082-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17083-lists,linuxppc-dev=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,lists.ozlabs.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[rosenp@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:pantelis.antoniou@gmail.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:pantelisantoniou@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -133,42 +135,39 @@ X-Spamd-Result: default: False [0.79 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: DF9451809E0
+X-Rspamd-Queue-Id: 16B94180ABB
 X-Rspamd-Action: no action
 
-Move it up to avoid placing it in both the error and success paths.
+NVMEM typically loads after the ethernet driver and
+of_get_ethdev_address returns -EPROBE_DEFER. return in such a case to
+allow NVMEM to work.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/net/ethernet/freescale/ucc_geth.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 78d72409b6e0..4d598693d7a6 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3470,14 +3470,13 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	phy_node = of_parse_phandle(np, "phy-handle", 0);
- 	if (phy_node) {
- 		prop = of_get_property(phy_node, "interface", NULL);
-+		of_node_put(phy_node);
- 		if (prop) {
- 			dev_err(&ofdev->dev,
- 				"Device-tree property 'interface' is no longer supported. Please use 'phy-connection-type' instead.");
--			of_node_put(phy_node);
- 			err = -EINVAL;
- 			goto err_put_tbi;
- 		}
--		of_node_put(phy_node);
- 	}
+diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+index 2cbcc29408e3..d3c772ed5fc9 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
++++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+@@ -951,7 +951,9 @@ static int fs_enet_probe(struct platform_device *ofdev)
+ 	spin_lock_init(&fep->lock);
+ 	spin_lock_init(&fep->tx_lock);
 
- 	err = of_get_phy_mode(np, &phy_interface);
+-	of_get_ethdev_address(ofdev->dev.of_node, ndev);
++	ret = of_get_ethdev_address(ofdev->dev.of_node, ndev);
++	if (ret == -EPROBE_DEFER)
++		goto out_cleanup_data;
+
+ 	ret = fep->ops->allocate_bd(ndev);
+ 	if (ret)
 --
 2.53.0
 
