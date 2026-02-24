@@ -1,92 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-17133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IiWFVIQnmlBTQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:55:46 +0100
+	id wOEXN8oRnmlsTQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 22:02:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BCA18C874
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:55:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCE618C929
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 22:02:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fL93d63CMz3chS;
-	Wed, 25 Feb 2026 07:55:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fL9Bv35VCz2xQB;
+	Wed, 25 Feb 2026 08:01:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771966541;
-	cv=none; b=L1OvdUJJywTcUbdOkJww92JJ0fOeAVwJuW46vIkk0q7TN3jqidmBLlXWW9wML3PTUd7xjYrAc1ro471YaqR2EloDqTMuD8DgV3ESsvjUWmM4UAQP+zEVje6+roZsaZYSED8iGW9Rf2/pc98vKufdZ+70HLwPuDyqT4EI6nKRNbicrcEyldQEyLmVdmYLPJSMJRrc5LR+GdNg+X7lYI4fJeXNrS4vqppfTqPDlJriHO7+w1Thsc7tLVrd+xyQ9B/9CvY+livBnYsSn+7T1XkCPWsVncru8PnZWfSu3+xI7CTGaVt2sPZzFL/AFTJHK7a/auUvPJqoYZ6ZTsiFZtrNvg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771966919;
+	cv=none; b=CsV6W/rDocbD7ktDAfdQ05YnCsjXLK2Vs3r/yc8IVVJiJT9PVsAnsLCfDNDXFG+TGKCnAS46FKGcNUi40Icg/n5KUokvU2kF9wNd8CHd//glZ8i0/janfIE/qFuCxhFoUlXB9r0FQtlFNubn/rbwi0iOHAI3GUoKY4X/CufY+ZFUanLZvMvNTXK8Cgu1GPTMlXlRNPfp6Iy1Zcyuxanj3uoGLgtvRLGGfo6K/f0TAA4R6pMsiSsu3ELe5AVYpcDDHx5DO4nuqjzkLWfaAdtUgLcnmYhtCSNcxjTGJF+SQYiKD2zc/0ECA4NDyEduP4Mpp7L5w1gqt6jU7bGIlhMVYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771966541; c=relaxed/relaxed;
-	bh=nD4+lp1M+KECx0QLG8Rln8fzr8sfcII1yyyhBAQzizQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l04IEEN0RF67hYJ2LQ5wXvcHq1NkYJAlpjvSVmKGurNpyrNO2yJra+ptXYH0DzVkuNrvS8KbXfOcLVWO8xt3BxoNtgLOjH75kLqGyZYY2GMVWtxLAqu9bsEeQ2TACLruieRgKn1azyj2L1w24e97XriXneIB1wr7Tt1w7aVnAU8Q8wuB/U//oTXWpM4ZKuW2zwijRW5xM+K2hPgMPZiq9P8FHKzmS86jJ/Q1VsxeCXY8bTDQdTCc0SnJ4UBpgYlQLD+Y/rmnuNXT726odOfagQxsNQiXRQyWb9wQubw1kgySnnoxSITriVZpX6VbjjFw6u/CE0ohR1IxeJbD/IcttQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C5QdJEhD; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1771966919; c=relaxed/relaxed;
+	bh=lE840fOf2zf4Dgfox0H0BhhA8SZtLuHDg7mTvLDv3eY=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=XnB5lP2iW0UPgZMLp4xKiN/z+8KPWnSB7U9fMIiWUWa6/wkyMkoMpIjL1gd0O41weHchWOIpVGTXc35nmZYOozZiyjft3XlbJ95gyEN7FUJQtY6BLIhbQYQfODD4UMdldB2p0Ns6h1ugDLfciFXwqrajeo+KRhafBUpHIjKUDDRzOaUTlKwWEVkntkndyVCWQPccGuJeUbrXYnNWPURSR4+sL1tQqZ4o4EjzRKxtQf5JSalzQipTAlThP0LKRr/4Cj6dxKq8Wv/+zYGXSwLNuscnbszOy1dkX1soWYrpDguWw2kM03hYHjHVB4ML85fZoZxKRri5elyFUyZs8wsnjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cNJrq7MS; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C5QdJEhD;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cNJrq7MS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL93c5W1Bz3cgf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 07:55:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL9Bt1dX9z2xGF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 08:01:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E3F942BB8;
-	Tue, 24 Feb 2026 20:55:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21D3C116D0;
-	Tue, 24 Feb 2026 20:55:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DF60760053;
+	Tue, 24 Feb 2026 21:01:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ABCC116D0;
+	Tue, 24 Feb 2026 21:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771966538;
-	bh=SQcVebSSVbAr9KoKj2KkC4SNEiz7WbMDmKWz7KrYMDc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C5QdJEhDu3F3RiE7rGx/Dj0PuDa8L2iA78NrEvl5azZwBu4Ri8KTCOsR7pMfcmtU3
-	 je0zFaQMDs14Xk47ydamr6d7K/C2mLgReCJU0eQ5t1msb9+Cr7JogPuBHz98HpmyQ7
-	 FL/1gMMXhg+L00T+Kh2KO3QlEyL82mSedV36eljnS06LPHa0h3WmsQVmUdeXN3DiC9
-	 cEZqkUgOnFmktJdADtpZXWkrLh5++ZoIg7vfN/CCzxHt5NfLUeQ6OdSa50D7n4i6eP
-	 XnEv8Hyqpy7KHExKA4q8UQSULNu6IIGyin0jFfMRoKZyLBFOB48silsMM4b6g71d0s
-	 /Yrc0O/Gx/2jA==
-Date: Tue, 24 Feb 2026 13:55:29 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Nicolas Schier <nsc@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	linux-efi@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH 2/2] kbuild: Use '-fms-anonymous-structs' if it is
- available
-Message-ID: <20260224205529.GB3510750@ax162>
-References: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
- <20260223-fms-anonymous-structs-v1-2-8ee406d3c36c@kernel.org>
- <202602231432.20F3F0CF@keescook>
- <20260223225311.GA2462602@ax162>
- <202602231459.2A1DD53E0@keescook>
+	s=k20201202; t=1771966914;
+	bh=RsPVPaopC3BXTr46mcSYS7S0dKw/uRjutei23T7qobo=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=cNJrq7MSne/g/e1PNiCNGRpmnDJokkDLcgx5wBC9XvtlP0Hzbzt5bwO1SiZb6lP2f
+	 HNqlj7tkMyGgA3qNI3iiKUHNxAZeXaA38o+/ffqVxKYmWXWVbxyv7OR9YRDuBpKPr3
+	 vKyTF47Fj4CjzUYYw4fLJtXCmdZftRICoGqW//98YXFGwArwFREWYliCeCQfIBTCHp
+	 PkGXv3ydXjc05SeUdf1r2bkwgguR5SNEZMg/roV4FSGfuA7+daia/ykBWPwvGBmxgy
+	 Ti72dkJ/Ar6dnJS8rxkABhp9sm65r46ePRDyz1ATdTbvvdId/RAb2TNiE/GDh7wy7N
+	 IYq/OWmP1/WeQ==
+Content-Type: multipart/mixed; boundary="===============1101494537671284616=="
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,79 +62,142 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202602231459.2A1DD53E0@keescook>
+Message-Id: <90202a7fb1a4fd05e2b5dae0d662fcbfeeef483fbe555305eaf15b75aad15a24@mail.kernel.org>
+In-Reply-To: <20260225010950.20218-2-adubey@linux.ibm.com>
+References: <20260225010950.20218-2-adubey@linux.ibm.com>
+Subject: Re: [PATCH 1/4] powerpc64/bpf: Add support for instruction array
+From: bot+bpf-ci@kernel.org
+To: adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org
+Cc: bpf@vger.kernel.org,hbathini@linux.ibm.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,maddy@linux.ibm.com,adubey@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 24 Feb 2026 21:01:53 +0000 (UTC)
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-17134-lists,linuxppc-dev=lfdr.de,bpf-ci];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17133-lists,linuxppc-dev=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:kees@kernel.org,m:nsc@kernel.org,m:torvalds@linux-foundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:James.Bottomley@hansenpartnership.com,m:deller@gmx.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:ardb@kernel.org,m:ilias.apalodimas@linaro.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:linux-efi@vger.kernel.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[38];
-	FORGED_SENDER(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+,1:+];
+	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:bpf@vger.kernel.org,m:hbathini@linux.ibm.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:maddy@linux.ibm.com,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,arm.com,xen0n.name,hansenpartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 82BCA18C874
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.kernel.org:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: EFCE618C929
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 03:02:32PM -0800, Kees Cook wrote:
-> On Mon, Feb 23, 2026 at 03:53:11PM -0700, Nathan Chancellor wrote:
-> > On Mon, Feb 23, 2026 at 02:33:35PM -0800, Kees Cook wrote:
-> > > Series looks good to me. One style question, why go the round-trip with
-> > > Kconfig instead of doing it all with a fallback in the Makefile:
-> > > 
-> > > CC_FLAGS_DIALECT += $(call cc-option,-fms-anonymous-structs,-fms-extensions)
-> > 
-> > I might be misunderstanding how Kbuild works but
-> > arch/$(SRCARCH)/Makefile may have logic for selecting CROSS_COMPILE,
-> > which can impact the selection of $(CC), so I cannot use cc-option prior
-> > to its inclusion but I need CC_FLAGS_DIALECT to be included before
-> > arch/$(SRCARCH)/Makefile in the main build so that they can be used
-> > within it, which is only possible after Kconfig has run. This is
-> > probably worth more flushing out in the code or a comment since it is
-> > subtle.
-> 
-> Will Kconfig see a different CC than Makefile? Regardless, I trust your
+--===============1101494537671284616==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It shouldn't, as arch/$(SRCARCH)/Makefile is included before invoking
-Kconfig; if the compiler changes, Kconfig will run again before
-building.
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 52162e4a7f84..9c27740650b5 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -318,6 +318,12 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>  		jit_data->hdr = hdr;
+>  	}
+>
+> +	/*
+> +	 * The bpf_prog_update_insn_ptrs function expects addrs to
+> +	 * point to the first byte of the jitted instruction.
+> +	 */
+> +	bpf_prog_update_insn_ptrs(fp, addrs, fimage);
 
-> judgement here! I actually rather prefer having it exposed via Kconfig.
-> :)
-> 
-> Reviewed-by: Kees Cook <kees@kernel.org>
+Is addrs still valid at this point?  Looking at the code above, in the
+final-pass path where (!fp->is_func || extra_pass) is true, addrs has
+already been freed:
 
-Thanks!
-Nathan
+bpf_int_jit_compile() {
+    ...
+    if (!fp->is_func || extra_pass) {
+        ...
+        bpf_prog_fill_jited_linfo(fp, addrs);
+out_addrs:
+        kfree(addrs);
+        kfree(jit_data);
+        fp->aux->jit_data = NULL;
+    } else {
+        jit_data->addrs = addrs;
+        ...
+        jit_data->hdr = hdr;
+    }
+
+    bpf_prog_update_insn_ptrs(fp, addrs, fimage);  /* <-- here */
+    ...
+}
+
+The kfree(addrs) happens before this call.  The NULL check inside
+bpf_prog_update_insn_ptrs() does not catch this because kfree()
+does not set the pointer to NULL, so offsets[xlated_off] would read
+from freed memory.
+
+The x86 JIT avoids this by placing bpf_prog_update_insn_ptrs() inside
+the if (image) block before the addrs are freed:
+
+arch/x86/net/bpf_jit_comp.c:bpf_int_jit_compile() {
+    ...
+    bpf_prog_update_insn_ptrs(prog, addrs, image);
+    ...
+    /* addrs freed later */
+    kvfree(addrs);
+}
+
+Should this call be moved before the out_addrs label, similar to
+how x86 does it?
+
+Additionally, for CONFIG_PPC64_ELF_ABI_V1 where FUNCTION_DESCR_SIZE
+is 24, the addrs offsets are relative to code_base, not fimage:
+
+    code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
+    fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
+
+Would the image argument need to be (fimage + FUNCTION_DESCR_SIZE)
+rather than fimage to produce the correct absolute addresses in
+insn_array->ips[]?
+
+>  out:
+>  	if (bpf_blinded)
+>  		bpf_jit_prog_release_other(fp, fp == org_fp ? tmp_fp : org_fp);
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22368663191
+
+AI-authorship-score: low
+AI-authorship-explanation: Standard kernel patch conventions with specific upstream references; no AI-generation indicators.
+issues-found: 2
+issue-severity-score: high
+issue-severity-explanation: Use-after-free on addrs array in normal JIT success path can corrupt insn_array jump targets, leading to crashes or undefined behavior.
+
+--===============1101494537671284616==--
 
