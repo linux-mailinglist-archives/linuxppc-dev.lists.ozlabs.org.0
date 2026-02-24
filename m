@@ -1,101 +1,113 @@
-Return-Path: <linuxppc-dev+bounces-17087-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17088-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOcsGEQwnWkDNQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17087-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 05:59:48 +0100
+	id cE40HJRFnWmoOAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17088-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 07:30:44 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE17181C55
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 05:59:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A257D1826D8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 07:30:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fKlrZ2rcMz3cDt;
-	Tue, 24 Feb 2026 15:59:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fKnsV6ZZXz3cGY;
+	Tue, 24 Feb 2026 17:30:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771909182;
-	cv=none; b=OInqXiHWMJWmq8IN/XvniNLE4FqL3e/N1pXbfCkyth4tlqxkO1vgyFU6shAuR4N4xi65FMc6Nu5z0vhh18+ag2VOTTB7CyDHYI4pBIa1Ui0ns6wwjM1qsdFWDFley2H1/1J7WsP7w+Gq/nxthRXkiFZulyzxOi9S7T4gzvKymgbAnoTpPvqMSjJUoOivqZD4/Pp0r5Ix6qeH4M/Xvif1RjjLILOit24eqigxgshK11kyW3RBB4B4OydhHBBUK01L298X/j21p8NuFqZ71RH40CUyXGUozctVoj/qk569LJRO2DSwtwmd81+75ZaOy1m9m9Ms5BCOBkbJsp+b5tK8Qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771909182; c=relaxed/relaxed;
-	bh=Ou4URiguCEIHQD6BF6MkSWLcHXyR9MfBfXSYfwsYE5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RSLVxGF0JFuOCX4Lc9tx3XaxHCgZC09aOr4kQrH1ytq4UIvYQaW5W07P0RcY6Qwx77IyFUVOQ3bmFID/Lq8N3u+i3MVeVcQXP+1xeZHJoHfA0fVE8kV+9uRWzgRsBRjVxKfxlMRx/M2QjPmCkJ0a1aw9zkzTHLf8UJKkQOqWY51R1aEe3jCimjD3L/wXZb3Z9nn+A83hD80pd5qqERGFFrtoYFHVAkIeVRt0vXvIyyb+Sb28xCsd+Gwlr1yja0qCbYef4GeA5U91I5+b2oXQMPLP2cAv2wPW5T+xn2PEMqZKqYubMVSqBqIinTRl90Hdd+ShGKG8jtoUCKtOc8vvMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jDHngT0D; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.53 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771914638;
+	cv=pass; b=fe4WXsldlnFv6Ul9SKn0DFhrVR7AtM3CCxS0WX2LLE9fy+dbd4PSAxkzHbUTvPHTcXM2BWWl1CdQMb7wkGRWboEph0/UMKCmYZzyb6ZCctfzrEy8DwRl7xkeofJ+Jh3g9FNw/jwhAjWptMXJbN1gvRSOr1LCt3U7zHx3fk1g94jH8/rcpACxtBP5lQyCXi5Q8S0SZKHN+DP/V7XQPAn7vGZOsTo31kKebyC+I8wZm/tDTWycCBPwkKEsSMWfUH55OZRykk3PYKvnWQdH0UrGKH/Arh9D46uEbckRY8/QBR6x1e/rUbhwhfkM3oql3PavSgMbBjSJ7haiv3Gv9Fvnrw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1771914638; c=relaxed/relaxed;
+	bh=aJnFllV8sc5HH69M+vVx3xOhhAroz7QXWl4LvdQTNRk=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Bf3VRyHjTx9ZaaBTcL8PNPVikXlPYVZC51vJwji01rDXo58u4ywwdgE6bzMeXWxhm+Re+2MLZ9r5EvLPrQ5Kul/bTBNIDGb4AbEhqP4navumEUPXMjzDJzUWh4Iz+ea7mO4KCe1CFBQ4uilHjjET4l8izOgVylrDgvjuGLu6jD8H77aUzXRJMHfEXtnihfIQqBo6HGnwKLEDk1K/f/z4lAEiqXJc05cRmoyEu4a81t3xRWh3N4OxgUShG26asuxXcRCetPmr0Yo6h7Yh0aotZWUfwrWK7elxO4kS60/Gj6qQPqK/rfAMODXH1KTke74zSKVbfht59QR/TBH5r30ZaQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=dIU0Hi+G; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=2Jnhv1q0; dkim-atps=neutral; spf=pass (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jDHngT0D;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=dIU0Hi+G;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=2Jnhv1q0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKlrY4LBXz3cDg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 15:59:41 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-2aae146b604so35638015ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 20:59:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771909179; x=1772513979; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ou4URiguCEIHQD6BF6MkSWLcHXyR9MfBfXSYfwsYE5A=;
-        b=jDHngT0DAesJixDwderTzyIOSn47yIzrWmY2e30u0ule+NxY1/jhzSpTncUl00kEiM
-         b3TpSpqpTK+K+HyQ89hO5i+K2uyZagwR3Fn30G0258GKo0A+5mt934SzOmfTSwi3n/fV
-         xjUZPg0/V2V85qdZPbQPn3PU8jbADehMa5sZidScl/HvLrC7BQzNROscijILIHBUw84l
-         MFwZEU7CrbihsUHyUA3M4ktkmJzVmjPXwYrWVKRbG0qGlZoftTb2VwItuSXLuAImeZrC
-         jmZmXn6NIJaDV69nFZiCYA0pDJpbC4w7VNwupttrtOxa+NT9dEDos3lOW1nSctKZl4rL
-         UGBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771909179; x=1772513979;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ou4URiguCEIHQD6BF6MkSWLcHXyR9MfBfXSYfwsYE5A=;
-        b=fxmvjZQ36U1kUwiyWlv9yRk+25sFvaNM9m5K+Ki34H2G5jNVlbP/wPigCPhoat4uWE
-         q9a97H5jsGyTpBm6dkuebPBT0i3u6ocbivSilas9sTyXiopEJ6kWbKDEG79MNSATFhy4
-         yNTIkea3Ar/hk0++Yk0Mpe/S/UfxYBn9zwfjBYjkiuhNUdGqXOYLEPyXeE3P8uoqlbKE
-         l3HeewjKiHbp5E6U0jggvlpT+BpPqXc3uvu/JW2X15luszJyEqdkwtWgCzvp4NVM9q1X
-         SXWJbLOta410fJ+R63ZNXDkLN5wfm39rLbhT8sGTaDFN2tMkZnScXjciyf7iIynmckOP
-         NJ9g==
-X-Forwarded-Encrypted: i=1; AJvYcCW5C2GETR8pyqXZLoeFEi1HvwLeqTA3L2L2WdU+JNtTKunAKLewHqW6iZDg+Jwq5mkHi7pl8A7c4brk+/A=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yya0LxU5eUDzMxHCe5SIz3zco88EggOkBO8o7XqrHG3JDnEdKGZ
-	f6fOKAReeTRsdbWFNGVZEY8R5VjYLLp/y0YI7qQjslOemWvP2eGEwCIJ
-X-Gm-Gg: ATEYQzy9/L3zEaeE8wU+iBsBIABkLjlj8yvr/hoLX3Iu2/0kWQvm44/EEe2Eem33Io2
-	sO9zc8OBdD9rDsdBnQghfY0psQ+/DTxzJIWOd8JZZfk3uNesYFtS0RBfhOm/CMW8FmKilXZTRQ7
-	7ab7OPQgz1pCWOK+ZOuCuThTIkEE0JEhbAjAJ3jLEJw9eGx7M/qzYoz+qtFI+tFEztCSMqpnBgi
-	pi83r46+Gt28MA7t6xysSy7xOg2muydSokt94zyhJ43q4poCUzKrD9J8Kcm3Dbjl/gy7Y0iWh2e
-	32zLHdlYTD/GFGKd3Amns8i+bkHcZffOND/FVVb08x7fGvmMrKjqraU/OD1Wu8lIz9qWO8vCPxz
-	ZI4cPlbQovbDSP/3c2WYxx2Rw6UCyP7OVr0vkhDYV2b50u9VPdT1+8NuBz+HybiGl2ELc5udIoT
-	G3tG2JTxDJ96SIBtsMtnwfHR2oDeCR6h8grv5fUdiJ1dO50yRcjujW7XO5D5Jp20iS1gEc
-X-Received: by 2002:a17:903:37cc:b0:2a9:5db8:d651 with SMTP id d9443c01a7336-2ad744683e8mr101466305ad.25.1771909179489;
-        Mon, 23 Feb 2026 20:59:39 -0800 (PST)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([103.77.1.206])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad9f1d4b03sm7780005ad.29.2026.02.23.20.59.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 20:59:39 -0800 (PST)
-Date: Tue, 24 Feb 2026 10:29:26 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>, Alice Ryhl <aliceryhl@google.com>, 
-	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	Ralf Jung <post@ralfj.de>, Jubilee Young <workingjubilee@gmail.com>, 
-	Matthew Maurer <mmaurer@google.com>, David Wood <david@davidtw.co>, Wesley Wiser <wwiser@gmail.com>
-Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
-Message-ID: <aZ0vxHY9MGndIDPQ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260210090023.2587534-1-mkchauras@gmail.com>
- <20260210090023.2587534-3-mkchauras@gmail.com>
- <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
- <aZtT4MH0Q8Ic9ZiM@luna>
- <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
- <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72mg+D4QZmBhrNj7dB+V3GHsQoZT2cSG1ffHYDYJWXyopQ@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKnsQ6sDLz3cFM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 17:30:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1771914615; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Q26Cm+jcbNkxDf2rDq4TsjmdoVtP5QfyjtEzLpCCzuGhuzxTvygitsgyOII4fp9duB
+    WdiezGDaQU70SmFvauPoyIbHUZP8WU9fUFVVOJtQvqYQWykzjREbbuqeQlLUR+8jAh2t
+    mt0wCbZOlAqKgKjMBmZZKo5f0CZu0Pu1qkOpxezfYzuvoFUjfpbDrCESwc+VmfrBrgO2
+    Km3NUDdD4UwjX0bX7OQ77u4os4kMD9IFqPJ+S+fLf6Blcx4EL3uR+nXDRaoU7Jp494kg
+    4TA0eQ7SpeA/kIJFXB1r+5xQUrLRdP92fwejx0aCQ06s6IU+WpKKW5R9BQloTmWvp3N0
+    cD1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1771914615;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=aJnFllV8sc5HH69M+vVx3xOhhAroz7QXWl4LvdQTNRk=;
+    b=iI3RxrBq20wlTIUJ8u/WeXAh8RV5H9ca9hmKoCIZIEgpHrrtB3hHlCoY9zrrBmBmPX
+    GJopvncQypapfAZPGj8qh1Kn41xjMWCKcmI+QQ/Bla2hT/beUmOjtEn0QMjWKi1ZIU0o
+    tnMuYPnOlHHPk60xR+kFLjWZz5zgdiuDPsVDqHMNUPdGjgFTN7V8lYgfkrnmMck7vAmo
+    3y9o/OPyrPs8Vvla+nTu6WOQG1ei/QSusFFYFs8qlBNzGywasBjmXqdpQL8/GhgJvvpq
+    Gi3Z6luWZbly3A/ib4ixBT8nv8N7nMoxSMkHvrszR7OMxszNdJ3SD36IVH4TT8XSuc9+
+    oP1g==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1771914615;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=aJnFllV8sc5HH69M+vVx3xOhhAroz7QXWl4LvdQTNRk=;
+    b=dIU0Hi+GdOJ+zxLDn63tecHJyi0+2BNn/ytQND/d1ZvsqC2tq+4Ds74SVO2x6ul7mx
+    QxG66/DZ74P4TClBwdntPoRM1F7wF5UqHlN0JVF0Gmdc7Z1arPNT6gEynE/JbQlWXlGU
+    tiE2XuB55iReUHGORNqUbnZgAvEpjOIy0YSSgbqLRMLSNkRQS4a4EoKGWfcwt1uL/nLg
+    I26DiUC3T4vwgpUg1QKmbtPuKe1PWxrz2tf73l1HPdTYLqMdSuIkvGqP2027Hq4NCOOY
+    VErDEzhoiNB2C6SOHJNJWxfWRV1/GbUY18Abi017aSbPtrbKIjvcpjYFHoxrQxfCQxth
+    k0HA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1771914615;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=aJnFllV8sc5HH69M+vVx3xOhhAroz7QXWl4LvdQTNRk=;
+    b=2Jnhv1q0GOHKoQqFiVqqvkimy10xbkEsJUdmAJMyB4ApemmC7J2Dh0Ff9fHYDi4mvh
+    C992mMwrWck5TUqZzaDw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIi+l6B7g"
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 55.0.1 DYNA|AUTH)
+    with ESMTPSA id e9337f21O6UEjRA
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 24 Feb 2026 07:30:14 +0100 (CET)
+Subject: Re: [Linux PPC] 7.0-rc1: e500_mmu.c:923:26: error: assignment to
+ 'struct tlbe_priv *' from incompatible pointer type 'struct tlbe_ref *'
+To: Kees Cook <kees@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, "R.T.Dickinson"
+ <rtd2@xtra.co.nz>, hypexed@yahoo.com.au, mad skateman
+ <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+References: <709b864f-9daa-4a48-b3d6-39baedce63b2@linux.ibm.com>
+ <dbbb7998-5245-170f-626b-81bc75a32591@xenosoft.de>
+ <843b7c60-23f1-47d0-b4e8-2147c3e40c23@linux.ibm.com>
+ <2a27e6fc-7eb4-41a5-ba88-58f6a22625b5@xenosoft.de>
+ <1d79ec6f-ce7f-4432-80e0-a54fa1668642@linux.ibm.com>
+ <caeed62f-0e36-4868-e593-887d7f33ce50@xenosoft.de>
+ <d0342f0e-633f-4299-966a-27e4c0050da3@linux.ibm.com>
+ <2cbd1e19-ac99-29c3-ab89-3c58a9863e5a@xenosoft.de>
+ <2d2d4735-04e0-46a0-93c6-654507fe2ae1@kernel.org>
+ <2536c3e7-18d2-47cb-88c6-36f94c61c1c6@kernel.org>
+ <202602231439.FFDA50B@keescook>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Organization: A-EON Open Source
+Message-ID: <4b441394-6dd3-cc58-e9e4-6ff840fdcda5@xenosoft.de>
+Date: Tue, 24 Feb 2026 07:30:14 +0100
+X-Mailer: BrassMonkey/33.9.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,92 +121,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <202602231439.FFDA50B@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mg+D4QZmBhrNj7dB+V3GHsQoZT2cSG1ffHYDYJWXyopQ@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[xenosoft.de,reject];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[xenosoft.de:s=strato-dkim-0002,xenosoft.de:s=strato-dkim-0003];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-17088-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:miguel.ojeda.sandonis@gmail.com,m:linkmauve@linkmauve.fr,m:aliceryhl@google.com,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:post@ralfj.de,m:workingjubilee@gmail.com,m:mmaurer@google.com,m:david@davidtw.co,m:wwiser@gmail.com,m:miguelojedasandonis@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:kees@kernel.org,m:chleroy@kernel.org,m:sshegde@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm-ppc@vger.kernel.org,m:maddy@linux.ibm.com,m:rtd2@xtra.co.nz,m:hypexed@yahoo.com.au,m:madskateman@gmail.com,m:info@xenosoft.de,s:lists@lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[chzigotzky@xenosoft.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-17087-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[30];
+	FREEMAIL_CC(0.00)[linux.ibm.com,lists.ozlabs.org,vger.kernel.org,xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linkmauve.fr,google.com,kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org,ralfj.de,davidtw.co];
+	FROM_NEQ_ENVFROM(0.00)[chzigotzky@xenosoft.de,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[xenosoft.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 6EE17181C55
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,xenosoft.de:mid,xenosoft.de:dkim,xenosoft.de:email]
+X-Rspamd-Queue-Id: A257D1826D8
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 04:31:36PM +0100, Miguel Ojeda wrote:
-> On Mon, Feb 23, 2026 at 3:26 AM Mukesh Kumar Chaurasiya
-> <mkchauras@gmail.com> wrote:
-> >
-> > I think, disabling altivec, fpu and vsx with compiler flag will work.
-> >
-> > What are your opinion on this?
-> 
-> It is really up to upstream Rust -- for us, i.e. the kernel, it
-> usually doesn't really matter much how things like that are
-> accomplished: whether via flags, a built-in target, a custom target,
-> etc. However, we need to know what the path to stability is.
-> 
-> My understanding (but I may be wrong) is that upstream Rust prefer we
-> use built-in targets for softfloat instead of disabling via
-> `-Ctarget-feature` (and that the other options may go away soon and/or
-> will never be stable) -- at least for some cases. For instance, for
-> arm64, please this recent change kernel-side regarding `neon` as an
-> entry point:
-> 
->   446a8351f160 ("arm64: rust: clean Rust 1.85.0 warning using softfloat target")
-> 
-Aah, that makes it clearer.
-> So please ask upstream Rust (probably in their Zulip, e.g. in
-> t-compiler or rust-for-linux channels) what you should do for powerpc.
-> They will likely be happy with a PR adding the target (or whatever
-> they decide) as Alice mentions. And until we reach that minimum
-> version (in a year or more), we can use something else meanwhile. But
-> at least we will have a way towards the end goal, if that makes sense.
-> 
-Yeah makes sense. Will work towards this.
+On 23/02/26 23:40, Kees Cook wrote:
+> On Mon, Feb 23, 2026 at 08:38:29PM +0100, Christophe Leroy (CS GROUP) wrote:
+>>
+>> Le 23/02/2026 à 19:07, Christophe Leroy (CS GROUP) a écrit :
+>>> +Kees
+>>>
+>>> Hello,
+>>>
+>>> Le 23/02/2026 à 17:48, Christian Zigotzky a écrit :
+>>>> Hello,
+>>>>
+>>>> Compiling issue for e5500 machines for the RC1 of kernel 7.0:
+>>>>
+>>>> arch/powerpc/kvm/e500_mmu.c: In function 'kvmppc_e500_tlb_init':
+>>>> arch/powerpc/kvm/e500_mmu.c:923:26: error: assignment to 'struct
+>>>> tlbe_priv *' from incompatible pointer type 'struct tlbe_ref *' [-
+>>>> Werror=incompatible-pointer-types]
+>>>>     923 |  vcpu_e500->gtlb_priv[0] = kzalloc_objs(struct tlbe_ref,
+>>>>         |                          ^
+>>>> arch/powerpc/kvm/e500_mmu.c:928:26: error: assignment to 'struct
+>>>> tlbe_priv *' from incompatible pointer type 'struct tlbe_ref *' [-
+>>>> Werror=incompatible-pointer-types]
+>>>>     928 |  vcpu_e500->gtlb_priv[1] = kzalloc_objs(struct tlbe_ref,
+>>>>
+>>>> Temporary solution: # CONFIG_VIRTUALIZATION is not set
+>>>>
+>>>> Please solve this issue.
+>>>>
+>>> Must be one of:
+>>>
+>>> 189f164e573e Convert remaining multi-line kmalloc_obj/flex GFP_KERNEL uses
+>>> bf4afc53b77a Convert 'alloc_obj' family to use the new default
+>>> GFP_KERNEL argument
+>>> 69050f8d6d07 treewide: Replace kmalloc with kmalloc_obj for non-scalar
+>>> types
+>>>
+>> Can you try following change:
+>>
+>> diff --git a/arch/powerpc/kvm/e500_mmu.c b/arch/powerpc/kvm/e500_mmu.c
+>> index 48580c85f23b..75ed1496ead5 100644
+>> --- a/arch/powerpc/kvm/e500_mmu.c
+>> +++ b/arch/powerpc/kvm/e500_mmu.c
+>> @@ -920,12 +920,12 @@ int kvmppc_e500_tlb_init(struct kvmppc_vcpu_e500
+>> *vcpu_e500)
+>>   	vcpu_e500->gtlb_offset[0] = 0;
+>>   	vcpu_e500->gtlb_offset[1] = KVM_E500_TLB0_SIZE;
+>>
+>> -	vcpu_e500->gtlb_priv[0] = kzalloc_objs(struct tlbe_ref,
+>> +	vcpu_e500->gtlb_priv[0] = kzalloc_objs(struct tlbe_priv,
+>>   					       vcpu_e500->gtlb_params[0].entries);
+>>   	if (!vcpu_e500->gtlb_priv[0])
+>>   		goto free_vcpu;
+>>
+>> -	vcpu_e500->gtlb_priv[1] = kzalloc_objs(struct tlbe_ref,
+>> +	vcpu_e500->gtlb_priv[1] = kzalloc_objs(struct tlbe_priv,
+>>   					       vcpu_e500->gtlb_params[1].entries);
+>>   	if (!vcpu_e500->gtlb_priv[1])
+>>   		goto free_vcpu;
+> That looks like the correct fix to me. The old type was the correct size,
+> but was just the wrong type. Sorry I missed it when doing my tree-wide
+> multi-arch builds! What build target (or Kconfig) was needed to reach
+> this code?
+>
+> Fixes: 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
+> Reviewed-by: Kees Cook <kees@kernel.org>
+>
+> Thanks!
+>
 
-Regards,
-Mukesh
+It works. Thank you. Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
 
-> In case it helps, let me Cc Ralf, Jubilee and Matthew who were
-> involved in some of that discussion in the past, plus the compiler
-> leads.
-> 
-> Cheers,
-> Miguel
+-- 
+Sent with BrassMonkey 33.9.1 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.9.1)
+
 
