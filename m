@@ -1,100 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-17086-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17087-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBpXGswvnWkDNQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17086-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 05:57:48 +0100
+	id YOcsGEQwnWkDNQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17087-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 05:59:48 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C10181C10
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 05:57:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE17181C55
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 05:59:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fKlpJ0pg7z3cDh;
-	Tue, 24 Feb 2026 15:57:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fKlrZ2rcMz3cDt;
+	Tue, 24 Feb 2026 15:59:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771909064;
-	cv=none; b=GIoslQSG4xKS5KipUi19E2w2aiXIJkyd6Kbb0AouzA8Bq9GfepkFOxLikoVofC1YEHDfbZhSBrBsVYFDdYH3FMjaQQCi6IS3/FiTVVHTIdiEZeG04rhhxIJj+z4EjSm0ky0L9fNugRFxfiflqES6dtVmrfWw+LC4itcYRlCa77ZOfI9xyBqyhakqLrKbs38hd71AgUKw4XvvhY1grSpoNUQBBNT+LSunrnHBsktGYWeQUfItn//fkgDy1mZ8eOKwcqH7Res8fptyXwX85kkN77szS6y6FheunSgzLZm0dT2/aHl1fANOZGyxKLzZHkBSiYPquBBlMHmi/LaLd+/kOw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771909182;
+	cv=none; b=OInqXiHWMJWmq8IN/XvniNLE4FqL3e/N1pXbfCkyth4tlqxkO1vgyFU6shAuR4N4xi65FMc6Nu5z0vhh18+ag2VOTTB7CyDHYI4pBIa1Ui0ns6wwjM1qsdFWDFley2H1/1J7WsP7w+Gq/nxthRXkiFZulyzxOi9S7T4gzvKymgbAnoTpPvqMSjJUoOivqZD4/Pp0r5Ix6qeH4M/Xvif1RjjLILOit24eqigxgshK11kyW3RBB4B4OydhHBBUK01L298X/j21p8NuFqZ71RH40CUyXGUozctVoj/qk569LJRO2DSwtwmd81+75ZaOy1m9m9Ms5BCOBkbJsp+b5tK8Qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771909064; c=relaxed/relaxed;
-	bh=SO/dk+j9JcFFZVxUw1AfWihYUjLrsfUxcptuevFkjZs=;
+	t=1771909182; c=relaxed/relaxed;
+	bh=Ou4URiguCEIHQD6BF6MkSWLcHXyR9MfBfXSYfwsYE5A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JnQxfZh5yY3WgIa73v4nQY/d8DEBIl+jt9N/1MNtbx4ZH1ggpQOUdYRYvEW9q8DnC2lf7Wlbk0Z7tjV8WV1l8SXMiLjk9gwJRJO9Q9ahTVr49EOCaJ4ZP+yChN56vpZnIw9WbJ4SAANKzxbywVypD/v/5Ac7ZCTWSv4EdMDtu6Q3tnlqdwlCBz/MJKA5w8hvgD1TcWfeD8QKNtayXhMYAzBFcBqKY5z9aOTWfB/hGdVJsHPzYe2G3ex0FI0iwdEwGNhza4PgkTcTjkiAbLZYnoFUGBxnkOkUwItg2n9jDoMi6McXLT53n62VO5AjpR8fVKM5DkdL6F1rApJsW3zGsg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WBk6xw+3; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RSLVxGF0JFuOCX4Lc9tx3XaxHCgZC09aOr4kQrH1ytq4UIvYQaW5W07P0RcY6Qwx77IyFUVOQ3bmFID/Lq8N3u+i3MVeVcQXP+1xeZHJoHfA0fVE8kV+9uRWzgRsBRjVxKfxlMRx/M2QjPmCkJ0a1aw9zkzTHLf8UJKkQOqWY51R1aEe3jCimjD3L/wXZb3Z9nn+A83hD80pd5qqERGFFrtoYFHVAkIeVRt0vXvIyyb+Sb28xCsd+Gwlr1yja0qCbYef4GeA5U91I5+b2oXQMPLP2cAv2wPW5T+xn2PEMqZKqYubMVSqBqIinTRl90Hdd+ShGKG8jtoUCKtOc8vvMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jDHngT0D; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WBk6xw+3;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jDHngT0D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mkchauras@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKlpG3bHQz3cBN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 15:57:41 +1100 (AEDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-2aad1bb5058so52652275ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 20:57:41 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fKlrY4LBXz3cDg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Feb 2026 15:59:41 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-2aae146b604so35638015ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Feb 2026 20:59:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771909054; x=1772513854; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1771909179; x=1772513979; darn=lists.ozlabs.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=SO/dk+j9JcFFZVxUw1AfWihYUjLrsfUxcptuevFkjZs=;
-        b=WBk6xw+3tswt8NOXd+/ULuNFreyiejliHYGpIXQbOvp1bxxzBEWHhfaACmnAG7I3RN
-         X3x7mxBcXNBQc6GTe6GhliPsliIIS6nD97+FDIR9xt+hR+hMnueskeZoIWaUry8oKTwP
-         LwB+Rdg72YAGgiTZc6hwnjfWtcGD8gcjeKR3dCGG/cYgwkig2j9UmU6p7dHeL4MaptNU
-         bWjZbO16Hhd3iSu1Tj3NluNlZ+YfJ+baFT/E+9IROLoVWZoVktmL8z9jRGLkQXy0HkA4
-         U9IM6pklDeQxGeZ2mCZmFeDX3O57ggCtKmrSIS30I08AiHo48Xd9QHXrgOnuOjIc0esk
-         cQeQ==
+        bh=Ou4URiguCEIHQD6BF6MkSWLcHXyR9MfBfXSYfwsYE5A=;
+        b=jDHngT0DAesJixDwderTzyIOSn47yIzrWmY2e30u0ule+NxY1/jhzSpTncUl00kEiM
+         b3TpSpqpTK+K+HyQ89hO5i+K2uyZagwR3Fn30G0258GKo0A+5mt934SzOmfTSwi3n/fV
+         xjUZPg0/V2V85qdZPbQPn3PU8jbADehMa5sZidScl/HvLrC7BQzNROscijILIHBUw84l
+         MFwZEU7CrbihsUHyUA3M4ktkmJzVmjPXwYrWVKRbG0qGlZoftTb2VwItuSXLuAImeZrC
+         jmZmXn6NIJaDV69nFZiCYA0pDJpbC4w7VNwupttrtOxa+NT9dEDos3lOW1nSctKZl4rL
+         UGBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771909054; x=1772513854;
+        d=1e100.net; s=20230601; t=1771909179; x=1772513979;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SO/dk+j9JcFFZVxUw1AfWihYUjLrsfUxcptuevFkjZs=;
-        b=XgQg3IB6L3IR16z4uXIIr70IcOiWmNoXTpjcVGjqSQiA0K8didEV/TniP9x5H6OUHt
-         H86O8OneAtrh8G/op8f8B+KQF6M9eQp/DSiaCkS6xNLx24qnTjvO88WzZfHAW3woQ+z+
-         ichV9vEzxqgTFu+CJtm5LSfWnTC/9ERKs5IwrottNs/VEGJQ4vTo8qIwo2p1DwYi+DBd
-         XAYGf5y91VbJQAZUk+DbZYEnfOkMfmq/wBpa3/YreggbMco4bTBaH2m8Ray2yreaNJfG
-         xTtf6SuDWobWyEZz2C/skmUXL8mcW9s+eJ4hkvMimn9dGYoA5WItIc2VknV7BXO69nx/
-         W7mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVIgGDISIzlFOMtRi0t9C54V+AKXgIkWmVVqvfZUbZOhx9smQoJnwHwNHJIFBkrQ5/VTChT/shQouSfkX4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz/mmFes2KLHlNu2WNWeyyAHH++oMCuD5beRDNqW993pZwZ3/yx
-	qYnWIVrbFDZYRNbhG30bzFj2GUc7JV7982Y26iPIXUVv0mS/dZcoCm9Y
-X-Gm-Gg: ATEYQzwj4yoCNqTsNcR+Nd949vJmmTGvKSPx/K2mzVfsYyeuVjtzDvtanu5ZLwE19FG
-	lW04x3A0gNrK7trNgJIJoy62e9rinOZ8Deuve0+ei4BspQr4gfWPNRGY/+BN2K13+spkeN6DNnW
-	gHWPLdw9H+EKpkf7ah7n3Lq6CUDlOBq10yZA/WlQKTWS8gIU7yJTMs+uFu0HsJCJN+/cDr/HcXm
-	7gUUUbK6NVaS8Q9lpJGhY2PbDMet5hgJ91p2jvZ7+F4HZdEdGKYBsAkO5gMR26T4+fQB7atpIFN
-	wnAFqOWQLZqfEzf3AkbxDJwHYJSnZDWveLX6R6Q42ubZmO80qMBy0JF34agOf8RFcG5SEjbvVI0
-	Q1geJ41PXmoK1TeLrXnUke2f5XISf5B+1YchyMNovN1GTMszEJCc9rYQbNkvsWtKLOIJtpospmP
-	b47mmoBZgkXWNxV/be59ZOHOOwjhG5wLyrt/VijM+mLSiwVQfOnOVW/UZioeZnWgwrOO2q
-X-Received: by 2002:a17:903:1ac8:b0:2aa:e0bd:1c7 with SMTP id d9443c01a7336-2ad743fb72dmr97466665ad.12.1771909054457;
-        Mon, 23 Feb 2026 20:57:34 -0800 (PST)
+        bh=Ou4URiguCEIHQD6BF6MkSWLcHXyR9MfBfXSYfwsYE5A=;
+        b=fxmvjZQ36U1kUwiyWlv9yRk+25sFvaNM9m5K+Ki34H2G5jNVlbP/wPigCPhoat4uWE
+         q9a97H5jsGyTpBm6dkuebPBT0i3u6ocbivSilas9sTyXiopEJ6kWbKDEG79MNSATFhy4
+         yNTIkea3Ar/hk0++Yk0Mpe/S/UfxYBn9zwfjBYjkiuhNUdGqXOYLEPyXeE3P8uoqlbKE
+         l3HeewjKiHbp5E6U0jggvlpT+BpPqXc3uvu/JW2X15luszJyEqdkwtWgCzvp4NVM9q1X
+         SXWJbLOta410fJ+R63ZNXDkLN5wfm39rLbhT8sGTaDFN2tMkZnScXjciyf7iIynmckOP
+         NJ9g==
+X-Forwarded-Encrypted: i=1; AJvYcCW5C2GETR8pyqXZLoeFEi1HvwLeqTA3L2L2WdU+JNtTKunAKLewHqW6iZDg+Jwq5mkHi7pl8A7c4brk+/A=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yya0LxU5eUDzMxHCe5SIz3zco88EggOkBO8o7XqrHG3JDnEdKGZ
+	f6fOKAReeTRsdbWFNGVZEY8R5VjYLLp/y0YI7qQjslOemWvP2eGEwCIJ
+X-Gm-Gg: ATEYQzy9/L3zEaeE8wU+iBsBIABkLjlj8yvr/hoLX3Iu2/0kWQvm44/EEe2Eem33Io2
+	sO9zc8OBdD9rDsdBnQghfY0psQ+/DTxzJIWOd8JZZfk3uNesYFtS0RBfhOm/CMW8FmKilXZTRQ7
+	7ab7OPQgz1pCWOK+ZOuCuThTIkEE0JEhbAjAJ3jLEJw9eGx7M/qzYoz+qtFI+tFEztCSMqpnBgi
+	pi83r46+Gt28MA7t6xysSy7xOg2muydSokt94zyhJ43q4poCUzKrD9J8Kcm3Dbjl/gy7Y0iWh2e
+	32zLHdlYTD/GFGKd3Amns8i+bkHcZffOND/FVVb08x7fGvmMrKjqraU/OD1Wu8lIz9qWO8vCPxz
+	ZI4cPlbQovbDSP/3c2WYxx2Rw6UCyP7OVr0vkhDYV2b50u9VPdT1+8NuBz+HybiGl2ELc5udIoT
+	G3tG2JTxDJ96SIBtsMtnwfHR2oDeCR6h8grv5fUdiJ1dO50yRcjujW7XO5D5Jp20iS1gEc
+X-Received: by 2002:a17:903:37cc:b0:2a9:5db8:d651 with SMTP id d9443c01a7336-2ad744683e8mr101466305ad.25.1771909179489;
+        Mon, 23 Feb 2026 20:59:39 -0800 (PST)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([103.77.1.206])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7505bf1asm91807365ad.92.2026.02.23.20.57.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad9f1d4b03sm7780005ad.29.2026.02.23.20.59.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 20:57:34 -0800 (PST)
-Date: Tue, 24 Feb 2026 10:27:24 +0530
+        Mon, 23 Feb 2026 20:59:39 -0800 (PST)
+Date: Tue, 24 Feb 2026 10:29:26 +0530
 From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Link Mauve <linkmauve@linkmauve.fr>, ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	dakr@kernel.org, corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, 
-	jbaron@akamai.com, rostedt@goodmis.org, ardb@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Link Mauve <linkmauve@linkmauve.fr>, Alice Ryhl <aliceryhl@google.com>, 
+	ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	corbet@lwn.net, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	rostedt@goodmis.org, ardb@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	Ralf Jung <post@ralfj.de>, Jubilee Young <workingjubilee@gmail.com>, 
+	Matthew Maurer <mmaurer@google.com>, David Wood <david@davidtw.co>, Wesley Wiser <wwiser@gmail.com>
 Subject: Re: [PATCH V6 2/3] rust: Add PowerPC support
-Message-ID: <aZ0vXT2OAOeZ7AnS@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Message-ID: <aZ0vxHY9MGndIDPQ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 References: <20260210090023.2587534-1-mkchauras@gmail.com>
  <20260210090023.2587534-3-mkchauras@gmail.com>
  <CAH5fLgi3Owm4=4g8wQ5Rnr7Y63XJ1D8apOdkewW6WpRfg6vV_w@mail.gmail.com>
  <aZtT4MH0Q8Ic9ZiM@luna>
  <CANiq72nEam8n_daX5LyYrpH=i71k+pb+HLn6EEPdJJc-Zi9Q3A@mail.gmail.com>
  <aZu6cSqnvO91w1m4@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <aZwcWfYkBnivrgNa@google.com>
+ <CANiq72mg+D4QZmBhrNj7dB+V3GHsQoZT2cSG1ffHYDYJWXyopQ@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -111,7 +112,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aZwcWfYkBnivrgNa@google.com>
+In-Reply-To: <CANiq72mg+D4QZmBhrNj7dB+V3GHsQoZT2cSG1ffHYDYJWXyopQ@mail.gmail.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
@@ -123,18 +124,19 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-17086-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:aliceryhl@google.com,m:miguel.ojeda.sandonis@gmail.com,m:linkmauve@linkmauve.fr,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:miguelojedasandonis@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:miguel.ojeda.sandonis@gmail.com,m:linkmauve@linkmauve.fr,m:aliceryhl@google.com,m:ojeda@kernel.org,m:boqun.feng@gmail.com,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:tmgross@umich.edu,m:dakr@kernel.org,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:peterz@infradead.org,m:jpoimboe@kernel.org,m:jbaron@akamai.com,m:rostedt@goodmis.org,m:ardb@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:post@ralfj.de,m:workingjubilee@gmail.com,m:mmaurer@google.com,m:david@davidtw.co,m:wwiser@gmail.com,m:miguelojedasandonis@gmail.com,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-17087-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[30];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
@@ -143,50 +145,56 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[gmail.com,linkmauve.fr,kernel.org,garyguo.net,protonmail.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linkmauve.fr,google.com,kernel.org,gmail.com,garyguo.net,protonmail.com,umich.edu,lwn.net,linux.ibm.com,ellerman.id.au,infradead.org,akamai.com,goodmis.org,vger.kernel.org,lists.ozlabs.org,ralfj.de,davidtw.co];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,linkmauve.fr:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: D2C10181C10
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 6EE17181C55
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 09:22:33AM +0000, Alice Ryhl wrote:
-> On Mon, Feb 23, 2026 at 07:56:02AM +0530, Mukesh Kumar Chaurasiya wrote:
-> > On Sun, Feb 22, 2026 at 08:11:17PM +0100, Miguel Ojeda wrote:
-> > > On Sun, Feb 22, 2026 at 8:07 PM Link Mauve <linkmauve@linkmauve.fr> wrote:
-> > > >
-> > > > Should we come back to describing the target like I did in my first
-> > > > patch[1] in scripts/generate_rust_target.rs, or should I bring that to
-> > > > Rust to create a powerpc-unknown-unknown-softfloat target upstream?  Or
-> > > > is there a better third solution I’m not thinking of?
-> > > 
-> > > We are trying to stop using the custom target specs, so we should ask
-> > > upstream to give you a built-in target you can use (or equivalently, a
-> > > flag to do what you need, but I think the idea is to not have such a
-> > > flag).
-> > > 
-> > > i.e. even if you used the custom target JSON, we would still need to
-> > > ask, since the goal is to remove that script entirely.
-> > 
+On Mon, Feb 23, 2026 at 04:31:36PM +0100, Miguel Ojeda wrote:
+> On Mon, Feb 23, 2026 at 3:26 AM Mukesh Kumar Chaurasiya
+> <mkchauras@gmail.com> wrote:
+> >
 > > I think, disabling altivec, fpu and vsx with compiler flag will work.
-> > 
+> >
 > > What are your opinion on this?
 > 
-> I think you can and should submit a PR to add a softfloat target to
-> upstream Rust right now, and I believe there should be no issue in
-> accepting that.
+> It is really up to upstream Rust -- for us, i.e. the kernel, it
+> usually doesn't really matter much how things like that are
+> accomplished: whether via flags, a built-in target, a custom target,
+> etc. However, we need to know what the path to stability is.
 > 
-> If there's a workaround we can use on existing compiler versions without
-> the target, that's great too, but we should get the target in upstream
-> asap.
-Cool, sounds good.
+> My understanding (but I may be wrong) is that upstream Rust prefer we
+> use built-in targets for softfloat instead of disabling via
+> `-Ctarget-feature` (and that the other options may go away soon and/or
+> will never be stable) -- at least for some cases. For instance, for
+> arm64, please this recent change kernel-side regarding `neon` as an
+> entry point:
+> 
+>   446a8351f160 ("arm64: rust: clean Rust 1.85.0 warning using softfloat target")
+> 
+Aah, that makes it clearer.
+> So please ask upstream Rust (probably in their Zulip, e.g. in
+> t-compiler or rust-for-linux channels) what you should do for powerpc.
+> They will likely be happy with a PR adding the target (or whatever
+> they decide) as Alice mentions. And until we reach that minimum
+> version (in a year or more), we can use something else meanwhile. But
+> at least we will have a way towards the end goal, if that makes sense.
+> 
+Yeah makes sense. Will work towards this.
 
 Regards,
 Mukesh
+
+> In case it helps, let me Cc Ralf, Jubilee and Matthew who were
+> involved in some of that discussion in the past, plus the compiler
+> leads.
 > 
-> Alice
+> Cheers,
+> Miguel
 
