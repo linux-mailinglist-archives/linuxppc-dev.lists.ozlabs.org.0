@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-17183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SN3IL4fXnmkTXgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 12:05:43 +0100
+	id qPflKY7XnmkTXgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 12:05:50 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB95D1963AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 12:05:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF25F1963B6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 12:05:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLWw430fPz3dX4;
-	Wed, 25 Feb 2026 22:05:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLWw868zZz3fG3;
+	Wed, 25 Feb 2026 22:05:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772017524;
-	cv=none; b=Ym4TximXCUCHmLZBgcQ6llkukC1B1YUlOOwFd6yNncqPHQgaKu2spy7e3h37qkJ8RcqvOl0ApVqguXENZpHg8InNG+g95r74bYx2PmnZDI1Wb7VEbkB0VI0E0GCU3opF1Av30JsDt6aQ/sMcgZZNNasr0IexEWJ62Q98gfX0N373ttwTbyhaxrCkmji3H42/Gp4DS64EiYSbdiXdj6UUR6SDR7+eAYHqQl09ItxhA2+BOcR2TA1jo79MAVLT253W38mLjro6mC6nznshpeVa3ttIB2aQumXh5wIhotP3HGGSwlde7GQ7dIU9Uf5TlD1FMnYGK1zZ+IRyUAViacUJkA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772017528;
+	cv=none; b=CIUGEoXbUet6+p3qxG3BVeaS3kC8S8/QAI67Fotp7qxxcNr+WluEqtSPipA3ocgu5T8/A6zbyhDx6dwLPo6JKl0QPvPXPMcXZajBcEpRAQ48kw3tMUi2mTpVr9ZrCuRYS4h16cjkvtxANpQVgKpso8NDFLSfoionEHs+XFWt9WaxJbCIVg6a3w+eMstIlUfmN9AgHypHN3nLQvMSKcJRrQb6OByYLvq+wjYVYQMeX5HBdEGw0/PquKoobfm2aipN2FYlw9Ww5GaDkCVv80uchBocNdj1H2NmPEFigtKyQUZft7HXXrOwkmnkr6xCL2wZJk0a5fkcw0fiLsZKjewRLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772017524; c=relaxed/relaxed;
-	bh=oY+WcCKwH30XQgtGlAXxD48kd5JWxreLKyCXwqlGHN4=;
+	t=1772017528; c=relaxed/relaxed;
+	bh=zzyMxNvzMyycWrQ4teqi8VMBfU5GZXWjfAFiWBwDYeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuWmD87hnUV+v/oVwIQevbI/iM0p8v09pZCrb+X502X5MvaM2tzQIZ9qkAK5uhHvm9GRyA6hE5Lq4zhZu6b1TWPc+AbkstPMmDMeHmzyn2IqKACeiMPBRhFhJMzeIwx8Au4m6tc+H+UNApAyOWNG66VNlC+H0ncEtQcBPDD+Zl3XyBH0bmMOc1JAV7r2oALImNjy7Ciq6hVKt7/rfMenWizlJArdXnsVz2dtT1GErNxVmpUCwnf6GlTsG24okmARuN18JmGFhoC7SaAszupaRAzcKesrI6nIwJODpy61RUZ4U5fnHBF18o6bNQtCe2NnH131rMZr+YxSfpL8dMULCQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KB6Tsput; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=JLXY+/1wceEXLbD0ATmN/gJXNa1h0spKaHlvqK+aPQgvpH5F3Zd0i1TR5neF+fjMn41UDoC64io8YjpiKAUFqZOumuYnqWjBM2nGsxsb7A5HiZN7xYpKWVhZ3g7Jio0L+u6gCgm3MLnrtv/FatnJMglyzWTT0UpJT6dqm4TWKwgQDeSRGptKpkU6+nDPfOVfPxPOF4htIsMEW9uyRDhpzfAAQcnynGoaGIWnz+VyKdmTilB+RUq67VAySVGLJM1WrdCTosK6Dq9CCAkCG2aegJfjScy4kVNRqrKTvpO6aotwT2vqdk9+4CFlrHHO6z3HY4wiBOHFe1iVavpL6VIPOg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H8ToNto9; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KB6Tsput;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H8ToNto9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLWw34QFnz3cJj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 22:05:23 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-2ab46931cf1so5004735ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 03:05:23 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLWw816Djz3fFm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 22:05:28 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-2ad3f12a496so3044655ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 03:05:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772017521; x=1772622321; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1772017526; x=1772622326; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oY+WcCKwH30XQgtGlAXxD48kd5JWxreLKyCXwqlGHN4=;
-        b=KB6Tsput0E6cTZeWBz/cpP1R0JX1Z5c1enaYZykIKTblhiUwz8g/ouPCwXIm/2jLrI
-         zFYJPoXPljSkoALWb/ibjAlLn0ZTZ19ggoToiP7sbsXGpG3v2NEF3xIUmJMIShA24VTK
-         lcD2V107v/B9FBUAUVmVLynWyKyKEiW5qGxq1JXF62lxTzpzNkkCnfyZ//msNt07Souj
-         Zf+/ndV5wwEcQvuoicUrNCepF1w5nXSIrDkGE3cz94z8GOap6TI3TrvX+dqVIYuOYQ43
-         w6higaziEAoCpN1fwaiQ6kfMF9ul/2FbPhrycPuzvFbNjMhoZDJnZVxR3qwGBujzvWLH
-         gxUg==
+        bh=zzyMxNvzMyycWrQ4teqi8VMBfU5GZXWjfAFiWBwDYeU=;
+        b=H8ToNto9MqpsLDMafHwf4YUG2HOoeoEUBJoPU8V/XbS3vrZ9IG5dyLVo/SG8KSIiW+
+         TpCCmV2RRmX5OAZHp9y8ueq1JvLpI3kotzwR42el+VyawduEN/Podzy35KVqYAJs6Rd3
+         5Op14RoctB9Gkf3a8HyYwSKTkfppomm1xiDlGCeLokW/tStY0pacwq7ucnTLJXJWLDtx
+         f/+8ua7kcTjhnA1ExPfvvy8H85RS/ABUSOvZnlUQU40TQ8HWqJOk9VNoB+qpMczIYGsY
+         BttGSUJVbAyA9Rn571atpJ/4skkky2L+F/OlYR42yAC4pXsm10bb5Hp/kJmz/vaIhYBi
+         WjMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772017521; x=1772622321;
+        d=1e100.net; s=20230601; t=1772017526; x=1772622326;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oY+WcCKwH30XQgtGlAXxD48kd5JWxreLKyCXwqlGHN4=;
-        b=w3SeYJglm5UcKCePpYFqc/qo0KuFVsfDxhenCxHCjWY8yHOL00wlmQYRH+6M9hVrRS
-         dD+1ZNBuEdu+sqmlra9WPSePVdXtpwdbGIp8rVdHEIfUcmIu2lvYHlQTOif2QfkW+379
-         ir0A2Bzn76FyaUl41bfc7mBwyvcQG093uE9NO3H6v7ge/JqeM3G3HUdxt2i+ae1M2p1m
-         Fulny4mEagGCN3rr2vb5WBi0382C7SgNNZNAYSFqw1Tv2kmBus2jzVYk7rXMyB1bmtWE
-         3GRS6jR97xXR7bpFlKv+EZ21p2iCA2lFTMEjbU7czBvhSccQOmHlAZETekICO0IOUmrF
-         Ncvw==
-X-Gm-Message-State: AOJu0Yw0AxapGHd6TSW/P2ZmhTaYLS9kvu/lziV0+HEqEldHbIGHBi0m
-	4T4Cv6Llfdp56Gq2yrtHsxQfLfhmqXCFVITZeDF7/dXmQ3idqBuBbjNVwIuwyA==
-X-Gm-Gg: ATEYQzyL2sqJe+ZL83hmG8yqCsoeD7ZRQm6FFtrVFQr4qQklUpc+9TBdt9Ew0QHGUVI
-	8mhkMB1Fq+QNqSXGpCr3rMyCAc7LVC0Av0brmg8K0UjXc3qRJOJGtwlhkMnlM/3lR65SN1oDOmN
-	YRNH2bcnqSYB3t2vAHrQvAm169XA0yr+nV/x4BIaCChEb9untI/jTJ7AOdvh5zclibphOog3JP9
-	/PZNwFn1ww7UT/hrEvx5dKU7cb4d+Ivsy3CCnkTOeP76j1AnGmzThdzxDXdbADtI5ezerIsAgw4
-	cZN4tADBhYBDtF6kiwWTYqpsuAIg+NsxeR/ZZ78RZ4LgdwaGyfJEeEKabwgG/StfWRxZOzPxJA8
-	hQrhvAFXppqm9V7bxvpxOHIGuWvSQyWRwXebpAmH0RwuiBDcxzMG8qFwyPr2b4xacl3jdBeiaUL
-	o4bkdo9qAaWMnlYM5Fi/QQS8em67ZMUClZzt3RJd1PHg==
-X-Received: by 2002:a17:902:f792:b0:2aa:e55b:22c4 with SMTP id d9443c01a7336-2adbdc4a59bmr27149245ad.9.1772017521044;
-        Wed, 25 Feb 2026 03:05:21 -0800 (PST)
+        bh=zzyMxNvzMyycWrQ4teqi8VMBfU5GZXWjfAFiWBwDYeU=;
+        b=BZvf/StsNnh49atgMeW7D9Z1TOTXJMEPgh54AIgO+ac/J/JuzGAWtVqcb/0kauTnyA
+         ssBlWVXlGRQ9AGYy9wYZJCpL4BwDgPBOjXp6udYhNTn0MMnOA24VSGnpXParQGZ9m+rd
+         5kgFUKyPSDiU5DrFrjLLfYYEuDTvkRHa1D0c8Le/p/3vq7oOMvHZeff5kNO/EJWIUQ6W
+         tV1IE4XuxuQUvsY1gkR2yrR1kKGaOjr47RQJ+S4yRlUjdG3d/MylAtGv9877wprd13C7
+         aHo3NWL/05r9NTFV3sLYS3v7OcN4bNSxzlgxxDJ14xZMQXVzZChfRYb2MaWzOmqj7w+f
+         iuJw==
+X-Gm-Message-State: AOJu0YwDGGo4P0A9VhRUtQSF/Qj2eoa2gqgRIQAGm/XOeP2qRWluP94I
+	A2auL8Mj7VO3mymhR4pSILNBh8Bpw/DyMAsPKBsYvJdnn45oCmrDqas92iT6gw==
+X-Gm-Gg: ATEYQzzrM2EtY9zbGb1W6Ycx3FBRuR4P3ZhK9cYp4G9wg4OVe+twf7FT7cEcgMfztie
+	OMB9kbbDHrnJg/kD/KMOI2UYpPhAG7jlkNB6uQ1xi0b7UWNiARfoRllleDe/xShMW5KIL7aOiRR
+	TBOFpxGzxOYnxKeIXh9gUKxHMIJsYzRGrJwBl3En82Jqka4H5tMWJbnHfpoQJWsKVm1RAUlnign
+	n/RZhff2wcGBm6Px0SAT4BD9GXsFNFcgVFTanB1EaI+FGLbgw4xniF5gDcdB2CZ4fCh75hvhDZV
+	NndMA/idiUQmEj4MLRRo+kZDHMbzkK5wflWuPMV8FRxlKoxHl5w35/EfBnWSXrt/c5rZMN2+Vzg
+	9/u4C7CPboUiN1UIXNDSNbW8j23AsF1qNdh2/A9G2H8vJK9csnbnRDYlCID5k+ETe7wJs7VCehS
+	4P6HpzAwIojjO+xanxkstDcnJuFt/q7MU=
+X-Received: by 2002:a17:902:c946:b0:2aa:d6a1:e183 with SMTP id d9443c01a7336-2adbdc3c51cmr30803075ad.1.1772017525603;
+        Wed, 25 Feb 2026 03:05:25 -0800 (PST)
 Received: from dw-tp.ibmuc.com ([203.81.242.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.16
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:05:20 -0800 (PST)
+        Wed, 25 Feb 2026 03:05:25 -0800 (PST)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org,
@@ -85,9 +85,9 @@ Cc: linux-mm@kvack.org,
 	Christophe Leroy <chleroy@kernel.org>,
 	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 08/10] powerpc: book3s64: Rename tlbie_lpid_va to tlbie_va_lpid
-Date: Wed, 25 Feb 2026 16:34:29 +0530
-Message-ID: <91a6be6c26145dd2ce94d6c1f65aae86d424857d.1772013273.git.ritesh.list@gmail.com>
+Subject: [RFC v1 09/10] powerpc: book3s64: Make use of H_RPTI_TYPE_ALL macro
+Date: Wed, 25 Feb 2026 16:34:30 +0530
+Message-ID: <3fb34ebce6a92855ce6c20326c1f7f99097227e3.1772013273.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
@@ -115,7 +115,7 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
@@ -125,106 +125,66 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17183-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17184-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: CB95D1963AF
+X-Rspamd-Queue-Id: BF25F1963B6
 X-Rspamd-Action: no action
 
-In previous patch we renamed tlbie_va_lpid functions to
-tlbie_va_pid_lpid() since those were working with PIDs as well.
-This then allows us to rename tlbie_lpid_va to tlbie_va_lpid, which
-finally makes all the tlbie function naming consistent.
-
-No functional change in this patch.
+Instead of opencoding, let's use the pre-defined macro (H_RPTI_TYPE_ALL)
+at the following places.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/mm/book3s64/radix_tlb.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/powerpc/mm/book3s64/radix_tlb.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 1adf20798ca6..6ce94eaefc1b 100644
+index 6ce94eaefc1b..7de5760164a9 100644
 --- a/arch/powerpc/mm/book3s64/radix_tlb.c
 +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -185,7 +185,7 @@ static __always_inline void __tlbie_va(unsigned long va, unsigned long pid,
- 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
- }
+@@ -885,8 +885,7 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
+ 	} else if (type == FLUSH_TYPE_GLOBAL) {
+ 		if (!mmu_has_feature(MMU_FTR_GTSE)) {
+ 			unsigned long tgt = H_RPTI_TARGET_CMMU;
+-			unsigned long type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
+-					     H_RPTI_TYPE_PRT;
++			unsigned long type = H_RPTI_TYPE_ALL;
  
--static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
-+static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long lpid,
- 					    unsigned long ap, unsigned long ric)
+ 			if (atomic_read(&mm->context.copros) > 0)
+ 				tgt |= H_RPTI_TARGET_NMMU;
+@@ -982,8 +981,7 @@ void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
  {
- 	unsigned long rb,rs,prs,r;
-@@ -249,17 +249,17 @@ static inline void fixup_tlbie_pid(unsigned long pid)
- 	}
- }
+ 	if (!mmu_has_feature(MMU_FTR_GTSE)) {
+ 		unsigned long tgt = H_RPTI_TARGET_CMMU | H_RPTI_TARGET_NMMU;
+-		unsigned long type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
+-				     H_RPTI_TYPE_PRT;
++		unsigned long type = H_RPTI_TYPE_ALL;
  
--static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long lpid,
-+static inline void fixup_tlbie_va_lpid(unsigned long va, unsigned long lpid,
- 				       unsigned long ap)
- {
- 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
- 		asm volatile("ptesync": : :"memory");
--		__tlbie_lpid_va(va, 0, ap, RIC_FLUSH_TLB);
-+		__tlbie_va_lpid(va, 0, ap, RIC_FLUSH_TLB);
- 	}
+ 		pseries_rpt_invalidate(0, tgt, type, H_RPTI_PAGE_ALL,
+ 				       start, end);
+@@ -1337,8 +1335,7 @@ void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr)
+ 			unsigned long tgt, type, pg_sizes;
  
- 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
- 		asm volatile("ptesync": : :"memory");
--		__tlbie_lpid_va(va, lpid, ap, RIC_FLUSH_TLB);
-+		__tlbie_va_lpid(va, lpid, ap, RIC_FLUSH_TLB);
- 	}
- }
+ 			tgt = H_RPTI_TARGET_CMMU;
+-			type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
+-			       H_RPTI_TYPE_PRT;
++			type = H_RPTI_TYPE_ALL;
+ 			pg_sizes = psize_to_rpti_pgsize(mmu_virtual_psize);
  
-@@ -278,7 +278,7 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
- 
- 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
- 		asm volatile("ptesync": : :"memory");
--		__tlbie_lpid_va(va, lpid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
-+		__tlbie_va_lpid(va, lpid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
- 	}
- }
- 
-@@ -529,14 +529,14 @@ static void do_tlbiel_va_range(void *info)
- 				    t->psize, t->also_pwc);
- }
- 
--static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
-+static __always_inline void _tlbie_va_lpid(unsigned long va, unsigned long lpid,
- 			      unsigned long psize, unsigned long ric)
- {
- 	unsigned long ap = mmu_get_ap(psize);
- 
- 	asm volatile("ptesync": : :"memory");
--	__tlbie_lpid_va(va, lpid, ap, ric);
--	fixup_tlbie_lpid_va(va, lpid, ap);
-+	__tlbie_va_lpid(va, lpid, ap, ric);
-+	fixup_tlbie_va_lpid(va, lpid, ap);
- 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
- }
- 
-@@ -1147,7 +1147,7 @@ void radix__flush_tlb_lpid_page(unsigned int lpid,
- {
- 	int psize = radix_get_mmu_psize(page_size);
- 
--	_tlbie_lpid_va(addr, lpid, psize, RIC_FLUSH_TLB);
-+	_tlbie_va_lpid(addr, lpid, psize, RIC_FLUSH_TLB);
- }
- EXPORT_SYMBOL_GPL(radix__flush_tlb_lpid_page);
- 
+ 			if (atomic_read(&mm->context.copros) > 0)
 -- 
 2.53.0
 
