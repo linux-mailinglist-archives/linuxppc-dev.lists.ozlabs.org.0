@@ -1,83 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-17126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cInhAbsFnmmhTAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:10:35 +0100
+	id +MXjA8IFnmmhTAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:10:42 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F5918C4D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:10:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2764218C4DB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:10:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fL83D3Vblz3dHp;
-	Wed, 25 Feb 2026 07:10:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fL83M1Y0jz3dHc;
+	Wed, 25 Feb 2026 07:10:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771963816;
-	cv=none; b=HnLx1C16BYG6oDVSsP7en4+Xb9rVU4oJ6Panq+fArIg4zfQR6Fo1ubfazMbTNCaYkIDZAXJUkzKaOyJpZuRhk9XUnfMhiuwOJwyEHPtitK9hhqewbKb5PSbYF77rtlHgw1mLICdHQCvjfg43GTJ4JPGQimOGqTIHNbsWEMkB/ai0xynrHB5eqJ54zJnqtb4e8cGHdAZ5OR9YuVm23xAfHeD8ZLVg9/1F9iYgO5D7Y0ZjbfUz/IRigauN/BVQvrdW5tqBPV8nQ47OTApkDXSnogVglFfRbVSZjVsSl9xd5H0r+iEFZIYDaPc41x5csDUcASVr+YSa17acpHHgP8jbYg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771963823;
+	cv=none; b=hGX0MaL8HyUVSDqtMVpPWyU+MykCGQkMQAuToMPkzpdJXRC54RjvYsJ/xkuEvJROxxv9FwkMH2suuP6AmCkOFHlyO8mX6PHiDDUXIVQRjIf9jtgK4icf3J9Q3uMc66K2UgJbfG+HHBVWFgxTDyH0dXgORKeRVAeIqzbksde30Kuqo0zZ1YQ5Gnp6jrzF3RpRm6gjAqxFPBVKgT9/Q/5b39tPhhlafOMCF4LC9B9I8aCYTSN+74DPbaMooxk7bWu2U5arXixnbQsYeLCwDPFiSgKKs5LbrOEzr24P9q/WSNA9iArlEFPQY2fKomYkVa0xK+ysomLFHmO3TJtNhmb+/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771963816; c=relaxed/relaxed;
-	bh=MjWESjX04CAWD4zzLRb+rT+HtdG6O8zDobj6zNRKaJI=;
+	t=1771963823; c=relaxed/relaxed;
+	bh=tcsQQAWxA3aNGBdZqI58IE+fXC4naEzp2MFfxjUJ08s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YHWcv/TtcT3bda2uadjWenavPqy1diV4wzF5v5Hm/4FMMdCh1iYEPZa4VBIbDVsKRKfAA6IDXWWNiNFbbCIqCNMKPU9ebbn66T20MMDaGCacByf2UnJsfDbnDLgGij/zN5ucfl1QgtugrAGym73i1Ib/JGBnGu/9zD5vxwQnhJ/uTos9uq687FiTlGZ0WPOI4EiVlybvTOFV96pz1HxzrtccjqUdjavKxKI+mmMAgtXANpni+VndbtMMcg8F6fcdUw2TbGouu1anjk8NR4427ReL0HOJqwItVf50faU1BcxqPQX/ObGFuclT5ce6MLsR/JUMBb0pkM9YT1PjLh0H2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pbftFmji; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=EacraWpWefS8f1qG7WJNrDukcjftIZ9jbl1LFH5E+URye2MMIesTpb0Fn+n+GBYRwoLVmhW9kGuhJCoGZoyaF+BCkjBqODewZZpsv3VmINJ60LNFJfpp+jpYT18GJoRNpmp+x0vtPa/i3HGCvZUyIunhQ6D1R3GlkLv0EoLo7ShsCz5zlo8cR4M9pac4b3deCGuCzqTHDSp4NoGyeildSjrbY4G5XfXRvMeaLOb+T02CL6r4rJoJYqV6Xr/DduBC0NvAVloBBVa9jzVvCK9bPgOlBEwcXTU8/P2MWmTM6MEIMdw1rVK1hYHfkHnM6BZd8D4IdxYH3UvieS1ee594+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rif28DY+; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pbftFmji;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rif28DY+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL83C4V7Kz3cbQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 07:10:15 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OFQjmS1361599;
-	Tue, 24 Feb 2026 20:10:02 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL83L3R7Rz3cbt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 07:10:22 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OAsAp32654887;
+	Tue, 24 Feb 2026 20:10:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=MjWESj
-	X04CAWD4zzLRb+rT+HtdG6O8zDobj6zNRKaJI=; b=pbftFmjiN8JIN+Z9Ec8GIx
-	ZKIS5jUpDuak7+WreLciVwyyyOm2Rlkq71/SsBrFQTG36XDxJ71UF9N7qZLlwJRE
-	R7MobKQ/yggeCGN3C/7/oQyGyjg1Ux3lHCrHwF/7LLJm6lZ1jyH06neqkFYwzTln
-	ZwuV3g7wCwOH1gsOushRNCuCbUAXtJiw/wxKyLhKTotk8ejMfUdlv9/Y0k/C7VwM
-	pzvkImr+FjFKIKrv8LlXhv10nOuBHhBtjHyDFN7k/z/1nCr0X1L1HREGNtKSGKLB
-	nrDAq8PPu75OTJMHoHsfpZDccRZOkFtqVYDaG7NCB5z3glbmYASwMlXB4iQKoo7w
-	==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=tcsQQAWxA3aNGBdZq
+	I58IE+fXC4naEzp2MFfxjUJ08s=; b=Rif28DY+Wtl4T8rihgrK7cUnzA0eOxR83
+	vCwZ0XnSwPN9sfUIPoxUwXDgqucnB7rxQJEbnKHpiNmUUl11n9ZDM6+PcDxXaEps
+	iDnawRIPIac3D9Iyz1KOYun0kkjeuW3ad8IzFCkTXy9sGTaMzDz6cafxrOhDwQfr
+	gv3I8Obrn6nlKX4fOqSt/Z1BLgztsE44JRq+2majozE961XS0wn6MLwecC2t7+jp
+	cLkuzXpSPuqxZga3Uj/iDvenwVn75eGfb9MqNF1iOf5joMXdSdIz4aRym/n8BLZk
+	GKMD8KUQ8KyJ5+uhaN0UVjgE2NvnfXBI8uc/SQ64ZycPSbP+AMyDw==
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34c4t77-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4cqwbq1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Feb 2026 20:10:01 +0000 (GMT)
+	Tue, 24 Feb 2026 20:10:06 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61OGcddP013448;
-	Tue, 24 Feb 2026 20:10:01 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfqdy2jdw-1
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61OGUrDc013478;
+	Tue, 24 Feb 2026 20:10:05 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfqdy2je5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Feb 2026 20:10:00 +0000
+	Tue, 24 Feb 2026 20:10:05 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61OK9vgZ40698280
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61OKA1je33947904
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Feb 2026 20:09:57 GMT
+	Tue, 24 Feb 2026 20:10:01 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3614D20043;
-	Tue, 24 Feb 2026 20:09:57 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 62CB620043;
+	Tue, 24 Feb 2026 20:10:01 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ABD4120040;
-	Tue, 24 Feb 2026 20:09:55 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id CE83B20040;
+	Tue, 24 Feb 2026 20:09:59 +0000 (GMT)
 Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Feb 2026 20:09:55 +0000 (GMT)
+	Tue, 24 Feb 2026 20:09:59 +0000 (GMT)
 From: adubey@linux.ibm.com
 To: linuxppc-dev@lists.ozlabs.org
 Cc: bpf@vger.kernel.org, hbathini@linux.ibm.com, ast@kernel.org,
         daniel@iogearbox.net, andrii@kernel.org, maddy@linux.ibm.com,
         Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH 3/4] powerpc64/bpf: Add support for indirect jump
-Date: Tue, 24 Feb 2026 20:09:31 -0500
-Message-ID: <20260225010950.20218-4-adubey@linux.ibm.com>
+Subject: [PATCH 4/4] selftest/bpf: Enable gotox tests for powerpc64
+Date: Tue, 24 Feb 2026 20:09:32 -0500
+Message-ID: <20260225010950.20218-5-adubey@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260225010950.20218-1-adubey@linux.ibm.com>
 References: <20260225010950.20218-1-adubey@linux.ibm.com>
@@ -94,33 +93,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDE3MyBTYWx0ZWRfX1/etIOebPwcR
- zu9M4gGVaNRinBUYJEtnJTRbYR7zF+N31ZnO00v/qeLmQ1EFb6hFa+MXcWkt/tljWcGg2bEl0bJ
- R6tsmlIAeRXmJiUR9Eb+z4xTn10VoaStjqNo8bU8tWWTc3hsVs2UCLW6h4jylUkaDPvLtpoc8uH
- 7k4cT21E7lvKY7NxSOePLcXAR+bjPN6G2lI64lGH9lZ1QaEekeMKvqs4ttK7m6K0pl3hzzjkAgc
- 6JdrMoL91clMzFIs6bp+THt4pEpNYCfcddtzvAk3fKjYzgsHYsdBTZDU9qL24NeUd2olmOle1po
- aj0GJxdGOBqHbMMPRJpLcxQggK3qZ7WCSY0IBNvo4HUBwpvAjPKlrHfX22TfMVbGG5PDVf+NZSR
- 8nFuSVKz7EZhxi8Qwan+RC9cHvLLrMx8mm6VQ0U6w9w3OGelbCenhTCZTeN9m9MssVLlL7WmvEA
- m2gtjvS5vpG94i4VT4w==
-X-Proofpoint-ORIG-GUID: C0KSaXJz-qQXWGq1EZpiS4RFAp4zN0lg
-X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=699e0599 cx=c_pps
+X-Proofpoint-ORIG-GUID: 96_P54RKxdpNo7PPm1Cfdo1pp4Neh5xi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDE3MyBTYWx0ZWRfX38YKUJMml4HA
+ ZlnbBK4U2mZPhBel4vRI5a6tjbOKRJUBanPAbTNvx7iJftU/aryZOTDGxY94UXeMTlUtSSDms9e
+ cf/GnLuE9XAZ9ob4QIuLa488mo1a8orQyQSGxYzYrOE/KS8kspa2gfOie2WgvSx4Uj1J9FzM+VR
+ V2jjJizaNus61jZlB6quQ0hrYt52tvpRCeTRTZT4NXAMLluSSX2zsANteB1k8arJM6DJnJixIpe
+ u9CnKC7W5QQmNZnwA6CT1RbhGgsGZmFZbvdGmo4dJ72XtHjiVS3GsUkMB/qf+LLxD3tYP8voiug
+ PNPt6g2MzR2OCKY+pZs2OWgR0ZStIvHbRtJMBcLzA6cQhB5sjZU9vdnnCA3iRQ8IUx6QUfdRpdz
+ N9RVUhDww9bNlHZbXKzXQ7grIB/cUSuPnCGbW7qfhaPeGkcWhBP02nYsZhJ0c0aToIBq81EOCWX
+ rCV3fko5T1WCaAwmA4A==
+X-Proofpoint-GUID: 96_P54RKxdpNo7PPm1Cfdo1pp4Neh5xi
+X-Authority-Analysis: v=2.4 cv=bbBmkePB c=1 sm=1 tr=0 ts=699e059e cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=_W6WOvRXMcVY7OADHKgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: C0KSaXJz-qQXWGq1EZpiS4RFAp4zN0lg
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=XIkr_taID0MGvadLvJ0A:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-24_02,2026-02-23_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602240173
+ malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602240173
 X-Spam-Status: No, score=1.7 required=3.0 tests=DATE_IN_FUTURE_03_06,
 	DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
 	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
@@ -128,75 +124,59 @@ X-Spam-Status: No, score=1.7 required=3.0 tests=DATE_IN_FUTURE_03_06,
 X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.79 / 15.00];
+X-Spamd-Result: default: False [3.29 / 15.00];
 	DATE_IN_FUTURE(4.00)[4];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17126-lists,linuxppc-dev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17127-lists,linuxppc-dev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FROM_NO_DN(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid];
+	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 49F5918C4D2
+X-Rspamd-Queue-Id: 2764218C4DB
 X-Rspamd-Action: no action
 
 From: Abhishek Dubey <adubey@linux.ibm.com>
 
-Add support for a new instruction
-
-	BPF_JMP|BPF_X|BPF_JA, SRC=0, DST=Rx, off=0, imm=0
-
-which does an indirect jump to a location stored in Rx. The
-register Rx should have type PTR_TO_INSN. This new type ensures
-that the Rx register contains a value (or a range of values)
-loaded from a correct jump table – map of type instruction array.
-
-Support indirect jump to all registers in powerpc64 JIT using
-the ctr register. Move Rx content to ctr register, then invoke
-bctr instruction to branch to address stored in ctr register.
-Skip save and restore of TOC as the jump is always within the
-program context.
+With gotox instruction and jumptable now supported,
+enable corresponding bpf selftest on powerpc.
 
 Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
 ---
- arch/powerpc/net/bpf_jit_comp64.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/bpf/progs/verifier_gotox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 33ea07660ebc..8771c9f23c98 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -1604,6 +1604,14 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			addrs[++i] = ctx->idx * 4;
- 			break;
+diff --git a/tools/testing/selftests/bpf/progs/verifier_gotox.c b/tools/testing/selftests/bpf/progs/verifier_gotox.c
+index 607dad058ca1..c1e5b8529add 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_gotox.c
++++ b/tools/testing/selftests/bpf/progs/verifier_gotox.c
+@@ -6,7 +6,7 @@
+ #include "bpf_misc.h"
+ #include "../../../include/linux/filter.h"
  
-+		/*
-+		 * JUMP reg
-+		 */
-+		case BPF_JMP | BPF_JA | BPF_X:
-+			EMIT(PPC_RAW_MTCTR(dst_reg));
-+			EMIT(PPC_RAW_BCTR());
-+			break;
-+
- 		/*
- 		 * Return/Exit
- 		 */
+-#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
++#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64) || defined(__TARGET_ARCH_powerpc)
+ 
+ #define DEFINE_SIMPLE_JUMP_TABLE_PROG(NAME, SRC_REG, OFF, IMM, OUTCOME)	\
+ 									\
 -- 
 2.52.0
 
