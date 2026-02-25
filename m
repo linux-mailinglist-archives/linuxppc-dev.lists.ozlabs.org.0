@@ -1,82 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-17131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17132-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAy8AOcLnmkPTQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:36:55 +0100
+	id YOeMCO4LnmkPTQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17132-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:37:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D6518C6E4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:36:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6196918C6F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Feb 2026 21:37:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fL8dg3XWcz3dKH;
-	Wed, 25 Feb 2026 07:36:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fL8dl4n8yz3dLZ;
+	Wed, 25 Feb 2026 07:36:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771965399;
-	cv=none; b=WgsK5MdqYMpEN33OqP//+jpHkKQTN3Aq0uNwjj/H2IUf64fEuqezyVf+KmbJrpWGKLk6DNdiu0u+udCTrnLFQYz0m+rZE/rO0TUKQnXbfPsh39gDcRSbgbbFI0xYNWspsKEW3bx/Bm6K4tUdFRpUF05ZvDUkWkhuDsafKGvvkQnS57Iqa/+FabWiUDgLC66FY+fXlOSOUE4N+MnNkqVQVHMO9XkQJ/x5sl3MnFcdwByspRoLgVzM1+fBxiuEjrG3u5c3hzlq6F0AYGYaQgeICqY/bbtnydPKk6eyue9TeQYMTCndkdMYxpGmJEptVzEDJt73/Y7ZiEJ10EwPQZa8cg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1771965403;
+	cv=none; b=QfrDAr585c303+uU65DyeL/tondddUai3AN8SACbEiJ23X/aXxLcXZJLhF51j4iifOeT3XBkI5TazeTR+nSwOj9m2gDLO1wkk3eLhfKzVWOhODbUJ1ab13+v+aUneKmZAJQiVHS0jabQk+wk3mOFzKRmNeD4VdDjpcUfeG2LbYqcTQGPc+xNJ5sDByRLW2RiKV0ioFeATMLG3MsCKJUDO0COWc0dRbj4iTOWA1Y/+Ds8sgAdZ2titjpa0kd4TjxOi85llAT0gL3E34V3ZDtxW+Hgc6jpokhsfSwhEGbooaYPKYvDp3xOOTRzwfSftSbTWgf+BzA+KJZhItEw6yZKNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1771965399; c=relaxed/relaxed;
-	bh=B1/Neq2m/CTKiuUiXs1KrqxKRjM7xfwfRTx73tLTlgE=;
+	t=1771965403; c=relaxed/relaxed;
+	bh=LDKruURJptjtqC3/O5C7mqtiXapJ5l0fal5Ut14TaTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHDmsvRXvxDX0rsivwJBHoEWkUfGsOBQ7InEToHQkZENU3Dc2L/PQ5na7nCUJ2Heat+gkrDhqq92KLMw7+hcwYZP83TZ4Tjt6NLC4YYgtuCOsJoy/6uC0eteECeUyRKk3/SgeOnrHLuJPmv2BEwALwIrMeNUThObTfKNAYt84Z9mn1Fe6WLE4VDTbl14lOWb4XH7BonXI7IhRSPtmzXxi2rfIFEUv640nfBCJG5OxErpEQUPc8jryAZ2yUr0eS+eEGTgh+/vgDqMO0fxJ2aTZutu1gnflScorS4Vc0YkI3SoyfvZ+BazdYjceh6RbzDs9ZIGZTgfI0FFwGs5QOAIoQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c2eG/gnf; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=QqUpMyNL1WRC6d1gN6Q5V/PraMZU4WHTjQ1BPsxGXkpkdag/WNSaRTCknqsU/2HfzHcxMgemP1UdU917Y1cuM7TWkPoYXF1Gz8IWRnhkk70k9xnDgjtuAGSZvyzOlxOu1BlQFIFIa9fZ4P0lNyAPwkDabTr8LG5qxM3eieyI5irYPDrsGiQtB1ujS59ZGdypRNQWMMmM2eyaXFFQCTnlGfKJUezu/qZU8xsmHOex7/4xzH3jL8HnJAAi9wNQQ9z1KQJOWHSjGHdxACj4LG6MdckKZtGlu2W+vFyJSKzuS3S+lMucMx0ai7dtTSQtZx56xtzE8Wa2UNudcsqwBQu5LA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fZc1G0dn; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c2eG/gnf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fZc1G0dn;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL8df4b9Zz3dKF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 07:36:38 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61O9mmER2866998;
-	Tue, 24 Feb 2026 20:36:24 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fL8dk3pLmz3dLW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 07:36:42 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OKNk9H2582842;
+	Tue, 24 Feb 2026 20:36:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=B1/Neq2m/CTKiuUiX
-	s1KrqxKRjM7xfwfRTx73tLTlgE=; b=c2eG/gnf248ADggHvIPTktNUWKbZzxJAL
-	ctuborFtdez2qgXnaPeSKB8qYsau7fqApLZznTqvBrQ5VHEX7dpQhpaTcRibPG6S
-	rWEZoVkkDlnbWGNJnyxIiUHfO+EPidzZgxWTmi94M7Yj1WWO4VPNG9UEqFSUACP2
-	Ld4nnd6R+kviIE7bbNlc+3rNnyo0QoKBU44eDsg/Yhm2Oj3ONxIlbRA2UCJP2Zye
-	Z7eXcJFWBs4aTYx8VtMLhTX0iX1vkbiN1uJPTlpHts5MbWJfede8mbGgb0RBouj3
-	vUf17rAdobZgklHQsapklKk6KtwrMuM80UYQovicVojAax+dgjZmg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4brvt1q-1
+	:mime-version:references:subject:to; s=pp1; bh=LDKruURJptjtqC3/O
+	5C7mqtiXapJ5l0fal5Ut14TaTI=; b=fZc1G0dnQiSqKOIPD3z28q+TpmgaMAgHi
+	90lqOZrwqzRt1dtTAulTb0/B5toZbWo0G9nJ9OnACrasD0jYA5kgSk3KMBxgQsoW
+	sAl2CZSqld4nThFIbUEp4WH6AAwSn5fXa40POAbbC9RslyB+PREw3eaj5y8VZkit
+	46rXrrTtwAHszKjE5/IF15FljKEogbWcUf7xaWY/bd9CIJFprfojEu30hev2komB
+	Wvt/zELhU2rjJNFUCe3dn/R/GOR6gmUrTouSSuHYZbNFdwtO+KlfuCosvgyd9Ckj
+	G6i0ebNsgH2flxWsnG4/ohg2Km/F75BdFnLlDumLYd3o1kXsQm+7g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf24gd2bq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Feb 2026 20:36:24 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61OHD2fM001674;
-	Tue, 24 Feb 2026 20:36:24 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1n2j6y-1
+	Tue, 24 Feb 2026 20:36:28 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61OGf8IE015789;
+	Tue, 24 Feb 2026 20:36:27 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1sjnb1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Feb 2026 20:36:23 +0000
+	Tue, 24 Feb 2026 20:36:27 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61OKaK5k23593372
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61OKaO0252429172
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Feb 2026 20:36:20 GMT
+	Tue, 24 Feb 2026 20:36:24 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 009C820040;
-	Tue, 24 Feb 2026 20:36:20 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1DA7D2004B;
+	Tue, 24 Feb 2026 20:36:24 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7544C20043;
-	Tue, 24 Feb 2026 20:36:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9330820040;
+	Tue, 24 Feb 2026 20:36:22 +0000 (GMT)
 Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Feb 2026 20:36:18 +0000 (GMT)
+	Tue, 24 Feb 2026 20:36:22 +0000 (GMT)
 From: adubey@linux.ibm.com
 To: linuxppc-dev@lists.ozlabs.org
 Cc: bpf@vger.kernel.org, hbathini@linux.ibm.com, ast@kernel.org,
         daniel@iogearbox.net, andrii@kernel.org, maddy@linux.ibm.com,
         Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH 3/4] selftest/bpf: Enable verifier selftest for powerpc64
-Date: Tue, 24 Feb 2026 20:36:26 -0500
-Message-ID: <20260225013627.22098-4-adubey@linux.ibm.com>
+Subject: [PATCH 4/4] selftest/bpf: Add tailcall verifier selftest for powerpc64
+Date: Tue, 24 Feb 2026 20:36:27 -0500
+Message-ID: <20260225013627.22098-5-adubey@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260225013627.22098-1-adubey@linux.ibm.com>
 References: <20260225013627.22098-1-adubey@linux.ibm.com>
@@ -95,26 +95,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: tmAUYl38FaJWd43P8bIuEn23_54T1yw-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDE3MyBTYWx0ZWRfX4S7HZECsin7I
- WV3RU4WsHjQ8nUTiBCr8vQKMz/ml/5QStGRICppxCKRBcYip8t9aC3wnzI2g65aTwuZrag0l1OI
- d6S9PWUffrDm0auCMvmfeQnF7XAbQOyK8Ftori8ZI8DDrV2esnW1Ov7ZwSsXcmnqdSkzBZIIEMw
- iChkui7NAFv4aFKW0N4O30A7L4VPxaQKOT7FcmpbXpLhgBPkYL/bj1SA4Ibq9905Vs6VPIwasui
- x5EJgmYlG+Tk9Vd8tXGSl+PSChjPf4fw1x0squAZOD7DR6Tgy2pGQpacVzJXSbQT3W8RzuhjUYA
- Y2LWCacPsnAxKCpbRs8Nq6cEJ/gBof6mw4fom6nQn7aZPLQWfutprMkB13MLo75Jab1B/vWkF59
- wJ+I+mhOxw5ZthUP0xFHGLqcmrdWemfMgqu+VJ68kEHzxN2JyhVmJF0znj2u1bvgxJ8utyfSJnj
- SPay2xCVfHNlbkfHNDA==
-X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=699e0bc8 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Authority-Analysis: v=2.4 cv=TNRIilla c=1 sm=1 tr=0 ts=699e0bcc cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=LqUW6rLYXr1P-t3EVGcA:9
-X-Proofpoint-GUID: tmAUYl38FaJWd43P8bIuEn23_54T1yw-
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=TZJ4Wy1_Ugu8wcDdlOUA:9
+X-Proofpoint-GUID: 9k6bWDutqn9pjuip8fHcLD8GF_HkkTFo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDE3MyBTYWx0ZWRfXyxpEuYp9QAjw
+ zjxDU+LwYzuNj5Il9u+WSdzMXIH5V5BgLtwy5YTOBS6jkZgu9OT+slcaUe54ZgjEp1wGeTolOUD
+ WpPUTyJmFFX9jLQBh/GR+R7+qMbuEsg89yweP7a/Cje2FXkujyV/pf+ZnZQfqc3wR/JRH0THJq4
+ vtC3xQWZQFKZUoDMuD0SkQHbHbTghiWhDv58iWZYl9ylFLyXvboFSg6e9/iGi/uuwGIj0w2acvc
+ d+n1XOW9TQQ1Tz5HQkNwsKjj1UxyxudjoeRaHulZskkCQpA1J1RQP47iYAh/MygYQ/nYk9eaeme
+ K1IgwRlRPna0EERre6hOVGbDZX6BzNtPOLg+GGg87sv3szR8Tn75Ov1NPq8meIa/FPz/KMHR3IR
+ 8NliRyyrqBIG0qmhl0/npUf5LpLL9HbzyZsxQyBGoQrm2O5s5enuWv1dQRQl7+JtDobH/S6NcyL
+ hrFz9b9DDASl0dWl2IQ==
+X-Proofpoint-ORIG-GUID: 9k6bWDutqn9pjuip8fHcLD8GF_HkkTFo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-24_02,2026-02-23_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602240173
 X-Spam-Status: No, score=1.7 required=3.0 tests=DATE_IN_FUTURE_03_06,
@@ -132,15 +132,15 @@ X-Spamd-Result: default: False [3.29 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17131-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17132-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FROM_NO_DN(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid];
@@ -151,63 +151,106 @@ X-Spamd-Result: default: False [3.29 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 55D6518C6E4
+X-Rspamd-Queue-Id: 6196918C6F2
 X-Rspamd-Action: no action
 
 From: Abhishek Dubey <adubey@linux.ibm.com>
 
-This patch enables arch specifier "__powerpc64" in verifier
-selftest for ppc64. Power 32-bit would require separate
-handling. Changes tested for ppc64 only.
+Verifier testcase result for tailcalls:
+
+# ./test_progs -t verifier_tailcall
+#617/1   verifier_tailcall/invalid map type for tail call:OK
+#617/2   verifier_tailcall/invalid map type for tail call @unpriv:OK
+#617     verifier_tailcall:OK
+#618/1   verifier_tailcall_jit/main:OK
+#618     verifier_tailcall_jit:OK
+Summary: 2/3 PASSED, 0 SKIPPED, 0 FAILED
 
 Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
 ---
- tools/testing/selftests/bpf/progs/bpf_misc.h | 1 +
- tools/testing/selftests/bpf/test_loader.c    | 5 +++++
- 2 files changed, 6 insertions(+)
+ .../bpf/progs/verifier_tailcall_jit.c         | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
-index c9bfbe1bafc1..dee284c3ddba 100644
---- a/tools/testing/selftests/bpf/progs/bpf_misc.h
-+++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
-@@ -155,6 +155,7 @@
- #define __arch_arm64		__arch("ARM64")
- #define __arch_riscv64		__arch("RISCV64")
- #define __arch_s390x		__arch("s390x")
-+#define __arch_powerpc64	__arch("POWERPC64")
- #define __caps_unpriv(caps)	__attribute__((btf_decl_tag("comment:test_caps_unpriv=" EXPAND_QUOTE(caps))))
- #define __load_if_JITed()	__attribute__((btf_decl_tag("comment:load_mode=jited")))
- #define __load_if_no_JITed()	__attribute__((btf_decl_tag("comment:load_mode=no_jited")))
-diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
-index 338c035c3688..fc8b95316379 100644
---- a/tools/testing/selftests/bpf/test_loader.c
-+++ b/tools/testing/selftests/bpf/test_loader.c
-@@ -378,6 +378,7 @@ enum arch {
- 	ARCH_ARM64	= 0x4,
- 	ARCH_RISCV64	= 0x8,
- 	ARCH_S390X	= 0x10,
-+	ARCH_POWERPC64	= 0x20,
- };
- 
- static int get_current_arch(void)
-@@ -390,6 +391,8 @@ static int get_current_arch(void)
- 	return ARCH_RISCV64;
- #elif defined(__s390x__)
- 	return ARCH_S390X;
-+#elif defined(__powerpc64__)
-+	return ARCH_POWERPC64;
- #endif
- 	return ARCH_UNKNOWN;
- }
-@@ -587,6 +590,8 @@ static int parse_test_spec(struct test_loader *tester,
- 				arch = ARCH_RISCV64;
- 			} else if (strcmp(val, "s390x") == 0) {
- 				arch = ARCH_S390X;
-+			} else if (strcmp(val, "POWERPC64") == 0) {
-+				arch = ARCH_POWERPC64;
- 			} else {
- 				PRINT_FAIL("bad arch spec: '%s'\n", val);
- 				err = -EINVAL;
+diff --git a/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c b/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c
+index 8d60c634a114..17475ecb3207 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c
++++ b/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c
+@@ -90,6 +90,75 @@ __jited("	popq	%rax")
+ __jited("	jmp	{{.*}}")		/* jump to tail call tgt   */
+ __jited("L0:	leave")
+ __jited("	{{(retq|jmp	0x)}}")		/* return or jump to rethunk */
++__arch_powerpc64
++/* program entry for main(), regular function prologue */
++__jited("	nop")
++__jited("	ld 2, 16(13)")
++__jited("	li 9, 0")
++__jited("	std 9, -8(1)")
++__jited("	mflr 0")
++__jited("	std 0, 16(1)")
++__jited("	stdu 1, {{.*}}(1)")
++/* load address and call sub() via count register */
++__jited("	lis 12, {{.*}}")
++__jited("	sldi 12, 12, 32")
++__jited("	oris 12, 12, {{.*}}")
++__jited("	ori 12, 12, {{.*}}")
++__jited("	mtctr 12")
++__jited("	bctrl")
++__jited("	mr	8, 3")
++__jited("	li 8, 0")
++__jited("	addi 1, 1, {{.*}}")
++__jited("	ld 0, 16(1)")
++__jited("	mtlr 0")
++__jited("	mr	3, 8")
++__jited("	blr")
++__jited("...")
++__jited("func #1")
++/* subprogram entry for sub() */
++__jited("	nop")
++__jited("	ld 2, 16(13)")
++/* tail call prologue for subprogram */
++__jited("	ld 10, 0(1)")
++__jited("	ld 9, -8(10)")
++__jited("	cmplwi	9, 33")
++__jited("	bt	{{.*}}, {{.*}}")
++__jited("	addi 9, 10, -8")
++__jited("	std 9, -8(1)")
++__jited("	lis {{.*}}, {{.*}}")
++__jited("	sldi {{.*}}, {{.*}}, 32")
++__jited("	oris {{.*}}, {{.*}}, {{.*}}")
++__jited("	ori {{.*}}, {{.*}}, {{.*}}")
++__jited("	li {{.*}}, 0")
++__jited("	lwz 9, {{.*}}({{.*}})")
++__jited("	slwi {{.*}}, {{.*}}, 0")
++__jited("	cmplw	{{.*}}, 9")
++__jited("	bf	0, {{.*}}")
++/* bpf_tail_call implementation */
++__jited("	ld 9, -8(1)")
++__jited("	cmplwi	9, 33")
++__jited("	bf	{{.*}}, {{.*}}")
++__jited("	ld 9, 0(9)")
++__jited("	cmplwi	9, 33")
++__jited("	bt	{{.*}}, {{.*}}")
++__jited("	addi 9, 9, 1")
++__jited("	mulli 10, {{.*}}, 8")
++__jited("	add 10, 10, {{.*}}")
++__jited("	ld 10, {{.*}}(10)")
++__jited("	cmpldi	10, 0")
++__jited("	bt	{{.*}}, {{.*}}")
++__jited("	ld 10, {{.*}}(10)")
++__jited("	addi 10, 10, 16")
++__jited("	mtctr 10")
++__jited("	ld 10, -8(1)")
++__jited("	cmplwi	10, 33")
++__jited("	bt	{{.*}}, {{.*}}")
++__jited("	addi 10, 1, -8")
++__jited("	std 9, 0(10)")
++__jited("	bctr")
++__jited("	mr	3, 8")
++__jited("	blr")
++
+ SEC("tc")
+ __naked int main(void)
+ {
 -- 
 2.52.0
 
