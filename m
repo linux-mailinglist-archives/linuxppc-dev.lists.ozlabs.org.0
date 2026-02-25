@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17148-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AbCNHCdnmkZWgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17148-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 07:57:52 +0100
+	id mDliCOuhnmlPWgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 08:16:59 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18481929BF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 07:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0A1193292
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 08:16:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLQQM0Cv7z3dLs;
-	Wed, 25 Feb 2026 17:57:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLQrQ2fL8z3dL8;
+	Wed, 25 Feb 2026 18:16:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772002666;
-	cv=none; b=BUDZAU64z9Fee4BDXtfpqF7A5q97Hj6Kh5xTmUHW0bDgkmT61VKUz2X3mXDhZth0F0Ylg7fOyw1e2ml6nNBaRZRxW8FU/5GR5sap07L5vy1MTkyfhdRrs95Jzozt7sQSNFLsmacKxxnOrAuqnkq1L9zh1LWzwpqKc2HPbHZlaJNpMxqmB1r+UMZfrmIhIk6lDE3wNCmme0XioBzfG4RNR8aIiGJZ9z5Lt+mc2JYg+PrveNh1Y+7l7g+tqGjGd1uVVLdnaX+trat/QbOhnsojHe6rIe3thIB6DV1RW+vv8L7gFewhYVs8SMRQvjpbI9kDFadcN5y+S5FtClI/2X761w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772003814;
+	cv=none; b=eEtQeFZ6OO76mZSuJxzC/bFqpiscKWVpO1TuzAjU9DOq3tk4XQ1+yAEun70M00ros8eeUqIqGJHqLw5H1Xm2+0YirMDXh7aA8gco3eJ2hb7Qrjqd9A5XMKF565P+yVDscPUzwCvGHu2WZzTn3otxEZ10FurHhtgyFetT4RNiU1fBfVqYduHjDNbnR92a28GAMGzv14Cvad3njUCt2gDAuhUfJU3fj+becvYcamjZ+iJC2c/TPYSSPDLpXra4UrEb77hAizSSlnwG493WLPgPJq5Gn0wekMepbYiWKmCjuiC0RCOpN5UFskVIGVXSMViS6n1dGF9QXhYkcchiGymGVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772002666; c=relaxed/relaxed;
-	bh=21jRe62XPEVYrcTsRtRO8xd5U2tbZs4EvU1wSTUITyM=;
+	t=1772003814; c=relaxed/relaxed;
+	bh=/6cw0Akl2Q2J+TmRORRg0/zCSbR/V64Kmi8Q7m/9ttk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xj+9g10QHSQlTVh08TY8Xw9IGQ7odkrcLBSwXRKFvBjK3RlrOsf6AcS5Yc391QWukC4/PCkDck/e4oEwU/lZIFzaoN/i5WkqnigVXVrOH/nE5hLN0vLD3eedZGXpsG1gPWEXU/m03KKZra8BCSGzzNBVEiOqV43rV8232xryOnZSSjO6cKQBIkFFSACSZP1YJzw4Jfm2TLzJv8G9L+P0bo/5VzAT/vygepQZ2msP9XzMLhF9hacU3mE3mUkCE2Ha2F0rINv8krS+pzMRyfUbXQfbCX06DPLDG7Ev0REe3zxZzoIJdwGcE396R4P1w27aiw5HiS+cSlMUnaVjRn1w3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JmiIWvEK; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=Vpl0UAI2JI+dGwJb+oDoXWrJSX2waax+O3bz5aPSD1XWA4BiDU1NBA8MdhmvR/U039fOyQmxn79CTIhD4mwFi4EGB++4SNP2QCVWGpejBt76lEz/ytdY2s3n0cVDechlVWTIy7tuVi6RC1NQeXCYUpOJJjE5rcYLF6wrpQKIamH+k3yJt8PwH5Y4MmR01YSekxdwp2O6i58A1C2k9l7GjgRvXyu7nwX+ec99xRXHugsqCSTuijDoet5kume3ljO9uSTG8Muj9CuOaLwPzDIWutwvW2giJX2nhNKzjYUSi1XkgJbik3nlULUtRVClnz5bFvaS05Xz1abjGfbMfARylw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HhGHbd6J; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JmiIWvEK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HhGHbd6J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLQQK5ddSz3dLc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 17:57:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLQrP3j1zz3d8d
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 18:16:53 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C512C6012B;
-	Wed, 25 Feb 2026 06:57:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5DAC19422;
-	Wed, 25 Feb 2026 06:57:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DC1E060051;
+	Wed, 25 Feb 2026 07:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC70C116D0;
+	Wed, 25 Feb 2026 07:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772002662;
-	bh=xM+pXNjx5WhrwV2vpwiDD9Imq0ziFnk304V3V+OEhA8=;
+	s=k20201202; t=1772003810;
+	bh=0VoyvgVLV83OpwaPy00QzkStcLMj9l0dy7bXC5TxxWk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JmiIWvEKpIk7l3GZIT4aKA0Rf2HNZC3Zpc/iTN9ugFqCH5S0X8y2As+Gk3XmSNRLc
-	 ccIIqpZlYvfPkL4dPxfJQHzCxW07cwGpCD0dW9DQ3L17zZIPXRPlfy4Yq4sgJtvU1S
-	 53Qtep+OJShmsM4S4uUhBGtq8vLAIGZ2j9gHmhRDknwjA0IOncOUBebu6HThAVLMw2
-	 8nI5rCYjOMwhipIw2g3qrah+kkO4T+/sCNY4NgwLDeYy6Ddw6ZnVeqvcS9ugQl9Oo5
-	 5isKXZ3FUa46jib7wJHbxlLmr1QFKMS6KqhvjxTG9v/W7gFGSZlB3AqfoWwU6+ZZQE
-	 vhIXNkiQsM7ww==
-Message-ID: <4e84b9ea-9e7b-420a-bca9-6febd87a80cb@kernel.org>
-Date: Wed, 25 Feb 2026 07:57:39 +0100
+	b=HhGHbd6JJH07IUaYX046Ao6B9dcliOfhUr1xO4B9pi4R9bqN/800FOrs8kWtviVaW
+	 EJSoKix0cJj7MQfzNR0CLmBs8XAQ66BNJga4ZmUrRV6bKiK+NyfbvowfNf5zZpnnOV
+	 k6olCvKiYPjiWNDrXDa4ZYkeg+E6Fz3cBr1aflSx1LwWFmAxdbDU7qs36hf65VJxwQ
+	 ylR+vpwFMTeKAZpsgVktRwO3sAEd6pT8GX9lo0su6IuyFQhgA5yH+q2KsnjjHzrBtK
+	 CLr9P/MWNTm654jQZA31gBpE9XHiW80KLRwPO5eFbXQXv2dLs7MFudwdRhmz+Hs1KE
+	 XKWxpZ08z2PLw==
+Message-ID: <1c9b879a-7907-4849-a416-5df3db5617d6@kernel.org>
+Date: Wed, 25 Feb 2026 08:16:46 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,15 +64,27 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/ps3: fix ps3.h kernel-doc warnings
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+Subject: Re: [Linux PPC] Disable PREEMPT
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20260222060101.2086504-1-rdunlap@infradead.org>
+ Peter Zijlstra <peterz@infradead.org>
+Cc: "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+ mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+References: <b897b0fd-90f2-4215-bcd4-3714e497d773@xenosoft.de>
+ <185d7a42-f7b4-44e1-a129-f5989d211c74@linux.ibm.com>
+ <40154f6a-39da-959d-e039-5ab9ff62db3c@xenosoft.de>
+ <709b864f-9daa-4a48-b3d6-39baedce63b2@linux.ibm.com>
+ <dbbb7998-5245-170f-626b-81bc75a32591@xenosoft.de>
+ <843b7c60-23f1-47d0-b4e8-2147c3e40c23@linux.ibm.com>
+ <2a27e6fc-7eb4-41a5-ba88-58f6a22625b5@xenosoft.de>
+ <1d79ec6f-ce7f-4432-80e0-a54fa1668642@linux.ibm.com>
+ <e425cd24-e19a-3860-aad2-11e91af8323f@xenosoft.de>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260222060101.2086504-1-rdunlap@infradead.org>
+In-Reply-To: <e425cd24-e19a-3860-aad2-11e91af8323f@xenosoft.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -83,172 +95,90 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rdunlap@infradead.org,m:linux-kernel@vger.kernel.org,m:geoff@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17149-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[xtra.co.nz,yahoo.com.au,gmail.com,xenosoft.de];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17148-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:chzigotzky@xenosoft.de,m:sshegde@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm-ppc@vger.kernel.org,m:maddy@linux.ibm.com,m:peterz@infradead.org,m:rtd2@xtra.co.nz,m:hypexed@yahoo.com.au,m:madskateman@gmail.com,m:info@xenosoft.de,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ozlabs.org:url,ozlabs.org:email]
-X-Rspamd-Queue-Id: C18481929BF
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 4C0A1193292
 X-Rspamd-Action: no action
 
-Hi Randy,
++Peter
 
-Le 22/02/2026 à 07:01, Randy Dunlap a écrit :
-> Eliminate all kernel-doc warnings in ps3.h:
-> - add one missing struct member description
-> - add one missing function short description
-> - correct one enum name typo
-> - change several incomplete kernel-doc comments to plain "/*" comments
+Hi Christian,
+
+Le 25/02/2026 à 06:54, Christian Zigotzky a écrit :
+> Hello,
 > 
-> Examples:
+> We were previously able to disable PREEMPT in the kernel configuration, 
+> but the latest kernels now enable it by default and it is no longer 
+> possible to disable it.
 > 
-> Warning: arch/powerpc/include/asm/ps3.h:96 struct member 'dev' not
->   described in 'ps3_dma_region'
-> Warning: arch/powerpc/include/asm/ps3.h:408 missing initial short
->   description on line: * ps3_system_bus_set_drvdata -
-> Warning: arch/powerpc/include/asm/ps3.h:473 Enum value
->   'PS3_LPM_TB_TYPE_INTERNAL' not described in enum 'ps3_lpm_tb_type'
-> Warning: arch/powerpc/include/asm/ps3.h:473 Excess enum value
->   '@PS3_LPM_RIGHTS_USE_TB' description in 'ps3_lpm_tb_type'
+> Is it possible to let us decide whether to activate PREEMPT or not?
+
+Can you give more details on why you want to be able to deactivate PREEMPT ?
+
+Read https://github.com/torvalds/linux/commit/7dadeaa6e851e
+
+
 > 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-
-You sent a V2 with the same subject some time ago, see 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20251129183636.1893634-1-rdunlap@infradead.org/
-
-Is this patch something else, does it superseeds V2, or is it a wrong 
-resend of V1 ?
-
-Christophe
-
+> Currently we use the following revert patch for our non-preempt kernels.
+> 
+> --- a/kernel/Kconfig.preempt    2026-02-14 10:06:32.000000000 +0000
+> +++ b/kernel/Kconfig.preempt    2026-02-08 21:03:27.000000000 +0000
+> @@ -16,13 +16,11 @@ config ARCH_HAS_PREEMPT_LAZY
+> 
+>   choice
+>       prompt "Preemption Model"
+> -    default PREEMPT_LAZY if ARCH_HAS_PREEMPT_LAZY
+>       default PREEMPT_NONE
+> 
+>   config PREEMPT_NONE
+>       bool "No Forced Preemption (Server)"
+>       depends on !PREEMPT_RT
+> -    depends on ARCH_NO_PREEMPT
+>       select PREEMPT_NONE_BUILD if !PREEMPT_DYNAMIC
+>       help
+>         This is the traditional Linux preemption model, geared towards
+> @@ -37,7 +35,6 @@ config PREEMPT_NONE
+> 
+>   config PREEMPT_VOLUNTARY
+>       bool "Voluntary Kernel Preemption (Desktop)"
+> -    depends on !ARCH_HAS_PREEMPT_LAZY
+>       depends on !ARCH_NO_PREEMPT
+>       depends on !PREEMPT_RT
+>       select PREEMPT_VOLUNTARY_BUILD if !PREEMPT_DYNAMIC
+> 
 > ---
-> Cc: Geoff Levand <geoff@infradead.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
 > 
->   arch/powerpc/include/asm/ps3.h |   26 ++++++++++++++------------
->   1 file changed, 14 insertions(+), 12 deletions(-)
+> Thanks in advance,
 > 
-> --- linux-next-20260220.orig/arch/powerpc/include/asm/ps3.h
-> +++ linux-next-20260220/arch/powerpc/include/asm/ps3.h
-> @@ -65,6 +65,7 @@ struct ps3_dma_region_ops;
->   
->   /**
->    * struct ps3_dma_region - A per device dma state variables structure
-> + * @dev: The device that this struct describes.
->    * @did: The HV device id.
->    * @page_size: The ioc pagesize.
->    * @region_type: The HV region type.
-> @@ -108,18 +109,19 @@ struct ps3_dma_region_ops {
->   		     dma_addr_t bus_addr,
->   		     unsigned long len);
->   };
-> -/**
-> +
-> +struct ps3_system_bus_device;
-> +
-> +/*
->    * struct ps3_dma_region_init - Helper to initialize structure variables
->    *
->    * Helper to properly initialize variables prior to calling
->    * ps3_system_bus_device_register.
->    */
-> -
-> -struct ps3_system_bus_device;
-> -
->   int ps3_dma_region_init(struct ps3_system_bus_device *dev,
->   	struct ps3_dma_region *r, enum ps3_dma_page_size page_size,
->   	enum ps3_dma_region_type region_type, void *addr, unsigned long len);
-> +
->   int ps3_dma_region_create(struct ps3_dma_region *r);
->   int ps3_dma_region_free(struct ps3_dma_region *r);
->   int ps3_dma_map(struct ps3_dma_region *r, unsigned long virt_addr,
-> @@ -136,7 +138,7 @@ enum ps3_mmio_page_size {
->   };
->   
->   struct ps3_mmio_region_ops;
-> -/**
-> +/*
->    * struct ps3_mmio_region - a per device mmio state variables structure
->    *
->    * Current systems can be supported with a single region per device.
-> @@ -155,13 +157,13 @@ struct ps3_mmio_region_ops {
->   	int (*create)(struct ps3_mmio_region *);
->   	int (*free)(struct ps3_mmio_region *);
->   };
-> -/**
-> - * struct ps3_mmio_region_init - Helper to initialize structure variables
-> +
-> +/*
-> + * ps3_mmio_region_init - Helper to initialize structure variables
->    *
->    * Helper to properly initialize variables prior to calling
->    * ps3_system_bus_device_register.
->    */
-> -
->   int ps3_mmio_region_init(struct ps3_system_bus_device *dev,
->   	struct ps3_mmio_region *r, unsigned long bus_addr, unsigned long len,
->   	enum ps3_mmio_page_size page_size);
-> @@ -342,7 +344,7 @@ enum ps3_system_bus_device_type {
->   	PS3_DEVICE_TYPE_LPM,
->   };
->   
-> -/**
-> +/*
->    * struct ps3_system_bus_device - a device on the system bus
->    */
->   
-> @@ -371,7 +373,7 @@ struct ps3_system_bus_device {
->   int ps3_open_hv_device(struct ps3_system_bus_device *dev);
->   int ps3_close_hv_device(struct ps3_system_bus_device *dev);
->   
-> -/**
-> +/*
->    * struct ps3_system_bus_driver - a driver for a device on the system bus
->    */
->   
-> @@ -405,7 +407,7 @@ static inline struct ps3_system_bus_driv
->   }
->   
->   /**
-> - * ps3_system_bus_set_drvdata -
-> + * ps3_system_bus_set_drvdata - save driver private pointer in @dev
->    * @dev: device structure
->    * @data: Data to set
->    */
-> @@ -464,7 +466,7 @@ enum ps3_lpm_rights {
->    * enum ps3_lpm_tb_type - Type of trace buffer lv1 should use.
->    *
->    * @PS3_LPM_TB_TYPE_NONE: Do not use a trace buffer.
-> - * @PS3_LPM_RIGHTS_USE_TB: Use the lv1 internal trace buffer.  Must have
-> + * @PS3_LPM_TB_TYPE_INTERNAL: Use the lv1 internal trace buffer.  Must have
->    *  rights @PS3_LPM_RIGHTS_USE_TB.
->    */
->   
+> Christian
 > 
 
 
