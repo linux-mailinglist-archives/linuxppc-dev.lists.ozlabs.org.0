@@ -1,77 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-17171-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHTtNG3QnmnwXQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17171-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:35:25 +0100
+	id KIf/LWfSnmnwXQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:43:51 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2FE195D31
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:35:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C10195EF6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:43:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLWFP4p2Dz3dng;
-	Wed, 25 Feb 2026 21:35:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLWR80DbDz3dkm;
+	Wed, 25 Feb 2026 21:43:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772015721;
-	cv=none; b=GrRMyi3gfXiZqc5P4XhBtIofI5xv3+q2AdXbPzUq9vX8T89OyUHV/OiCzUUB67/IzArcDTp7etOfLwpvh2VrUnpPIacFsQV8DzOc6mUoQCAK5vLgMkpo+sg8thS43lIrNhh7wfToSATIy4PUulcsIhIZUxY+j/y/rl4w5JJ4ojZ8rc3djweKF76X8CIcybV38dTE/dfLWAjTy9VWWDyhswoQYfLZiWFFKjEfgB09p+Tx3HY0IXITnysjJKc+ERD5cf2K9anTqBPLun1Jgrvy8mCIsxC3LcSr9zAmpIK+kxECAPjEG7w++pGfe3F8EWRAbECfqhehN84Go3z7ADbm9Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772016227;
+	cv=none; b=kG/x0mT9vz6WXpR63UpIigxyvofmw1a+R/Q/UCkjob1XzUWVy96fkg/yZEw1NU5MMtpbVQdkakqKKLGPum2qpND1UhlfPzX8pUjB3Wn8aS6UDYpyT6tqqs4Lk5lgAWLTQbmQEYu7HfixphOBVurWWaxG6LSLjKwbz5ttKjkNTh9+C8d+udIFQvKzI2+wtsuZKX7XqLMF1p3bI/jg7mIl9olzPQNjZCxFhe1NX64jCC7sXIrWgXg65A4ekRfKIumHfp+0pVK1doXEQ/Rgebn90ZYI9lnuNMge6iYzW4BQHmE+QFXZOVAnpGBhsZvBtUdU76D5ePbnVZUz8sKVgv5SpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772015721; c=relaxed/relaxed;
-	bh=e6mL9wG5hBiKht6Ojs2a0eK9zPQWHYYGut+jsFWSf1s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gwszz6LItaswrZBK8AYNWNhx8Y9MuCKW9v9B2zXTmiobE/U1aoC+OgEb3jm+f22arSbAMB6xMjZr13K1T282zrTYJxI/YcSxTjJqMYaZVOaLXFm4ui1b09DGvidi5BaGuiBB9jGoWwazUAiGOMjOeucNM9hvCSCjzGqQXxIF9qyGNRGa5IMwhPLmtfLboaysKWpcaxjR56QaCtPMtZ9XM1UKW3ApuXzmocRAeX3Hh9/8G4OFL3TFjVNfRqqYlR9P8CEhk5lObUh1yyZaGgrMJMiKD4rPNW9s1fLnQaPsjwTjcODwKED13FU6NoebD3e3sBlsyoIWAmC8civ2XIVWWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kfxMhhCs; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1772016227; c=relaxed/relaxed;
+	bh=RQ6LjH8xg3kKnf/ssYdrwl1NaeB3S68pAKn+Qw6TYD4=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Vj6tB19dqIO9NAkuibmyCrqsySQRAnyXX582VoYMUwKYoHxHUemiwfVS6SK2eEcttctTwYB++lUuDy24fgKQFZbBsABCY2FSJ6AJnkOTMBDAK9rOFAJg2Yc5mK+qmRTtSXcq8+4kEJ1TQ76x9vESMd7MLyhCHEuTOGBy+aucoqKf+Ol2GrdcpU4N7ApgtKzkMLxwpE3wPcAz7gK5dYR2Ohfeh0CaH7F7aOY1ieJr0wETXew70lUeb/LyXiLEgtrz21jwNYhEj+NwJ43ExNTNSPayQmDv9gI+xNhuh6+ZrYktghyoUkHJg06WoivhpoPMoocTDY5mStZNI3yU5NW5Hg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AM7d06Cb; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kfxMhhCs;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AM7d06Cb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLWFN270Nz3dhk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 21:35:19 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OKchnH2750096;
-	Wed, 25 Feb 2026 10:34:58 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLWR61QR8z3dXF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 21:43:45 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ONhT60483702;
+	Wed, 25 Feb 2026 10:43:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=e6mL9w
-	G5hBiKht6Ojs2a0eK9zPQWHYYGut+jsFWSf1s=; b=kfxMhhCspr3L0UkaqjFtwf
-	csvS03LdccE5butyY++mDvJPqDw4EMmQddhAxoLNufxjjymb62Uep0eaO0I5Jwsr
-	AYKGDnhBQIShefpLAeM58UegdweEdU9m9vlZchMnfBop5zxTQIYOhenVnWu7446r
-	H8FAM6HN8rOhfCIA7jrPreRrThvXTcFQAW4XBW0eHBzbwmPjygQPFcP+6zUpFelB
-	umPMsW3NM41yxSCJwYkgbmWQzTjmJ9W6lBYvsNuXkPM3oAJ2+OBBmWGdKLNDicqO
-	igI28pGvDMHbCeYKFHW6KHsAxX2cTd8AXeogqD1oDmbs+ycGaugDLeiR85vnTVqw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RQ6LjH
+	8xg3kKnf/ssYdrwl1NaeB3S68pAKn+Qw6TYD4=; b=AM7d06Cb1kz/ExiZUn6El3
+	riranoTqH1Ip8ZOMOvZ1rprdk/fxcvIwQtjOgZ9o8d+gZ7ZGTge2iVdDUWhtH4Ot
+	mPwxqiiVQ1Q2uc70/YTg+Z0iluD09pySB7hCSG4Ri9ndbZGMBnWsM/fvgYplCFql
+	U0U2hAYw2k77eBKGdOYbGz6EcTvo0F+1qwUEULScooRLxRZcDvWp2tsYxNEl0nzm
+	MbvJ/82XcJCohpZoocnvZDXvRILwR7q8C8BU5C6P5ACepFw+6YhhFzUkXOEuNigc
+	o9ROLVkY70jDJSSE58eE5M/H7A0rFmXGdqMZXcujkQpXmllycrsnznZWMC1H930A
 	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf471yuab-1
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ch858n76t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 10:34:57 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7nmA0015750;
-	Wed, 25 Feb 2026 10:34:56 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1sn16f-1
+	Wed, 25 Feb 2026 10:43:19 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7L03A001607;
+	Wed, 25 Feb 2026 10:43:18 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1n4xnh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 10:34:56 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PAYqNs59703590
+	Wed, 25 Feb 2026 10:43:18 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PAhIng25428576
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Feb 2026 10:34:52 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 152DC20043;
-	Wed, 25 Feb 2026 10:34:52 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D6FE20040;
-	Wed, 25 Feb 2026 10:34:46 +0000 (GMT)
-Received: from [9.39.30.87] (unknown [9.39.30.87])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Feb 2026 10:34:46 +0000 (GMT)
-Message-ID: <a20beb34-0e4b-4063-b6b0-6c5886bbb971@linux.ibm.com>
-Date: Wed, 25 Feb 2026 16:04:45 +0530
+	Wed, 25 Feb 2026 10:43:18 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 14C715805C;
+	Wed, 25 Feb 2026 10:43:18 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D2175805A;
+	Wed, 25 Feb 2026 10:43:17 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Feb 2026 10:43:17 +0000 (GMT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,530 +83,384 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/15] powerpc/time: Prepare to stop elapsing in
- dynticks-idle
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Anna-Maria Behnsen <anna-maria@linutronix.de>,
-        Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Kieran Bingham <kbingham@kernel.org>, Mel Gorman <mgorman@suse.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E . McKenney"
- <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20260206142245.58987-1-frederic@kernel.org>
- <20260206142245.58987-5-frederic@kernel.org>
- <9413517d-963b-4e6d-b11b-b440acd7cb5a@linux.ibm.com>
- <9ab1e7d7-57ee-49f9-963c-3a1b96dda684@kernel.org>
- <120884b0-0b09-43a9-b0f6-7dc2affe1ac0@linux.ibm.com>
- <55720b5b-f643-4e67-8841-d81a9e712faf@kernel.org>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <55720b5b-f643-4e67-8841-d81a9e712faf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Wed, 25 Feb 2026 16:13:17 +0530
+From: adubey <adubey@linux.ibm.com>
+To: kernel test robot <lkp@intel.com>
+Cc: bpf@vger.kernel.org, oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, ast@kernel.org, daniel@iogearbox.net,
+        andrii@kernel.org, martin.lau@kernel.org, eddyz87@gmail.com,
+        yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev,
+        chleroy@kernel.org
+Subject: Re: [PATCH 1/2] powerpc64/bpf: Implement JIT support for private
+ stack
+In-Reply-To: <202602170941.f1KIvBuf-lkp@intel.com>
+References: <20260216152234.36632-1-adubey@linux.ibm.com>
+ <202602170941.f1KIvBuf-lkp@intel.com>
+Message-ID: <6c6bc9bb6ed9d20f9a9dd6ae06d60706@linux.ibm.com>
+X-Sender: adubey@linux.ibm.com
+Organization: IBM
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: QDDPAUCb8499caYrFfY1nvv-Hkfeh5Bl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDA5OSBTYWx0ZWRfXzMpn/3TDNT6w
- V6+iUGhNdvRl/CdCsynFp12pJSKPOWZiXWmYE8IzdM6TIJVK1abYuCpHqmcNSp8EtMm+vQE5+dg
- iWCmcOqEmi8pv5bVpTMeCqNYDgv+fJx31I9bEZsMrcEYr1gywBMfN69EIM3RKmOUgsGO1nX2UIY
- yqVwSlSM23XD50JcCkiLoHs3zTJs9bvcldMVj6zQX+TyVlS7RVkEm3XH68xy74O0HSc+w7hTyTM
- 5INnn5Foy1T2S0he4VTvCnoogtDtb7h0R6BoDWtV7Y3G9CrUcLTY7DVV9mGc8O+FXPS1ETq3y6W
- t2ckob9fNO+XCceZy+YUtWGLAQQDmj9TxHep1xEA/7u+lIEpt3yM8aBy1MLgYlTTzzIrGzcgBZ5
- P7c5N7deISmv7Ryg8ll9EDjG1tKlHroSB0CZhu4O1sMnenDdiNNVJanDVNB6s3pmZQiwdb36aWv
- AIgk0LKD6UsmfVOigcw==
-X-Authority-Analysis: v=2.4 cv=R7wO2NRX c=1 sm=1 tr=0 ts=699ed051 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=N8oYV1VUXeJbLZ80LbcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: qb3GfPlWGaTSmmChQEBthJqg9TVS0JDn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDEwNCBTYWx0ZWRfX+IbyPXI4/8kA
+ kpDtA8gzKnn28FGaCshKJxS1s2gpqgz23HDWljS7jL4Ak3yyLqUYfMGB9qAlvkyTP+Dp6W465j/
+ OPZTGPhOdWfs5Bx9UHj0XbsCyPPrt9NaCcZ44RJRVTKkv9/TT1OrT4r3ko43IPO8LR6s6MnMifM
+ OEISJTAsSOt4dmf7KT8KXAFwxEJFpujthXfw8MR7fTHLoeHa5yUwO15MFN3RTd7FKazZxoEvcDz
+ RfWhOqbXJTfElrD2tPUMU4wwgzqwN2BkazWGk1BZLPxqBchPLLogoS7QqJ+Vnbh7WWZ7rp8ULtD
+ heEnK+uj/Bf5ondVrbQ0EPvFsv/8SBIosQWiR1h1bU4LDpOjP/V6R2ivSEOWShskDJdwE5bqWCD
+ wf5SFL+0SbUKSI76tOBC0kiwoxLHgPUQBXoArG2Rzh1NBpvs1EAeyLpo0UM8B+r/uZaFDhLQfg9
+ iucguXzNVa3oHp5YwVw==
+X-Proofpoint-GUID: geF-IrIiX2VqDqgaN0ZVlw6f1De_W3tG
+X-Authority-Analysis: v=2.4 cv=S4HUAYsP c=1 sm=1 tr=0 ts=699ed248 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=anyJmfQTAAAA:8
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=i3X5FwGiAAAA:8
+ a=QyXUC8HyAAAA:8 a=JF70iciwwkSvicA1UWAA:9 a=BVDnAcuDQriz4NxV:21
+ a=CjuIK1q_8ugA:10 a=mmqRlSCDY2ywfjPLJ4af:22
+X-Proofpoint-ORIG-GUID: 5anlTzqsHpMGWk9F3uL_nxEqfoFTS6nx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1011 impostorscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602250099
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602250104
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17171-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,linutronix.de,google.com,gmail.com,arm.com,redhat.com,siemens.com,nvidia.com,suse.de,ellerman.id.au,infradead.org,goodmis.org,linaro.org,163.com,vger.kernel.org,lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:frederic@kernel.org,m:linux-kernel@vger.kernel.org,m:maddy@linux.ibm.com,m:rafael@kernel.org,m:agordeev@linux.ibm.com,m:anna-maria@linutronix.de,m:bsegall@google.com,m:boqun.feng@gmail.com,m:borntraeger@linux.ibm.com,m:dietmar.eggemann@arm.com,m:hca@linux.ibm.com,m:mingo@redhat.com,m:jan.kiszka@siemens.com,m:joelagnelf@nvidia.com,m:juri.lelli@redhat.com,m:kbingham@kernel.org,m:mgorman@suse.de,m:mpe@ellerman.id.au,m:neeraj.upadhyay@kernel.org,m:npiggin@gmail.com,m:paulmck@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:urezki@gmail.com,m:vschneid@redhat.com,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:viresh.kumar@linaro.org,m:jackzxcui1989@163.com,m:linux-pm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17174-lists,linuxppc-dev=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,git-scm.com:url,01.org:url];
+	FORGED_SENDER(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:lkp@intel.com,m:bpf@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,m:chleroy@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-0.977];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 7B2FE195D31
+X-Rspamd-Queue-Id: C4C10195EF6
 X-Rspamd-Action: no action
 
-Hi Christophe.
-
-On 2/25/26 3:15 PM, Christophe Leroy (CS GROUP) wrote:
-> Hi Hegde,
+On 2026-02-17 07:19, kernel test robot wrote:
+> Hi,
 > 
-> Le 25/02/2026 à 08:46, Shrikanth Hegde a écrit :
->> Hi Christophe,
->>
->> On 2/24/26 9:11 PM, Christophe Leroy (CS GROUP) wrote:
->>> Hi Hegde,
->>>
->>> Le 19/02/2026 à 19:30, Shrikanth Hegde a écrit :
->>>>
->>>>
->>>> On 2/6/26 7:52 PM, Frederic Weisbecker wrote:
->>>>> Currently the tick subsystem stores the idle cputime accounting in
->>>>> private fields, allowing cohabitation with architecture idle vtime
->>>>> accounting. The former is fetched on online CPUs, the latter on 
->>>>> offline
->>>>> CPUs.
->>>>>
->>>>> For consolidation purpose, architecture vtime accounting will continue
->>>>> to account the cputime but will make a break when the idle tick is
->>>>> stopped. The dyntick cputime accounting will then be relayed by the 
->>>>> tick
->>>>> subsystem so that the idle cputime is still seen advancing coherently
->>>>> even when the tick isn't there to flush the idle vtime.
->>>>>
->>>>> Prepare for that and introduce three new APIs which will be used in
->>>>> subsequent patches:
->>>>>
->>>>> _ vtime_dynticks_start() is deemed to be called when idle enters in
->>>>>    dyntick mode. The idle cputime that elapsed so far is accumulated.
->>>>>
->>>>> - vtime_dynticks_stop() is deemed to be called when idle exits from
->>>>>    dyntick mode. The vtime entry clocks are fast-forward to current 
->>>>> time
->>>>>    so that idle accounting restarts elapsing from now.
->>>>>
->>>>> - vtime_reset() is deemed to be called from dynticks idle IRQ entry to
->>>>>    fast-forward the clock to current time so that the IRQ time is 
->>>>> still
->>>>>    accounted by vtime while nohz cputime is paused.
->>>>>
->>>>> Also accumulated vtime won't be flushed from dyntick-idle ticks to 
->>>>> avoid
->>>>> accounting twice the idle cputime, along with nohz accounting.
->>>>>
->>>>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->>>>
->>>> Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
->>>>
->>>>> ---
->>>>>   arch/powerpc/kernel/time.c | 41 +++++++++++++++++++++++++++++++++ 
->>>>> + ++++
->>>>>   include/linux/vtime.h      |  6 ++++++
->>>>>   2 files changed, 47 insertions(+)
->>>>>
->>>>> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
->>>>> index 4bbeb8644d3d..18506740f4a4 100644
->>>>> --- a/arch/powerpc/kernel/time.c
->>>>> +++ b/arch/powerpc/kernel/time.c
->>>>> @@ -376,6 +376,47 @@ void vtime_task_switch(struct task_struct *prev)
->>>>>           acct->starttime = acct0->starttime;
->>>>>       }
->>>>>   }
->>>>> +
->>>>> +#ifdef CONFIG_NO_HZ_COMMON
->>>>> +/**
->>>>> + * vtime_reset - Fast forward vtime entry clocks
->>>>> + *
->>>>> + * Called from dynticks idle IRQ entry to fast-forward the clocks 
->>>>> to current time
->>>>> + * so that the IRQ time is still accounted by vtime while nohz 
->>>>> cputime is paused.
->>>>> + */
->>>>> +void vtime_reset(void)
->>>>> +{
->>>>> +    struct cpu_accounting_data *acct = get_accounting(current);
->>>>> +
->>>>> +    acct->starttime = mftb();
->>>>
->>>> I figured out why those huge values happen.
->>>>
->>>> This happens because mftb is from when the system is booted.
->>>> I was doing kexec to start the new kernel and mftb wasn't getting
->>>> reset.
->>>>
->>>> I thought about this. This is concern for pseries too, where LPAR's
->>>> restart but system won't restart and mftb will continue to run 
->>>> instead of
->>>> reset.
->>>>
->>>> I think we should be using sched_clock instead of mftb here.
->>>> Though we need it a few more places and some cosmetic changes around 
->>>> it.
->>>>
->>>> Note: Some values being huge exists without series for few CPUs, 
->>>> with series it
->>>> shows up in most of the CPUs.
->>>>
->>>> So I am planning send out fix below fix separately keeping your
->>>> series as dependency.
->>>>
->>>> ---
->>>>   arch/powerpc/include/asm/accounting.h |  4 ++--
->>>>   arch/powerpc/include/asm/cputime.h    | 14 +++++++-------
->>>>   arch/powerpc/kernel/time.c            | 22 +++++++++++-----------
->>>>   3 files changed, 20 insertions(+), 20 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/include/asm/accounting.h b/arch/powerpc/ 
->>>> include/asm/accounting.h
->>>> index 6d79c31700e2..50f120646e6d 100644
->>>> --- a/arch/powerpc/include/asm/accounting.h
->>>> +++ b/arch/powerpc/include/asm/accounting.h
->>>> @@ -21,8 +21,8 @@ struct cpu_accounting_data {
->>>>       unsigned long steal_time;
->>>>       unsigned long idle_time;
->>>>       /* Internal counters */
->>>> -    unsigned long starttime;    /* TB value snapshot */
->>>> -    unsigned long starttime_user;    /* TB value on exit to 
->>>> usermode */
->>>> +    unsigned long starttime;    /* Time value snapshot */
->>>> +    unsigned long starttime_user;    /* Time value on exit to 
->>>> usermode */
->>>>   #ifdef CONFIG_ARCH_HAS_SCALED_CPUTIME
->>>>       unsigned long startspurr;    /* SPURR value snapshot */
->>>>       unsigned long utime_sspurr;    /* ->user_time when - 
->>>> >startspurr set */
->>>> diff --git a/arch/powerpc/include/asm/cputime.h b/arch/powerpc/ 
->>>> include/ asm/cputime.h
->>>> index aff858ca99c0..eb6b629b113f 100644
->>>> --- a/arch/powerpc/include/asm/cputime.h
->>>> +++ b/arch/powerpc/include/asm/cputime.h
->>>> @@ -20,9 +20,9 @@
->>>>   #include <asm/time.h>
->>>>   #include <asm/param.h>
->>>>   #include <asm/firmware.h>
->>>> +#include <linux/sched/clock.h>
->>>>
->>>>   #ifdef __KERNEL__
->>>> -#define cputime_to_nsecs(cputime) tb_to_ns(cputime)
->>>>
->>>>   /*
->>>>    * PPC64 uses PACA which is task independent for storing 
->>>> accounting data while
->>>> @@ -44,20 +44,20 @@
->>>>    */
->>>>   static notrace inline void account_cpu_user_entry(void)
->>>>   {
->>>> -    unsigned long tb = mftb();
->>>> +    unsigned long now = sched_clock();
->>>
->>> Now way !
->>>
->>> By doing that you'll kill performance for no reason. All we need when 
->>> accounting time spent in kernel or in user is the difference between 
->>> time at entry and time at exit, no mater what the time was at boot time.
->>>
->>
->> No. With this patch there will not be any performance difference.
->> All it does is, instead of using mftb uses sched_clock at those places.
->>
->>
->> In arch/powerpc/kernel/time.c we have sched_clock().
->> notrace unsigned long long sched_clock(void)
->> {
->>          return mulhdu(get_tb() - boot_tb, tb_to_ns_scale) << 
->> tb_to_ns_shift;
->> }
->>
->> It does the same mftb call, and accounts only the time after boot, 
->> which is
->> what /proc/stat should do as well.
->>
->> "
->> the amount of time, measured in units of USER_HZ
->> (1/100ths of a second on most architectures
->>
->> user   (1) Time spent in user mode.
->>
->> idle   (4) Time spent in the idle task.  This value
->>         should be USER_HZ times the second entry in
->>         the /proc/uptime pseudo-file.
->> "
->> /proc/uptime is based on sched_clock, so i infer /proc/stat also 
->> should show
->> values w.r.t to boot of the OS.
->>
->>
->>> Also sched_clock() returns nanoseconds which implies calculation from 
->>> timebase. This is pointless CPU consumption. The current 
->>> implementation calculates nanoseconds at task switch when calling 
->>> vtime_flush().Your change will now do it at every kernel entry and 
->>> kernel exit by calling sched_clock().
->>
->> This change doesn't add any additional paths. Even without patches, 
->> mftb would have
->> been called in every kernel entry/exit.  See mftb usage 
->> account_cpu_user_exit/enter
->>
->> Now instead of mftb sched_clock is used, that's all. No additional 
->> entry/exit points.
->> And previously when accounting we would have done cputime_to_nsecs, 
->> now that conversion
->> is done automatically in sched_clock. So overall computation-wise it 
->> should be same.
->>
->> What i am missing to see it here?
+> kernel test robot noticed the following build warnings:
 > 
-> Ok, lets try to explain in more details:
+> [auto build test WARNING on bpf-next/master]
+> [also build test WARNING on bpf/master powerpc/next linus/master 
+> next-20260216]
+> [cannot apply to bpf-next/net powerpc/fixes v6.19]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
 > 
-> While a process is running, it will enter and leave the kernel multiple 
-> times, without task switch. For instance for system calls or for 
-> interrupts.
+> url:
+> https://github.com/intel-lab-lkp/linux/commits/adubey-linux-ibm-com/selftests-bpf-Enable-private-stack-tests-for-powerpc64/20260216-182353
+> base:   
+> https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
+> patch link:
+> https://lore.kernel.org/r/20260216152234.36632-1-adubey%40linux.ibm.com
+> patch subject: [PATCH 1/2] powerpc64/bpf: Implement JIT support for
+> private stack
+> config: powerpc64-randconfig-r133-20260217
+> (https://download.01.org/0day-ci/archive/20260217/202602170941.f1KIvBuf-lkp@intel.com/config)
+> compiler: powerpc64-linux-gcc (GCC) 8.5.0
+> reproduce (this is a W=1 build):
+> (https://download.01.org/0day-ci/archive/20260217/202602170941.f1KIvBuf-lkp@intel.com/reproduce)
 > 
-> At every kernel entry and exit, account_cpu_user_entry() and 
-> account_cpu_user_exit() are called. That's a very hot path.
+> If you fix the issue in a separate patch/commit (i.e. not just a new 
+> version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes:
+> https://lore.kernel.org/oe-kbuild-all/202602170941.f1KIvBuf-lkp@intel.com/
 > 
-> I have added the following functions to see what the code looks like:
+> sparse warnings: (new ones prefixed by >>)
+>>> arch/powerpc/net/bpf_jit_comp.c:266:43: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+> --
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
+>>> address space '__percpu' of expression
+>>> arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse: sparse: incorrect 
+>>> type in assignment (different address spaces) @@     expected void 
+>>> [noderef] __percpu *priv_frame_ptr @@     got void * @@
+>    arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse:     expected void
+> [noderef] __percpu *priv_frame_ptr
+>    arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse:     got void *
+>    arch/powerpc/net/bpf_jit_comp64.c:1476:41: sparse: sparse: cast
+> truncates bits from constant value (8000000000000000 becomes 0)
+>    arch/powerpc/net/bpf_jit_comp64.c:1476:41: sparse: sparse: cast
+> truncates bits from constant value (8000000000000000 becomes 0)
+>    arch/powerpc/net/bpf_jit_comp64.c:1478:41: sparse: sparse: cast
+> truncates bits from constant value (c000000000000000 becomes 0)
+>    arch/powerpc/net/bpf_jit_comp64.c:1478:41: sparse: sparse: cast
+> truncates bits from constant value (c000000000000000 becomes 0)
 > 
-> +
-> +void my_account_cpu_user_entry(void);
-> +void my_account_cpu_user_entry(void)
-> +{
-> +       account_cpu_user_entry();
-> +}
-> +
-> +void my_account_cpu_user_exit(void);
-> +void my_account_cpu_user_exit(void)
-> +{
-> +       account_cpu_user_exit();
-> +}
+> vim +/__percpu +266 arch/powerpc/net/bpf_jit_comp.c
 > 
-> What we have today is very optimised:
-> 
-> 00000148 <my_account_cpu_user_entry>:
->   148:    7d 0c 42 e6     mftb    r8
->   14c:    80 e2 00 08     lwz     r7,8(r2)
->   150:    81 22 00 28     lwz     r9,40(r2)
->   154:    91 02 00 24     stw     r8,36(r2)
->   158:    7d 29 38 50     subf    r9,r9,r7
->   15c:    7d 29 42 14     add     r9,r9,r8
->   160:    91 22 00 08     stw     r9,8(r2)
->   164:    4e 80 00 20     blr
-> 
-> 00000168 <my_account_cpu_user_exit>:
->   168:    7d 0c 42 e6     mftb    r8
->   16c:    80 e2 00 0c     lwz     r7,12(r2)
->   170:    81 22 00 24     lwz     r9,36(r2)
->   174:    91 02 00 28     stw     r8,40(r2)
->   178:    7d 29 38 50     subf    r9,r9,r7
->   17c:    7d 29 42 14     add     r9,r9,r8
->   180:    91 22 00 0c     stw     r9,12(r2)
->   184:    4e 80 00 20     blr
-> 
-> 
-> 
-> With your change we now get a call to sched_clock() instead of a simple 
-> mftb,
-> 
-> 00000154 <my_account_cpu_user_entry>:
->   154:    94 21 ff f0     stwu    r1,-16(r1)
->   158:    7c 08 02 a6     mflr    r0
->   15c:    90 01 00 14     stw     r0,20(r1)
->   160:    48 00 00 01     bl      160 <my_account_cpu_user_entry+0xc>
->              160: R_PPC_REL24    sched_clock
->   164:    81 02 00 08     lwz     r8,8(r2)
->   168:    81 22 00 28     lwz     r9,40(r2)
->   16c:    90 82 00 24     stw     r4,36(r2)
->   170:    7d 29 40 50     subf    r9,r9,r8
->   174:    7d 29 22 14     add     r9,r9,r4
->   178:    91 22 00 08     stw     r9,8(r2)
->   17c:    80 01 00 14     lwz     r0,20(r1)
->   180:    38 21 00 10     addi    r1,r1,16
->   184:    7c 08 03 a6     mtlr    r0
->   188:    4e 80 00 20     blr
-> 
-> 0000018c <my_account_cpu_user_exit>:
->   18c:    94 21 ff f0     stwu    r1,-16(r1)
->   190:    7c 08 02 a6     mflr    r0
->   194:    90 01 00 14     stw     r0,20(r1)
->   198:    48 00 00 01     bl      198 <my_account_cpu_user_exit+0xc>
->              198: R_PPC_REL24    sched_clock
->   19c:    81 02 00 0c     lwz     r8,12(r2)
->   1a0:    81 22 00 24     lwz     r9,36(r2)
->   1a4:    90 82 00 28     stw     r4,40(r2)
->   1a8:    7d 29 40 50     subf    r9,r9,r8
->   1ac:    7d 29 22 14     add     r9,r9,r4
->   1b0:    91 22 00 0c     stw     r9,12(r2)
->   1b4:    80 01 00 14     lwz     r0,20(r1)
->   1b8:    38 21 00 10     addi    r1,r1,16
->   1bc:    7c 08 03 a6     mtlr    r0
->   1c0:    4e 80 00 20     blr
-> 
-> And sched_clock() is heavy, first it has the sequence mftbu/mftb/mftbu, 
-> and then it does awful lot of calculations including many multiply:
-> 
-> 000004d8 <sched_clock>:
->   4d8:    7d 2d 42 e6     mftbu   r9
->   4dc:    7d 0c 42 e6     mftb    r8
->   4e0:    7d 4d 42 e6     mftbu   r10
->   4e4:    7c 09 50 40     cmplw   r9,r10
->   4e8:    40 82 ff f0     bne     4d8 <sched_clock>
->   4ec:    3d 40 00 00     lis     r10,0
->              4ee: R_PPC_ADDR16_HA    .data..ro_after_init
->   4f0:    38 ca 00 00     addi    r6,r10,0
->              4f2: R_PPC_ADDR16_LO    .data..ro_after_init
->   4f4:    3c e0 00 00     lis     r7,0
->              4f6: R_PPC_ADDR16_HA    .data..read_mostly
->   4f8:    38 87 00 00     addi    r4,r7,0
->              4fa: R_PPC_ADDR16_LO    .data..read_mostly
->   4fc:    80 66 00 04     lwz     r3,4(r6)
->   500:    80 e7 00 00     lwz     r7,0(r7)
->              502: R_PPC_ADDR16_LO    .data..read_mostly
->   504:    80 c4 00 04     lwz     r6,4(r4)
->   508:    81 4a 00 00     lwz     r10,0(r10)
->              50a: R_PPC_ADDR16_LO    .data..ro_after_init
->   50c:    7c 63 40 10     subfc   r3,r3,r8
->   510:    7d 0a 49 10     subfe   r8,r10,r9
->   514:    7d 27 19 d6     mullw   r9,r7,r3
->   518:    7d 43 30 16     mulhwu  r10,r3,r6
->   51c:    7c 08 31 d6     mullw   r0,r8,r6
->   520:    7d 4a 48 14     addc    r10,r10,r9
->   524:    7c 67 18 16     mulhwu  r3,r7,r3
->   528:    39 20 00 00     li      r9,0
->   52c:    7c c8 30 16     mulhwu  r6,r8,r6
->   530:    7c a9 49 14     adde    r5,r9,r9
->   534:    7d 67 41 d6     mullw   r11,r7,r8
->   538:    7d 4a 00 14     addc    r10,r10,r0
->   53c:    7c a5 01 94     addze   r5,r5
->   540:    7c 63 30 14     addc    r3,r3,r6
->   544:    7d 29 49 14     adde    r9,r9,r9
->   548:    80 84 00 08     lwz     r4,8(r4)
->   54c:    7c 63 58 14     addc    r3,r3,r11
->   550:    7c e7 40 16     mulhwu  r7,r7,r8
->   554:    7d 29 01 94     addze   r9,r9
->   558:    7c 63 28 14     addc    r3,r3,r5
->   55c:    7d 29 39 14     adde    r9,r9,r7
->   560:    35 44 ff e0     addic.  r10,r4,-32
->   564:    41 80 00 10     blt     574 <sched_clock+0x9c>
->   568:    7c 63 50 30     slw     r3,r3,r10
->   56c:    38 80 00 00     li      r4,0
->   570:    4e 80 00 20     blr
->   574:    21 04 00 1f     subfic  r8,r4,31
->   578:    54 6a f8 7e     srwi    r10,r3,1
->   57c:    7d 29 20 30     slw     r9,r9,r4
->   580:    7d 4a 44 30     srw     r10,r10,r8
->   584:    7c 64 20 30     slw     r4,r3,r4
->   588:    7d 43 4b 78     or      r3,r10,r9
->   58c:    4e 80 00 20     blr
-> 
-> I think the difference is obvious, no need of benchmarking. We shall 
-> refrain from calling sched_clock() at every kernel entry/exit. 
-> Converting from timebase to nanoseconds only need to be done in 
-> vtime_flush() called by vtime_task_switch() during task switch.
-> 
-> Hope it is more explicit now.
-> 
-
-Got it. The main concern was around with additional computation that sched_clock,
-not any additional paths per se.
-
-yes, that would be possible,
-
-
-How about we do below? This adds only one subtraction.
-This achieves the same outcome.
-
----
-
-diff --git a/arch/powerpc/include/asm/cputime.h b/arch/powerpc/include/asm/cputime.h
-index aff858ca99c0..7afba0202568 100644
---- a/arch/powerpc/include/asm/cputime.h
-+++ b/arch/powerpc/include/asm/cputime.h
-@@ -44,7 +44,7 @@
-   */
-  static notrace inline void account_cpu_user_entry(void)
-  {
--       unsigned long tb = mftb();
-+       unsigned long tb = mftb() - get_boot_tb();
-         struct cpu_accounting_data *acct = raw_get_accounting(current);
-  
-         acct->utime += (tb - acct->starttime_user);
-@@ -53,7 +53,7 @@ static notrace inline void account_cpu_user_entry(void)
-  
-  static notrace inline void account_cpu_user_exit(void)
-  {
--       unsigned long tb = mftb();
-+       unsigned long tb = mftb() - get_boot_tb();
-         struct cpu_accounting_data *acct = raw_get_accounting(current);
-  
-         acct->stime += (tb - acct->starttime);
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 18506740f4a4..ff5524e6cdc7 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -215,7 +215,7 @@ static unsigned long vtime_delta(struct cpu_accounting_data *acct,
-  
-         WARN_ON_ONCE(!irqs_disabled());
-  
--       now = mftb();
-+       now = mftb() - get_boot_tb();
-         stime = now - acct->starttime;
-         acct->starttime = now;
-  
-@@ -388,7 +388,7 @@ void vtime_reset(void)
-  {
-         struct cpu_accounting_data *acct = get_accounting(current);
-  
--       acct->starttime = mftb();
-+       acct->starttime = mftb() - get_boot_tb();
-  #ifdef CONFIG_ARCH_HAS_SCALED_CPUTIME
-         acct->startspurr = read_spurr(acct->starttime);
-  #endif
-
+>    164
+>    165	struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>    166	{
+>    167		u32 proglen;
+>    168		u32 alloclen;
+>    169		u8 *image = NULL;
+>    170		u32 *code_base;
+>    171		u32 *addrs;
+>    172		struct powerpc_jit_data *jit_data;
+>    173		struct codegen_context cgctx;
+>    174		int pass;
+>    175		int flen;
+>    176		int priv_stack_alloc_size;
+>    177		void __percpu *priv_stack_ptr = NULL;
+>    178		struct bpf_binary_header *fhdr = NULL;
+>    179		struct bpf_binary_header *hdr = NULL;
+>    180		struct bpf_prog *org_fp = fp;
+>    181		struct bpf_prog *tmp_fp;
+>    182		bool bpf_blinded = false;
+>    183		bool extra_pass = false;
+>    184		u8 *fimage = NULL;
+>    185		u32 *fcode_base;
+>    186		u32 extable_len;
+>    187		u32 fixup_len;
+>    188
+>    189		if (!fp->jit_requested)
+>    190			return org_fp;
+>    191
+>    192		tmp_fp = bpf_jit_blind_constants(org_fp);
+>    193		if (IS_ERR(tmp_fp))
+>    194			return org_fp;
+>    195
+>    196		if (tmp_fp != org_fp) {
+>    197			bpf_blinded = true;
+>    198			fp = tmp_fp;
+>    199		}
+>    200
+>    201		jit_data = fp->aux->jit_data;
+>    202		if (!jit_data) {
+>    203			jit_data = kzalloc(sizeof(*jit_data), GFP_KERNEL);
+>    204			if (!jit_data) {
+>    205				fp = org_fp;
+>    206				goto out;
+>    207			}
+>    208			fp->aux->jit_data = jit_data;
+>    209		}
+>    210
+>    211		if (!priv_stack_ptr && fp->aux->jits_use_priv_stack) {
+>    212			/*
+>    213			 * Allocate private stack of size equivalent to
+>    214			 * verifier-calculated stack size plus two memory
+>    215			 * guard regions to detect private stack overflow
+>    216			 * and underflow.
+>    217			 */
+>    218			priv_stack_alloc_size = round_up(fp->aux->stack_depth, 16) +
+>    219								2 * PRIV_STACK_GUARD_SZ;
+>    220			priv_stack_ptr = __alloc_percpu_gfp(priv_stack_alloc_size,
+> 16, GFP_KERNEL);
+>    221			if (!priv_stack_ptr) {
+>    222				fp = org_fp;
+>    223				goto out_priv_stack;
+>    224			}
+>    225
+>    226			priv_stack_init_guard(priv_stack_ptr, priv_stack_alloc_size);
+>    227			fp->aux->priv_stack_ptr = priv_stack_ptr;
+>    228		}
+>    229
+>    230		flen = fp->len;
+>    231		addrs = jit_data->addrs;
+>    232		if (addrs) {
+>    233			cgctx = jit_data->ctx;
+>    234			/*
+>    235			 * JIT compiled to a writable location (image/code_base) 
+> first.
+>    236			 * It is then moved to the readonly final location 
+> (fimage/fcode_base)
+>    237			 * using instruction patching.
+>    238			 */
+>    239			fimage = jit_data->fimage;
+>    240			fhdr = jit_data->fhdr;
+>    241			proglen = jit_data->proglen;
+>    242			hdr = jit_data->hdr;
+>    243			image = (void *)hdr + ((void *)fimage - (void *)fhdr);
+>    244			extra_pass = true;
+>    245			/* During extra pass, ensure index is reset before
+> repopulating extable entries */
+>    246			cgctx.exentry_idx = 0;
+>    247			goto skip_init_ctx;
+>    248		}
+>    249
+>    250		addrs = kcalloc(flen + 1, sizeof(*addrs), GFP_KERNEL);
+>    251		if (addrs == NULL) {
+>    252			fp = org_fp;
+>    253			goto out_addrs;
+>    254		}
+>    255
+>    256		memset(&cgctx, 0, sizeof(struct codegen_context));
+>    257		bpf_jit_init_reg_mapping(&cgctx);
+>    258
+>    259		/* Make sure that the stack is quadword aligned. */
+>    260		cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
+>    261		cgctx.arena_vm_start = 
+> bpf_arena_get_kern_vm_start(fp->aux->arena);
+>    262		cgctx.user_vm_start = 
+> bpf_arena_get_user_vm_start(fp->aux->arena);
+>    263		cgctx.is_subprog = bpf_is_subprog(fp);
+>    264		cgctx.exception_boundary = fp->aux->exception_boundary;
+>    265		cgctx.exception_cb = fp->aux->exception_cb;
+>  > 266		cgctx.priv_sp = priv_stack_ptr ? (u64)priv_stack_ptr : 0;
+>    267
+>    268		/* Scouting faux-generate pass 0 */
+>    269		if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, 
+> false)) {
+>    270			/* We hit something illegal or unsupported. */
+>    271			fp = org_fp;
+>    272			goto out_addrs;
+>    273		}
+>    274
+>    275		/*
+>    276		 * If we have seen a tail call, we need a second pass.
+>    277		 * This is because bpf_jit_emit_common_epilogue() is called
+>    278		 * from bpf_jit_emit_tail_call() with a not yet stable 
+> ctx->seen.
+>    279		 * We also need a second pass if we ended up with too large
+>    280		 * a program so as to ensure BPF_EXIT branches are in range.
+>    281		 */
+>    282		if (cgctx.seen & SEEN_TAILCALL ||
+> !is_offset_in_branch_range((long)cgctx.idx * 4)) {
+>    283			cgctx.idx = 0;
+>    284			if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, 
+> false)) {
+>    285				fp = org_fp;
+>    286				goto out_addrs;
+>    287			}
+>    288		}
+>    289
+>    290		bpf_jit_realloc_regs(&cgctx);
+>    291		/*
+>    292		 * Pretend to build prologue, given the features we've seen.  
+> This will
+>    293		 * update ctgtx.idx as it pretends to output instructions, then 
+> we can
+>    294		 * calculate total size from idx.
+>    295		 */
+>    296		bpf_jit_build_prologue(NULL, &cgctx);
+>    297		addrs[fp->len] = cgctx.idx * 4;
+>    298		bpf_jit_build_epilogue(NULL, &cgctx);
+>    299
+>    300		fixup_len = fp->aux->num_exentries * BPF_FIXUP_LEN * 4;
+>    301		extable_len = fp->aux->num_exentries * sizeof(struct
+> exception_table_entry);
+>    302
+>    303		proglen = cgctx.idx * 4;
+>    304		alloclen = proglen + FUNCTION_DESCR_SIZE + fixup_len + 
+> extable_len;
+>    305
+>    306		fhdr = bpf_jit_binary_pack_alloc(alloclen, &fimage, 4, &hdr, 
+> &image,
+>    307						      bpf_jit_fill_ill_insns);
+>    308		if (!fhdr) {
+>    309			fp = org_fp;
+>    310			goto out_addrs;
+>    311		}
+>    312
+>    313		if (extable_len)
+>    314			fp->aux->extable = (void *)fimage + FUNCTION_DESCR_SIZE +
+> proglen + fixup_len;
+>    315
+>    316	skip_init_ctx:
+>    317		code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
+>    318		fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
+>    319
+>    320		/* Code generation passes 1-2 */
+>    321		for (pass = 1; pass < 3; pass++) {
+>    322			/* Now build the prologue, body code & epilogue for real. */
+>    323			cgctx.idx = 0;
+>    324			cgctx.alt_exit_addr = 0;
+>    325			bpf_jit_build_prologue(code_base, &cgctx);
+>    326			if (bpf_jit_build_body(fp, code_base, fcode_base, &cgctx, 
+> addrs, pass,
+>    327					       extra_pass)) {
+>    328				bpf_arch_text_copy(&fhdr->size, &hdr->size, 
+> sizeof(hdr->size));
+>    329				bpf_jit_binary_pack_free(fhdr, hdr);
+>    330				fp = org_fp;
+>    331				goto out_addrs;
+>    332			}
+>    333			bpf_jit_build_epilogue(code_base, &cgctx);
+>    334
+>    335			if (bpf_jit_enable > 1)
+>    336				pr_info("Pass %d: shrink = %d, seen = 0x%x\n", pass,
+>    337					proglen - (cgctx.idx * 4), cgctx.seen);
+>    338		}
+>    339
+>    340		if (bpf_jit_enable > 1)
+>    341			/*
+>    342			 * Note that we output the base address of the code_base
+>    343			 * rather than image, since opcodes are in code_base.
+>    344			 */
+>    345			bpf_jit_dump(flen, proglen, pass, code_base);
+>    346
+Posted v2 with fix:
+https://lore.kernel.org/bpf/20260216152234.36632-1-adubey@linux.ibm.com/
+-Abhishek
 
