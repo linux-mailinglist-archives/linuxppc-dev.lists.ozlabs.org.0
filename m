@@ -1,94 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-17151-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17152-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBZQIquqnmntWgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17151-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 08:54:19 +0100
+	id oAjmB4KvnmlxWwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17152-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 09:14:58 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98673193C4C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 08:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D542193FB7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 09:14:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLRgW63xYz3dRj;
-	Wed, 25 Feb 2026 18:54:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLS7K2mkMz3dRs;
+	Wed, 25 Feb 2026 19:14:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::5" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772006055;
-	cv=pass; b=lQfG4PMV7Nv7V510EtCMDcOCqHuqBEQsZsy7s2PX4zFmDKOnC2GDIHbedRTjsXwSd1vKnGBkgYt/+Mu9JtAm+xpZFR7LdVwnEq55L7q1okRHESLqzzXb7twsUoQZ200Ev3/rFiOjk8iHl8yyAnxOTWnvaAiFGxNwvypTAyAX1aQeao87CIpzmQHLjz2J27ija1HN2UT3FaDo9hA7GWG94xMBA6aLF5X4HMbmSXz5NNKmzzixvaoMI8tB/JIU+cgACJjaN+I/T8N1C/JzE+cgdPif14r5LmEwIJpngTrxFO+MWqO0is5/6kn3RbmiLpaxNAfWET/gsZZoozdt9HscIg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772006055; c=relaxed/relaxed;
-	bh=M3+hZPGm0Pkp449OwrQkAQ5JKTuceovjlftenT8atwQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=OZ9wbGZUQRNVFmcETOtHPL9YIHY/wn8SQ/v5Cyqyta6sAtklS65JaO4njdIYM2kutiJRAhwir+CTbFAk9MbwuEr3LhmZHo7eL8G9fr+MjafFaCmVo4iCm8joR+VGUi0SQd5R8L8tKIfeSXnJr4jDvSqu1omU+VqjJiHC7SgzAW1NUai0v0Jy65JXBJQIfTB3ArDUKhju9O+h1HP2Bq05NnokTSQUJ8WFzZrxZ3FDqFJBwm2qxf8ZyV0GBvFySXTFnXx7XLTPPO9gmZ1x+9qWHUqWoilPD6xfb75CVhrLbMhO82hfPPJ0XO+j7M69PwrufOWq59SEfsb3FEdF8v8Huw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=oss.nxp.com; dkim=pass (2048-bit key; unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=kMJUDRi4; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::5; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=peng.fan@oss.nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772007293;
+	cv=none; b=mU0AVt4Xbvqz68z3AkwpUe+rMGIHhuxjmyX5fPHXjDWxUdpMP4bomErwkg+LAndkqIVhXj3gWkyvvI4dBMyHp/glxSFCtPy4mAA/whS4MrhxDW8z1BSrcWYGMN3B+8VWptnmDgu+9te7Yjl2Z3Dan3FcMdRW8jBRHmyRhucuMNbuyqxKvbToXdoWyIuNmKbjnX2oAL/FfoyrwrpN2HxJfD+XUNEqp+PThgXgvym94lvu/z/pnE46xPStBFxmF2/Ka5t2wAFQVdftk/mjll035ioF8SPJM5j/kPzu8upuFaCk9zDj4QiPN0q7IKHOgtofe5LRcXyvG2Xo5CV2NTY0VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772007293; c=relaxed/relaxed;
+	bh=re7E4sxplbVcSJsRUE0dixF3rx550iAmXm+wmG0q1R4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-type; b=BtViqfTaObj9F7FTmP2bfaMPbG9kQE5cHJbo2yPAwtPnuErRiTpHCqTAykPuBAYf9DYsHIMe3TGocO5gWsMGU4e0MlE1gVcILe2ak8srui1tnlqPD1DF2n+UxOY2lFpyLNaLtywHh7PRlru3ZyLfhBEEcQSi1xQboBjpshCQICebcPGxdgylgUDpAu/MMAq5O3F4uusCS30+iADfuu9JyzNyysOCDiUAIw0juYTB2nnj2DXBCF1EBLHIB2GyOIMJp9DoB7QcxWSnsV4ekHU2PVCqlzkI/7mldui5mzGF8HY7vkeDYJN6uYINRMGKKrPtQdXCCLjL/q73+UqxZy4Fog==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A5QC44Tg; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dhQZ4RdD; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=kMJUDRi4;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A5QC44Tg;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dhQZ4RdD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=oss.nxp.com (client-ip=2a01:111:f403:c200::5; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=peng.fan@oss.nxp.com; receiver=lists.ozlabs.org)
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazlp170120005.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLRgV3rmFz3dRH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 18:54:14 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nqe3/Jr/plmvQLdWXvwhPZYF4z86uY1buT+DvLVkEVhE2KSz1BEaG2k0KBdDbZbL/MdPNJM6pTvQjMPrCx9ERvRcCgXwydZiSAglLG+i7cdjBi94i3layXunoeetiY/FlUHzTzfxX4LJ5nOIRYQkyXeFVJHYrhZCySBcm1wN8QTuYu+oXHjhywPS7QrzlTzxD5v4nHEmdhU0zHredyvsJrcRZieDuFIrFtdqk1WO2Uaf1UKGtcBiwrnTfyBVbaMTFqUyGmribEkQX34UmsxiQJzpWujcXTPjELECyN7zapgjbVOdArwtia7D5UCzrBM3PoifwcT3mF+wI0YZwwhFag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M3+hZPGm0Pkp449OwrQkAQ5JKTuceovjlftenT8atwQ=;
- b=g+35mKSQEKmH0XQ3jsG8zYVlIJ6knihQI/Fl+b4vJXC0b9cD9MsHYOgOTgiMBl49ZmLAuVt18trTyID+L3jYEankzqdyTWxSdJ/mgy3ePlNY/cbv8Z+s9J6ffDguQV9JpoXrrgmZ5JeuuA4y2/7PwMeWF/qoMbiRI2daDLlLvIWhZxfB7XGfkN7LLV86B7T296igcGqznroqHnao3gYczOK2AjQKr6fZe5IDu6VhIJTCAU7QIfvD1YLHP0w6scYOSGSEyz2dHINj5B7QiJNw0VWU84PPEJ0AF6f26AoAJW5UbMsHrHZwHlzCzYQrYCp7bpx1ZetAFei6UcqLrw1b0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M3+hZPGm0Pkp449OwrQkAQ5JKTuceovjlftenT8atwQ=;
- b=kMJUDRi4tM3Z9S+6W0cS+F/36qC4mt86nujH+SBYpzAWYRXaDYuOE6YDnQfp5KCUQPSLbZoxput7BjQ48xW8deEmnUK7hdt2lzmWpLE4qy8uaQMbIxT/kjmoYwFCzUtAZy2Wlk4SIEgOhIgXN0l4cuzz1orB5zUfQ/lW6zrAhFJuVHl2ABqGbcbndDIKwMvHcl8A903/rBB/e//vFAv/pwv95Ni5qB0hPNEu3e1lcAs1dJo2XOSfinbctIVK0xqtDJz5fwK3B9oAbOJRLnDE8EHfsO2dbGxIjYZhy/cvicSy3afMhi+F3R0ewqBzZjDWIObGggEo57ckQDF/pjfHtA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by VI1PR04MB6830.eurprd04.prod.outlook.com (2603:10a6:803:132::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.14; Wed, 25 Feb
- 2026 07:53:47 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e%7]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
- 07:53:47 +0000
-Date: Wed, 25 Feb 2026 15:55:38 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>, Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev
-Subject: Re: [PATCH v2 6/9] soc: imx8m: don't access of_root directly
-Message-ID: <aZ6q+tVoJFslHIcP@shlinux89>
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
- <20260223-soc-of-root-v2-6-b45da45903c8@oss.qualcomm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223-soc-of-root-v2-6-b45da45903c8@oss.qualcomm.com>
-X-ClientProxiedBy: SI2PR02CA0015.apcprd02.prod.outlook.com
- (2603:1096:4:194::16) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLS7H431nz3cJN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 19:14:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772007285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=re7E4sxplbVcSJsRUE0dixF3rx550iAmXm+wmG0q1R4=;
+	b=A5QC44TgvZ84nuJ8Balk6+xYd5gq7uh5bNZYYn3fc3tm3MnAM8hOuZF2yFqcmY4nQCGYwr
+	XfOJ1YVqnAEM4SnRbw7HkrixstUVghEx5jQVqArn88HC4AVg6E5pjskIBjJrVMdFZ4orb6
+	VaGCzVrCcb9Plv7hLfyyF46l+5V1W00=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772007286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=re7E4sxplbVcSJsRUE0dixF3rx550iAmXm+wmG0q1R4=;
+	b=dhQZ4RdDUc6e1qsuKt54TZpu1jE4moLNsQfud47fyX2Lo9bozgP5BHfxZgbdkc+jS69GLM
+	hblNNd2led9KlqjYuNXdBectVeh216gxgHEJRM1HWEGuZLP5UgjQc658bLNdbXHNjyEn47
+	UsEyB8LCOHcRXfYT5WmIWkZAnKCjOKQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-8STCbgGpNdSEQd8WeY9I3A-1; Wed,
+ 25 Feb 2026 03:14:40 -0500
+X-MC-Unique: 8STCbgGpNdSEQd8WeY9I3A-1
+X-Mimecast-MFC-AGG-ID: 8STCbgGpNdSEQd8WeY9I3A_1772007278
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A1281956067;
+	Wed, 25 Feb 2026 08:14:37 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.55])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7C6291800465;
+	Wed, 25 Feb 2026 08:14:26 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: kasan-dev@googlegroups.com
+Cc: linux-mm@kvack.org,
+	andreyknvl@gmail.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	dvyukov@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	chris@zankel.net,
+	jcmvbkbc@gmail.com,
+	linux-s390@vger.kernel.org,
+	hca@linux.ibm.com,
+	Baoquan He <bhe@redhat.com>
+Subject: [PATCH v5 00/15] mm/kasan: make kasan=on|off work for all three modes
+Date: Wed, 25 Feb 2026 16:13:57 +0800
+Message-ID: <20260225081412.76502-1-bhe@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,138 +102,195 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|VI1PR04MB6830:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3649d7b0-9a1b-4fda-decc-08de744301a3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|19092799006|376014|366016|1800799024|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?83Y14lvjQKUqWFyIUcPHqzNt4fcDk+6y6vq6WR0RwXxfvg/2EOlC0yJTtbV2?=
- =?us-ascii?Q?fWlpnC8dsLYUfj2Tc0/n5sgdmL6KwGGH8AM5VzqStpOS2ohOE0+8af9L3L5R?=
- =?us-ascii?Q?PnqBn1USKIhcM+tCmeR3+sOEtVphrajyfFNmnX32C0A14QtggsgEAp5ZGGmc?=
- =?us-ascii?Q?Y/sVtqXkX9xsbh5UvVnz8Ga+8fzC3gajnxiFdblCc3pUfmUEHkcgkldOUuw3?=
- =?us-ascii?Q?4fXwN21Drcu8NfLgDDtX8RmamlzMK88ORGR6z3BnYvo2o5fJvEAzxiqLkh9P?=
- =?us-ascii?Q?XPRX3HEcvcVV5r4dJ1VBdMaThfS2w/LnXGVyn5oOXJa1tKP2EZWvc7aG/bBY?=
- =?us-ascii?Q?FEvzijLXZEXuSfAXHjfaSX6pR+5s56spTg4KXmnXJRpBlmzy/5YCche7lkX9?=
- =?us-ascii?Q?hHqFv18KQ0JLKGe44+cOPAcR8QGzbLdbJgn7jVl9E5TWOvHh9DuMHlAP2/WZ?=
- =?us-ascii?Q?8M7BYlZTrcX8wPoqYo7oOtxUjp+OpTcALtMqibrqNpriSLkKK3PGDQz5UMFW?=
- =?us-ascii?Q?WBssa6Ad67KXNlfVsUpz8O+NhsZcx678/AlYQqPGU3nZOqFkWR9oNrPE/t/7?=
- =?us-ascii?Q?8ItvyLV1xmUGrCfNbZv5XWGx4khCI0cZM2KwBm7HtL3Jo2/ILTDcoWskoNLi?=
- =?us-ascii?Q?e/CYpN0TniZVe+ApCgvFUk7fVskrSOPLKuJumYqtgEKgoCR58E32bOCQsx0V?=
- =?us-ascii?Q?4KnoTIyJoVEsV345y/elzEIlmQtvHTkI+LDb7+pG4KU6KkrJ35iXoRY1qL3O?=
- =?us-ascii?Q?sSCod3CayzdFCw6F0fdpS/aMXHIDkBwesreRYaVCzdRztQ4ABWRtDsbrfjFA?=
- =?us-ascii?Q?pUpp5LVAAITGiLHr4HwbfGptIOdun2AyZOa8hlWjeSQoj7ij9QvMjZmHYaS9?=
- =?us-ascii?Q?yRm9tE5IWXiMptaQxXY/y7yJF5SCfZD8YWkLGuDrpTnwuHIM8KGJwfqvjRFj?=
- =?us-ascii?Q?Su5JteznoFga8d5Zd4ULGq2oDfS50tPTPkv9eLw5N+Fh50QRqzkDPVpt5Qy+?=
- =?us-ascii?Q?O81AnTFGkakFcb9yMbkblJIwIvOj7d5bDt+ueaYeDaAqmDg01BWavwDiqj7Y?=
- =?us-ascii?Q?fxnOSMWofwb5qnmY8CepcjFX/pEUbhM/qzf2Ce6AHbcwwBTXFYcNWQS6OLI8?=
- =?us-ascii?Q?SnxrwUZArXu0di8AHtPxVkQVQahDhQ7ZXfatt8teudwSv/PMDu+zZO4dVLG+?=
- =?us-ascii?Q?IwiAym1Hg9XOoEt6VjPyeaBeaR5dWpRSLzfLq5wBj3t2AgMr5WVJaJiwqcIM?=
- =?us-ascii?Q?Pu3Dz12gvboiAvhh0pTluWa0IohKStWEreJDhO6Aq3QggoN0hGIgK3LF5Idt?=
- =?us-ascii?Q?tCpw6x9dDwK/r9YKo0CKwOlRYW2P86ES1hLmCI7A29zmCd56gB7PsCOjGm20?=
- =?us-ascii?Q?aqvmuAB00SCpLXeapXHjfNpAprH+vTuxOTr9O/CunS/4jwiNjHzwp/i1Rny4?=
- =?us-ascii?Q?YnXcUna8ZrwpLOhP49nRbkvHkPqtatYA9cowyfF5mLaZZjGbiF00v3QVGZmI?=
- =?us-ascii?Q?LPhMkHdJMBGtL9tZuy8khFZPZ77da1nXamf9n70PBBb3jfHFOaIgrA9ac3KO?=
- =?us-ascii?Q?xb7OwoVMzjf/A7cK4U5WrQNnyB+GdIa55cVO/b1c3+R8aiiT89dnQsALukk/?=
- =?us-ascii?Q?MwYxJJAdU7gdfE8XIFIxxE4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(19092799006)(376014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XQwZbRbLd5ZMfYbE8awsc1Ifk8jjoufYdkCnjHzolNMISXpq8hD3qPaL/wG0?=
- =?us-ascii?Q?rrukLGl3TbT5Lu1iSaMW1mhocicW3ktkVxM9VZ+inSvILv6G3u8mOhCOnfqg?=
- =?us-ascii?Q?ye8VrmA5zk8anuiYjTrrKHFZuZLIgLjG8JMhsFA0Tr3fzK9oKxBtDhWryffB?=
- =?us-ascii?Q?5pVF8F6CUtgyApSgXOgTb0PNQCX7CZ823wsERUhw1DLX1B9OfYg9tdfxXY5g?=
- =?us-ascii?Q?A6Qw/iXg7J57V7G72nu7yxjGlHQo5JZYnnRP7wGsHp61vGys6hByVKmsymX3?=
- =?us-ascii?Q?UX7lPgcy0FxEGbsTCn12SohTugTHbyMSbRzmipYC/oFWrRPmfATKuaZ9sM5d?=
- =?us-ascii?Q?raAhmBEw6mH0qy2U4eFeOluaAc3kkLvtHTYJXUBtgf9QDEEGHYLpVHzWCBIw?=
- =?us-ascii?Q?k4QuzrM5mv3dGDE7vFswN/rOE0ySU3iQEFyTrxM7eCWpl/HuXqP8q7gLcjeA?=
- =?us-ascii?Q?x/ZdPIMMojI0wZdFErfvrs125R0OpZfgkGTtHTe90FT07V0Ss27JJD19BeZt?=
- =?us-ascii?Q?uc0bUVQU4yYCAaNYgvz0vr2spfLdLRipcHgRbODtW/rdvMMtNH3Fq2NG6Lkf?=
- =?us-ascii?Q?Y8UcTaWbGDa16CgzO8cH6HcIHhcUAyRcfRdK0YtB/qlFgfE6mXDJVbGTiuFd?=
- =?us-ascii?Q?yCED/hhWXx8SoQPzPtDWy7grzkyBUtqu4VIQhrjgzOEDi+VGulManwPMU/YS?=
- =?us-ascii?Q?IVfiNqICV7kWHocH9aFpWPuglI32IIzzoSdxtDUULHK2i0FgUIWMcHsyPM9X?=
- =?us-ascii?Q?91tFLecCriNeb/DpChcxJetVz6Weyb4rf5sHtWpwcHqfCMMqUG3mO0xEMBhh?=
- =?us-ascii?Q?U3Pzsqto491G2H11zaug/MATGFCgn0zxQIdS4ORcWeCRO8wUpJH9rn4o/tWh?=
- =?us-ascii?Q?EQNn/XF4sWroRpodqZGXXyiGANxgq6N9gPiIYjn2ifbZChDyT7ZmlroxOTd4?=
- =?us-ascii?Q?Kez/AB3ZJEKRdoVVHXZdQxKFnplRsnFQnG1sv6SEAg8geLhKfDVEiFv5Hf++?=
- =?us-ascii?Q?dHxS0riR3hXJPDuNRZLmNYfAjVzpW/mwRUI9RJIPl+sHBmqv1fcLYi1eEdZ7?=
- =?us-ascii?Q?h16fEq8RWTwn9GKGRLLoy5DyFkrDnAEMR97wHwdz1FaoSHNVgQ2Veg6++dFy?=
- =?us-ascii?Q?bJqWjACbbt1+tpwgB/7eYntXlaS28GvVYtkNvNWYSY5JEvwcqy16OjLR+TMp?=
- =?us-ascii?Q?q6EbbUV65KX4sgDNJ3BHmlXXx+fP3WZkNtcDGTYeK3vGTCWE24o+br20KRCT?=
- =?us-ascii?Q?rBfE2PoQ0WFn6J3yRxVoQDcywllmOhfmffXLHZmWCBrAzply4wkOKyuZBmvJ?=
- =?us-ascii?Q?yNaVfj6sOCDeR1SDYIjK9GAau3CcDIhW2CIFcochRhENHb9mzbXlm8UrbYVV?=
- =?us-ascii?Q?BNf5VMvY0IOeOIMTUGiNimXeeBtj3VQ3nP5IH636hipU66/TKZX/b4MT1Ljj?=
- =?us-ascii?Q?Hf9jMn+KOFQbKI1X+10qG1gV82ECsNuyOfmRsIgteU2rZWa9MHfpyTnWoiNH?=
- =?us-ascii?Q?U1VpALc2WH/LcVsVhvdZ/t+vBY8HZz5FU+v1oYuplQQ585e7C8VYQ5A0V2L8?=
- =?us-ascii?Q?421kpOCm15IKrgikjjG8XY5AjT/3F6kORDrqSwH9MYOrQSQ9+jHDbxifypXS?=
- =?us-ascii?Q?THcFrCIyDWeV51lubdC8YSTj7rjJGY9Z5SSdpBfd9aoRiJDBoFfkhy7jp4h4?=
- =?us-ascii?Q?0F11MSYboLcpQfydZk63aF6u0csnZXZCOaYRgdLGtSwwVhLgxF63EbHiGjPR?=
- =?us-ascii?Q?AUekt2FD6Q=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3649d7b0-9a1b-4fda-decc-08de744301a3
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 07:53:47.5204
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 882pbkHIOZlFN04X6CRhM5HiQpa7m0OgTzKmulFmof3qVqVMwqIPl/i+BvPzoNk2LW6H9tH95kqP+068oUTx5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6830
-X-Spam-Status: No, score=1.0 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,FORGED_SPF_HELO,SPF_HELO_PASS,T_SPF_PERMERROR
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: a0ZQ7rWYvjTQkziiEHPv0XBh2UtECnAiqRO8yMLWxZo_1772007278
+X-Mimecast-Originator: redhat.com
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.39 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:robh@kernel.org,m:saravanak@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:dakr@kernel.org,m:chleroy@kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:Frank.Li@nxp.com,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@lists.infradead.org,m:imx@lists.linux.dev,m:linux-renesas-soc@vger.kernel.org,m:linux-sunxi@lists.linux.dev,m:driver-core@lists.linux.dev,m:geert@glider.be,m:magnusdamm@gmail.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FORGED_SENDER(0.00)[peng.fan@oss.nxp.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17152-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[kvack.org,gmail.com,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,kernel.org,zankel.net,linux.ibm.com,redhat.com];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17151-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.988];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peng.fan@oss.nxp.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,pengutronix.de,gmail.com,glider.be,sholland.org,nxp.com,vger.kernel.org,lists.ozlabs.org,lists.infradead.org,lists.linux.dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[bhe@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:kasan-dev@googlegroups.com,m:linux-mm@kvack.org,m:andreyknvl@gmail.com,m:ryabinin.a.a@gmail.com,m:glider@google.com,m:dvyukov@google.com,m:linux-kernel@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:x86@kernel.org,m:chris@zankel.net,m:jcmvbkbc@gmail.com,m:linux-s390@vger.kernel.org,m:hca@linux.ibm.com,m:bhe@redhat.com,m:ryabininaa@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[bhe@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,qualcomm.com:email,NXP1.onmicrosoft.com:dkim]
-X-Rspamd-Queue-Id: 98673193C4C
+	NEURAL_HAM(-0.00)[-0.956];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 3D542193FB7
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 02:37:21PM +0100, Bartosz Golaszewski wrote:
->Don't access of_root directly as it reduces the build test coverage for
->this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
->to retrieve the relevant information.
->
->Suggested-by: Rob Herring <robh@kernel.org>
->Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Currently only hw_tags mode of kasan can be enabled or disabled with
+kernel parameter kasan=on|off for built kernel. For kasan generic and
+sw_tags mode, there's no way to disable them once kernel is built.
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+This is not convenient sometime, e.g in system kdump is configured.
+When the 1st kernel has KASAN enabled and crash triggered to switch to
+kdump kernel, the generic or sw_tags mode will cost much extra memory
+while in fact it's meaningless to have kasan in kdump kernel
+
+There are two parts of big amount of memory requiring for kasan enabed
+kernel. One is the direct memory mapping shadow of kasan, which is 1/8
+of system RAM in generic mode and 1/16 of system RAM in sw_tags mode;
+the other is the shadow meomry for vmalloc which causes big meomry
+usage in kdump kernel because of lazy vmap freeing. By introducing
+"kasan=off|on", if we specify 'kasan=off', the former is avoided by
+skipping the kasan_init(), and the latter is avoided by not building the
+vmalloc shadow for vmalloc.
+
+So this patchset moves the kasan=on|off out of hw_tags scope and into
+common code to make it visible in generic and sw_tags mode too. Then we
+can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
+kasan.
+
+Note that this hasn't been supported on s390 since I am not familiar
+with s390 code. Hope s390 developer will make it work.
+
+Testing:
+========
+Testing is done on upstream kernel 6.19.0+:
+
+- For generic mode, testing is taken on below systems and passed.
+  - x86_64 baremetal system
+  - aarch64 baremetal system
+  - ppc64le baremetal system (Model 9183-22X)
+  - risc-v kvm guest
+
+- For sw_tags mode, testing is taken on below system and passed.
+  - aarch64 baremetal system 
+
+- For hw_tags mode, testing is taken on below system and passed.
+  - aarch64 kvm guest with "-machine virt,mte=on -cpu max" qemu command.
+
+Changelog:
+====
+v4->v5:
+- Add helper __kasan_cache_shrink() in mm/kasan/generic.c so that the
+  kasan_enabled() checking done in kasan_cache_shrink() which is in
+  include/linux/kasan.h. This change is made in patch 1.
+- Carve out the change of renaming 'kasan_arg' to 'kasan_arg_disabled'
+  into a separate patch from the old patch 2.
+- put the old patch 12 to earlier place as patch 4 in this sereis so
+  that the ifdeffery scope embracing kasan_flag_enabled definition is
+  meaningful and understandable.
+- Remove the stale and incorrect comment above kasan_enabled() in the
+  old patch 12.
+- Add comment 'If KASAN is disabled via command line, don't initialize
+  it.' to all places where kasan is initialized and kasan_arg_disabled
+  is checked.
+- Add document in kernel-parameters.txt to note kasan=on|off.
+- Remove unneeded ARCH_DEFER_KASAN and kasan_arch_is_ready().
+- All these changes are made according to reviewers' suggestion in v4,
+  thanks to Andrey Konovalov, Andrey Ryabinin and Alexander Potapenko.
+  
+
+v3->v4:
+- Rebase code to the latest linux-next/master to make the whole patchset
+  set on top of
+  [PATCH 0/2] kasan: cleanups for kasan_enabled() checks
+  [PATCH v6 0/2] kasan: unify kasan_enabled() and remove arch-specific implementations
+
+v2->v3:
+- Fix a building error on UML ARCH when CONFIG_KASAN is not set. The
+  change of fixing is appended into patch patch 11. This is reported
+  by LKP, thanks to them.
+
+v1->v2:
+- Add __ro_after_init for kasan_arg_disabled, and remove redundant blank
+  lines in mm/kasan/common.c. Thanks to Marco.
+- Fix a code bug in <linux/kasan-enabled.h> when CONFIG_KASAN is unset,
+  this is found out by SeongJae and Lorenzo, and also reported by LKP
+  report, thanks to them.
+- Add a missing kasan_enabled() checking in kasan_report(). This will
+  cause a KASAN report info even though kasan=off is set:
+- Add jump_label_init() calling before kasan_init() in setup_arch() in these
+  architectures: xtensa, arm. Because they currenly rely on
+  jump_label_init() in main() which is a little late. Then the early static
+  key kasan_flag_enabled in kasan_init() won't work.
+- In UML architecture, change to enable kasan_flag_enabled in arch_mm_preinit()
+  because kasan_init() is enabled before main(), there's no chance to operate
+  on static key in kasan_init().
+
+Baoquan He (15):
+  mm/kasan: add conditional checks in functions to return directly if
+    kasan is disabled
+  mm/kasan: rename 'kasan_arg' to 'kasan_arg_disabled'
+  mm/kasan: mm/kasan: move kasan= code to common place
+  mm/kasan: make kasan=on|off take effect for all three modes
+  mm/kasan/sw_tags: don't initialize kasan if it's disabled
+  arch/arm: don't initialize kasan if it's disabled
+  arch/arm64: don't initialize kasan if it's disabled
+  arch/loongarch: don't initialize kasan if it's disabled
+  arch/powerpc: don't initialize kasan if it's disabled
+  arch/riscv: don't initialize kasan if it's disabled
+  arch/x86: don't initialize kasan if it's disabled
+  arch/xtensa: don't initialize kasan if it's disabled
+  arch/um: don't initialize kasan if it's disabled
+  mm/kasan: add document into kernel-parameters.txt
+  mm/kasan: clean up unneeded ARCH_DEFER_KASAN and kasan_arch_is_ready
+
+ .../admin-guide/kernel-parameters.txt         |  4 +++
+ Documentation/dev-tools/kasan.rst             |  2 --
+ arch/arm/kernel/setup.c                       |  6 ++++
+ arch/arm/mm/kasan_init.c                      |  3 ++
+ arch/arm64/mm/kasan_init.c                    |  7 +++++
+ arch/loongarch/Kconfig                        |  1 -
+ arch/loongarch/mm/kasan_init.c                |  3 ++
+ arch/powerpc/Kconfig                          |  1 -
+ arch/powerpc/mm/kasan/init_32.c               |  6 +++-
+ arch/powerpc/mm/kasan/init_book3e_64.c        |  4 +++
+ arch/powerpc/mm/kasan/init_book3s_64.c        |  4 +++
+ arch/riscv/mm/kasan_init.c                    |  4 +++
+ arch/um/Kconfig                               |  1 -
+ arch/um/kernel/mem.c                          |  5 +++-
+ arch/x86/mm/kasan_init_64.c                   |  4 +++
+ arch/xtensa/kernel/setup.c                    |  1 +
+ arch/xtensa/mm/kasan_init.c                   |  4 +++
+ include/linux/kasan-enabled.h                 | 10 +++----
+ include/linux/kasan.h                         |  7 ++++-
+ lib/Kconfig.kasan                             | 12 --------
+ mm/kasan/common.c                             | 21 ++++++++++++--
+ mm/kasan/generic.c                            | 16 +++++++++--
+ mm/kasan/hw_tags.c                            | 28 ++-----------------
+ mm/kasan/init.c                               |  6 ++++
+ mm/kasan/kasan.h                              |  6 ----
+ mm/kasan/quarantine.c                         |  3 ++
+ mm/kasan/report.c                             |  4 ++-
+ mm/kasan/shadow.c                             | 11 +++++++-
+ mm/kasan/sw_tags.c                            |  7 +++++
+ 29 files changed, 128 insertions(+), 63 deletions(-)
+
+-- 
+2.52.0
+
 
