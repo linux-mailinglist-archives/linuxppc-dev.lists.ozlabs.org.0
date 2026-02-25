@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-17163-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Ay6DgewnmmeWwQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17163-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 09:17:11 +0100
+	id gIxcLbevnmmRWwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 09:15:51 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8633B1940F5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 09:17:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AE019402C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 09:15:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLS9s0KJcz3f1b;
-	Wed, 25 Feb 2026 19:17:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLS8L6BJJz3dVj;
+	Wed, 25 Feb 2026 19:15:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772007424;
-	cv=none; b=PnFDKxdKRO3BNzCHn/twZjTO+YEyB6gvC8wz9EcCj4K0rJ8OZ743qvP2Fp3ZnDrPS/s02WrGYn/HfFprepuMo3uK6y3IncOk5Ahr1GWSIWIOeWNAQLfJZaKkwlfUL0kx+YlSHozDj0ZvOCvEVjtVb41hU/yUSksf1DxeELNfYOPFFGubw87H8dv76k/i6JN6Zjb35bGN0Y1PUibGQ8dZPuKMrzOl2AzxvxEy6aDd+Y705rN60/eFrYPv0QhWNSXMYVZARCiNKRfD/avZ2goatgz/Q7KQryD7M9Z7bbFjBsjTCkd47GZGMcHACp2LwKDPkC8c5WKQjAjU/sjE+Kns7g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772007346;
+	cv=none; b=jWDli3uAHAqApATejCdbyiVyE2QGWpi9zhlx/TxzsHjE5n5q60sTy8yYcB5di9+kiJYxopk9+YL6WOdvQhBTLOWTw+VogGr0rCc5kmPzq/TvS43MCHNgFQl7sKuqgeIjSR+HQ6QgPFOHetMeOV2+Rz/arvnkUkQHvUtlil5R8e5vRmgybCjXna3lhxoRpVLYjRpMCE44Jg6QbCapdu0hZTMRse5wulxGYzoKd2l49Uca1VlpT4thmEyrrdXESwb9FdPbOC5gOUO5ltg6ysvOqAxjFw9V5N1KOdDJc4LrvaZ09y/CPu+d9TvPi3sNqFBlhJ2L+RX4KdLMj2vzGZia6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772007424; c=relaxed/relaxed;
-	bh=iXwY0Q2SJZmWL1WR2SYctHtbhbAGYnU1QS3gfwuZnJo=;
+	t=1772007346; c=relaxed/relaxed;
+	bh=I228xoUl4+ZrgdKCBvI2rCmcNIzmRojWxOXL2gQGmtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-type; b=bcUQyGFraDE30onyiN2mba8k+/+5KygfDQtolZQs0JtxETRJGc1kK7QFvLTwWzbHRfJddWOEqVRHlmukOFo3fBzCgrRHrEFmabmufWKDTaecUi8gLn1E9ckYQIvO+npQ4CqPQDYbYRL0yTDlm5wwPVBwkGObFgqU3mMbZ9LpeBMPyGs54Z6NXFqP6DODCOmtsRbL+Uz9aVSNOi6A51t6RDnnSeZ/bRVFtOeFVedB14t6ZKTAKPtESlBP71KbFLGrp2uLJknMX3yf73LPvfk6jza/3CeSke8dFM1UWqsC1wT63UPqcgy6kZFKxYJBr803jyr7VP54eTSrXS/fNYYhDw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CvnMsPYl; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CvnMsPYl; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:Content-type; b=TeGTjskKqSWsokxEauaoXPR709D8F4E/Z8BoYJSqMO4aYLJtfMcW1XN6GbVi5rN4V5xGBXntBl7+HykwEy4cAZh3WiSbC/a/4Amf/19gV/mlJ6V7MXdgTjgakVDbce3eq7WQ9gN+1Dl9k9Z7fhznn9j0Ko7ucBor1ccyH+1oVzFJS/Q6MUOPyUkdaR/ucqXV9x0Vlpx4XXeNAFNpBcHzynrseE2W+aM9qUR2VovCia5USGlr7hwRdvFjakeRiA6PsqoGdxuHW7Cl7kiGb6J/KtWE1MjLQ9edWYEujqvicEcK0j8vB+09zKSdEeX2JCBXiMvmtLDIvPXJPtGNcdqmBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dObQvKzz; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dObQvKzz; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CvnMsPYl;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CvnMsPYl;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dObQvKzz;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dObQvKzz;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLS9r1PW3z3dX7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 19:17:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLS8K6XcDz3dSV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 19:15:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772007421;
+	s=mimecast20190719; t=1772007343;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iXwY0Q2SJZmWL1WR2SYctHtbhbAGYnU1QS3gfwuZnJo=;
-	b=CvnMsPYlhtBRJvbFmich2wOhlhVKmM444Gty/3FJvOgPOQMz0FewI1OZ6NLJMKvjvAq+wS
-	4JupH3FpZcULfSEWdqT2avRnKuiZ6zpgysszIVY2/EzcmwoG7RDKL5vh+fbbf3IETa/1lm
-	7G9IEbGstjhHTcBeTRi5zusIMlzrcxo=
+	bh=I228xoUl4+ZrgdKCBvI2rCmcNIzmRojWxOXL2gQGmtk=;
+	b=dObQvKzzD3MdQN93tAvBIg+Xp3mE40a5QCNv6TVVFKN54TmYsMAPebWcQUlVGzt5181dvx
+	lOqG2dY9Kdq5zsCIGeMo0NNnKKJraKpakz8ZWMKYitVxbpunJYa1IPI7T8UL//pIARW7LE
+	6zGZljXunaB0J7lRTN/BaMFmS+7QrDw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772007421;
+	s=mimecast20190719; t=1772007343;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iXwY0Q2SJZmWL1WR2SYctHtbhbAGYnU1QS3gfwuZnJo=;
-	b=CvnMsPYlhtBRJvbFmich2wOhlhVKmM444Gty/3FJvOgPOQMz0FewI1OZ6NLJMKvjvAq+wS
-	4JupH3FpZcULfSEWdqT2avRnKuiZ6zpgysszIVY2/EzcmwoG7RDKL5vh+fbbf3IETa/1lm
-	7G9IEbGstjhHTcBeTRi5zusIMlzrcxo=
+	bh=I228xoUl4+ZrgdKCBvI2rCmcNIzmRojWxOXL2gQGmtk=;
+	b=dObQvKzzD3MdQN93tAvBIg+Xp3mE40a5QCNv6TVVFKN54TmYsMAPebWcQUlVGzt5181dvx
+	lOqG2dY9Kdq5zsCIGeMo0NNnKKJraKpakz8ZWMKYitVxbpunJYa1IPI7T8UL//pIARW7LE
+	6zGZljXunaB0J7lRTN/BaMFmS+7QrDw=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-W_q9ig0KNGOLXjAkoHCtsg-1; Wed,
- 25 Feb 2026 03:15:31 -0500
-X-MC-Unique: W_q9ig0KNGOLXjAkoHCtsg-1
-X-Mimecast-MFC-AGG-ID: W_q9ig0KNGOLXjAkoHCtsg_1772007329
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-rwD-1e3zOqOiSldVPhFTdg-1; Wed,
+ 25 Feb 2026 03:15:40 -0500
+X-MC-Unique: rwD-1e3zOqOiSldVPhFTdg-1
+X-Mimecast-MFC-AGG-ID: rwD-1e3zOqOiSldVPhFTdg_1772007338
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 989F01956068;
-	Wed, 25 Feb 2026 08:15:28 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01DB51956070;
+	Wed, 25 Feb 2026 08:15:38 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.55])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 03B561800351;
-	Wed, 25 Feb 2026 08:15:19 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 68EB31800286;
+	Wed, 25 Feb 2026 08:15:29 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: kasan-dev@googlegroups.com
 Cc: linux-mm@kvack.org,
@@ -89,9 +89,9 @@ Cc: linux-mm@kvack.org,
 	linux-s390@vger.kernel.org,
 	hca@linux.ibm.com,
 	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v5 05/15] mm/kasan/sw_tags: don't initialize kasan if it's disabled
-Date: Wed, 25 Feb 2026 16:14:02 +0800
-Message-ID: <20260225081412.76502-6-bhe@redhat.com>
+Subject: [PATCH v5 06/15] arch/arm: don't initialize kasan if it's disabled
+Date: Wed, 25 Feb 2026 16:14:03 +0800
+Message-ID: <20260225081412.76502-7-bhe@redhat.com>
 In-Reply-To: <20260225081412.76502-1-bhe@redhat.com>
 References: <20260225081412.76502-1-bhe@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -108,7 +108,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: wEyQ-qS8cpwX5OJDXc1Y4YOSsP5YgvOCGS0wv1d-15Y_1772007329
+X-Mimecast-MFC-PROC-ID: xHWm3nFnZ4YGHiNlQEbJPl3ZCYod3tlDU3BcfmXndAw_1772007338
 X-Mimecast-Originator: redhat.com
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -126,10 +126,10 @@ X-Spamd-Result: default: False [0.79 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17163-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17155-lists,linuxppc-dev=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[18];
 	FREEMAIL_CC(0.00)[kvack.org,gmail.com,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,kernel.org,zankel.net,linux.ibm.com,redhat.com];
 	MIME_TRACE(0.00)[0:+];
@@ -148,35 +148,58 @@ X-Spamd-Result: default: False [0.79 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.978];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	NEURAL_HAM(-0.00)[-0.976];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 8633B1940F5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,infradead.org:email]
+X-Rspamd-Queue-Id: C7AE019402C
 X-Rspamd-Action: no action
 
 Here, kasan is disabled if specified 'kasan=off' in kernel cmdline.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- mm/kasan/sw_tags.c | 4 ++++
- 1 file changed, 4 insertions(+)
+And also call jump_label_init() early in setup_arch() so that later
+kasan_init() can enable static key kasan_flag_enabled. Put
+jump_label_init() beofre parse_early_param() as other architectures
+do.
 
-diff --git a/mm/kasan/sw_tags.c b/mm/kasan/sw_tags.c
-index 6c1caec4261a..7757b69b1c86 100644
---- a/mm/kasan/sw_tags.c
-+++ b/mm/kasan/sw_tags.c
-@@ -40,6 +40,10 @@ void __init kasan_init_sw_tags(void)
- {
- 	int cpu;
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ arch/arm/kernel/setup.c  | 6 ++++++
+ arch/arm/mm/kasan_init.c | 3 +++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
+index 0bfd66c7ada0..453a47a4c715 100644
+--- a/arch/arm/kernel/setup.c
++++ b/arch/arm/kernel/setup.c
+@@ -1135,6 +1135,12 @@ void __init setup_arch(char **cmdline_p)
+ 	early_fixmap_init();
+ 	early_ioremap_init();
+ 
++	/*
++	 * Initialise the static keys early as they may be enabled by the
++	 * kasan_init() or early parameters.
++	 */
++	jump_label_init();
++
+ 	parse_early_param();
+ 
+ #ifdef CONFIG_MMU
+diff --git a/arch/arm/mm/kasan_init.c b/arch/arm/mm/kasan_init.c
+index c6625e808bf8..82ec043c891f 100644
+--- a/arch/arm/mm/kasan_init.c
++++ b/arch/arm/mm/kasan_init.c
+@@ -212,6 +212,9 @@ void __init kasan_init(void)
+ 	phys_addr_t pa_start, pa_end;
+ 	u64 i;
  
 +	/* If KASAN is disabled via command line, don't initialize it. */
 +	if (kasan_arg_disabled)
 +		return;
-+
- 	for_each_possible_cpu(cpu)
- 		per_cpu(prng_state, cpu) = (u32)get_cycles();
- 
+ 	/*
+ 	 * We are going to perform proper setup of shadow memory.
+ 	 *
 -- 
 2.52.0
 
