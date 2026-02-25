@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-17174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIf/LWfSnmnwXQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:43:51 +0100
+	id sGPvC67SnmnwXQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:45:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C10195EF6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:43:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FAB5195F47
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 11:45:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLWR80DbDz3dkm;
-	Wed, 25 Feb 2026 21:43:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLWSV520Nz3cCr;
+	Wed, 25 Feb 2026 21:44:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772016227;
-	cv=none; b=kG/x0mT9vz6WXpR63UpIigxyvofmw1a+R/Q/UCkjob1XzUWVy96fkg/yZEw1NU5MMtpbVQdkakqKKLGPum2qpND1UhlfPzX8pUjB3Wn8aS6UDYpyT6tqqs4Lk5lgAWLTQbmQEYu7HfixphOBVurWWaxG6LSLjKwbz5ttKjkNTh9+C8d+udIFQvKzI2+wtsuZKX7XqLMF1p3bI/jg7mIl9olzPQNjZCxFhe1NX64jCC7sXIrWgXg65A4ekRfKIumHfp+0pVK1doXEQ/Rgebn90ZYI9lnuNMge6iYzW4BQHmE+QFXZOVAnpGBhsZvBtUdU76D5ePbnVZUz8sKVgv5SpA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772016298;
+	cv=none; b=HZ+glJgOjoRxcZ3d27xqccanS+KCllxzRqC8koKKNwNWafRxKZOYEt3cS6m1trDiVQkfYgW/63+Dheic5tvXyo16j/UM2mjWi4JwLV9peaFfipCugwMDOOB0qRaOZuAdA0CzxdBgzw3J3gsoUTod8WkMGqsLmKIBnnrLBd3LeQ2J4mlxdpRDjWEsc3jEqGLAMamxWIuv8onx6R8jMRXvWkr6iYBNWKyYROpyw9C/QNROKFfYLTu4GZVZZalEVlvP8Ja8vXenbMqp2ncwdOEUrsPwAvaSdmzdCD/OVEdWvst8P9vyhX5Pe9/BKHsbR5+7JYq+Ba0uMFaMIpuCUzXWGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772016227; c=relaxed/relaxed;
-	bh=RQ6LjH8xg3kKnf/ssYdrwl1NaeB3S68pAKn+Qw6TYD4=;
+	t=1772016298; c=relaxed/relaxed;
+	bh=xp+fmyg5YaGTIeutgO2mg1a+mQgH/dJtT9J5/WJVuzI=;
 	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Vj6tB19dqIO9NAkuibmyCrqsySQRAnyXX582VoYMUwKYoHxHUemiwfVS6SK2eEcttctTwYB++lUuDy24fgKQFZbBsABCY2FSJ6AJnkOTMBDAK9rOFAJg2Yc5mK+qmRTtSXcq8+4kEJ1TQ76x9vESMd7MLyhCHEuTOGBy+aucoqKf+Ol2GrdcpU4N7ApgtKzkMLxwpE3wPcAz7gK5dYR2Ohfeh0CaH7F7aOY1ieJr0wETXew70lUeb/LyXiLEgtrz21jwNYhEj+NwJ43ExNTNSPayQmDv9gI+xNhuh6+ZrYktghyoUkHJg06WoivhpoPMoocTDY5mStZNI3yU5NW5Hg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AM7d06Cb; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Message-ID:Content-Type; b=MD67SeF5D2sUVwGoNHQkz2fdpAF+sbnJrgI7yhkfLFuf0sfpb8oXREG8JydhgUzYxVepBv1KQPYOWCu7XEK3uHfrJJZf1SB02NdceNmGC1V0RiajPaPzd6EZfub2zGBXvHkZYLrs1yaN8rWq2RgVa1axCWRC4VRn219iWtF067cKctZD9yzT3VF61ASoCnHMe4aXHl+3JtOL2t9ezAMeJjskEtm2VyJ6FlNH97YOnCYXdjw02C3nGb9tgSKO2zbKXJcoBSgWpbtzzMrGsQbfXhtIMjkL1eUncXL9YVqD+/iAG/nfv1Jf82680vLTjnsKHusHaT30BhgQRJM3bJup6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qiz84T9y; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AM7d06Cb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qiz84T9y;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLWR61QR8z3dXF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 21:43:45 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ONhT60483702;
-	Wed, 25 Feb 2026 10:43:20 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLWST5XWnz3cB5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Feb 2026 21:44:57 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61P2J6eX3390406;
+	Wed, 25 Feb 2026 10:44:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=RQ6LjH
-	8xg3kKnf/ssYdrwl1NaeB3S68pAKn+Qw6TYD4=; b=AM7d06Cb1kz/ExiZUn6El3
-	riranoTqH1Ip8ZOMOvZ1rprdk/fxcvIwQtjOgZ9o8d+gZ7ZGTge2iVdDUWhtH4Ot
-	mPwxqiiVQ1Q2uc70/YTg+Z0iluD09pySB7hCSG4Ri9ndbZGMBnWsM/fvgYplCFql
-	U0U2hAYw2k77eBKGdOYbGz6EcTvo0F+1qwUEULScooRLxRZcDvWp2tsYxNEl0nzm
-	MbvJ/82XcJCohpZoocnvZDXvRILwR7q8C8BU5C6P5ACepFw+6YhhFzUkXOEuNigc
-	o9ROLVkY70jDJSSE58eE5M/H7A0rFmXGdqMZXcujkQpXmllycrsnznZWMC1H930A
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xp+fmy
+	g5YaGTIeutgO2mg1a+mQgH/dJtT9J5/WJVuzI=; b=Qiz84T9ycP1e4pYqWJ1Ye0
+	C1NZNjPLcOa8pkah40wKF8fzwugly3o2GDQg+rEIoB+jrF6ieS0q9je+wsRmxs3L
+	Au2Bwjt1Kvyoy95GuUfvD8rwyMH/N7RBakgbQV9AFYz+KUJ0O71+eqaBXbkotzVT
+	0lR9Gq+mhb6pHUmTDDUO1vdH/gArwCEQ1yppxgSV9zK9O3zKB9/pF8ni5BXgEA1z
+	8ROi2MOeetqTXNt5DJe5tShO8EYh6m+gdZLJnpsco220njhNyKJ3wa76lmyTJiUr
+	PIpt6dWCvrF/fnjpBZcHRxHLcpfLYbT/Q3UO53YzUaMM9Blp+Ke9lFkB6ptQHqzA
 	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ch858n76t-1
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf471yv6f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 10:43:19 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7L03A001607;
-	Wed, 25 Feb 2026 10:43:18 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1n4xnh-1
+	Wed, 25 Feb 2026 10:44:32 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7UmXb013419;
+	Wed, 25 Feb 2026 10:44:31 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfqdy5163-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 10:43:18 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PAhIng25428576
+	Wed, 25 Feb 2026 10:44:31 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PAiVDB16843314
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Feb 2026 10:43:18 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 14C715805C;
-	Wed, 25 Feb 2026 10:43:18 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D2175805A;
-	Wed, 25 Feb 2026 10:43:17 +0000 (GMT)
+	Wed, 25 Feb 2026 10:44:31 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2AD9758059;
+	Wed, 25 Feb 2026 10:44:31 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16EE958058;
+	Wed, 25 Feb 2026 10:44:30 +0000 (GMT)
 Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Feb 2026 10:43:17 +0000 (GMT)
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Feb 2026 10:44:29 +0000 (GMT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Wed, 25 Feb 2026 16:13:17 +0530
+Date: Wed, 25 Feb 2026 16:14:29 +0530
 From: adubey <adubey@linux.ibm.com>
 To: kernel test robot <lkp@intel.com>
 Cc: bpf@vger.kernel.org, oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com,
@@ -93,10 +93,10 @@ Cc: bpf@vger.kernel.org, oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com,
         chleroy@kernel.org
 Subject: Re: [PATCH 1/2] powerpc64/bpf: Implement JIT support for private
  stack
-In-Reply-To: <202602170941.f1KIvBuf-lkp@intel.com>
+In-Reply-To: <202602170316.V2RZWuVa-lkp@intel.com>
 References: <20260216152234.36632-1-adubey@linux.ibm.com>
- <202602170941.f1KIvBuf-lkp@intel.com>
-Message-ID: <6c6bc9bb6ed9d20f9a9dd6ae06d60706@linux.ibm.com>
+ <202602170316.V2RZWuVa-lkp@intel.com>
+Message-ID: <9551528cd98e18e6ee74d781a7ebdcf6@linux.ibm.com>
 X-Sender: adubey@linux.ibm.com
 Organization: IBM
 Content-Type: text/plain; charset=US-ASCII;
@@ -104,29 +104,29 @@ Content-Type: text/plain; charset=US-ASCII;
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDEwNCBTYWx0ZWRfX+IbyPXI4/8kA
- kpDtA8gzKnn28FGaCshKJxS1s2gpqgz23HDWljS7jL4Ak3yyLqUYfMGB9qAlvkyTP+Dp6W465j/
- OPZTGPhOdWfs5Bx9UHj0XbsCyPPrt9NaCcZ44RJRVTKkv9/TT1OrT4r3ko43IPO8LR6s6MnMifM
- OEISJTAsSOt4dmf7KT8KXAFwxEJFpujthXfw8MR7fTHLoeHa5yUwO15MFN3RTd7FKazZxoEvcDz
- RfWhOqbXJTfElrD2tPUMU4wwgzqwN2BkazWGk1BZLPxqBchPLLogoS7QqJ+Vnbh7WWZ7rp8ULtD
- heEnK+uj/Bf5ondVrbQ0EPvFsv/8SBIosQWiR1h1bU4LDpOjP/V6R2ivSEOWShskDJdwE5bqWCD
- wf5SFL+0SbUKSI76tOBC0kiwoxLHgPUQBXoArG2Rzh1NBpvs1EAeyLpo0UM8B+r/uZaFDhLQfg9
- iucguXzNVa3oHp5YwVw==
-X-Proofpoint-GUID: geF-IrIiX2VqDqgaN0ZVlw6f1De_W3tG
-X-Authority-Analysis: v=2.4 cv=S4HUAYsP c=1 sm=1 tr=0 ts=699ed248 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-ORIG-GUID: bNb1eWSlQ6Tiz76DnbRIcTLI9rdZrCoK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDEwNCBTYWx0ZWRfX+ZZgqGxBhD6A
+ LOJgh36nAYMRmZw4YZST0bhc05zShmMunuSpP+rHxk7EB4e0/bZUmM6HKpm8aFr1d/zYCnnJYr+
+ udje6M+++08x3xCtpiqJcNQKrk9iNHINdcZ2TFbXxjmF7A84ftSr9OBOxQNYVBdQHpnIf07AXbS
+ KVnpYpOoGWk/Bw9XDHKT3miPC3QOxcr1x1a6o2PylwbgtP+2iiVLrVo6bNRZJnbgxa76HGawbWf
+ gC8VO78/Tn4bKtlIbA7b1KaY5sH1cEInIj56GGHM9ceEC4L8z5s/pc7Q5qCU79Pp5fxZ4WDPzpo
+ UFVTe8ag6YgSDLts6LtS76EVaF5I9gxYLc3Jy/DfXMHonUSLBSz65KKYLgZSPj9KFfumFdfdr42
+ 3sO55mTwk+wr4+xk2yq0XhmxhCLap85TF6SrneFfrY6Cun/Gizz4AaXmKEYD2OUoOGFcrWfUwRR
+ De9sdTFSO9XvCQnEUxw==
+X-Authority-Analysis: v=2.4 cv=R7wO2NRX c=1 sm=1 tr=0 ts=699ed291 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
  a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=anyJmfQTAAAA:8
  a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=i3X5FwGiAAAA:8
- a=QyXUC8HyAAAA:8 a=JF70iciwwkSvicA1UWAA:9 a=BVDnAcuDQriz4NxV:21
- a=CjuIK1q_8ugA:10 a=mmqRlSCDY2ywfjPLJ4af:22
-X-Proofpoint-ORIG-GUID: 5anlTzqsHpMGWk9F3uL_nxEqfoFTS6nx
+ a=QyXUC8HyAAAA:8 a=Z0tam39agOwvZVY3ivQA:9 a=CjuIK1q_8ugA:10
+ a=mmqRlSCDY2ywfjPLJ4af:22
+X-Proofpoint-GUID: M_C0ralGnt9FeYls6PKf0rnq7QmzJ5r3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 impostorscore=0 malwarescore=0 bulkscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ priorityscore=1501 clxscore=1011 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602250104
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -138,14 +138,14 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17174-lists,linuxppc-dev=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,git-scm.com:url,01.org:url];
+	TAGGED_FROM(0.00)[bounces-17175-lists,linuxppc-dev=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.ibm.com:mid,git-scm.com:url,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,01.org:url];
 	FORGED_SENDER(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_RECIPIENTS(0.00)[m:lkp@intel.com,m:bpf@vger.kernel.org,m:oe-kbuild-all@lists.linux.dev,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,m:chleroy@kernel.org,s:lists@lfdr.de];
@@ -153,7 +153,7 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	HAS_ORG_HEADER(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -167,10 +167,10 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: C4C10195EF6
+X-Rspamd-Queue-Id: 3FAB5195F47
 X-Rspamd-Action: no action
 
-On 2026-02-17 07:19, kernel test robot wrote:
+On 2026-02-17 00:44, kernel test robot wrote:
 > Hi,
 > 
 > kernel test robot noticed the following build warnings:
@@ -191,73 +191,29 @@ On 2026-02-17 07:19, kernel test robot wrote:
 > https://lore.kernel.org/r/20260216152234.36632-1-adubey%40linux.ibm.com
 > patch subject: [PATCH 1/2] powerpc64/bpf: Implement JIT support for
 > private stack
-> config: powerpc64-randconfig-r133-20260217
-> (https://download.01.org/0day-ci/archive/20260217/202602170941.f1KIvBuf-lkp@intel.com/config)
-> compiler: powerpc64-linux-gcc (GCC) 8.5.0
+> config: powerpc-randconfig-001-20260217
+> (https://download.01.org/0day-ci/archive/20260217/202602170316.V2RZWuVa-lkp@intel.com/config)
+> compiler: powerpc-linux-gcc (GCC) 8.5.0
 > reproduce (this is a W=1 build):
-> (https://download.01.org/0day-ci/archive/20260217/202602170941.f1KIvBuf-lkp@intel.com/reproduce)
+> (https://download.01.org/0day-ci/archive/20260217/202602170316.V2RZWuVa-lkp@intel.com/reproduce)
 > 
 > If you fix the issue in a separate patch/commit (i.e. not just a new 
 > version of
 > the same patch/commit), kindly add following tags
 > | Reported-by: kernel test robot <lkp@intel.com>
 > | Closes:
-> https://lore.kernel.org/oe-kbuild-all/202602170941.f1KIvBuf-lkp@intel.com/
+> https://lore.kernel.org/oe-kbuild-all/202602170316.V2RZWuVa-lkp@intel.com/
 > 
-> sparse warnings: (new ones prefixed by >>)
->>> arch/powerpc/net/bpf_jit_comp.c:266:43: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
-> --
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:186:9: sparse: sparse: cast removes 
->>> address space '__percpu' of expression
->>> arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse: sparse: incorrect 
->>> type in assignment (different address spaces) @@     expected void 
->>> [noderef] __percpu *priv_frame_ptr @@     got void * @@
->    arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse:     expected void
-> [noderef] __percpu *priv_frame_ptr
->    arch/powerpc/net/bpf_jit_comp64.c:212:32: sparse:     got void *
->    arch/powerpc/net/bpf_jit_comp64.c:1476:41: sparse: sparse: cast
-> truncates bits from constant value (8000000000000000 becomes 0)
->    arch/powerpc/net/bpf_jit_comp64.c:1476:41: sparse: sparse: cast
-> truncates bits from constant value (8000000000000000 becomes 0)
->    arch/powerpc/net/bpf_jit_comp64.c:1478:41: sparse: sparse: cast
-> truncates bits from constant value (c000000000000000 becomes 0)
->    arch/powerpc/net/bpf_jit_comp64.c:1478:41: sparse: sparse: cast
-> truncates bits from constant value (c000000000000000 becomes 0)
+> All warnings (new ones prefixed by >>):
 > 
-> vim +/__percpu +266 arch/powerpc/net/bpf_jit_comp.c
+>    arch/powerpc/net/bpf_jit_comp.c: In function 'bpf_int_jit_compile':
+>>> arch/powerpc/net/bpf_jit_comp.c:266:35: warning: cast from pointer to 
+>>> integer of different size [-Wpointer-to-int-cast]
+>      cgctx.priv_sp = priv_stack_ptr ? (u64)priv_stack_ptr : 0;
+>                                       ^
+> 
+> 
+> vim +266 arch/powerpc/net/bpf_jit_comp.c
 > 
 >    164
 >    165	struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
@@ -460,7 +416,8 @@ On 2026-02-17 07:19, kernel test robot wrote:
 >    344			 */
 >    345			bpf_jit_dump(flen, proglen, pass, code_base);
 >    346
-Posted v2 with fix:
+Fixed in v2 : 
 https://lore.kernel.org/bpf/20260216152234.36632-1-adubey@linux.ibm.com/
+
 -Abhishek
 
