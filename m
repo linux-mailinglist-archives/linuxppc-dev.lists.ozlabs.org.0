@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-17263-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17264-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBziDCkwoGmLgAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17263-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:36:09 +0100
+	id aCvXAzEwoGmLgAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17264-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:36:17 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874F21A5297
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:36:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194D41A529F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:36:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8XF6rCDz3cX3;
-	Thu, 26 Feb 2026 22:35:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8XM0K1Qz3cYf;
+	Thu, 26 Feb 2026 22:35:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::b6"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105725;
-	cv=none; b=WE0zyN0if1wjlxR0iZXohSLTFYSUgDtIOaqJORx4tAoq8q4Q9eytSj84yi6Ze3mb4frG4a1/Wjbe5kqSBiZ2VTVDIq/vLpePEeNj3PJgQzVerpACR0yAUlkJHeKyInFsii2w6JjmSwTYmSVaWWTWDIJA9wNEZsf7TlwMdjxQrEzLgdwvBUTnN3qGBc1ssSf0V5c8r/cNn2uh7xe9jKY3J06HxGfR0YvU48oi8VoMhJSEfIocOZpYVHFtyQ1w+RXwpaXH3O7yZMBbqWai6szCDXuJWPWQOm0eUiXYTNYoCNXPwMFXugP9IH+QK9Eyes9WQ4oyzfA535lS7Yh8XRPJ6A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105730;
+	cv=none; b=Yp+XigVKWjmEwP4yboPbiF1v7BVXQh6S+aL7E8k/XrrDdCG/dLjYMAjWOASUB31nu522mx/zn1m0OqxU9z9Rx3a1HMFhulXv60G6KEZ1129vPpfnxbL2S/jee9Vu+38nnditLmKnJhI1j2L2q+ly9sJljBMUX3eGc/nTIxjrYHIYhVIECy11j9P/bgewR8wxzv5vl2tch9wzekXaTHCqT8/HdYWiZdmEd/HiYpjx3rM8rlxbWRq6yIL53TulMjnIdwlKKb7SxCmqt0j3O1bYYvU5QGKBJsixbTztifm/P+SFmR3zn1KCrCGsGp6Va+g0QvChjVMwkA3AyU+n3IR5jw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772105725; c=relaxed/relaxed;
-	bh=90K3/Ap/gcMw9j71y2Oyck7qwp5+WMwh/4brt0FtyC0=;
+	t=1772105730; c=relaxed/relaxed;
+	bh=NNFcsrTCJuN3pq1P0jDB1SWfqOIjrkZR0u7eCL/hrlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=guoe2/+n75hazZhvIZPpe2KMYwNHBy72A9lO4tttCFzfN61T+x0AMlAtX7P85p+tkph4clEn2/csPvd1YG0gDGLUigzzjj/VKPzR/l7LoGBKDNZ79DIUKt7UYpdNCxsSqJJ7LjvRNZ73Wc7jc3REERlyViIcSEgxsvNLqhi6yL7PAtNytnuqAcxzhlvLknaMC3BYxokOOJqwckbdrQZ1KYmPSSIUSSFcfOeYN3QLl/OrdlB3mh4/PC+YG6se3N0FssSSKiaRzTKvWDcA4h+NTl0uLmJ51O4L2Lb5OpVFIfxLGmiWwTNnFv/G5AWWEd0gJArpjLKuhM1eqRRosUzs5g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vDnDtqlu; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:1004:224b::b6; helo=out-182.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 MIME-Version; b=n0wxlgD939Bek4dxfZwmVr0T3iqlIhJqFa7iHOyGz38BpAgqIt6tRKtHqg5BnRSNN5Jo0tElB1bWiid+vh/fPRpmD0MCHeDCdR8LCJB07EQCkQGp1uc3gQgVLY7G48F2NjHvq5eKdMC2Phm9jdPYGtJxgAXirAebgO+OjfogBWONno2FjKp15+ehF1PVaiwlZ+4UnWgkRp5VHT+umQLNWFpj+ZX7DD79iyT+tiGyVs6p/Ea9JfO/ARZ7PZcm7VD82C0Yc7BTs7lUk9u5TafyADMDnDlxJLTF7KAN9fFmVHe92AzQGPGixV4j7pN6WLsQX9K6npqEVL3zjrBUCZYkTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KI9SLjRO; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::b0; helo=out-176.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vDnDtqlu;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KI9SLjRO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::b6; helo=out-182.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [IPv6:2001:41d0:1004:224b::b6])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b0; helo=out-176.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 118 seconds by postgrey-1.37 at boromir; Thu, 26 Feb 2026 22:35:30 AEDT
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [IPv6:2001:41d0:203:375::b0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8XF0YS7z3bnL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:35:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8XL1xD5z3bsC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:35:30 +1100 (AEDT)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105706;
+	t=1772105711;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=90K3/Ap/gcMw9j71y2Oyck7qwp5+WMwh/4brt0FtyC0=;
-	b=vDnDtqlus/KJ8Kb996zZEjIj0Q0OZrP9GY6JYe5v0jo/jHj6Hhvq7Y6+kbJrhcBUFwKCR+
-	ptXaefkfhEcHKSCBne13vyEB9khUI5H2IRECqYMjzQXrM98xkEITpmyhzIlR8rRiLVUScp
-	6fbItK2kptHjFBl0pkeiWG9RptvrStU=
+	bh=NNFcsrTCJuN3pq1P0jDB1SWfqOIjrkZR0u7eCL/hrlc=;
+	b=KI9SLjROFcSirL2mTS5OuZAfOP+ehi28WMw/ahTS4caHqgegRKvYlaWKxelk0oDyR0nsl5
+	/QixN5IwhA0UcIZAWfR1y/OvtYWnl7Ph+KBswIu2u7tJvUJmFOgV/00DoRlyspgzic/ovd
+	xV36dvYGWz99ZyLasi42ArQFEIfukOw=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -75,9 +76,9 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 20/21] selftests/mm: add partial_mremap test for move_page_tables
-Date: Thu, 26 Feb 2026 03:23:49 -0800
-Message-ID: <20260226113233.3987674-21-usama.arif@linux.dev>
+Subject: [RFC v2 21/21] selftests/mm: add madv_dontneed_partial test
+Date: Thu, 26 Feb 2026 03:23:50 -0800
+Message-ID: <20260226113233.3987674-22-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -106,11 +107,11 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17263-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17264-lists,linuxppc-dev=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
@@ -128,76 +129,60 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 874F21A5297
+X-Rspamd-Queue-Id: 194D41A529F
 X-Rspamd-Action: no action
 
-Add test for partial mremap on THP which exercises move_page_tables().
-This verifies that partial mremap correctly splits the PMD, moves
-only the requested page, and preserves data integrity in both the
-moved region and the original mapping.
+Add test for partial MADV_DONTNEED on THP. This verifies that
+MADV_DONTNEED correctly triggers a PMD split, discards only the
+requested page (which becomes zero-filled), and preserves data
+in the surrounding pages.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- .../testing/selftests/mm/thp_pmd_split_test.c | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ .../testing/selftests/mm/thp_pmd_split_test.c | 34 +++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/thp_pmd_split_test.c b/tools/testing/selftests/mm/thp_pmd_split_test.c
-index 3c9f05457efec..1f29296759a5b 100644
+index 1f29296759a5b..060ca1e341b75 100644
 --- a/tools/testing/selftests/mm/thp_pmd_split_test.c
 +++ b/tools/testing/selftests/mm/thp_pmd_split_test.c
-@@ -203,4 +203,54 @@ TEST_F(thp_pmd_split, partial_mlock)
+@@ -253,4 +253,38 @@ TEST_F(thp_pmd_split, partial_mremap)
  		self->split_pmd_failed_before);
  }
  
 +/*
-+ * Partial mremap (move_page_tables)
++ * MADV_DONTNEED on THP
 + *
-+ * Tests that partial mremap of a THP correctly splits the PMD and
-+ * moves only the requested portion. This exercises move_page_tables()
-+ * which now handles split failures.
++ * Tests that MADV_DONTNEED on a partial THP correctly handles
++ * the PMD split and discards only the requested pages.
 + */
-+TEST_F(thp_pmd_split, partial_mremap)
++TEST_F(thp_pmd_split, partial_madv_dontneed)
 +{
-+	void *new_addr;
-+	unsigned long *ptr = (unsigned long *)self->aligned;
-+	unsigned long *new_ptr;
-+	unsigned long pattern = 0xABCDUL;
++	volatile unsigned char *ptr = (volatile unsigned char *)self->aligned;
 +	int ret;
 +
 +	ret = allocate_thp(self->aligned, self->pmdsize);
 +	if (ret)
 +		SKIP(return, "Failed to allocate THP");
 +
-+	/* Write pattern to the page we'll move */
-+	ptr[self->pagesize / sizeof(unsigned long)] = pattern;
++	/* Write pattern */
++	memset(self->aligned, 0xDD, self->pmdsize);
 +
-+	/* Also write to first and last page to verify they stay intact */
-+	ptr[0] = 0x1234UL;
-+	ptr[(self->pmdsize - self->pagesize) / sizeof(unsigned long)] = 0x4567UL;
++	/* Partial MADV_DONTNEED - discard middle page */
++	ret = madvise((char *)self->aligned + self->pagesize, self->pagesize, MADV_DONTNEED);
++	ASSERT_EQ(ret, 0);
 +
-+	/* Partial mremap - move one base page from the THP */
-+	new_addr = mremap((char *)self->aligned + self->pagesize, self->pagesize,
-+			  self->pagesize, MREMAP_MAYMOVE);
-+	if (new_addr == MAP_FAILED) {
-+		if (errno == ENOMEM)
-+			SKIP(return, "mremap failed with ENOMEM");
-+		ASSERT_NE(new_addr, MAP_FAILED);
-+	}
++	/* Verify non-discarded pages still have data */
++	ASSERT_EQ(ptr[0], (unsigned char)0xDD);
++	ASSERT_EQ(ptr[2 * self->pagesize], (unsigned char)0xDD);
++	ASSERT_EQ(ptr[self->pmdsize - 1], (unsigned char)0xDD);
 +
-+	/* Verify data was moved correctly */
-+	new_ptr = (unsigned long *)new_addr;
-+	ASSERT_EQ(new_ptr[0], pattern);
-+
-+	/* Verify surrounding data is intact */
-+	ASSERT_EQ(ptr[0], 0x1234UL);
-+	ASSERT_EQ(ptr[(self->pmdsize - self->pagesize) / sizeof(unsigned long)], 0x4567UL);
-+
-+	/* Cleanup the moved page */
-+	munmap(new_addr, self->pagesize);
++	/* Discarded page should be zero */
++	ASSERT_EQ(ptr[self->pagesize], (unsigned char)0x00);
 +
 +	log_and_check_pmd_split(_metadata, self->split_pmd_before,
 +		self->split_pmd_failed_before);
