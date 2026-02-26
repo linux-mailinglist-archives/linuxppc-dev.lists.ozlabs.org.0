@@ -1,75 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-17315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17324-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJNTN/GsoGlulgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 21:28:33 +0100
+	id SJIZL2m4oGnClwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17324-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 22:17:29 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2CB1AF1EA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 21:28:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DC11AF9B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 22:17:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMNMG6VVGz2yY0;
-	Fri, 27 Feb 2026 07:28:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMPRn6w4vz2xNT;
+	Fri, 27 Feb 2026 08:17:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.117.254.33
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772137706;
-	cv=none; b=QmvUObDQ/nKIOSbVFqdyaW9TRoYsgWE+cIwrVhdR5AsFKzQjuIthE1IWsJaIpeeL2wHbHGolOFGp1d8Tfcqo83HNrVJ59KTAdzJsK8eUwHW/KHHHbR8uA4znrfVOXcM/aLvvEs+AmnTONBfNDSXksR68ZrXSkMSH2ZKaESRMNSSbfgz1cykE6tJwMTVYD92nFGxN+HW6gyJrlKEuvPewMX7Gucjm6EPgPHP1zzJ6bG1koHoghT7LstT0yHJCHFI8P4dLgbvNzUZNW42+ehQ41vczb+my/otpOq0WsFUMaNBq9UDI5/RpEo/8TLk2uEsdlFjBz0vzpPE0QBTAIu4MPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.12.242.82
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772140645;
+	cv=none; b=eUkP4dxw1ZDjlI4F9wdyBU0wvsrouo4Gq9jJsRLBPT3Mx612rEo4LUiEHBpZ8Gr1pNb1z59lZ1wUGy8F8tv6edOO0xCPxgWzh/LHCEv2cBPNL298mBkKOwjjEajxPpJuRiQ4ME6Bl7/NDU5InYRI4h4S3tJQwxPiyUgspJsKtdxOMl3yN2CdgK9JF7euEltXX/MNzfQDaGJ7f7HxBrlAL/25R8d2Sd1QRqjWp2HkybvWH8izsiUVqp3i1AOJYacTnql3ulZVwDaWDKQ1JnVT6tyVJsk54I7cdWStcO9ISaz/jqh8Uq11c0TAoVS/tDdAMjHH7hzOY9yZEMnh3zeDhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772137706; c=relaxed/relaxed;
-	bh=ZbfzS89JWVR35E98rC5lcOrcboNxD6VC9rm/fk4PuH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hBEZRyZAjn3eCxwc8xCX/io52uCOV3G/58OnkIpOSWJ+gWNBxvSpz8qkYKWTNBqyuKUIcVmlO4TRokRD7ZFtDrj8aqxC8p49mHnq9uinrbUUIvNzoFkhI2Xqe+KGq+gaWKJ6rfxYlvEXxIANUgKqZHWnkZT/A7z7fF2pXJ9aFDxDu1y7vbgdM/8lcuR0WiwtNigA04tZa52rYtNuYUWCfEyajGG0IB7lee16M/gU7U3gDE2EooS2mSQMWhXsUSRUU4nTZaeLA9trwegETOUK/NzE4VMc1s7fignBWnOhmknqn81BmIYXXBsm8Psa0elhuXrqNJX3gjd5pUvUqX/LdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=eeYG9FwR; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+	t=1772140645; c=relaxed/relaxed;
+	bh=DacmWtirnDJ8c5FfO60izxCVDBNId/jIFsPzSSFKxMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gPDYkI0ppcOvGDRwS8gmMo5FPIJuUtASrPfpMfcX8RJ/eOOMq7I++BFbG40uMb6+IOIGcbQ3bZY6Q9Lr/Y1Brpvr26yEGJfzMKZbndZi9jKfXpkx5qslF5J7/nmGgpNuch6FfEEtV+5HKgcwFsKAR4bZkemRYpiOdObbUWL11WUFkuvtCKBCq6ANEGIlqUnuUGpygFXbYFjGUrKavPEkS1koxoNozSLlZZAfmotmukDc2W4cOu+DGbApqnaIOKe77GK8dgMmvNS0L2fF6Spw3T6Ad5TVPIqTuaYij6vVCMDZxaOpBGqpt8dk1RP3DRvAII5/4G5INfvBTMyPj9sqmg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=eZ7aCq2w; dkim-atps=neutral; spf=pass (client-ip=80.12.242.82; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org) smtp.mailfrom=wanadoo.fr
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=eeYG9FwR;
+	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=eZ7aCq2w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sang-engineering.com (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 397 seconds by postgrey-1.37 at boromir; Fri, 27 Feb 2026 07:28:21 AEDT
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.82; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
+Received: from smtp.smtpout.orange.fr (smtp-82.smtpout.orange.fr [80.12.242.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMNM94VyXz2yLG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 07:28:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=Zbfz
-	S89JWVR35E98rC5lcOrcboNxD6VC9rm/fk4PuH4=; b=eeYG9FwRG0mF2I+WxzL1
-	HGUVggUjRhJIyqBUgN423pjLFOP3EUNQMylCmEbSZGMmely6B7Su6xr33ZSTAz27
-	SHnHjRn+9CBdL1Z5essMXvI9XzDXsz+428ZavPheXWtpy/EERqut52qTJGYgLInj
-	1cPeVACjybOFSolGqBL66SBDtoill7iLu9mR53JzlthU1P2siXpr4UvDoiwBZK4P
-	D+ZMgeqjfaj43lU0FiQfg2DtV2v1koFsm8uL49Ad9xjswrOn2+549Br4yoMLqJxK
-	9GzPFpASEH9OL6r96XiSCy8XkQ0v/gCyT3gjRNbBaPRYGavOshN70z8O6k1xV87h
-	TA==
-Received: (qmail 1209289 invoked from network); 26 Feb 2026 21:21:36 +0100
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 26 Feb 2026 21:21:36 +0100
-X-UD-Smtp-Session: l3s3148p1@f2ID3r9LPOkujnuU
-Date: Thu, 26 Feb 2026 21:21:35 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-actions@lists.infradead.org,
-	Bartosz Golaszewski <brgl@kernel.org>, linux-media@vger.kernel.org
-Subject: Re: [PATCH v2 00/13] i2c: add and start using i2c_adapter-specific
- printk helpers
-Message-ID: <aaCrT1SvMCIKQDmc@ninjato>
-References: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMPRn08dCz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 08:17:23 +1100 (AEDT)
+Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPSA
+	id viCtvYCtLgy1AviCtvArnH; Thu, 26 Feb 2026 21:43:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1772138617;
+	bh=DacmWtirnDJ8c5FfO60izxCVDBNId/jIFsPzSSFKxMk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=eZ7aCq2wjCWG0RHDmt9Ufs1JdOdT5ftNgWwm0PPOJoL7DTWeMBn3lMbrT1t7W/6lj
+	 bxCX7MR8Pk/ndt49pSC2ygnwqvXIpgPzGYnLBzYKLfCp9LclYz79GoDkmjxAGNlg7/
+	 aOES8EGeUgiHO2/zhaziIJeq57x8DGH6vhJ1PxMQxVwS7r9tdM18t7ujjWbCis3UCb
+	 G/qapnySNgtbFuc0LUNMtYzS7y/P8WLAw7y4gxibVtjsvmOQrIAfcquZKn0fn5RX5W
+	 mCV9RyyYHrbOxCUfqZx75dusobe6CBCPn1SETv9QhqQbF9E2OCe2Z/mrtlabg9XXHJ
+	 wiODN5Imqnalw==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 26 Feb 2026 21:43:37 +0100
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Johannes Berg <johannes@sipsolutions.net>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH v1] ALSA: aoa: Constify struct configfs_item_operations and configfs_group_operations
+Date: Thu, 26 Feb 2026 21:43:27 +0100
+Message-ID: <803ed3c1a19faab6481f3b3b4bf1eb86739061bd.1772138561.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,76 +75,222 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.29 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[wanadoo.fr,quarantine];
+	R_DKIM_ALLOW(-0.20)[wanadoo.fr:s=t20230301];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:andi.shyti@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:kblaiech@nvidia.com,m:asmaa@nvidia.com,m:jdelvare@suse.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:afaerber@suse.de,m:mani@kernel.org,m:mchehab@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-actions@lists.infradead.org,m:brgl@kernel.org,m:linux-media@vger.kernel.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[sang-engineering.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	FORGED_SENDER(0.00)[wsa@sang-engineering.com,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17315-lists,linuxppc-dev=lfdr.de,renesas];
-	DKIM_TRACE(0.00)[sang-engineering.com:+];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.979];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,sholland.org,nvidia.com,suse.com,linux.ibm.com,ellerman.id.au,suse.de,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TAGGED_FROM(0.00)[bounces-17324-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,wanadoo.fr,lists.ozlabs.org];
+	FORGED_SENDER(0.00)[christophe.jaillet@wanadoo.fr,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:perex@perex.cz,m:tiwai@suse.com,m:linux-kernel@vger.kernel.org,m:kernel-janitors@vger.kernel.org,m:christophe.jaillet@wanadoo.fr,m:linuxppc-dev@lists.ozlabs.org,m:linux-sound@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: BE2CB1AF1EA
+	FREEMAIL_FROM(0.00)[wanadoo.fr];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[christophe.jaillet@wanadoo.fr,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[wanadoo.fr:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 76DC11AF9B1
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 09:59:29AM +0100, Bartosz Golaszewski wrote:
-> It's been another year of discussing the object life-time problems at
-> conferences. I2C is one of the offenders and its problems are more
-> complex than those of some other subsystems. It seems the revocable[1]
-> API may make its way into the kernel this year but even with it in
-> place, I2C won't be able to use it as there's currently nothing to
-> *revoke*. The struct device is embedded within the i2c_adapter struct
-> whose lifetime is tied to the provider device being bound to its driver.
-> 
-> Fixing this won't be fast and easy but nothing's going to happen if we
-> don't start chipping away at it. The ultimate goal in order to be able
-> to use an SRCU-based solution (revocable or otherwise) is to convert the
-> embedded struct device in struct i2c_adapter into an __rcu pointer that
-> can be *revoked*. To that end we need to hide all dereferences of
-> adap->dev in drivers.
-> 
-> This series addresses the usage of adap->dev in device printk() helpers
-> (dev_err() et al). It introduces a set of i2c-specific helpers and
-> starts using them across bus drivers. For now just 12 patches but I'll
-> keep on doing it if these get accepted. Once these get upstream for
-> v6.20/7.0, we'll be able to also start converting i2c drivers outside of
-> drivers/i2c/.
+'struct codec_connection' are not modified in this driver.
 
-I applied the series to for-current but squashed the user conversions
-into patch 1. Changes are trivial enough and I don't want the pull
-request to look excessive, so it can go in smoothly. Hope you are fine
-with it.
+Constifying these structures moves some data to a read-only section, so
+increases overall security.
+
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  10034	   3392	     12	  13438	   347e	sound/aoa/fabrics/layout.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  10370	   3040	     12	  13422	   346e	sound/aoa/fabrics/layout.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+
+The fabric_data field in struct aoa_codecis is only used in
+sound/aoa/fabrics/layout.c, so there should be no side effect for other
+files that include sound/aoa/aoa.h
+---
+ sound/aoa/aoa.h            |  2 +-
+ sound/aoa/fabrics/layout.c | 28 ++++++++++++++--------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/sound/aoa/aoa.h b/sound/aoa/aoa.h
+index badff9f7cd54..b92593f170ca 100644
+--- a/sound/aoa/aoa.h
++++ b/sound/aoa/aoa.h
+@@ -48,7 +48,7 @@ struct aoa_codec {
+ 	u32 connected;
+ 
+ 	/* data the fabric can associate with this structure */
+-	void *fabric_data;
++	const void *fabric_data;
+ 
+ 	/* private! */
+ 	struct list_head list;
+diff --git a/sound/aoa/fabrics/layout.c b/sound/aoa/fabrics/layout.c
+index c18b55305294..c3ebb6de4789 100644
+--- a/sound/aoa/fabrics/layout.c
++++ b/sound/aoa/fabrics/layout.c
+@@ -55,7 +55,7 @@ struct codec_connection {
+ 
+ struct codec_connect_info {
+ 	char *name;
+-	struct codec_connection *connections;
++	const struct codec_connection *connections;
+ };
+ 
+ #define LAYOUT_FLAG_COMBO_LINEOUT_SPDIF	(1<<0)
+@@ -116,7 +116,7 @@ MODULE_ALIAS("aoa-device-id-35");
+ MODULE_ALIAS("aoa-device-id-44");
+ 
+ /* onyx with all but microphone connected */
+-static struct codec_connection onyx_connections_nomic[] = {
++static const struct codec_connection onyx_connections_nomic[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_HEADPHONE | CC_LINEOUT,
+ 		.codec_bit = 0,
+@@ -133,7 +133,7 @@ static struct codec_connection onyx_connections_nomic[] = {
+ };
+ 
+ /* onyx on machines without headphone */
+-static struct codec_connection onyx_connections_noheadphones[] = {
++static const struct codec_connection onyx_connections_noheadphones[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_LINEOUT |
+ 			     CC_LINEOUT_LABELLED_HEADPHONE,
+@@ -157,7 +157,7 @@ static struct codec_connection onyx_connections_noheadphones[] = {
+ };
+ 
+ /* onyx on machines with real line-out */
+-static struct codec_connection onyx_connections_reallineout[] = {
++static const struct codec_connection onyx_connections_reallineout[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_LINEOUT | CC_HEADPHONE,
+ 		.codec_bit = 0,
+@@ -174,7 +174,7 @@ static struct codec_connection onyx_connections_reallineout[] = {
+ };
+ 
+ /* tas on machines without line out */
+-static struct codec_connection tas_connections_nolineout[] = {
++static const struct codec_connection tas_connections_nolineout[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_HEADPHONE,
+ 		.codec_bit = 0,
+@@ -191,7 +191,7 @@ static struct codec_connection tas_connections_nolineout[] = {
+ };
+ 
+ /* tas on machines with neither line out nor line in */
+-static struct codec_connection tas_connections_noline[] = {
++static const struct codec_connection tas_connections_noline[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_HEADPHONE,
+ 		.codec_bit = 0,
+@@ -204,7 +204,7 @@ static struct codec_connection tas_connections_noline[] = {
+ };
+ 
+ /* tas on machines without microphone */
+-static struct codec_connection tas_connections_nomic[] = {
++static const struct codec_connection tas_connections_nomic[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_HEADPHONE | CC_LINEOUT,
+ 		.codec_bit = 0,
+@@ -217,7 +217,7 @@ static struct codec_connection tas_connections_nomic[] = {
+ };
+ 
+ /* tas on machines with everything connected */
+-static struct codec_connection tas_connections_all[] = {
++static const struct codec_connection tas_connections_all[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_HEADPHONE | CC_LINEOUT,
+ 		.codec_bit = 0,
+@@ -233,7 +233,7 @@ static struct codec_connection tas_connections_all[] = {
+ 	{} /* terminate array by .connected == 0 */
+ };
+ 
+-static struct codec_connection toonie_connections[] = {
++static const struct codec_connection toonie_connections[] = {
+ 	{
+ 		.connected = CC_SPEAKERS | CC_HEADPHONE,
+ 		.codec_bit = 0,
+@@ -241,7 +241,7 @@ static struct codec_connection toonie_connections[] = {
+ 	{} /* terminate array by .connected == 0 */
+ };
+ 
+-static struct codec_connection topaz_input[] = {
++static const struct codec_connection topaz_input[] = {
+ 	{
+ 		.connected = CC_DIGITALIN,
+ 		.codec_bit = 0,
+@@ -249,7 +249,7 @@ static struct codec_connection topaz_input[] = {
+ 	{} /* terminate array by .connected == 0 */
+ };
+ 
+-static struct codec_connection topaz_output[] = {
++static const struct codec_connection topaz_output[] = {
+ 	{
+ 		.connected = CC_DIGITALOUT,
+ 		.codec_bit = 1,
+@@ -257,7 +257,7 @@ static struct codec_connection topaz_output[] = {
+ 	{} /* terminate array by .connected == 0 */
+ };
+ 
+-static struct codec_connection topaz_inout[] = {
++static const struct codec_connection topaz_inout[] = {
+ 	{
+ 		.connected = CC_DIGITALIN,
+ 		.codec_bit = 0,
+@@ -772,7 +772,7 @@ static int check_codec(struct aoa_codec *codec,
+ {
+ 	const u32 *ref;
+ 	char propname[32];
+-	struct codec_connection *cc;
++	const struct codec_connection *cc;
+ 
+ 	/* if the codec has a 'codec' node, we require a reference */
+ 	if (of_node_name_eq(codec->node, "codec")) {
+@@ -895,7 +895,7 @@ static void layout_notify(void *data)
+ 
+ static void layout_attached_codec(struct aoa_codec *codec)
+ {
+-	struct codec_connection *cc;
++	const struct codec_connection *cc;
+ 	struct snd_kcontrol *ctl;
+ 	int headphones, lineout;
+ 	struct layout_dev *ldev = layout_device;
+-- 
+2.53.0
 
 
