@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-17251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKFTL80voGmLgAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:34:37 +0100
+	id 2PIHBdUvoGmLgAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:34:45 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A3F1A51C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:34:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC4B1A51C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:34:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8Vl0Fn1z3cFN;
-	Thu, 26 Feb 2026 22:34:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8Vv0f40z3cGK;
+	Thu, 26 Feb 2026 22:34:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105646;
-	cv=none; b=l60PyssZbLoMS9yU3p7hku3wucVNRvLyLxS0zyERbwksylEMKF8pQIxuVoCtdd/toe6nvcix4U6lKD1ur5FVD2I1h1eb6WU34G4Idam+5GEPjS2lp0+k7jzI/ZpfAuNuHSupVfZzC/jfny0aCUt2HgVoSZHsyd0uuN6RZMkib7pCXZ716cNd74UigkqGgKupC6+350+kJhcnlXzJd33P0heIk9026HLXvC2LG4JyTODg7W/LyFxkWzO8eAQZf51uTrPX2/5O9RqlLBIHbvSFGGW3xxcotY9l2Ke555ZeaDVs56Zl72fBvqv/2khmFP2FHeft/xH7dBAhd04NegsvsA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.181
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105654;
+	cv=none; b=EtVgu55pSZfaqOX8179JE8ISYQHPw4RSDG6FYoIg/u0odjGEHqYV+HVVI3PgmYaK++xrBu0xyUL81Z1ZxJii30RWcuaWuDvxlfV31cL1jKttAkefS9A1SjM6SF475fVnm4j22DnJP/Qj5cNaj12sOvVxaoaq6UC4Hh578NA/88aT9+9IZ0LMzgOtRwcMh6j2bhAe4R+A+qk1qox7Kv1O5CwNaYTRFMFjZ1OOktDO+yFRKPN9vvL4X9MOrGP9+O6mXm0+rlfXLfdKgl8/tTgRwLzYo/OC5eb6oOnQ3caYliTm2oAP/I2EoAzUjeN89So7QGpVF7oI3b5ns/UUkHVOCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772105646; c=relaxed/relaxed;
-	bh=voiqUydpep5c50p71jeWeFdopCgnIpO6zR1blEnFY9U=;
+	t=1772105654; c=relaxed/relaxed;
+	bh=VYA2+HQ3PTBt5D8sdrhOr6HCB84Kriw+faUOIzAxMpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsGPjr/pTUw53yxZ+k6xwja/VUwegMcjhXxOkBZPX4sVcp2kuUHrlDYn4o1QC8ZaopJVCmTt8/nBo2HUI1DM2keN8cb1z1Yd0bWyWjP8w1+IHXuxjwQHyOutXC81GK+NKHwTDVk48I7XVXpMH5L1pOxUqr5ApwP4Fs3ITG5EhBIq+ZVI8Jy+Fd0y/YxmIovrggVfHC9ueS0AO5pKe1nnyicXQ1E8lDu7GO64tbenoCyvV6FJHe34IE1yfKTzRM62ksq3iNVkyxNIhPxcaNoiupKNrTNcK5v+mS6/K7CK6n45FOzNddHZul0tjCOmoR09SMSRo2I3M+r5TeziOeziNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=udE+houD; dkim-atps=neutral; spf=pass (client-ip=91.218.175.173; helo=out-173.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 MIME-Version; b=dXNDeUcvyntQUl4fDAjQH6r+QU2spJ6PBJi83xO220mHa8yMC6r8/B0AQL3U6AhRGwWFsBihu5vehuLd8A0eQjcApUpwZug1+C1dEtkpUhzI633YH6Hbj8GdQtkVP7dFBeF6Ml+ilHI6oHv5BV2V92ff78UVSIks92mZvCsK6KkynvtJ2trdxHh1yJdAttNnAIJwdWdfiEcKJdWfu66V4iqZcj1shtZ7zUdhiJLNIbLlrTsL2x8J69aI595gaEOPL67UWnDOE6JOMeCofEKuYbT4yR0uRjRXPlwsQ7eAoXwtg3vzlotn9+NEq9EBY3bcbUSZH09Zma8nGSdcR0K4yQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=urU1JU88; dkim-atps=neutral; spf=pass (client-ip=95.215.58.181; helo=out-181.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=udE+houD;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=urU1JU88;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.173; helo=out-173.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.181; helo=out-181.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8Vk1wYzz2yY0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:34:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8Vt2Jdbz303F
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:34:14 +1100 (AEDT)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105626;
+	t=1772105632;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=voiqUydpep5c50p71jeWeFdopCgnIpO6zR1blEnFY9U=;
-	b=udE+houDLGseN1f6IYvibBzYYzpJnrx63S12MifUCk13f0DjLpLexn7cLE+r93BBzXNqZW
-	GMm8b+RjhZzqazJYt7NxsX82x6AVbHVcuPZhuNhuFnkbnvwr1QnAXR2LjKKpKiQSa6Xdhz
-	62qhsCiwM2CIlMTRP3nK9ID7G97Ovc0=
+	bh=VYA2+HQ3PTBt5D8sdrhOr6HCB84Kriw+faUOIzAxMpw=;
+	b=urU1JU881GY7kjUvIyBX3z3Lqlmyk50JU6TXPEMfQliw0OxBspGKG47gwOqyYchKYjdhOS
+	4MCdiw06/6qjaNTE/dJI2QINH/BZD+AyBh9OYXNlQ7Q+2vDLHhiRiXwTsCMMVh0aAiWh5C
+	T/IMdVB4xvM/4LGbijfTnkgoLXbW/+E=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -75,9 +75,9 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 08/21] mm: thp: handle split failure in follow_pmd_mask()
-Date: Thu, 26 Feb 2026 03:23:37 -0800
-Message-ID: <20260226113233.3987674-9-usama.arif@linux.dev>
+Subject: [RFC v2 09/21] mm: handle walk_page_range() failure from THP split
+Date: Thu, 26 Feb 2026 03:23:38 -0800
+Message-ID: <20260226113233.3987674-10-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -106,11 +106,11 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17251-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17252-lists,linuxppc-dev=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
@@ -129,48 +129,49 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.dev:mid,linux.dev:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: 00A3F1A51C1
+X-Rspamd-Queue-Id: 5EC4B1A51C8
 X-Rspamd-Action: no action
 
-follow_pmd_mask() splits a huge PMD when FOLL_SPLIT_PMD is set, so GUP
-can pin individual pages at PTE granularity.
+walk_pmd_range() splits a huge PMD when a page table walker with
+pte_entry or install_pte callbacks needs PTE-level granularity. If
+the split fails due to memory allocation failure in pte_alloc_one(),
+walk_pte_range() would encounter a huge PMD instead of a PTE page
+table.
 
-If the split fails, the PMD is still huge and follow_page_pte() cannot
-process it. Return ERR_PTR(-ENOMEM) on split failure, which causes the
-GUP caller to get -ENOMEM. -ENOMEM is already returned in follow_pmd_mask
-if pte_alloc_one fails (which is the reason why split_huge_pmd could
-fail), hence this is a safe change.
+Break out of the loop on split failure and return -ENOMEM to the
+walker's caller. Callers that reach this path (those with pte_entry
+or install_pte set) such as mincore, hmm_range_fault and
+queue_pages_range already handle negative return values from
+walk_page_range(). Similar approach is taken when __pte_alloc()
+fails in walk_pmd_range().
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/gup.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ mm/pagewalk.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 8e7dc2c6ee738..792b2e7319dd0 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -928,8 +928,16 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
- 		return follow_page_pte(vma, address, pmd, flags);
- 	}
- 	if (pmd_trans_huge(pmdval) && (flags & FOLL_SPLIT_PMD)) {
-+		int ret;
-+
- 		spin_unlock(ptl);
--		split_huge_pmd(vma, pmd, address);
-+		/*
-+		 * If split fails, the PMD is still huge and
-+		 * we cannot proceed to follow_page_pte.
-+		 */
-+		ret = split_huge_pmd(vma, pmd, address);
-+		if (ret)
-+			return ERR_PTR(ret);
- 		/* If pmd was left empty, stuff a page table in there quickly */
- 		return pte_alloc(mm, pmd) ? ERR_PTR(-ENOMEM) :
- 			follow_page_pte(vma, address, pmd, flags);
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index a94c401ab2cfe..1ee9df7a4461d 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -147,9 +147,11 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 				continue;
+ 		}
+ 
+-		if (walk->vma)
+-			split_huge_pmd(walk->vma, pmd, addr);
+-		else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
++		if (walk->vma) {
++			err = split_huge_pmd(walk->vma, pmd, addr);
++			if (err)
++				break;
++		} else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
+ 			continue; /* Nothing to do. */
+ 
+ 		err = walk_pte_range(pmd, addr, next, walk);
 -- 
 2.47.3
 
