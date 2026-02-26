@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-17255-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEN5IOwvoGmLgAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17255-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:35:08 +0100
+	id 4HjOKPQvoGmLgAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:35:16 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990FB1A51FE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:35:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E5B1A520E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:35:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8W60zw0z30T8;
-	Thu, 26 Feb 2026 22:34:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8WC74mxz30FF;
+	Thu, 26 Feb 2026 22:34:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.186
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105666;
-	cv=none; b=Eu2tdNE2r13MK8cEWdIRBsJEI9wQynm6tmOArilDDA56P3hhjC4eErXZCm1cehWFPRTjXxsk4MTwifzA/DRVYISEqW1zjPCtqDD333yfeQ1gO8pv9eiaCtO9l07wTO7h9ldixEyWOw1UGfqKxNzZp7o0Vb/GVDLp32WiWVjyCj8Jdmrjj5WPOj5kwke2ef1Y/xpUrk5APmIFRgcslI3wI8ERhsb22Lt0WUxZ2dNLaEIOTwx5RiN5Mn2KD+Uakl4JmSvMqt2scXyZNIAItqvPV+02ISGe5KsiHD9gSmuXiAjtR3jrvucg/bdaoA83AqeBq/lW6kiB8sVWM/pWbNe+Uw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::bc"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105671;
+	cv=none; b=SqEdCjRN0xjHmej3Lxe7qEiEV/fpQsSPGXpwoyweXKwK1atgMIsXCTnyhtoROIkm2RVh1UbhmVmwTlnN72X+R8apX9xAZXaAGu+44/rLVGxzoGZ46hyPzXdyoUJ9fCIHutTYuPVfK+5E+fqYuR/vRpuE899vIMjfkJhJZflKlpw54HOCewKx8ovMTRuglIOJtL6aU1PR3rZcZTfnoHP25yHC4IjGz8rSqZ4AF7riWL4mR8zZAUKRl6+shMXC1vW3vvMQixboyDvWqoNVB0gPBEnyg0YhmPbVywIsT6wjU/bSoO2D47CsT6rssRnowaR/ZUw0zoWa5lu8Tzxn3xma8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772105666; c=relaxed/relaxed;
-	bh=c14WgMu6/15qhuICdOLPBmddgsK8PG21SZ4l5q+gLlo=;
+	t=1772105671; c=relaxed/relaxed;
+	bh=S0H8ygH+YlO4CNCx03qcK3DVZPCm8qVQiV1k1Y2d+/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKqI9Q5X8e+fZ6UiiC/DqjrUElEKQZxcuguFzQpsd4ia2trgmrH4Po/CpZdGtlrM54C7lwynTG7NT7re+Uh56NnmwJU+Pj5m5w12PFO3RrXafRQ/8BVELeR2/XMNPa0RCeyWQK8w73Z/9a9wkXzHwrs/G16Q1GUdMUPwZCaDQqmyxMlLZPYsCnZcmYUhcy4ibRF8+nbOwERvOJiNFnY2IQ8soAEa0P99TjPoSppPUrB/a/xxQ7vPyEe0nCtBBrcVplmNVE3BwRC+QGqzQKZkm/ZCJc1+OqyRKf3ZLzUZIm+3X7CfYGsDAAKnaFnMTQlXtU2EBTn0Udyu5q3wCg3bHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IWSKImJr; dkim-atps=neutral; spf=pass (client-ip=91.218.175.186; helo=out-186.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 MIME-Version; b=TMHAJsfe6NkhN/NqIn/14Qqug6IV1D8xDzxrp8IIWC0DmiayV3fKlG9V9N8YCOyOtCmYJiKtZhvK549pU5FEHSz4RVdPsx3afXy/YQtFwpF1sK9df8oKz1TNML8pKjTsjKxfJyesUXWxks9KJdKP/LDU08Drwzki2zT/Q8HbPR5iXhcndlJrJsgxiU/whh7nc/mnwk39zFkFqmqlc6nqFA0RhSY8b8Qd4YVH+qxYprWYumBr3zyGjgCZrpfQ0mJLun7+me6IRih6xdfeKMx6+ryKu/7clZWKxAXtGiMkphrv6zUiMcI+FQ3xfNMrUW+jPUQD9+Jqls2r/hKsK28dxQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WE+bzrYN; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:1004:224b::bc; helo=out-188.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IWSKImJr;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WE+bzrYN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.186; helo=out-186.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::bc; helo=out-188.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Thu, 26 Feb 2026 22:34:31 AEDT
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [IPv6:2001:41d0:1004:224b::bc])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8W533xNz2xMt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:34:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8WC1fWWz2xMt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:34:31 +1100 (AEDT)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105646;
+	t=1772105652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c14WgMu6/15qhuICdOLPBmddgsK8PG21SZ4l5q+gLlo=;
-	b=IWSKImJr/lhTtq+7dWWCDBff/3vlsDJfZ5E4/kWREeiGjoKal7G4aXUV6deMVpg27q/Yop
-	OTsn9HimEI/nuXkSIAWQ1bqJnFpUQRDmLiv4z/EhIzmdzFMMJB1Z54wZ7psaJRXtZ10qtQ
-	reVy6qgPIMnhvu7EHAlifyWC4llEGMo=
+	bh=S0H8ygH+YlO4CNCx03qcK3DVZPCm8qVQiV1k1Y2d+/k=;
+	b=WE+bzrYNxkX7rkOvVYIotj0P/HNDg7dgr5BIyKjoWK6c/gNQyNgdKm5vkjTkfoZRMJ11uG
+	7YnOvlg6mRw5/v+qJxjjYm2FpSYphCBWmhfAjo9Kp1SB7EoIDR3aW2hScwzOCQc+oLE42l
+	nXUPqt58pVi3eC52uFA6Yk2oOf9BZZA=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -75,9 +76,9 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 12/21] mm: thp: handle split failure in device migration
-Date: Thu, 26 Feb 2026 03:23:41 -0800
-Message-ID: <20260226113233.3987674-13-usama.arif@linux.dev>
+Subject: [RFC v2 13/21] mm: huge_mm: Make sure all split_huge_pmd calls are checked
+Date: Thu, 26 Feb 2026 03:23:42 -0800
+Message-ID: <20260226113233.3987674-14-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -95,9 +96,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
@@ -106,11 +107,11 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17255-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17256-lists,linuxppc-dev=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
@@ -128,73 +129,56 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.dev:mid,linux.dev:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: 990FB1A51FE
+X-Rspamd-Queue-Id: F0E5B1A520E
 X-Rspamd-Action: no action
 
-Device memory migration has two call sites that split huge PMDs:
-
-migrate_vma_split_unmapped_folio():
-  Called from migrate_vma_pages() when migrating a PMD-mapped THP to a
-  destination that doesn't support compound pages.  It splits the PMD
-  then splits the folio via folio_split_unmapped().
-
-  If the PMD split fails, folio_split_unmapped() would operate on an
-  unsplit folio with inconsistent page table state.  Propagate -ENOMEM
-  to skip this page's migration. This is safe as folio_split_unmapped
-  failure would be propagated in a similar way.
-
-migrate_vma_insert_page():
-  Called from migrate_vma_pages() when inserting a page into a VMA
-  during migration back from device memory.  If a huge zero PMD exists
-  at the target address, it must be split before PTE insertion.
-
-  If the split fails, the subsequent pte_alloc() and set_pte_at() would
-  operate on a PMD slot still occupied by the huge zero entry.  Use
-  goto abort, consistent with other allocation failures in this function.
+Mark __split_huge_pmd(), split_huge_pmd() and split_huge_pmd_address()
+with __must_check so the compiler warns if any caller ignores the return
+value. Not checking return value and operating on the basis that the pmd
+is split could result in a kernel bug. The possibility of an order-0
+allocation failing for page table allocation is very low, but it should
+be handled correctly.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/migrate_device.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ include/linux/huge_mm.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 78c7acf024615..bc53e06fd9735 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -909,7 +909,13 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
- 	int ret = 0;
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 207bf7cd95c78..b4c2fd4252097 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -419,7 +419,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped);
+ void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+ #endif
  
- 	folio_get(folio);
--	split_huge_pmd_address(migrate->vma, addr, true);
-+	/*
-+	 * If PMD split fails, folio_split_unmapped would operate on an
-+	 * unsplit folio with inconsistent page table state.
-+	 */
-+	ret = split_huge_pmd_address(migrate->vma, addr, true);
-+	if (ret)
-+		return ret;
- 	ret = folio_split_unmapped(folio, 0);
- 	if (ret)
- 		return ret;
-@@ -1005,7 +1011,13 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
- 		if (pmd_trans_huge(*pmdp)) {
- 			if (!is_huge_zero_pmd(*pmdp))
- 				goto abort;
--			split_huge_pmd(vma, pmdp, addr);
-+			/*
-+			 * If split fails, the huge zero PMD remains and
-+			 * pte_alloc/PTE insertion that follows would be
-+			 * incorrect.
-+			 */
-+			if (split_huge_pmd(vma, pmdp, addr))
-+				goto abort;
- 		} else if (pmd_leaf(*pmdp))
- 			goto abort;
- 	}
+-int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
++int __must_check __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 		unsigned long address, bool freeze);
+ 
+ /**
+@@ -448,7 +448,7 @@ static inline bool pmd_is_huge(pmd_t pmd)
+ 	return false;
+ }
+ 
+-static inline int split_huge_pmd(struct vm_area_struct *vma,
++static inline int __must_check split_huge_pmd(struct vm_area_struct *vma,
+ 					     pmd_t *pmd, unsigned long address)
+ {
+ 	if (pmd_is_huge(*pmd))
+@@ -456,7 +456,7 @@ static inline int split_huge_pmd(struct vm_area_struct *vma,
+ 	return 0;
+ }
+ 
+-int split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
++int __must_check split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
+ 		bool freeze);
+ 
+ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
 -- 
 2.47.3
 
