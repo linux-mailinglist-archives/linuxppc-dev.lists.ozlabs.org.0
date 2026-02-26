@@ -1,47 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-17244-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGt8HJUvoGmLgAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17244-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	id uFpCGZUvoGkrgAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
 	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:33:41 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8611A5140
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:33:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AE31A513F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:33:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8V71XTQz2yLH;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8V70LlMz2yFm;
 	Thu, 26 Feb 2026 22:33:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.184
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105615;
-	cv=none; b=P+vzGO/KrS9/iHCbsmpWKdcSPdq7TDpAL4QUEyxv4sOPVNbCGQXTuQh3FJwacAFI5SNGoceuh+DvG2aK8264IQyQypu5oMap07l7XvrBhnnmcasJ6ZYP9QfNIL3HS/9MOejbwhcRh65JV8BazVmSug9waTsbuy+BHBWRlww/ixXL6WH1jsdJ2strq/rH9CuyJzy5oziXX7Fr1+q2K/id+ODltue/F47BA3mxD6R0nfDko6DmkFqbACCMOwiZB8D6VzjkDp9MtMwhNJAR26PG9dtdUq3F/W5wCvaxAYIhJVgZhf+l6907SQN2VMX7eah7MwJXgrEiclw38zEX97vg8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.186
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105614;
+	cv=none; b=hTda5a0Kk4SJ/PKSmesfDlh9M72NnPNiBFiCb0vsm6BfngxchJZV188aiqj3VmUiiAM88wmh8wYDHz6qXEkE+llGdDXPTzoeXOUSIsPkbm0UrLAs2yfnM50acdSw09IPV2R2kz53SsjpKQb42YBOfaONGpj5e6/SXDSVkWxLQel3SdElTexE6rp7Sr2UC2gDPDsotJj7d8lalIxK/BcLKN0wRsNKDQvfT8qatofIPeosmcGZeZv6yJGoXELunJrotCMDBtXCT0nmp0WsbBIp8tr4Y2UK0UTOzjCNWUPGcQt5GWBBfA358nHO3E7WVd8f11nuVRdHThEbn16K2I66Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772105615; c=relaxed/relaxed;
-	bh=k2ELw/d/0Gog00pMOWAThLbOMM5tKNxDq9T0P2nOjys=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oHx17sevTpbC97YN6haDdSVCMXdMa6xilnd1GTP+XoF3iNQyUkYrlPBQI3uXTJh7xD9zqJb4ZhPuOT8Mr+o0etYS39CMN3vf374L04b957JVgrbK7ZN3pz37JNJgTyKITy+M9In5jjVLLQo0cJqyZSQ+1HflwQK9UB1AuNp10YAL6g0aKDf2FD5WRN3msLKA/bSksW+wFD93woVfOIkGHma0rCsB487HTKoyj1rBYnUkiLcFge2XwwLkfGCasG4698a2nw4WufrqFIxM8N58Tu1g2npj4VzhFNyU9VMxM488qGwtwj8/2WC6WyomUD6iD0s0XI2zMsYRZyrLJ70nXA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=n+LWDYrt; dkim-atps=neutral; spf=pass (client-ip=91.218.175.184; helo=out-184.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	t=1772105614; c=relaxed/relaxed;
+	bh=rMeF9FuOGiVcaeEE8TLIVYSd2ZWdyqQJ2YusxNRO8Vw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BHJ8F1m0MdynPmDCR/snR4RK/vdeexHBs0UqAsShNP73LnkeoYt3hKDpMlxrOTNewtcpYAIxWYTlRPCe/85D8u8+Sq9FwoO2y2qA6ubgnTYaq4DbTWhbJweGBVdzM3BePVoyK9XReoxrN3BMdkjCz8gIsQgX8cn1TH1j/4uGG/pAPOWmuW8rAw+X1QUdPE5jHwO7h11BRbE4kAuPKxN1PZM00Nkmtd3WS7SYj1M4LsKI7b/csSO2XVzhvmNxeAqQebOZ5FF1410CWRdU24mw3ousbZcoHFc5iP2UprIHrMOlOZNpMuk9qQLsfIy1Om48BjhBKKwRxWUZzqC8vNJybQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BFSudpBQ; dkim-atps=neutral; spf=pass (client-ip=91.218.175.186; helo=out-186.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=n+LWDYrt;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BFSudpBQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.184; helo=out-184.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.186; helo=out-186.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8V34pJwz2xMt
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8V34tjhz2yFc
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:33:31 +1100 (AEDT)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105581;
+	t=1772105586;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k2ELw/d/0Gog00pMOWAThLbOMM5tKNxDq9T0P2nOjys=;
-	b=n+LWDYrtObsXfcKC7/nZPQ+aQqrswSfcmVak0ruMCIQrn4JHlHeaAjZLo0fHzU/CZyaKM0
-	oZGFn+vdg7IzoLhh3QnaIGrmyYrAMUoaiAVI3rguksiXePFiMnXJOV3hJbZcr3SknCNQuK
-	SjmK1cJeVR4nov6+c2ABb6MO5qENT9k=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rMeF9FuOGiVcaeEE8TLIVYSd2ZWdyqQJ2YusxNRO8Vw=;
+	b=BFSudpBQsSSTYRqfYn30RDkrmyvD8a82qVH1sYA5NyNZ7scTnnsWMO+aILfSxqwHerqizH
+	saC0LYcAFWnkoLmEVnGKpnBUc4oq6xsaL9QCJjM/OgvgRBSPnqALRaNrYVJuxt2Tse2yM9
+	17DCCv6gSxumhU6zBvHKgBtRtW9lMQc=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -73,9 +75,11 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 00/21] mm: thp: lazy PTE page table allocation at PMD split
-Date: Thu, 26 Feb 2026 03:23:29 -0800
-Message-ID: <20260226113233.3987674-1-usama.arif@linux.dev>
+Subject: [RFC v2 01/21] mm: thp: make split_huge_pmd functions return int for error propagation
+Date: Thu, 26 Feb 2026 03:23:30 -0800
+Message-ID: <20260226113233.3987674-2-usama.arif@linux.dev>
+In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
+References: <20260226113233.3987674-1-usama.arif@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,12 +106,12 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17244-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17243-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[30];
@@ -122,192 +126,151 @@ X-Spamd-Result: default: False [-1.21 / 15.00];
 	RCVD_COUNT_TWO(0.00)[2];
 	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.dev:mid,linux.dev:dkim]
-X-Rspamd-Queue-Id: 7F8611A5140
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 59AE31A513F
 X-Rspamd-Action: no action
 
-When the kernel creates a PMD-level THP mapping for anonymous pages, it
-pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
-page table sits unused in a deposit list for the lifetime of the THP
-mapping, only to be withdrawn when the PMD is split or zapped. Every
-anonymous THP therefore wastes 4KB of memory unconditionally. On large
-servers where hundreds of gigabytes of memory are mapped as THPs, this
-adds up: roughly 200MB wasted per 100GB of THP memory. This memory
-could otherwise satisfy other allocations, including the very PTE page
-table allocations needed when splits eventually occur.
+Currently split cannot fail, but future patches will add lazy PTE page
+table allocation. With lazy PTE page table allocation at THP split time
+__split_huge_pmd() calls pte_alloc_one() which can fail if order-0
+allocation cannot be satisfied.
+Split functions currently return void, so callers have no way to detect
+this failure.  The PMD would remain huge, but callers assumed the split
+succeeded and proceeded to operate on that basis — interpreting a huge PMD
+entry as a page table pointer could result in a kernel bug.
 
-This series removes the pre-deposit and allocates the PTE page table
-lazily — only when a PMD split actually happens. Since a large number
-of THPs are never split (they are zapped wholesale when processes exit or
-munmap the full range), the allocation is avoided entirely in the common
-case.
+Change __split_huge_pmd(), split_huge_pmd(), split_huge_pmd_if_needed()
+and split_huge_pmd_address() to return 0 on success (-ENOMEM on
+allocation failure in later patch).  Convert the split_huge_pmd macro
+to a static inline function that propagates the return value. The return
+values will be handled by the callers in future commits.
 
-The pre-deposit pattern exists because split_huge_pmd was designed as an
-operation that must never fail: if the kernel decides to split, it needs
-a PTE page table, so one is deposited in advance. But "must never fail"
-is an unnecessarily strong requirement. A PMD split is typically triggered
-by a partial operation on a sub-PMD range — partial munmap, partial
-mprotect, partial mremap and so on.
-Most of these operations already have well-defined error handling for
-allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
-fail and propagating the error through these existing paths is the natural
-thing to do. Furthermore, split failing requires an order-0 allocation for
-a page table to fail, which is extremely unlikely.
+The CONFIG_TRANSPARENT_HUGEPAGE=n stubs are changed to return 0.
 
-Designing functions like split_huge_pmd as operations that cannot fail
-has a subtle but real cost to code quality. It forces a pre-allocation
-pattern - every THP creation path must deposit a page table, and every
-split or zap path must withdraw one, creating a hidden coupling between
-widely separated code paths.
+No behaviour change is expected with this patch.
 
-This also serves as a code cleanup. On every architecture except powerpc
-with hash MMU, the deposit/withdraw machinery becomes dead code. The
-series removes the generic implementations in pgtable-generic.c and the
-s390/sparc overrides, replacing them with no-op stubs guarded by
-arch_needs_pgtable_deposit(), which evaluates to false at compile time
-on all non-powerpc architectures.
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ include/linux/huge_mm.h | 34 ++++++++++++++++++----------------
+ mm/huge_memory.c        | 16 ++++++++++------
+ 2 files changed, 28 insertions(+), 22 deletions(-)
 
-The series is structured as follows:
-
-Patches 1-2:    Error infrastructure — make split functions return int
-                and propagate errors from vma_adjust_trans_huge()
-                through __split_vma, vma_shrink, and commit_merge.
-
-Patches 3-12:   Handle split failure at every call site — copy_huge_pmd,
-                do_huge_pmd_wp_page, zap_pmd_range, wp_huge_pmd,
-                change_pmd_range (mprotect), follow_pmd_mask (GUP),
-                walk_pmd_range (pagewalk), move_page_tables (mremap),
-                move_pages (userfaultfd), and device migration.
-                The code will become affective in Patch 14 when split
-                functions start returning -ENOMEM.
-
-Patch 13:       Add __must_check to __split_huge_pmd(), split_huge_pmd()
-                and split_huge_pmd_address() so the compiler warns on
-                unchecked return values.
-
-Patch 14:       The actual change — allocate PTE page tables lazily at
-                split time instead of pre-depositing at THP creation.
-                This is when split functions will actually start returning
-                -ENOMEM.
-
-Patch 15:       Remove the now-dead deposit/withdraw code on
-                non-powerpc architectures.
-
-Patch 16:       Add THP_SPLIT_PMD_FAILED vmstat counter for monitoring
-                split failures.
-
-Patches 17-21:  Selftests covering partial munmap, mprotect, mlock,
-                mremap, and MADV_DONTNEED on THPs to exercise the
-                split paths.
-
-The error handling patches are placed before the lazy allocation patch so
-that every call site is already prepared to handle split failures before
-the failure mode is introduced. This makes each patch independently safe
-to apply and bisect through.
-
-The patches were tested with CONFIG_DEBUG_ATOMIC_SLEEP and CONFIG_DEBUG_VM
-enabled. The test results are below:
-
-TAP version 13
-1..5
-# Starting 5 tests from 1 test cases.
-#  RUN           thp_pmd_split.partial_munmap ...
-# thp_pmd_split_test.c:60:partial_munmap:thp_split_pmd: 0 -> 1
-# thp_pmd_split_test.c:62:partial_munmap:thp_split_pmd_failed: 0 -> 0
-#            OK  thp_pmd_split.partial_munmap
-ok 1 thp_pmd_split.partial_munmap
-#  RUN           thp_pmd_split.partial_mprotect ...
-# thp_pmd_split_test.c:60:partial_mprotect:thp_split_pmd: 1 -> 2
-# thp_pmd_split_test.c:62:partial_mprotect:thp_split_pmd_failed: 0 -> 0
-#            OK  thp_pmd_split.partial_mprotect
-ok 2 thp_pmd_split.partial_mprotect
-#  RUN           thp_pmd_split.partial_mlock ...
-# thp_pmd_split_test.c:60:partial_mlock:thp_split_pmd: 2 -> 3
-# thp_pmd_split_test.c:62:partial_mlock:thp_split_pmd_failed: 0 -> 0
-#            OK  thp_pmd_split.partial_mlock
-ok 3 thp_pmd_split.partial_mlock
-#  RUN           thp_pmd_split.partial_mremap ...
-# thp_pmd_split_test.c:60:partial_mremap:thp_split_pmd: 3 -> 4
-# thp_pmd_split_test.c:62:partial_mremap:thp_split_pmd_failed: 0 -> 0
-#            OK  thp_pmd_split.partial_mremap
-ok 4 thp_pmd_split.partial_mremap
-#  RUN           thp_pmd_split.partial_madv_dontneed ...
-# thp_pmd_split_test.c:60:partial_madv_dontneed:thp_split_pmd: 4 -> 5
-# thp_pmd_split_test.c:62:partial_madv_dontneed:thp_split_pmd_failed: 0 -> 0
-#            OK  thp_pmd_split.partial_madv_dontneed
-ok 5 thp_pmd_split.partial_madv_dontneed
-# PASSED: 5 / 5 tests passed.
-# Totals: pass:5 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-The patches are based off of 957a3fab8811b455420128ea5f41c51fd23eb6c7 from
-mm-unstable as of 25 Feb (7.0.0-rc1).
-
-
-RFC v1 -> v2: https://lore.kernel.org/all/20260211125507.4175026-1-usama.arif@linux.dev/
-- Change counter name to THP_SPLIT_PMD_FAILED (David)
-- remove pgtable_trans_huge_{deposit/withdraw} when not needed and
-  make them arch specific (David)
-- make split functions return error code and have callers handle them
-  (David and Kiryl)
-- Add test cases for splitting
-
-Usama Arif (21):
-  mm: thp: make split_huge_pmd functions return int for error
-    propagation
-  mm: thp: propagate split failure from vma_adjust_trans_huge()
-  mm: thp: handle split failure in copy_huge_pmd()
-  mm: thp: handle split failure in do_huge_pmd_wp_page()
-  mm: thp: handle split failure in zap_pmd_range()
-  mm: thp: handle split failure in wp_huge_pmd()
-  mm: thp: retry on split failure in change_pmd_range()
-  mm: thp: handle split failure in follow_pmd_mask()
-  mm: handle walk_page_range() failure from THP split
-  mm: thp: handle split failure in mremap move_page_tables()
-  mm: thp: handle split failure in userfaultfd move_pages()
-  mm: thp: handle split failure in device migration
-  mm: huge_mm: Make sure all split_huge_pmd calls are checked
-  mm: thp: allocate PTE page tables lazily at split time
-  mm: thp: remove pgtable_trans_huge_{deposit/withdraw} when not needed
-  mm: thp: add THP_SPLIT_PMD_FAILED counter
-  selftests/mm: add THP PMD split test infrastructure
-  selftests/mm: add partial_mprotect test for change_pmd_range
-  selftests/mm: add partial_mlock test
-  selftests/mm: add partial_mremap test for move_page_tables
-  selftests/mm: add madv_dontneed_partial test
-
- arch/powerpc/include/asm/book3s/64/pgtable.h  |  12 +-
- arch/s390/include/asm/pgtable.h               |   6 -
- arch/s390/mm/pgtable.c                        |  41 ---
- arch/sparc/include/asm/pgtable_64.h           |   6 -
- arch/sparc/mm/tlb.c                           |  36 ---
- include/linux/huge_mm.h                       |  51 +--
- include/linux/pgtable.h                       |  16 +-
- include/linux/vm_event_item.h                 |   1 +
- mm/debug_vm_pgtable.c                         |   4 +-
- mm/gup.c                                      |  10 +-
- mm/huge_memory.c                              | 208 +++++++++----
- mm/khugepaged.c                               |   7 +-
- mm/memory.c                                   |  26 +-
- mm/migrate_device.c                           |  33 +-
- mm/mprotect.c                                 |  11 +-
- mm/mremap.c                                   |   8 +-
- mm/pagewalk.c                                 |   8 +-
- mm/pgtable-generic.c                          |  32 --
- mm/rmap.c                                     |  42 ++-
- mm/userfaultfd.c                              |   8 +-
- mm/vma.c                                      |  37 ++-
- mm/vmstat.c                                   |   1 +
- tools/testing/selftests/mm/Makefile           |   1 +
- .../testing/selftests/mm/thp_pmd_split_test.c | 290 ++++++++++++++++++
- tools/testing/vma/include/stubs.h             |   9 +-
- 25 files changed, 645 insertions(+), 259 deletions(-)
- create mode 100644 tools/testing/selftests/mm/thp_pmd_split_test.c
-
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index a4d9f964dfdea..e4cbf5afdbe7e 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -419,7 +419,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped);
+ void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+ #endif
+ 
+-void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
++int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 		unsigned long address, bool freeze);
+ 
+ /**
+@@ -448,15 +448,15 @@ static inline bool pmd_is_huge(pmd_t pmd)
+ 	return false;
+ }
+ 
+-#define split_huge_pmd(__vma, __pmd, __address)				\
+-	do {								\
+-		pmd_t *____pmd = (__pmd);				\
+-		if (pmd_is_huge(*____pmd))				\
+-			__split_huge_pmd(__vma, __pmd, __address,	\
+-					 false);			\
+-	}  while (0)
++static inline int split_huge_pmd(struct vm_area_struct *vma,
++					     pmd_t *pmd, unsigned long address)
++{
++	if (pmd_is_huge(*pmd))
++		return __split_huge_pmd(vma, pmd, address, false);
++	return 0;
++}
+ 
+-void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
++int split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
+ 		bool freeze);
+ 
+ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+@@ -651,13 +651,15 @@ static inline int try_folio_split_to_order(struct folio *folio,
+ 
+ static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+ static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
+-#define split_huge_pmd(__vma, __pmd, __address)	\
+-	do { } while (0)
+-
+-static inline void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+-		unsigned long address, bool freeze) {}
+-static inline void split_huge_pmd_address(struct vm_area_struct *vma,
+-		unsigned long address, bool freeze) {}
++static inline int split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
++				unsigned long address)
++{
++	return 0;
++}
++static inline int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
++		unsigned long address, bool freeze) { return 0; }
++static inline int split_huge_pmd_address(struct vm_area_struct *vma,
++		unsigned long address, bool freeze) { return 0; }
+ static inline void split_huge_pmd_locked(struct vm_area_struct *vma,
+ 					 unsigned long address, pmd_t *pmd,
+ 					 bool freeze) {}
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 8003d3a498220..125ff36f475de 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3273,7 +3273,7 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 		__split_huge_pmd_locked(vma, pmd, address, freeze);
+ }
+ 
+-void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
++int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 		unsigned long address, bool freeze)
+ {
+ 	spinlock_t *ptl;
+@@ -3287,20 +3287,22 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 	split_huge_pmd_locked(vma, range.start, pmd, freeze);
+ 	spin_unlock(ptl);
+ 	mmu_notifier_invalidate_range_end(&range);
++
++	return 0;
+ }
+ 
+-void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
++int split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
+ 		bool freeze)
+ {
+ 	pmd_t *pmd = mm_find_pmd(vma->vm_mm, address);
+ 
+ 	if (!pmd)
+-		return;
++		return 0;
+ 
+-	__split_huge_pmd(vma, pmd, address, freeze);
++	return __split_huge_pmd(vma, pmd, address, freeze);
+ }
+ 
+-static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned long address)
++static inline int split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned long address)
+ {
+ 	/*
+ 	 * If the new address isn't hpage aligned and it could previously
+@@ -3309,7 +3311,9 @@ static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned
+ 	if (!IS_ALIGNED(address, HPAGE_PMD_SIZE) &&
+ 	    range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PMD_SIZE),
+ 			 ALIGN(address, HPAGE_PMD_SIZE)))
+-		split_huge_pmd_address(vma, address, false);
++		return split_huge_pmd_address(vma, address, false);
++
++	return 0;
+ }
+ 
+ void vma_adjust_trans_huge(struct vm_area_struct *vma,
 -- 
 2.47.3
 
