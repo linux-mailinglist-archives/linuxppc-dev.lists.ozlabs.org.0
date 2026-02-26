@@ -1,54 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-17314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMbbIOKcoGlVlAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 20:20:02 +0100
+	id AJNTN/GsoGlulgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 21:28:33 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8011AE460
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 20:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2CB1AF1EA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 21:28:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMLr91Bz3z2yLH;
-	Fri, 27 Feb 2026 06:19:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMNMG6VVGz2yY0;
+	Fri, 27 Feb 2026 07:28:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772133593;
-	cv=none; b=c7s0ey6T7MGeTQUANMNmNstzx+HsV9QSPa4OnsfvYgjsZuLkGOuBJEXDw6dwSOKoNvPCPgITeO38IsIsAFJMy7P3M0UmteoL8m8iJSri3Fx8rTXgCmnozrVDKjEDdFHQ7wXYKsPFYYycLD//KCG/dPnTKJpgPYVSOX5Bj6Qa/5Yu2jzr6KknHd6MxJM4Gmv2EXANlQKWp9S17wxWbDhxHnhoKHxn0kBIqS9s3lX94SOJsqR/APjL7T5K8kZVZshs26+siGQhnv6Tuk45Mtu7rQlgdoexHYurW2MjwYnIuQUFLaVqQStKnDazHSxzM9b+yb6XFEBrr9XIPzsiYfZCzA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.117.254.33
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772137706;
+	cv=none; b=QmvUObDQ/nKIOSbVFqdyaW9TRoYsgWE+cIwrVhdR5AsFKzQjuIthE1IWsJaIpeeL2wHbHGolOFGp1d8Tfcqo83HNrVJ59KTAdzJsK8eUwHW/KHHHbR8uA4znrfVOXcM/aLvvEs+AmnTONBfNDSXksR68ZrXSkMSH2ZKaESRMNSSbfgz1cykE6tJwMTVYD92nFGxN+HW6gyJrlKEuvPewMX7Gucjm6EPgPHP1zzJ6bG1koHoghT7LstT0yHJCHFI8P4dLgbvNzUZNW42+ehQ41vczb+my/otpOq0WsFUMaNBq9UDI5/RpEo/8TLk2uEsdlFjBz0vzpPE0QBTAIu4MPA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772133593; c=relaxed/relaxed;
-	bh=QswHhSqswsaY0/Szj1Ml4ocdX2s+k/6cyvO8Up56Duw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ieJsuzr2GZqK6+0Df4E12hiwD65Na5SbDAAYIU/YB8MTeh+d7ijXQ7ZlQJYquP0lBHO8hu4YxJUifvSXL6mumgOMvTT2eIU3Z55L3cEBJHQWf4N0ag1alRHgthpRE8aIB6T5RoB2FGZ24uSuZrtONGo3A8BhR5VneK9KtgJedJZ46sHMGaqQwVc3WlGy8RdysHsx55UEZW2QjLA0ltZXMT9tHP4FP2BWciHDn4Aey2TML5h8+YYUShUnNKxxlpb0K4aTX+rktQWsw6AqBPMTyCryF3jaJeRCwq33S9IrP7d+u0yJVo0pAQkBED1jJFCB6Gv14ziZYAIJeWA0ePPPHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=s00vwljG; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+	t=1772137706; c=relaxed/relaxed;
+	bh=ZbfzS89JWVR35E98rC5lcOrcboNxD6VC9rm/fk4PuH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hBEZRyZAjn3eCxwc8xCX/io52uCOV3G/58OnkIpOSWJ+gWNBxvSpz8qkYKWTNBqyuKUIcVmlO4TRokRD7ZFtDrj8aqxC8p49mHnq9uinrbUUIvNzoFkhI2Xqe+KGq+gaWKJ6rfxYlvEXxIANUgKqZHWnkZT/A7z7fF2pXJ9aFDxDu1y7vbgdM/8lcuR0WiwtNigA04tZa52rYtNuYUWCfEyajGG0IB7lee16M/gU7U3gDE2EooS2mSQMWhXsUSRUU4nTZaeLA9trwegETOUK/NzE4VMc1s7fignBWnOhmknqn81BmIYXXBsm8Psa0elhuXrqNJX3gjd5pUvUqX/LdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=eeYG9FwR; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=s00vwljG;
+	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=eeYG9FwR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sang-engineering.com (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 397 seconds by postgrey-1.37 at boromir; Fri, 27 Feb 2026 07:28:21 AEDT
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMLr721wDz2yFc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 06:19:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=QswHhSqswsaY0/Szj1Ml4ocdX2s+k/6cyvO8Up56Duw=; b=s00vwljGVTst0m8Eh5W/kFcdDZ
-	nodIjbeYu5CrsVTY9NALdG3Ykxm9J14BoXZqG8ryrN5uT+GfJOMtG5etb4vrV6Eay5dSPJGXX+o//
-	NWEMuMzocWnN6n3I7buwa9uKCP8rJ3nZMaDkR2rMcTA69YqoxCQzXNXJNSbCSG/zB+TL3ex1Ubq/C
-	ch+zW7wcDY726Ob2C+mzfBZ5W5v1reB1Yahhcf5E5ZzBvLYnbQOP9o3VW7r0L3RWuOyYKEhxW+3lq
-	z45kWVFluim4wqLaTpnR+oQkz6vXBPYCkXbWyb/rt8X8t390tU5pFBuNjZSthGnGBL/86ZwyrrM7P
-	VKvX+a1A==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvgtl-000000072pT-0Du6;
-	Thu, 26 Feb 2026 19:19:45 +0000
-Message-ID: <8ef1def3-afa7-416a-af42-bf4324fc788a@infradead.org>
-Date: Thu, 26 Feb 2026 11:19:44 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMNM94VyXz2yLG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 07:28:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=Zbfz
+	S89JWVR35E98rC5lcOrcboNxD6VC9rm/fk4PuH4=; b=eeYG9FwRG0mF2I+WxzL1
+	HGUVggUjRhJIyqBUgN423pjLFOP3EUNQMylCmEbSZGMmely6B7Su6xr33ZSTAz27
+	SHnHjRn+9CBdL1Z5essMXvI9XzDXsz+428ZavPheXWtpy/EERqut52qTJGYgLInj
+	1cPeVACjybOFSolGqBL66SBDtoill7iLu9mR53JzlthU1P2siXpr4UvDoiwBZK4P
+	D+ZMgeqjfaj43lU0FiQfg2DtV2v1koFsm8uL49Ad9xjswrOn2+549Br4yoMLqJxK
+	9GzPFpASEH9OL6r96XiSCy8XkQ0v/gCyT3gjRNbBaPRYGavOshN70z8O6k1xV87h
+	TA==
+Received: (qmail 1209289 invoked from network); 26 Feb 2026 21:21:36 +0100
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 26 Feb 2026 21:21:36 +0100
+X-UD-Smtp-Session: l3s3148p1@f2ID3r9LPOkujnuU
+Date: Thu, 26 Feb 2026 21:21:35 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Khalil Blaiech <kblaiech@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-actions@lists.infradead.org,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-media@vger.kernel.org
+Subject: Re: [PATCH v2 00/13] i2c: add and start using i2c_adapter-specific
+ printk helpers
+Message-ID: <aaCrT1SvMCIKQDmc@ninjato>
+References: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,111 +83,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/ps3: fix ps3.h kernel-doc warnings
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- linux-kernel@vger.kernel.org
-Cc: Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20260222060101.2086504-1-rdunlap@infradead.org>
- <4e84b9ea-9e7b-420a-bca9-6febd87a80cb@kernel.org>
- <17c0c331-276b-4f43-890e-39fb3010103c@infradead.org>
- <c4a9ba45-24d5-474f-968f-a9dde81d3303@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <c4a9ba45-24d5-474f-968f-a9dde81d3303@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [0.29 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
+	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:linux-kernel@vger.kernel.org,m:geoff@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[rdunlap@infradead.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:andi.shyti@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:kblaiech@nvidia.com,m:asmaa@nvidia.com,m:jdelvare@suse.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:afaerber@suse.de,m:mani@kernel.org,m:mchehab@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-actions@lists.infradead.org,m:brgl@kernel.org,m:linux-media@vger.kernel.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[sang-engineering.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17314-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FORGED_SENDER(0.00)[wsa@sang-engineering.com,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17315-lists,linuxppc-dev=lfdr.de,renesas];
+	DKIM_TRACE(0.00)[sang-engineering.com:+];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.979];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rdunlap@infradead.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,sholland.org,nvidia.com,suse.com,linux.ibm.com,ellerman.id.au,suse.de,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:url,infradead.org:mid,infradead.org:dkim,infradead.org:email]
-X-Rspamd-Queue-Id: CC8011AE460
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: BE2CB1AF1EA
 X-Rspamd-Action: no action
 
-
-
-On 2/26/26 3:58 AM, Christophe Leroy (CS GROUP) wrote:
+On Mon, Feb 23, 2026 at 09:59:29AM +0100, Bartosz Golaszewski wrote:
+> It's been another year of discussing the object life-time problems at
+> conferences. I2C is one of the offenders and its problems are more
+> complex than those of some other subsystems. It seems the revocable[1]
+> API may make its way into the kernel this year but even with it in
+> place, I2C won't be able to use it as there's currently nothing to
+> *revoke*. The struct device is embedded within the i2c_adapter struct
+> whose lifetime is tied to the provider device being bound to its driver.
 > 
+> Fixing this won't be fast and easy but nothing's going to happen if we
+> don't start chipping away at it. The ultimate goal in order to be able
+> to use an SRCU-based solution (revocable or otherwise) is to convert the
+> embedded struct device in struct i2c_adapter into an __rcu pointer that
+> can be *revoked*. To that end we need to hide all dereferences of
+> adap->dev in drivers.
 > 
-> Le 26/02/2026 à 02:45, Randy Dunlap a écrit :
->>
->>
->> On 2/24/26 10:57 PM, Christophe Leroy (CS GROUP) wrote:
->>> Hi Randy,
->>>
->>> Le 22/02/2026 à 07:01, Randy Dunlap a écrit :
->>>> Eliminate all kernel-doc warnings in ps3.h:
->>>> - add one missing struct member description
->>>> - add one missing function short description
->>>> - correct one enum name typo
->>>> - change several incomplete kernel-doc comments to plain "/*" comments
->>>>
->>>> Examples:
->>>>
->>>> Warning: arch/powerpc/include/asm/ps3.h:96 struct member 'dev' not
->>>>    described in 'ps3_dma_region'
->>>> Warning: arch/powerpc/include/asm/ps3.h:408 missing initial short
->>>>    description on line: * ps3_system_bus_set_drvdata -
->>>> Warning: arch/powerpc/include/asm/ps3.h:473 Enum value
->>>>    'PS3_LPM_TB_TYPE_INTERNAL' not described in enum 'ps3_lpm_tb_type'
->>>> Warning: arch/powerpc/include/asm/ps3.h:473 Excess enum value
->>>>    '@PS3_LPM_RIGHTS_USE_TB' description in 'ps3_lpm_tb_type'
->>>>
->>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->>>
->>> You sent a V2 with the same subject some time ago, see https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpatchwork.ozlabs.org%2Fproject%2Flinuxppc-dev%2Fpatch%2F20251129183636.1893634-1-rdunlap%40infradead.org%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C5f40eabfbf95474b6c4608de74d8ad0e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639076671142017726%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=Bk2srZQMhhrA6rpHEFx2CIxSee8%2FUM2TIrNQSFpP8%2B4%3D&reserved=0
->>>
->>> Is this patch something else, does it superseeds V2, or is it a wrong resend of V1 ?
->>
->> Yup, it's a wrong resend of v1. It means that my patch tracking system
->> failed me. Sorry about that.
->>
-> 
-> Ok so I reject that one.
+> This series addresses the usage of adap->dev in device printk() helpers
+> (dev_err() et al). It introduces a set of i2c-specific helpers and
+> starts using them across bus drivers. For now just 12 patches but I'll
+> keep on doing it if these get accepted. Once these get upstream for
+> v6.20/7.0, we'll be able to also start converting i2c drivers outside of
+> drivers/i2c/.
 
-ack.
-
-> Here is the list of patches from you we have in the pipe:
-> 
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?submitter=18663
-
-Looks good. Thanks.
-
--- 
-~Randy
+I applied the series to for-current but squashed the user conversions
+into patch 1. Changes are trivial enough and I don't want the pull
+request to look excessive, so it can go in smoothly. Hope you are fine
+with it.
 
 
