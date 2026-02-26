@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-17261-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17262-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOZMJhowoGmLgAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17261-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:35:54 +0100
+	id uEm4LCEwoGmLgAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17262-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:36:01 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F711A5278
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:35:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03B11A5288
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 12:36:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8X22pR2z3bmc;
-	Thu, 26 Feb 2026 22:35:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fM8X72JlFz3cR8;
+	Thu, 26 Feb 2026 22:35:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.171
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105714;
-	cv=none; b=SafIrUVmhWn5vKy3gInKwwORZrfiKzGWLiVJZYJGA68ZpjDt4I9GC50NkQAlGaGPZ8csHMeqGDsZ8myN9hlfx7yaCz+vqjWqwpdToIKm0SfRiTqBmuDW1oVuktzBm5htAB84o1yusLJuC68X/AeCYESbdEQUPmFea5l0PTeMy67zViLuQNVDP+HVEQs8dUfoH4QtDxmmu2yUbEPZHjj9+C1PHuHH7NnKsIjCNOJRuoyB1zgEdLE71JBS+0cYplpUJ+8UREnfTnv7sqnOFRNtw2srQxarNGh65gslaxUE2SDQRvGEFul2plt02Yd26USFMZz28Awm47oyzrRP2fA9aQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.174
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772105719;
+	cv=none; b=RA3dfjJNXGM2o+O9HN+4VX/LqJiN5g5cOkKbE0GvfF042vZ0OvqGO0ciDNjZUiQ3MN+aBptHSGSmJW8yhvkcYEQExbymQh8DypiXxQfe/lVvM3Nj5KGeeS6K8EMdqLptr0E0PqA3eVfxCkgkqgckKCMW0uqKpFXPNp1Rgk4YVya4EzQckVQjRs/j2Svv8QKMa55c0uQsddMl4dY9sTFKECenKcz4qJwn31U347RHDnR0RhuY9Z3dpfJXoeFvLhVd0JW54JS9+/RXmS9fje9CK642mCvSOJLXmONauIt1Qra88PINHhAnK2VDoJQPL5csBj/32gSGaw82LtALba1nCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772105714; c=relaxed/relaxed;
-	bh=8OsjUNu05V/Xcz8HI7pnG5Up/ePNSaNnSj1ALtPKgps=;
+	t=1772105719; c=relaxed/relaxed;
+	bh=lZL1HqFM5fa36Uz0JOdbh5qV5iDmtrECipMEqRvI7/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHCax6Bh9IthYD5dGrU4znokLoXv5oq9iiqd8iMWfposTN5vZuM6S50aoYTT919imshqiNuIllhcz7eAdNX552ZfNLWtx34YKUlutnnxVqwD8GkEz5SFqw3nok8QQmMfDMW0q8NDwmB8aM/CzJgomsAB3orIT4Mw0f97QzwNCvx/yK48XLr6Okgrn52B1hyS0oXV5FPzwBgfQ539y1OXDAm4SVd4CGqQ3aIojyKKvTaXQX7l7U7DoZkYmgASml5bnJ1ym4JKeZkpCu5V2koRYZ/Ks9NkO2x5IeHpehyCa8ndQe+B6EtdoEJhrJzQemEcfFHYy+BmGSW7rv4NfHZnCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QzYEVMog; dkim-atps=neutral; spf=pass (client-ip=91.218.175.171; helo=out-171.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 MIME-Version; b=ZRPAVNhIPuJLIu/M6cgGbQVpsOTt5LrHwFlKPJ+KglUFmzE94O/UQWGq1BWD9gmzuYh++t6RgsVpXw7ZcaOqFzcBTiUfZACcIOP8c/oyfJLORNCeVfhYhMozavbBYlx1A5msYZVCkwO9Xwy/a1M+E5sy0uu3YuJAQJRuQgrKTs6EV0Gl+kqeuVTsdnUrfC0FGuutAAF6UbJWgt926AdXWjiOP779EyaAVuhA5fTnlqegIZjYMOrrYuR5W2wsR8CAh9akqHXGVrydqJSklowW6wuee0DlDpXVtWUfbT85zB1V2uB7S8+oAarfWQqryRbZfodaxpxMBxFV3nOMtY+gDA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bQvZ3Bk9; dkim-atps=neutral; spf=pass (client-ip=95.215.58.174; helo=out-174.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QzYEVMog;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bQvZ3Bk9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.171; helo=out-171.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.174; helo=out-174.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8X14v39z3bkL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:35:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM8X63YG3z3bkL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 22:35:18 +1100 (AEDT)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105694;
+	t=1772105700;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8OsjUNu05V/Xcz8HI7pnG5Up/ePNSaNnSj1ALtPKgps=;
-	b=QzYEVMogdec0mY0J3RwU6Gr0HY5yw0g0PC/NnZW/DkMBCuL1u6KkUPmfl0LnrwBZt3mQvH
-	6feN36V2Wav1NYWbEYKn+KdkhTLakwltwaJjj6dePky67MgNDAo4NhXA6gniUjonuoiq0T
-	kN0P5eVVcfWnMjq8z+u3t6YjpBzNfhE=
+	bh=lZL1HqFM5fa36Uz0JOdbh5qV5iDmtrECipMEqRvI7/A=;
+	b=bQvZ3Bk9zABmR2QjQC7aS7RsAH/+WnY/o7rjw0sMM8KWnVjY1pM/mPaqV2KVkr7y1+1yqV
+	D95OAuC1N714g5HBViSG7olcJX86gP0ns8b9QPlaHVVrOOimKpItd/woUJYp5+xK0IrmW4
+	ebj/YYCu6frGA2CLRuuQD3QUhJIoTZs=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -75,9 +75,9 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 18/21] selftests/mm: add partial_mprotect test for change_pmd_range
-Date: Thu, 26 Feb 2026 03:23:47 -0800
-Message-ID: <20260226113233.3987674-19-usama.arif@linux.dev>
+Subject: [RFC v2 19/21] selftests/mm: add partial_mlock test
+Date: Thu, 26 Feb 2026 03:23:48 -0800
+Message-ID: <20260226113233.3987674-20-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -106,11 +106,11 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17261-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17262-lists,linuxppc-dev=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[30];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
@@ -129,56 +129,50 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: A2F711A5278
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: D03B11A5288
 X-Rspamd-Action: no action
 
-Add test for partial mprotect on THP which exercises change_pmd_range().
-This verifies that partial mprotect correctly splits the PMD, applies
-protection only to the requested portion, and leaves the rest of the
-mapping writable.
+Add test for partial mlock on THP which exercises walk_page_range()
+with a subset of the THP. This should trigger a PMD split since
+mlock operates at page granularity.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- .../testing/selftests/mm/thp_pmd_split_test.c | 31 +++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ .../testing/selftests/mm/thp_pmd_split_test.c | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/thp_pmd_split_test.c b/tools/testing/selftests/mm/thp_pmd_split_test.c
-index 0f54ac04760d5..4944a5a516da9 100644
+index 4944a5a516da9..3c9f05457efec 100644
 --- a/tools/testing/selftests/mm/thp_pmd_split_test.c
 +++ b/tools/testing/selftests/mm/thp_pmd_split_test.c
-@@ -146,4 +146,35 @@ TEST_F(thp_pmd_split, partial_munmap)
+@@ -177,4 +177,30 @@ TEST_F(thp_pmd_split, partial_mprotect)
  		self->split_pmd_failed_before);
  }
  
 +/*
-+ * Partial mprotect on THP (change_pmd_range)
++ * Partial mlock triggering split (walk_page_range)
 + *
-+ * Tests that partial mprotect of a THP correctly splits the PMD and
-+ * applies protection only to the requested portion. This exercises
-+ * the mprotect path which now handles split failures.
++ * Tests mlock on a partial THP region which should trigger a PMD split.
 + */
-+TEST_F(thp_pmd_split, partial_mprotect)
++TEST_F(thp_pmd_split, partial_mlock)
 +{
-+	volatile unsigned char *ptr = (volatile unsigned char *)self->aligned;
 +	int ret;
 +
 +	ret = allocate_thp(self->aligned, self->pmdsize);
 +	if (ret)
 +		SKIP(return, "Failed to allocate THP");
 +
-+	/* Partial mprotect - make middle page read-only */
-+	ret = mprotect((char *)self->aligned + self->pagesize, self->pagesize, PROT_READ);
++	/* Partial mlock - should trigger PMD split */
++	ret = mlock((char *)self->aligned + self->pagesize, self->pagesize);
++	if (ret && errno == ENOMEM)
++		SKIP(return, "mlock failed with ENOMEM (resource limit)");
 +	ASSERT_EQ(ret, 0);
 +
-+	/* Verify we can still write to non-protected pages */
-+	ptr[0] = 0xDD;
-+	ptr[self->pmdsize - 1] = 0xEE;
-+
-+	ASSERT_EQ(ptr[0], (unsigned char)0xDD);
-+	ASSERT_EQ(ptr[self->pmdsize - 1], (unsigned char)0xEE);
++	/* Cleanup */
++	munlock((char *)self->aligned + self->pagesize, self->pagesize);
 +
 +	log_and_check_pmd_split(_metadata, self->split_pmd_before,
 +		self->split_pmd_failed_before);
