@@ -1,52 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-17301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17300-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JYVlFWhjoGnajAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	id oO3gE2hjoGk0jAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17300-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
 	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:14:48 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1041A8607
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:14:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E898C1A8606
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:14:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMFLL4F7Qz3ccW;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMFLL3JnQz3cbl;
 	Fri, 27 Feb 2026 02:12:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772118730;
-	cv=none; b=CUSBxZjUmC5lkPAsDu2qqO9qjNH5AS3+7sftbRtLocR8Yka5eroIh7ny+0Sfyfjzga6Kvmvpyz2mLBEhzFSN2fCncdLwwjbGSkaKh79nv5Eb2RZ4cFuF2UcEUs98nT3Zve03Re7wr5TCLbdz+hkHgpyyXlorWiVt8ocbMufSAz1cYSIvZyw6aFUp8Avq3pxAiFXNEJkT7qNVviWDZPncyiLafhjuF7V+xaVrA057AMljHc6nxnqlj7M4Y44wDj3mWfPf0wU3+T8If84tJnYAAvxaDprHHnJquW751jnGyyT3xoRoNjHUAKbYp43fppE9oDwjkZKehZ6wwVEfZaGqsQ==
+	cv=none; b=b1K9XtGj88hpNAVnDd436FEljiat9J+hHpEarZzyyD4EWUgWsDKIY7X5tz8PFKx8/J3kJnkN0ck8s3EE1LWS8Sv2TOYcWimzz0UA4GT3HP+lUi3ggun/1uTazbqgrQFJ0FMUUmOBiMixPZa7wyh0gfzUJrk7doTV8VUw2+oWuzOUme2dOY67aujZGEHPX6n9GP4NmVIk1oYE88jxGJPQATnWmGNjbfGWRcHgHbm0UenTDPJnu1eMOCNPr48EAyEHLD//FkTWDSCJ8NYIWuWGICOOJJSun4XKT2Vh8OVCatbVDYTPnjdQKdTtah9MHuyWdsdFRPUAG7OPH2ZsOSy4lw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1772118730; c=relaxed/relaxed;
-	bh=6wXlWATGkI9LtZmZKd6pDj/YsUZIAwbclFsmEmtMkgM=;
+	bh=9A9Yz8/Cuuvhtyv7lk9AujInuJ9yx6/sygljaE8NTzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkCX6Qf5O5oAfN1CtxcNMucbfzM8H5qqXnrI+eUFBj7lPePiSN1WSVsQaFPzBBkJtwTvxAkhbCQLPTMPUfMRnF0LNAJd3CWuKYQhaMIQ+f0MiL9CXlcytfsmcb/o34+eMVQe9q6CJ2G/r3LQ6nqbRwFhLEnfgvdsFk79AcbaxcctIO6kjqCH/kQ7gfSKRwbZ41ykcL2EQVM3Op7n7rWtOj7BnM9MudkJEImaWFNEQUM4rOdvv2YYk5N0B1BUL9GmneagNbe2LEMO5HRcDEdxtOknqCt3ECh8M1XjKiZr4KezlJatqW3SkjID19VJ8kY5B7q4sPwgakYGSnb+lge0Pg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0fQ+ziN2; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
+	 MIME-Version; b=eRygQCY8KIJOtVrTIfQ2NjSuaAA9TqD4c5x8LJXb9x/xllZZaEOV5D8XbMpraxXmKS94N068xP3EQOhZyFc9UrvKZG9sjjTEmI4tyL0KacalWEca91JE8KhF6SQm9Q2N3UB3ud1xgReEJB0cOWGp8NtCm79yIMPp+KJ+WAhKp01+kimko7ql9E541t9t15GJNADpnpNbgp/SgRqVC9cvarKE8EQXSSHYkLWQkozRoBOjUFSK4fG/93lFLryyBzqvhYB2AVUCE4Rw2S/urEONBVmX3wXolxcYJa/9asgT/F1mekXc2gE0HTetlGDPV4/Q0cGdUvxZ3YrXeejEVBen0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=vI141pgN; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0fQ+ziN2;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=vI141pgN;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMFLK6MQbz3cZt
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMFLK600pz3cZr
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 02:12:09 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=6wXlWATGkI9LtZmZKd6pDj/YsUZIAwbclFsmEmtMkgM=; b=0fQ+ziN29Gl2ARYY0VrJA/aEZQ
-	7cG8oZI7alqaImdfkV2UmgKZ/COv6TD5KN1+RK+HU501lQUrsz7jVVQ2gabFIlNkDSsVU4B2igeal
-	sSg6xBWvxeWNSjoiJNtsHKA/NEN9vKpt2zUvHZT4o510BZxcycI8EnwwXteY/JcLdEmVYNlvtClbT
-	grfd3I00JP7CGRu+OjQDFjtzDfgz2m3n1ZsO6tyw+vJyYyGXxJqb3ueojrT3iE+t8PcqSquW0SB7E
-	W33lXSx7ZZDlzJnNi8ogtXu0J3J1e0IXwhgdQMYt1f7rkwP1k2sZxFbju5lKdAk5Y3GosHgSe9mNI
-	FJoj/GJw==;
+	bh=9A9Yz8/Cuuvhtyv7lk9AujInuJ9yx6/sygljaE8NTzM=; b=vI141pgNfFpEqWZpBYCgwHWjeg
+	N7kZDl9hta7v4qPUhdrGX/BZ7a4ncIqvhYtFKfBETR1Xcwo5DvbLGtIRtEQLbpahXiMa+da7PRgqx
+	yx1b9JzOvZckot5AYVcghvmJzRWIZsB8no5NdEczx4Q9sx//cAUhaQmZqG1m1bZKp+mL0uEwHIez+
+	AW1zpovXhPwhZvaYaf5tmKVaZMTVIlMYPN3KJ2wTMN3X5SkyfeCM3+e0pxPw95K4KofjMyND1LVK4
+	9ZRIvun5OoQ5pKEdRmjN0vlYyFUpK4MinnYw4CuIxeg/sfiWDpk9muIJbg9CfMFW1GE8PcmQN5x+G
+	apUYP0BQ==;
 Received: from [4.28.11.157] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvd1i-00000006Qgq-3lP2;
-	Thu, 26 Feb 2026 15:11:42 +0000
+	id 1vvd1k-00000006QjI-3Ujl;
+	Thu, 26 Feb 2026 15:11:44 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -102,9 +102,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	linux-btrfs@vger.kernel.org,
 	linux-arch@vger.kernel.org,
 	linux-raid@vger.kernel.org
-Subject: [PATCH 21/25] xor: add a better public API
-Date: Thu, 26 Feb 2026 07:10:33 -0800
-Message-ID: <20260226151106.144735-22-hch@lst.de>
+Subject: [PATCH 22/25] async_xor: use xor_gen
+Date: Thu, 26 Feb 2026 07:10:34 -0800
+Message-ID: <20260226151106.144735-23-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260226151106.144735-1-hch@lst.de>
 References: <20260226151106.144735-1-hch@lst.de>
@@ -133,12 +133,12 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17301-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17300-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -148,7 +148,7 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	FORGED_SENDER(0.00)[hch@lst.de,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -162,73 +162,55 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,lst.de:email,infradead.org:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 3B1041A8607
+X-Rspamd-Queue-Id: E898C1A8606
 X-Rspamd-Action: no action
 
-xor_blocks is very annoying to use, because it is limited to 4 + 1
-sources / destinations, has an odd argument order and is completely
-undocumented.
-
-Lift the code that loops around it from btrfs and async_tx/async_xor into
-common code under the name xor_gen and properly document it.
+Replace use of the loop around xor_blocks with the easier to use xor_gen
+API.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/raid/xor.h |  3 +++
- lib/raid/xor/xor-core.c  | 28 ++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ crypto/async_tx/async_xor.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/raid/xor.h b/include/linux/raid/xor.h
-index 02bda8d99534..4735a4e960f9 100644
---- a/include/linux/raid/xor.h
-+++ b/include/linux/raid/xor.h
-@@ -7,4 +7,7 @@
- extern void xor_blocks(unsigned int count, unsigned int bytes,
- 	void *dest, void **srcs);
+diff --git a/crypto/async_tx/async_xor.c b/crypto/async_tx/async_xor.c
+index 2c499654a36c..460960d45388 100644
+--- a/crypto/async_tx/async_xor.c
++++ b/crypto/async_tx/async_xor.c
+@@ -103,7 +103,6 @@ do_sync_xor_offs(struct page *dest, unsigned int offset,
+ {
+ 	int i;
+ 	int xor_src_cnt = 0;
+-	int src_off = 0;
+ 	void *dest_buf;
+ 	void **srcs;
  
-+void xor_gen(void *dest, void **srcss, unsigned int src_cnt,
-+		unsigned int bytes);
+@@ -117,23 +116,12 @@ do_sync_xor_offs(struct page *dest, unsigned int offset,
+ 		if (src_list[i])
+ 			srcs[xor_src_cnt++] = page_address(src_list[i]) +
+ 				(src_offs ? src_offs[i] : offset);
+-	src_cnt = xor_src_cnt;
 +
- #endif /* _XOR_H */
-diff --git a/lib/raid/xor/xor-core.c b/lib/raid/xor/xor-core.c
-index 8dda4055ad09..b7c29ca931ec 100644
---- a/lib/raid/xor/xor-core.c
-+++ b/lib/raid/xor/xor-core.c
-@@ -46,6 +46,34 @@ xor_blocks(unsigned int src_count, unsigned int bytes, void *dest, void **srcs)
+ 	/* set destination address */
+ 	dest_buf = page_address(dest) + offset;
+-
+ 	if (submit->flags & ASYNC_TX_XOR_ZERO_DST)
+ 		memset(dest_buf, 0, len);
+-
+-	while (src_cnt > 0) {
+-		/* process up to 'MAX_XOR_BLOCKS' sources */
+-		xor_src_cnt = min(src_cnt, MAX_XOR_BLOCKS);
+-		xor_blocks(xor_src_cnt, len, dest_buf, &srcs[src_off]);
+-
+-		/* drop completed sources */
+-		src_cnt -= xor_src_cnt;
+-		src_off += xor_src_cnt;
+-	}
+-
++	xor_gen(dest_buf, srcs, xor_src_cnt, len);
+ 	async_tx_sync_epilog(submit);
  }
- EXPORT_SYMBOL(xor_blocks);
  
-+/**
-+ * xor_gen - generate RAID-style XOR information
-+ * @dest:	destination vector
-+ * @srcs:	source vectors
-+ * @src_cnt:	number of source vectors
-+ * @bytes:	length in bytes of each vector
-+ *
-+ * Performs bit-wise XOR operation into @dest for each of the @src_cnt vectors
-+ * in @srcs for a length of @bytes bytes.
-+ *
-+ * Note: for typical RAID uses, @dest either needs to be zeroed, or filled with
-+ * the first disk, which then needs to be removed from @srcs.
-+ */
-+void xor_gen(void *dest, void **srcs, unsigned int src_cnt, unsigned int bytes)
-+{
-+	unsigned int src_off = 0;
-+
-+	while (src_cnt > 0) {
-+		unsigned int this_cnt = min(src_cnt, MAX_XOR_BLOCKS);
-+
-+		xor_blocks(this_cnt, bytes, dest, srcs + src_off);
-+
-+		src_cnt -= this_cnt;
-+		src_off += this_cnt;
-+	}
-+}
-+EXPORT_SYMBOL(xor_gen);
-+
- /* Set of all registered templates.  */
- static struct xor_block_template *__initdata template_list;
- static int __initdata xor_forced = false;
 -- 
 2.47.3
 
