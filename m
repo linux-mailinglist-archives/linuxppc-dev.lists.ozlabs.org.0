@@ -1,85 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-17214-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IsSIxN0n2mgcAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17214-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 23:13:39 +0100
+	id aKchEB+9n2lOdgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 04:25:19 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40A219E341
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Feb 2026 23:13:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F491A0818
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 04:25:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fLpl41wDLz3fKj;
-	Thu, 26 Feb 2026 09:13:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fLxfg5Wwqz305M;
+	Thu, 26 Feb 2026 14:25:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772057616;
-	cv=none; b=FiBxLaeYAjJkULAjHp0oWFpgyGvFsuxwu/hVQR+/u/5/8W8VVndoZXcDrbFPwgDsZsX0artVk4UUd1tlm2GwGVpUnbSrjC/aEoEWeZvsh8jhkdkHxA5Fb+yY56zuEPkjNPXCZXAgWAdapq87mqsHLj5C0CrChRRSNcdikwO2yV1xoLw7vsqXR/lSHiCMV6tQdBbMCmXNa23gAxq1NVOEWS/8xe9l8vrY1JvBfPdXFn3sL6Tt7Oe+hqNkYA4bzszw2hOb5q6bio/F7CbJkXbV2B+HuEt0hbxeh1BDof4rUyzzC1HO6M99yP74uQ7DyqhFL3+7Icq3f37EM5qNeFXMNA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=113.46.200.227
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772076315;
+	cv=none; b=m+JCO78K2Sn9b9tXiu3hVaWqHFPVp1uwKAFmnNKBhL2tLqin5qpUFkOm6/PDNVYf56xac7GpvbQEJWr4vioMNv1LicZiWUN4XwVDFmQ4ncFiZUVL/Wh+wPyXVoPB2t/U0hmipeLYXM3WcSbRkPwOD5KiYXCAWBJOolr4AyeZg1J3huu52W0YOiKfjporm9DupfQbmg2GfHhatzsDVA9aCXc2FmCyz5rmzXP++uDim6VlYQ0FAZ4L8Y00r/WGJxmIQRM7gmMEO8ws5TH2Y7ao/BfI+2k0wonBhECm3uVMIegJ4WxugdxJYz0+cI3+h1LK1oigU2eaoNpyK/VSdOa2Ww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772057616; c=relaxed/relaxed;
-	bh=CKksP/7kRZbD8X/Qs1392h9zaNldfBZ6sBaDcofTYeI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEbNTsuek/cgdjtTESFP4Vrd6bagCiJbixXiZr+6pKKNZFOWdCDSzVV/5vaR3Ez1SFpaV99Ovc0bkKJySeXI2fr/DFFlhuagIxVXelWyec0wzOlUuaWamukPwQVHdq73DJ3fmCybc1J10G4009XN6UNI4R4FlhlU87F2yMjeodmvy+2ppbExLXg4g1HSON4x5TyCSfaPTeVvP0e9+jAgu4gVlMpiVB96BjYgs0vQzbZUfvA8HjV+IzuqwBKLlxDSHItDG9kEOfM1/MdMZHv9X2Gipa+iZ90iqbzNloecPOHqRhumcPBqk7SQqUKfzsAKRPR+f6KpxIp7lDTcFp6qCQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VIP7Ejlo; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1772076315; c=relaxed/relaxed;
+	bh=X/tw47XVxnBSBQVQnzbdQeBRFqR3Av4K63nH/lDW8AE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ng6vNIx9Ny26mmAzBGBtUAqTwIuDJXSeJZlWDzHxmum63faIU+ux7ff5PLc5QTOLp3nQi6mu1vYuIUGbTQu5deIfc79QElrTHiYDKqqwyxbIllTgvD7Um8NpcZsgkRIUOLtC1nDNRC4d/ouFgaSErl/u8wr1Bw/asgLexiY4BeI9bKeUfglB7oLpU3koJhbb45gp8+U7A4p2A+SDHzhJSue765V5NWY/OI8ABfsVjMHpiNhY5/5/E1s3VdKDozZL5slPY9Y4matLVqafw50eOTGn7sy/ehQNwcDME24nomVC9L/X8NwhauzCQy4pSY08ZLYGnua+IFpN7d7eA5xsPQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=x1l2VLMm; dkim-atps=neutral; spf=pass (client-ip=113.46.200.227; helo=canpmsgout12.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VIP7Ejlo;
+	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=x1l2VLMm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=113.46.200.227; helo=canpmsgout12.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLpl30JKJz3fKd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 09:13:34 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PF9h772774175;
-	Wed, 25 Feb 2026 22:13:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=CKksP/7kRZbD8X/Qs
-	1392h9zaNldfBZ6sBaDcofTYeI=; b=VIP7EjloYofvWASNiwQICAuaJPtWM6dQS
-	XzmTizVdadPdaxFAaa/Nsm38GFNNRNyKxSHbthAwPdgqf8LgkwHPsJG5zaS7s75m
-	r/InEMCnI99CY5SZPiiry/4JdVp7VI8yPWHNzIgIvXE57poRxsVph/Yql3EDR6AQ
-	tJdCHwm0vou2XTjfjpOOWiKuPo7jfej41gMUdVxTbylyaGH2kFsGoTyIVcIv8oic
-	fyELdqQGt1A+uyv0Bb6pM0zu5fZOiOFZtq2d03HNVERVpSkif44/uGSzYt1vHVjA
-	b0upgHjwuwbkUa5M9BL0cNEsTh3HoMrR9xYYqFUxLb69erXNKCyjg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34ca39v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 22:13:12 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61PJWo9f013411;
-	Wed, 25 Feb 2026 22:13:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfqdy7t6v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 22:13:12 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PMD75J48103774
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Feb 2026 22:13:08 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7E5B2004E;
-	Wed, 25 Feb 2026 22:13:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4CD722004B;
-	Wed, 25 Feb 2026 22:13:06 +0000 (GMT)
-Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Feb 2026 22:13:06 +0000 (GMT)
-From: adubey@linux.ibm.com
-To: linuxppc-dev@lists.ozlabs.org
-Cc: bpf@vger.kernel.org, hbathini@linux.ibm.com, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, maddy@linux.ibm.com,
-        Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH v4 2/2] selftests/bpf: Enable private stack tests for powerpc64
-Date: Wed, 25 Feb 2026 22:13:24 -0500
-Message-ID: <20260226031324.17352-2-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260226031324.17352-1-adubey@linux.ibm.com>
-References: <20260226031324.17352-1-adubey@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fLxfT4cXBz2xMt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 14:25:04 +1100 (AEDT)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=X/tw47XVxnBSBQVQnzbdQeBRFqR3Av4K63nH/lDW8AE=;
+	b=x1l2VLMmjYlYgtz9e9QHe2mOtGBgkKNh7hz5MB9XCgwIHUNdvwywy/MiST1AdgYMZ8Zyzmb27
+	xiMAI8GTBB37K4MPa+6n43+ne+oVZQwZt5AaCiT8i/cHG9pw7k06FxwueZqr+OCknXS8TuOpk3e
+	TFufapm/JkqBD70EL8N9gQs=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fLxXn5h2NznTW8;
+	Thu, 26 Feb 2026 11:20:09 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0E70340561;
+	Thu, 26 Feb 2026 11:24:50 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 26 Feb 2026 11:24:46 +0800
+Message-ID: <0b0c0a34-f67d-9cf5-d5fc-ed8e1870a104@huawei.com>
+Date: Thu, 26 Feb 2026 11:24:45 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,219 +65,210 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v6 4/5] arm64: kexec: Add support for crashkernel CMA
+ reservation
+To: Mike Rapoport <rppt@kernel.org>
+CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <chenhuacai@kernel.org>, <kernel@xen0n.name>,
+	<maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+	<chleroy@kernel.org>, <pjw@kernel.org>, <palmer@dabbelt.com>,
+	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <akpm@linux-foundation.org>, <bhe@redhat.com>,
+	<vgoyal@redhat.com>, <dyoung@redhat.com>, <rdunlap@infradead.org>,
+	<pmladek@suse.com>, <dapeng1.mi@linux.intel.com>, <kees@kernel.org>,
+	<paulmck@kernel.org>, <lirongqing@baidu.com>, <arnd@arndb.de>,
+	<ardb@kernel.org>, <leitao@debian.org>, <cfsworks@gmail.com>,
+	<ryan.roberts@arm.com>, <sourabhjain@linux.ibm.com>,
+	<tangyouling@kylinos.cn>, <eajames@linux.ibm.com>, <hbathini@linux.ibm.com>,
+	<ritesh.list@gmail.com>, <songshuaishuai@tinylab.org>,
+	<samuel.holland@sifive.com>, <kevin.brodsky@arm.com>,
+	<vishal.moola@gmail.com>, <junhui.liu@pigmoral.tech>, <coxu@redhat.com>,
+	<liaoyuanhong@vivo.com>, <fuqiang.wang@easystack.cn>, <jbohac@suse.cz>,
+	<brgerst@gmail.com>, <x86@kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-riscv@lists.infradead.org>, <kexec@lists.infradead.org>
+References: <20260224085342.387996-1-ruanjinjie@huawei.com>
+ <20260224085342.387996-5-ruanjinjie@huawei.com> <aZ8Z2WXw3QwaXRo8@kernel.org>
+Content-Language: en-US
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <aZ8Z2WXw3QwaXRo8@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIxMiBTYWx0ZWRfX1ZZw63RUuebZ
- p2axfhHD6cYAGwdnEOJad33AopxKHzn0we+rw9iMvLSWrtEOMXie3jSQGUUCyxan5Dja1vfJaZH
- aoY/srR8LhGZQdYzHj8ILACODBaKVLN8mXGJhChAV8hlq+nRVbUoDFZfbkOmn50jz8cqNL7zMrR
- 588sauooQs2VJJ9COWIrOpP6HtegTquMRbiajwbCQEymq/yeEvcloP2dc0kS7XH+IR81BdEhs2B
- dayWbUyApJaFbpyszuLg9U8ER+X88UIo5zkvijH6epFhhTNPI6CCJnurN0AcwppS358gttY46X/
- U+B489nzS6K23gfSfH5sLlnhdCI192NkG1KcObTkK/E4k+6VR/HgHqSxjss9A+qhHBm8XmkJS8n
- g4PseBhwlQWVToDaK1LDOprQ2kCVs3ZGrrfHs4ZsL6OJ8NMxidLYcbZjtH+3QuRcYtgFJLVPmn8
- VD0YTji5aQVtqJKNo0g==
-X-Proofpoint-ORIG-GUID: GHF6h37bvVam8xQGisGvshypyii9lGEI
-X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=699f73f8 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=WRW5XrRV495NP23rXD4A:9
-X-Proofpoint-GUID: GHF6h37bvVam8xQGisGvshypyii9lGEI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_03,2026-02-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602250212
-X-Spam-Status: No, score=1.7 required=3.0 tests=DATE_IN_FUTURE_03_06,
-	DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Level: *
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.29 / 15.00];
-	DATE_IN_FUTURE(4.00)[4];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	MAILLIST(-0.20)[generic];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17214-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17220-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,suse.com,baidu.com,arndb.de,debian.org,kylinos.cn,tinylab.org,sifive.com,pigmoral.tech,vivo.com,easystack.cn,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:pmladek@suse.com,m:dapeng1.mi@linux.intel.com,m:kees@kernel.org,m:paulmck@kernel.org,m:lirongqing@baidu.com,m:arnd@arndb.de,m:ardb@kernel.org,m:leitao@debian.org,m:cfsworks@gmail.com,m:ryan.roberts@arm.com,m:sourabhjain@linux.ibm.com,m:tangyouling@kylinos.cn,m:eajames@linux.ibm.com,m:hbathini@linux.ibm.com,m:ritesh.list@gmail.com,m:songshuaishuai@tinylab.org,m:samuel.holland@sifive.com,m:kevin.brodsky@arm.com,m:vishal.moola@gmail.com,m:junhui.liu@
+ pigmoral.tech,m:coxu@redhat.com,m:liaoyuanhong@vivo.com,m:fuqiang.wang@easystack.cn,m:jbohac@suse.cz,m:brgerst@gmail.com,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FROM_NO_DN(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: A40A219E341
+	RCVD_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[58];
+	NEURAL_HAM(-0.00)[-0.878];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	HAS_XOIP(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,huawei.com:mid,huawei.com:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: 59F491A0818
 X-Rspamd-Action: no action
 
-From: Abhishek Dubey <adubey@linux.ibm.com>
 
-With support of private stack, relevant tests must pass
-on powerpc64.
 
-#./test_progs -t struct_ops_private_stack
-#434/1   struct_ops_private_stack/private_stack:OK
-#434/2   struct_ops_private_stack/private_stack_fail:OK
-#434/3   struct_ops_private_stack/private_stack_recur:OK
-#434     struct_ops_private_stack:OK
-Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
+On 2026/2/25 23:48, Mike Rapoport wrote:
+> On Tue, Feb 24, 2026 at 04:53:41PM +0800, Jinjie Ruan wrote:
+>> Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
+>> crashkernel= command line option") and commit ab475510e042 ("kdump:
+>> implement reserve_crashkernel_cma") added CMA support for kdump
+>> crashkernel reservation.
+>>
+>> Crash kernel memory reservation wastes production resources if too
+>> large, risks kdump failure if too small, and faces allocation difficulties
+>> on fragmented systems due to contiguous block constraints. The new
+>> CMA-based crashkernel reservation scheme splits the "large fixed
+>> reservation" into a "small fixed region + large CMA dynamic region": the
+>> CMA memory is available to userspace during normal operation to avoid
+>> waste, and is reclaimed for kdump upon crash—saving memory while
+>> improving reliability.
+>>
+>> So extend crashkernel CMA reservation support to arm64. The following
+>> changes are made to enable CMA reservation:
+>>
+>> - Parse and obtain the CMA reservation size along with other crashkernel
+>>   parameters.
+>> - Call reserve_crashkernel_cma() to allocate the CMA region for kdump.
+>> - Include the CMA-reserved ranges for kdump kernel to use.
+>> - Exclude the CMA-reserved ranges from the crash kernel memory to
+>>   prevent them from being exported through /proc/vmcore, which is already
+>>   done in the crash core.
+>>
+>> Update kernel-parameters.txt to document CMA support for crashkernel on
+>> arm64 architecture.
+>>
+>> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>> v3:
+>> - Add Acked-by.
+>> v2:
+>> - Free cmem in prepare_elf_headers()
+>> - Add the mtivation.
+>> ---
+>>  Documentation/admin-guide/kernel-parameters.txt | 2 +-
+>>  arch/arm64/kernel/machine_kexec_file.c          | 8 +++++++-
+>>  arch/arm64/mm/init.c                            | 5 +++--
+>>  3 files changed, 11 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+>> index cb850e5290c2..497f63b76898 100644
+>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>> @@ -1121,7 +1121,7 @@ Kernel parameters
+>>  			It will be ignored when crashkernel=X,high is not used
+>>  			or memory reserved is below 4G.
+>>  	crashkernel=size[KMG],cma
+>> -			[KNL, X86, ppc] Reserve additional crash kernel memory from
+>> +			[KNL, X86, ARM64, ppc] Reserve additional crash kernel memory from
+>>  			CMA. This reservation is usable by the first system's
+>>  			userspace memory and kernel movable allocations (memory
+>>  			balloon, zswap). Pages allocated from this memory range
+>> diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+>> index c338506a580b..c8862a762eb3 100644
+>> --- a/arch/arm64/kernel/machine_kexec_file.c
+>> +++ b/arch/arm64/kernel/machine_kexec_file.c
+>> @@ -42,7 +42,7 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
+>>  #ifdef CONFIG_CRASH_DUMP
+>>  unsigned int arch_get_system_nr_ranges(void)
+>>  {
+>> -	unsigned int nr_ranges = 2; /* for exclusion of crashkernel region */
+>> +	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* for exclusion of crashkernel region */
+>>  	phys_addr_t start, end;
+>>  	u64 i;
+>>  
+>> @@ -64,6 +64,12 @@ int arch_crash_populate_cmem(struct crash_mem *cmem)
+>>  		cmem->nr_ranges++;
+>>  	}
+>>  
+>> +	for (i = 0; i < crashk_cma_cnt; i++) {
+>> +		cmem->ranges[cmem->nr_ranges].start = crashk_cma_ranges[i].start;
+>> +		cmem->ranges[cmem->nr_ranges].end = crashk_cma_ranges[i].end;
+>> +		cmem->nr_ranges++;
+>> +	}
+> 
+> Why do we need to add cma ranges here? They are anyway will be excluded in
+> crash_exclude_core_ranges().
+> 
+> The same comment applies to riscv patch.
 
-v2->v3:
-  Enable testcase using __powerpc64__ instead of __TARGET_ARCH_powerpc,
-  to prevent it getting invoked on powerpc32
+Indeed, it should not be placed here. In the kexec DT code, these memory
+regions need to be included in the "usable-memory-range",which is
+equivalent to the x86 crash_setup_memmap_entries() function.
 
-[v2]: https://lore.kernel.org/bpf/20260225153950.15331-1-adubey@linux.ibm.com
-
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
----
- .../bpf/prog_tests/struct_ops_private_stack.c | 29 +++++++++----------
- .../bpf/progs/struct_ops_private_stack.c      |  6 ----
- .../bpf/progs/struct_ops_private_stack_fail.c |  6 ----
- .../progs/struct_ops_private_stack_recur.c    |  6 ----
- 4 files changed, 13 insertions(+), 34 deletions(-)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/struct_ops_private_stack.c b/tools/testing/selftests/bpf/prog_tests/struct_ops_private_stack.c
-index 4006879ca3fe..afad3522b772 100644
---- a/tools/testing/selftests/bpf/prog_tests/struct_ops_private_stack.c
-+++ b/tools/testing/selftests/bpf/prog_tests/struct_ops_private_stack.c
-@@ -5,6 +5,7 @@
- #include "struct_ops_private_stack_fail.skel.h"
- #include "struct_ops_private_stack_recur.skel.h"
- 
-+#if defined(__x86_64__) || defined(__aarch64__) || defined(__powerpc64__)
- static void test_private_stack(void)
- {
- 	struct struct_ops_private_stack *skel;
-@@ -15,11 +16,6 @@ static void test_private_stack(void)
- 	if (!ASSERT_OK_PTR(skel, "struct_ops_private_stack__open"))
- 		return;
- 
--	if (skel->data->skip) {
--		test__skip();
--		goto cleanup;
--	}
--
- 	err = struct_ops_private_stack__load(skel);
- 	if (!ASSERT_OK(err, "struct_ops_private_stack__load"))
- 		goto cleanup;
-@@ -48,11 +44,6 @@ static void test_private_stack_fail(void)
- 	if (!ASSERT_OK_PTR(skel, "struct_ops_private_stack_fail__open"))
- 		return;
- 
--	if (skel->data->skip) {
--		test__skip();
--		goto cleanup;
--	}
--
- 	err = struct_ops_private_stack_fail__load(skel);
- 	if (!ASSERT_ERR(err, "struct_ops_private_stack_fail__load"))
- 		goto cleanup;
-@@ -72,11 +63,6 @@ static void test_private_stack_recur(void)
- 	if (!ASSERT_OK_PTR(skel, "struct_ops_private_stack_recur__open"))
- 		return;
- 
--	if (skel->data->skip) {
--		test__skip();
--		goto cleanup;
--	}
--
- 	err = struct_ops_private_stack_recur__load(skel);
- 	if (!ASSERT_OK(err, "struct_ops_private_stack_recur__load"))
- 		goto cleanup;
-@@ -95,7 +81,7 @@ static void test_private_stack_recur(void)
- 	struct_ops_private_stack_recur__destroy(skel);
- }
- 
--void test_struct_ops_private_stack(void)
-+static void __test_struct_ops_private_stack(void)
- {
- 	if (test__start_subtest("private_stack"))
- 		test_private_stack();
-@@ -104,3 +90,14 @@ void test_struct_ops_private_stack(void)
- 	if (test__start_subtest("private_stack_recur"))
- 		test_private_stack_recur();
- }
-+#else
-+static void __test_struct_ops_private_stack(void)
-+{
-+	test__skip();
-+}
-+#endif
-+
-+void test_struct_ops_private_stack(void)
-+{
-+	__test_struct_ops_private_stack();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c b/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c
-index dbe646013811..3cd0c1a55cbd 100644
---- a/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c
-+++ b/tools/testing/selftests/bpf/progs/struct_ops_private_stack.c
-@@ -7,12 +7,6 @@
- 
- char _license[] SEC("license") = "GPL";
- 
--#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
--bool skip __attribute((__section__(".data"))) = false;
--#else
--bool skip = true;
--#endif
--
- void bpf_testmod_ops3_call_test_2(void) __ksym;
- 
- int val_i, val_j;
-diff --git a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c
-index 3d89ad7cbe2a..1442728f5604 100644
---- a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c
-+++ b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_fail.c
-@@ -7,12 +7,6 @@
- 
- char _license[] SEC("license") = "GPL";
- 
--#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
--bool skip __attribute((__section__(".data"))) = false;
--#else
--bool skip = true;
--#endif
--
- void bpf_testmod_ops3_call_test_2(void) __ksym;
- 
- int val_i, val_j;
-diff --git a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c
-index b1f6d7e5a8e5..faaa0f8d65a4 100644
---- a/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c
-+++ b/tools/testing/selftests/bpf/progs/struct_ops_private_stack_recur.c
-@@ -7,12 +7,6 @@
- 
- char _license[] SEC("license") = "GPL";
- 
--#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
--bool skip __attribute((__section__(".data"))) = false;
--#else
--bool skip = true;
--#endif
--
- void bpf_testmod_ops3_call_test_1(void) __ksym;
- 
- int val_i, val_j;
--- 
-2.52.0
-
+> 
+>>  	return 0;
+>>  }
+>>  #endif
+>> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+>> index 96711b8578fd..144e30fe9a75 100644
+>> --- a/arch/arm64/mm/init.c
+>> +++ b/arch/arm64/mm/init.c
+>> @@ -96,8 +96,8 @@ phys_addr_t __ro_after_init arm64_dma_phys_limit;
+>>  
+>>  static void __init arch_reserve_crashkernel(void)
+>>  {
+>> +	unsigned long long crash_base, crash_size, cma_size = 0;
+>>  	unsigned long long low_size = 0;
+>> -	unsigned long long crash_base, crash_size;
+>>  	bool high = false;
+>>  	int ret;
+>>  
+>> @@ -106,11 +106,12 @@ static void __init arch_reserve_crashkernel(void)
+>>  
+>>  	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+>>  				&crash_size, &crash_base,
+>> -				&low_size, NULL, &high);
+>> +				&low_size, &cma_size, &high);
+>>  	if (ret)
+>>  		return;
+>>  
+>>  	reserve_crashkernel_generic(crash_size, crash_base, low_size, high);
+>> +	reserve_crashkernel_cma(cma_size);
+>>  }
+>>  
+>>  static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+>> -- 
+>> 2.34.1
+>>
+> 
 
