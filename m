@@ -1,52 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-17286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17284-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGRDK+dioGk0jAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:12:39 +0100
+	id cIWANNVioGk0jAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17284-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:12:21 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7E01A8545
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:12:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3749F1A851E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:12:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMFL40Bntz3cCC;
-	Fri, 27 Feb 2026 02:11:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMFL21H1vz3btf;
+	Fri, 27 Feb 2026 02:11:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772118715;
-	cv=none; b=ocvy5z+RvPj/Oyxp63mE7Cta+D35AwwB7gm+Sd0f28EVwcs5+PTAmLEtvbl6nw1288HEp6CSlD7hRFWa2qLX+1BYeau2iA7FIKEiVwxnQsdxQaWb2YLc1K7Lx7XSxIbwhv9aFYrCzQPiHYo1dUDY+xE/RzkGU6nKMwVyINJWhH8ddc4WlIUvBQTXvovAQ9mB5WZP0KjfDLQNVTszwNSYPnZItcnaf1C6R8d/HAsLe8aLNQoV2qGDyX8QRY0TalUqvvDaFe4MvMgNmYn4JSEJuIYTCMKo5QwEv4cSoj2YA1Y2BSttCwMUmO7t5Wlx6TJHiAsxUwNmHvTqVd+Reglkow==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772118713;
+	cv=none; b=oiCSUJ+85fanpGYga30u/dDy/PAktKzJMC3Y7Q0CDNL3Ot9R5hkzzgXpjQ3PUBFq9OifbkCH5qb3Y0Li2664HzmpAkQMCCBlfYA9LML9GxTVBoIRGQxmHuratY+/H0y6FCKyWY2qysDwOkAk7z1vBNTZ/dbMK8ySn5hvdk7+kQ6VrBJB0T7CiUhpD2pHHWoefwimb5DMOYQo+1g6WGSGdMmebZnxGCTz7KRlFE0RtRBTVl9YHcOhtC5d/qKiUoPhcS+lUlUuTM3DLA42d7pIVylOC6/7hxKVXQb2CAAOaZPflwU8mSuLppe4m1PK+0Jzts+IvkfM5To7dcC1DVuCUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772118715; c=relaxed/relaxed;
-	bh=tBP3lqkLvZbHCNzBRHSEX4EeHgIBly3cDjq7DhgYF64=;
+	t=1772118713; c=relaxed/relaxed;
+	bh=LjiBXp6lNLxUAWTWM+/Gf2HGog64BwZKUJ2bge421RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTLWt7SozVUJwAgAl88jquu0sYYGHj7Ia21w8qiz6e/xm36C1d2ZlKYEtgYzOUyHNSLa2ALj6fLg8F+akvev4fEmVtqBQxVMdolcdd2xhU3eymif1w878ivAtY8PQfYSjKKzNnzl8DIFe2sSTec+cCyVxYYAZytBCMr2DtXbyHYqfEAYDR+4doHy6BQrl9MQ7kDaa4uxC2bloXAFltz7iSemd79+NCHZAA6ZnE4fnigfpyTqW54LCXkHZRgH/PzAyj6Hm+6t9kOfEha3U8BEpJJLDVc0J7fKIxv79CTeyZEHvVyCdWwT7s65dF++rmdyUu0Xm90lidOl5dde3GEqmw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=LjU2z+DA; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
+	 MIME-Version; b=SHlghHz0b+vFHVSQ48CvhYkTFO/gpaVeuq+s/ONb2JRw02qoDWpnuZ1da8T4IQK4eZsF3nvqlWQ+Y/TDS6wgYeUsrcC9zWL9kSSg4op81tZRjDxArxjiwOC276L+eOT3j5huc2LwxcN4l+X5zpwvSZW+ktaXGjvqe/29tu7qQPE0O0dNOajwhdDiInZt/UtJ/nUvQ4Y3v6aYkpQq/aX8FfXxZeQg2tK5uzI4y1W4z5y0RND9IJ+rEl3S8f211FM1bCKv7RmDTET+5X4D6zq3WNwfuSyslwEFkq/KrdtpwavNtrimnf6lMk8mPu2RQxOEs2QEYlDPUkIaP04zM0zPXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QVAi7CQy; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=LjU2z+DA;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QVAi7CQy;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMFL038RLz3bf2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 02:11:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMFKz0LD7z2ySS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 02:11:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=tBP3lqkLvZbHCNzBRHSEX4EeHgIBly3cDjq7DhgYF64=; b=LjU2z+DAAkpCqrHxbvJ+1rk2Qx
-	frrj0cWlSn+MYb3koqBrK7f/Q1b9UkQ2vpJBYUQL7/KlFsRoZEEdODEtL4uajXvnJaGeOvpJ9daEZ
-	bjDaSRzBUjwJKrGxUz7TVTq69Iy05PWCJgJ0J0EDHH//k+z/Lx3TbtnlSYSyRI/MDh3nOl8AjsiKA
-	Wj3C1LgX6cikRiUVYuQUd4StdsxI7J5ssYdQdagPruCX2LnVI+fhiSK3/R6l6ijzZ879w4SjFwu0j
-	VzJUXhJr80FyajL+eNbUq9CtwS4wIBto60rRk9yIRVe93C0K7vWdZjwSZUUEcPm0gFDTmV0S5YAKV
-	HG2RqtEA==;
+	bh=LjiBXp6lNLxUAWTWM+/Gf2HGog64BwZKUJ2bge421RE=; b=QVAi7CQy5fBD67ly6D+BNX6Wwc
+	F6ms6C3pSW3+UIeKUPJpnItiBZ/MyRna3iZPiNrupTLpb0JfY7VNv6NNXBJONvu3DErYOr2vxaWuE
+	Jmr7UxOkHr3em4lfQ1PLIO2U8d65yLwBmRuTm2MYgal2+zUsnt4Yi/TTyFPx8wyMs5w4mz1DIuXsp
+	p36LSwl0uFx/BdVxTNv+VR9+6irZc8COvmCJv95oM0mbsNGVXCY6Kw0K000DL5hm0Yy58nbiKF8ub
+	8yFVtiHWze8pbZAu6P0e1lpw7D1KkCpozWihpM7nk+NqgdKmMXnJN0DG1NsCL4Chn/cjmRH4sfi3d
+	dtd6E/DA==;
 Received: from [4.28.11.157] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvd1H-00000006Q0A-2PJD;
-	Thu, 26 Feb 2026 15:11:15 +0000
+	id 1vvd1I-00000006Q0n-3U3e;
+	Thu, 26 Feb 2026 15:11:16 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -102,9 +102,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	linux-btrfs@vger.kernel.org,
 	linux-arch@vger.kernel.org,
 	linux-raid@vger.kernel.org
-Subject: [PATCH 06/25] xor: cleanup registration and probing
-Date: Thu, 26 Feb 2026 07:10:18 -0800
-Message-ID: <20260226151106.144735-7-hch@lst.de>
+Subject: [PATCH 07/25] xor: split xor.h
+Date: Thu, 26 Feb 2026 07:10:19 -0800
+Message-ID: <20260226151106.144735-8-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260226151106.144735-1-hch@lst.de>
 References: <20260226151106.144735-1-hch@lst.de>
@@ -138,7 +138,7 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17286-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17284-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -162,181 +162,121 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,lst.de:email,infradead.org:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 0F7E01A8545
+X-Rspamd-Queue-Id: 3749F1A851E
 X-Rspamd-Action: no action
 
-Originally, the XOR code benchmarked all algorithms at load time, but
-it has since then been hacked multiple times to allow forcing an
-algorithm, and then commit 524ccdbdfb52 ("crypto: xor - defer load time
-benchmark to a later time") changed the logic to a two-step process
-or registration and benchmarking, but only when built-in.
-
-Rework this, so that the XOR_TRY_TEMPLATES macro magic now always just
-deals with adding the templates to the list, and benchmarking is always
-done in a second pass; for modular builds from module_init, and for the
-built-in case using a separate init call level.
+Keep xor.h for the public API, and split the struct xor_block_template
+definition that is only needed by the xor.ko core and
+architecture-specific optimizations into a separate xor_impl.h header.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- lib/raid/xor/xor-core.c | 98 ++++++++++++++++++++---------------------
- 1 file changed, 48 insertions(+), 50 deletions(-)
+ arch/arm/lib/xor-neon.c       |  1 +
+ arch/s390/lib/xor.c           |  2 +-
+ include/linux/raid/xor.h      | 22 +---------------------
+ include/linux/raid/xor_impl.h | 25 +++++++++++++++++++++++++
+ lib/raid/xor/xor-core.c       |  1 +
+ 5 files changed, 29 insertions(+), 22 deletions(-)
+ create mode 100644 include/linux/raid/xor_impl.h
 
+diff --git a/arch/arm/lib/xor-neon.c b/arch/arm/lib/xor-neon.c
+index cf57fca97908..282980b9bf2a 100644
+--- a/arch/arm/lib/xor-neon.c
++++ b/arch/arm/lib/xor-neon.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/raid/xor.h>
++#include <linux/raid/xor_impl.h>
+ #include <linux/module.h>
+ 
+ MODULE_DESCRIPTION("NEON accelerated XOR implementation");
+diff --git a/arch/s390/lib/xor.c b/arch/s390/lib/xor.c
+index 1721b73b7803..4d5ed638d850 100644
+--- a/arch/s390/lib/xor.c
++++ b/arch/s390/lib/xor.c
+@@ -8,7 +8,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/export.h>
+-#include <linux/raid/xor.h>
++#include <linux/raid/xor_impl.h>
+ #include <asm/xor.h>
+ 
+ static void xor_xc_2(unsigned long bytes, unsigned long * __restrict p1,
+diff --git a/include/linux/raid/xor.h b/include/linux/raid/xor.h
+index 51b811b62322..02bda8d99534 100644
+--- a/include/linux/raid/xor.h
++++ b/include/linux/raid/xor.h
+@@ -7,24 +7,4 @@
+ extern void xor_blocks(unsigned int count, unsigned int bytes,
+ 	void *dest, void **srcs);
+ 
+-struct xor_block_template {
+-        struct xor_block_template *next;
+-        const char *name;
+-        int speed;
+-	void (*do_2)(unsigned long, unsigned long * __restrict,
+-		     const unsigned long * __restrict);
+-	void (*do_3)(unsigned long, unsigned long * __restrict,
+-		     const unsigned long * __restrict,
+-		     const unsigned long * __restrict);
+-	void (*do_4)(unsigned long, unsigned long * __restrict,
+-		     const unsigned long * __restrict,
+-		     const unsigned long * __restrict,
+-		     const unsigned long * __restrict);
+-	void (*do_5)(unsigned long, unsigned long * __restrict,
+-		     const unsigned long * __restrict,
+-		     const unsigned long * __restrict,
+-		     const unsigned long * __restrict,
+-		     const unsigned long * __restrict);
+-};
+-
+-#endif
++#endif /* _XOR_H */
+diff --git a/include/linux/raid/xor_impl.h b/include/linux/raid/xor_impl.h
+new file mode 100644
+index 000000000000..a1890cd66812
+--- /dev/null
++++ b/include/linux/raid/xor_impl.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _XOR_IMPL_H
++#define _XOR_IMPL_H
++
++struct xor_block_template {
++	struct xor_block_template *next;
++	const char *name;
++	int speed;
++	void (*do_2)(unsigned long, unsigned long * __restrict,
++		     const unsigned long * __restrict);
++	void (*do_3)(unsigned long, unsigned long * __restrict,
++		     const unsigned long * __restrict,
++		     const unsigned long * __restrict);
++	void (*do_4)(unsigned long, unsigned long * __restrict,
++		     const unsigned long * __restrict,
++		     const unsigned long * __restrict,
++		     const unsigned long * __restrict);
++	void (*do_5)(unsigned long, unsigned long * __restrict,
++		     const unsigned long * __restrict,
++		     const unsigned long * __restrict,
++		     const unsigned long * __restrict,
++		     const unsigned long * __restrict);
++};
++
++#endif /* _XOR_IMPL_H */
 diff --git a/lib/raid/xor/xor-core.c b/lib/raid/xor/xor-core.c
-index 28aa654c288d..a2c529d7b7c2 100644
+index a2c529d7b7c2..ddb39dca1026 100644
 --- a/lib/raid/xor/xor-core.c
 +++ b/lib/raid/xor/xor-core.c
-@@ -52,29 +52,14 @@ EXPORT_SYMBOL(xor_blocks);
- 
- /* Set of all registered templates.  */
- static struct xor_block_template *__initdata template_list;
-+static int __initdata xor_forced = false;
- 
--#ifndef MODULE
- static void __init do_xor_register(struct xor_block_template *tmpl)
- {
- 	tmpl->next = template_list;
- 	template_list = tmpl;
- }
- 
--static int __init register_xor_blocks(void)
--{
--	active_template = XOR_SELECT_TEMPLATE(NULL);
--
--	if (!active_template) {
--#define xor_speed	do_xor_register
--		// register all the templates and pick the first as the default
--		XOR_TRY_TEMPLATES;
--#undef xor_speed
--		active_template = template_list;
--	}
--	return 0;
--}
--#endif
--
- #define BENCH_SIZE	4096
- #define REPS		800U
- 
-@@ -85,9 +70,6 @@ do_xor_speed(struct xor_block_template *tmpl, void *b1, void *b2)
- 	unsigned long reps;
- 	ktime_t min, start, t0;
- 
--	tmpl->next = template_list;
--	template_list = tmpl;
--
- 	preempt_disable();
- 
- 	reps = 0;
-@@ -111,63 +93,79 @@ do_xor_speed(struct xor_block_template *tmpl, void *b1, void *b2)
- 	pr_info("   %-16s: %5d MB/sec\n", tmpl->name, speed);
- }
- 
--static int __init
--calibrate_xor_blocks(void)
-+static int __init calibrate_xor_blocks(void)
- {
- 	void *b1, *b2;
- 	struct xor_block_template *f, *fastest;
- 
--	fastest = XOR_SELECT_TEMPLATE(NULL);
--
--	if (fastest) {
--		printk(KERN_INFO "xor: automatically using best "
--				 "checksumming function   %-10s\n",
--		       fastest->name);
--		goto out;
--	}
-+	if (xor_forced)
-+		return 0;
- 
- 	b1 = (void *) __get_free_pages(GFP_KERNEL, 2);
- 	if (!b1) {
--		printk(KERN_WARNING "xor: Yikes!  No memory available.\n");
-+		pr_info("xor: Yikes!  No memory available.\n");
- 		return -ENOMEM;
- 	}
- 	b2 = b1 + 2*PAGE_SIZE + BENCH_SIZE;
- 
--	/*
--	 * If this arch/cpu has a short-circuited selection, don't loop through
--	 * all the possible functions, just test the best one
--	 */
--
--#define xor_speed(templ)	do_xor_speed((templ), b1, b2)
--
--	printk(KERN_INFO "xor: measuring software checksum speed\n");
--	template_list = NULL;
--	XOR_TRY_TEMPLATES;
-+	pr_info("xor: measuring software checksum speed\n");
- 	fastest = template_list;
--	for (f = fastest; f; f = f->next)
-+	for (f = template_list; f; f = f->next) {
-+		do_xor_speed(f, b1, b2);
- 		if (f->speed > fastest->speed)
- 			fastest = f;
--
-+	}
-+	active_template = fastest;
- 	pr_info("xor: using function: %s (%d MB/sec)\n",
- 	       fastest->name, fastest->speed);
- 
-+	free_pages((unsigned long)b1, 2);
-+	return 0;
-+}
-+
-+static int __init xor_init(void)
-+{
-+	/*
-+	 * If this arch/cpu has a short-circuited selection, don't loop through
-+	 * all the possible functions, just use the best one.
-+	 */
-+	active_template = XOR_SELECT_TEMPLATE(NULL);
-+	if (active_template) {
-+		pr_info("xor: automatically using best checksumming function   %-10s\n",
-+			active_template->name);
-+		xor_forced = true;
-+		return 0;
-+	}
-+
-+#define xor_speed	do_xor_register
-+	XOR_TRY_TEMPLATES;
- #undef xor_speed
- 
--	free_pages((unsigned long)b1, 2);
--out:
--	active_template = fastest;
-+#ifdef MODULE
-+	return calibrate_xor_blocks();
-+#else
-+	/*
-+	 * Pick the first template as the temporary default until calibration
-+	 * happens.
-+	 */
-+	active_template = template_list;
- 	return 0;
-+#endif
- }
- 
--static __exit void xor_exit(void) { }
-+static __exit void xor_exit(void)
-+{
-+}
- 
- MODULE_DESCRIPTION("RAID-5 checksumming functions");
- MODULE_LICENSE("GPL");
- 
-+/*
-+ * When built-in we must register the default template before md, but we don't
-+ * want calibration to run that early as that would delay the boot process.
-+ */
- #ifndef MODULE
--/* when built-in xor.o must initialize before drivers/md/md.o */
--core_initcall(register_xor_blocks);
-+__initcall(calibrate_xor_blocks);
- #endif
--
--module_init(calibrate_xor_blocks);
-+core_initcall(xor_init);
- module_exit(xor_exit);
+@@ -9,6 +9,7 @@
+ #include <linux/module.h>
+ #include <linux/gfp.h>
+ #include <linux/raid/xor.h>
++#include <linux/raid/xor_impl.h>
+ #include <linux/jiffies.h>
+ #include <linux/preempt.h>
+ #include <asm/xor.h>
 -- 
 2.47.3
 
