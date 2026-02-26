@@ -1,88 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-17267-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17269-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oASAJhg8oGmagwQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17267-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 13:27:04 +0100
+	id 2FFrH0xAoGmrhAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17269-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 13:45:00 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75001A5AB9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 13:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D131A5DAB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 13:44:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM9gg1FVfz309y;
-	Thu, 26 Feb 2026 23:26:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMB4R4jHKz2yFd;
+	Thu, 26 Feb 2026 23:44:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::430"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772108815;
-	cv=none; b=atnKfb9sSV4y8uCzRhytaLTUByO2Xq1y+NbKjvp/Qdn1aneZSuQ4W+INFu7gpIgzEY9DHvr+FkK123HCnqxZpwzGAR2AnoNvDKpRC5+649w3tdNYNQPvUpln68GCqbvRGQAwKWL+a7bYMU0kukm7AFdPAw6rp9m+WpVF3DN4xx/EMC+BcQBqPFSihY1AX04h6qskOiyKqR5cTGz4TCbb9JlNjIPSdfUgNeqr+UC/+VMkCdvcIzPQpc9TDAj6JkVva8NvI1w/8lxLBIF7w/cpXNnPcV4I8xVmTM/uuHNp1u7JQ16vhvH9Wi5Fq5MDEa4msxaWb5ZKcxH/PCskUxp5sA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772109895;
+	cv=none; b=DV7FWjw75TWYpqYDxvGfznapEi59NkzipfvPHuaJLC9Vz8l7HGWOI7IohQFpwnHbti67WPZ4rbDJZkrWva/B3ZHQDDqxCQfs1YaMaB4zECLMSOs/jlTVetXWuUww7UTnC8LyK+GHB5BopNhVBHP6X6ok0EoX8tG1laLM1QcyD1wxvYrlaeDudL5CEAHKpP3bj360eLPNSQcRaEXHfTneGBcmbP0lLRRAEqn1/0mYWeXBr7A0Nuhhfr7reH0Za/OyetCBobZTI1aVDIz5/EqChIaTp/M8AIaU2MLCrmtCfNfXzrgpHYVpSZmCkQPaJXinDMYhAs4r7WhsWKGQWNGzsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772108815; c=relaxed/relaxed;
-	bh=keG28VRg7hb2nWNj2uJ8lKl/FGoScXVGvErAk96Ikwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cH9vBs8Rnk6u9op+MbZ+8qj14phcCGxQ5ccwVr7L2sAE2BWCJ112EqILU6wnAgXnsVzQydLeFavx6igeXiZCeve0h56d5q6naf82Yc+QVJeteoTp63b0ZFU4u2cOUR9uNDTs9fvMsdIWT2GDZt/BAnqn3NC0iFcahNaAiVVexfrvTbh9aO3OLk33JUSfVV0a4wjFKrcB8mI3VfxhRJvuPmu3pg1aLh21Sl7jxEokruKCkc+kidnM5/PUmL1s9jkhT33KAK5QCJ/imALxWXQC19XwJfTE8LfCP7ZA3XepNS0bPz0r1UyxURywta2fju7okAzLvHbYKQcAl51xJ5I0ng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TVMqtxQP; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1772109895; c=relaxed/relaxed;
+	bh=bshf/mcnbaq0IwjhUA3zsi8qImySXUNgNqm9NtsMnU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kZomf/P9POmDBP1snVfLvkLn2jioKUx5yfYhSzTSvCUZ/dKRBvofZpRXieZ7Arojj4Y0BmjpYShTiG+paDEbThpGnJRp0/ndQs7rsA5q7kd+HsjjfGJ2naFrgsW1TGRzQnsMShpl/1YHIL0KqEekdlzhR5dgy4HjhfZbtzSMK15IPHCd+GESLUm4ig7iOcDV8p3d2SCyR8rlJLQhl5UVnn7aK9o6MZ/PM9C8GW2X0gLCFELFnQ2gS32RHvQY8AF8fWqb148ZyrNsvrIZU9TRR5MMMDpmEUKNCzk91FgoNQjNQ3xh5Bh19O1gxWp9lIp8AUx0IXfrvWt3/pvzWzBEbA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b+YIrubT; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=enDS4FPK; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=minlei@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TVMqtxQP;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b+YIrubT;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=enDS4FPK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=minlei@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM9gd4xxtz2xLv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 23:26:53 +1100 (AEDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-827307b12dfso411035b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 04:26:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772108811; x=1772713611; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=keG28VRg7hb2nWNj2uJ8lKl/FGoScXVGvErAk96Ikwo=;
-        b=TVMqtxQPIUkxfVpvocrKjorimIDo9QeUVGOIpHGpg/aC181smqjzsAKenPqOzie1FX
-         j0NpNDWlIU37YirRhpO7T7V3ojXePZB7ThT8ttPhf7aO8+xxopgVyxH+2HrNbfvJcFiV
-         mIBqxAgOP9MFEAB4GVaUIfJ4hpH59nLccjUIBG3RNGTkit1zpoa/AxZgCE2uAkcko8uE
-         WD2iBNuO5W0is15eabcu/esMS2cG3qlbWvkaElWoguhTY4wG0xv4Gow4I18SIBTlCFrK
-         qe52bjyV4MqZnXIjyYlLTBZBoZTDtcM/wrexvhuQTGLCiUr26olKqQDrO33TZSjAv/nx
-         Twpw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMB4Q13Tyz2xLv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 23:44:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772109888;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bshf/mcnbaq0IwjhUA3zsi8qImySXUNgNqm9NtsMnU8=;
+	b=b+YIrubTYdTbq9lul2suVKnmxwglpeAUcAUmxdEzAgnkFRzbjyjOjNhGFKb6WHcB9g1biU
+	z5kHSRdKCD2i8MymkMw9uQYzltfB0kg4aSZno2bg94Pu9MyQeP+jQT6vDjbJ1ovuozO/dR
+	nyTOzo4A0gO+yX+qQa9qzcDYVdmplgw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772109889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bshf/mcnbaq0IwjhUA3zsi8qImySXUNgNqm9NtsMnU8=;
+	b=enDS4FPKxMpnQfWQpTcnsSjRGGdDdr6b0hQv6wyJ9pNjlCe16vAlU2p+qWUQ7ihE6KevZi
+	h/U+aF1oXVhwNfZQbmF/mc9NLjhxilkLOM/UYjdLBJWDNJsUq62/bXyrEQdMJ6h3vkm/mC
+	iao7fPFEb5BAvt44DnLmJ+5X7EfCpNY=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-O2YxdK6qONK9YY9AZzRxfQ-1; Thu, 26 Feb 2026 07:44:45 -0500
+X-MC-Unique: O2YxdK6qONK9YY9AZzRxfQ-1
+X-Mimecast-MFC-AGG-ID: O2YxdK6qONK9YY9AZzRxfQ_1772109885
+Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-5ff08a88c7aso1030129137.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 04:44:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772108811; x=1772713611;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=keG28VRg7hb2nWNj2uJ8lKl/FGoScXVGvErAk96Ikwo=;
-        b=jkrXM+GmdO//VqP8VsZIbGwPJUI5XflmJ/A6Nk6VG+zCKsPJZGplfLdSMPYEXkLSvM
-         4PU2vRinY/nDJlI//YJKTwkDmGvcKXG7RXfNn8YYXGlh0iKqTNNYWNcrLqIWWS5XQFUh
-         sWklrvyRVbDigUKPXqS2gfMGEieIV5kyI9h5Za2xSvwet+fDNMDbthIixege29kuGeFi
-         Dp6p4NXBdqx+voPxbPxohnaHH7HznDYwpcW+bOfTGn0CVvHkNGO1iDmg5d1NgWXodAFx
-         L3jI8d/E/jI8CfsKO3+2BtXB/GlH4m1nAJOOl++EDwLvElsneazbJk2g99hip2caFcNq
-         lmFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXonExDYQyWKIXRy+z2cLiX0ehoAmKj2yHfuMaPMlAl4fewuBsLi057IHdS4UMd6eN0g8/UFvxYOeUJNJg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwRD6be8/Tv49IuI2tNICyi7k6FXOi1KSaigG/9tYKN1/l6rXe/
-	SiHifYSOZUIlj81qboyPYZHXLPJjdrPceLK/MqnESGPqGsOUbHA0Iik5R1DzDg==
-X-Gm-Gg: ATEYQzwhkJQNxUckgpdXhG5pxyG/Imn0tUKrGZp11DLoMsvUggDzYE9Lzj8U7BKHk6W
-	EdHoDH79AXqPSxxxDHLJX2PEo5B0xXmmRWfiSpewZXMAdC5jUNd+gL4yj8UY9H7eCpuG9jEaap0
-	9qZxThT/hBugaimAmmjn39x7lZkJ7BldxJYPZCMFEuqmHMAffZzGKeOldIB4ctGEa39tHo8GW3p
-	gmsJBEv7fD6HZhYuk/+RYOwKQvsvf+B4c8Dz06+AlJyXa0Z4niVRYNGcmT6vcIlvuQ4TNyXb6Pn
-	Ra9umEc3TK/t0MbczM9FFchVEKgptrY3M8IxJVZ/ybpmXy11uevxpbBwpaN33VP+n3KS61z7ra3
-	DSwmv07AwMcSPnXaK1aOVdfkTrlqFX8lC1ee7Wr3dB35HCtzb3NRVhvacRUYKLbDAzHxz2M6bIi
-	R4sKVkT9Mic6hA1K/O6A==
-X-Received: by 2002:a05:6a00:1d14:b0:7e8:3fcb:9b00 with SMTP id d2e1a72fcca58-827398063bemr1923995b3a.22.1772108810592;
-        Thu, 26 Feb 2026 04:26:50 -0800 (PST)
-Received: from dw-tp ([203.81.243.177])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8273a01aa09sm2958494b3a.48.2026.02.26.04.26.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 04:26:48 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linux-mm@kvack.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH] mm/hugetlb.c: Use __pa() instead of virt_to_phys() in early bootmem alloc code
-Date: Thu, 26 Feb 2026 17:56:30 +0530
-Message-ID: <b4a7d2c6c4c1dd81dddc904fc21f01303290a4b8.1772107852.git.riteshh@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20230601; t=1772109885; x=1772714685;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bshf/mcnbaq0IwjhUA3zsi8qImySXUNgNqm9NtsMnU8=;
+        b=wI580XviM9UR6VasTFbXlQzyYzYwVF5xUUSxBuwzgTHjUy2iFm7SB1Xy5xcCnCLVMK
+         Ivzx/+v/v1BlMSkZ6i/lVgoaaRy1WabvwUv+5zmVcCLeWVA5d6X9MKsGXKlOQ2/4ajT7
+         x2SsXaT3qw3eR/9OhUBbU2FevLVhybUVH2u0JAQCxtI+4XkowwWnFyPWiJNgUb37csZ6
+         fclKL4sI7kuMEZ04D++zDRiBRJoSx3GPXXK85vdu+19I2qV/9tL6Yrc0cjJcC3jl/z7c
+         YOKsFuYA9v9CwMni8jc99JEAVNXclN4yGEJd+DaiZ3r57qD7x8TkDI4A3aL80V44C4RH
+         5IFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVd23bHx5BPyKiV8l+rXYPVGAB0ZEVLeV0L9cYbYFn9oC4G9twv05azcrKQ6142NwJbn+feJlSRpi+oC2I=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxywf1Me/kcC5Au4RrKtVq6MZvMgYwxTEdMGeSp2FazCC7bL5H0
+	kTUK14qo620rMHndPCPzj3l8lgNm3xVF3FlMp8SWMGRJjWBYLLWo3Q9GxEsb89/o6SgcKap0szl
+	awHXAb8+3woY+nQmLKcFJ9go8lG3gxlul0klLqmLVhOZ9zKG/A/AuhpkIbVN9x9SFP329KBh3fb
+	DMHeI+wcHxvNcaO2685Ohw2Z3D/cboGU+hNyq0HUpClg==
+X-Gm-Gg: ATEYQzy6OQOOUZ8EfljDdIsmw07cjO7FhhuVZWOm/Unk8YkWXeaQa69J6qZuu6GD0Bq
+	0Wrko8bBfE0LJZtjaMi3BuIw+A2/Dhn7uM1oRJbx6VXb3DfnEYqUNgrC4RBUOQMYHODwWTXgyhp
+	TrEw9rxbFj+zMyxh+slYn9sh+V+oGlt5EASCJzY6K/eWLrw5/uT1a65RXkQxhXe0eBTE0A9b8oL
+	ApEJU8=
+X-Received: by 2002:a05:6102:26c4:b0:5fd:fa29:ae15 with SMTP id ada2fe7eead31-5ff20a24165mr745708137.9.1772109884898;
+        Thu, 26 Feb 2026 04:44:44 -0800 (PST)
+X-Received: by 2002:a05:6102:26c4:b0:5fd:fa29:ae15 with SMTP id
+ ada2fe7eead31-5ff20a24165mr745697137.9.1772109884400; Thu, 26 Feb 2026
+ 04:44:44 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,109 +101,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <CAGVVp+U0EYVX+VbbEHzcYP70zdmOXwAmUvpMYV9y3jBSRFmS6g@mail.gmail.com>
+ <CAFj5m9L8ahNYFf-tUAZFKAUzkeyqV-Sx94MxC268XJ-hqHPCig@mail.gmail.com>
+In-Reply-To: <CAFj5m9L8ahNYFf-tUAZFKAUzkeyqV-Sx94MxC268XJ-hqHPCig@mail.gmail.com>
+From: Ming Lei <ming.lei@redhat.com>
+Date: Thu, 26 Feb 2026 20:44:32 +0800
+X-Gm-Features: AaiRm53VyTpzKmhhQXSLZ_ZoPRe94CeaxghmO6T7uoyLJFYCNdev5YhkPNpazsI
+Message-ID: <CAFj5m9+OCswLULgVx8eSydTG0OeN4f-8dK1-JyoAA70CNF88Qg@mail.gmail.com>
+Subject: Re: [bug report] Bug: Write fault blocked by KUAP!
+To: Changhui Zhong <czhong@redhat.com>, Caleb Sander Mateos <csander@purestorage.com>
+Cc: Linux Block Devices <linux-block@vger.kernel.org>, Ming Lei <ming.lei@redhat.com>, 
+	linuxppc-dev@lists.ozlabs.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: w9DDzrAJGKbKNYToSMvdWPXikFaFAo8EYftjiI-iCAc_1772109885
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17267-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:linux-mm@kvack.org,m:rppt@kernel.org,m:akpm@linux-foundation.org,m:linuxppc-dev@lists.ozlabs.org,m:ritesh.list@gmail.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:czhong@redhat.com,m:csander@purestorage.com,m:linux-block@vger.kernel.org,m:ming.lei@redhat.com,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,lists.ozlabs.org,gmail.com];
-	NEURAL_HAM(-0.00)[-0.982];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	SUBJECT_ENDS_EXCLAIM(0.00)[];
+	FORGED_SENDER(0.00)[ming.lei@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-17269-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ming.lei@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid]
-X-Rspamd-Queue-Id: A75001A5AB9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: A5D131A5DAB
 X-Rspamd-Action: no action
 
-Architecture like powerpc, checks for pfn_valid() in their
-virt_to_phys() implementation (when CONFIG_DEBUG_VIRTUAL is enabled) [1].
-Commit d49004c5f0c1 "arch, mm: consolidate initialization of nodes, zones and memory map"
-changed the order of initialization between hugetlb_bootmem_alloc() and
-free_area_init(). This means, pfn_valid() can now return false in
-alloc_bootmem() path, since sparse_init() is not yet done.
+On Thu, Feb 26, 2026 at 6:48=E2=80=AFPM Ming Lei <ming.lei@redhat.com> wrot=
+e:
+>
+> Hi Changhui,
+>
+> Thanks for the report!
+>
+> Loop Caleb Sander Mateos  in.
+>
+> Thanks,
+>
+> On Thu, Feb 26, 2026 at 6:37=E2=80=AFPM Changhui Zhong <czhong@redhat.com=
+> wrote:
+> >
+> > Hello,
+> >
+> > on the ppc64le arch, I hit the issue below with ublksrv on the latest
+> > linux-block/for-next, please help check it, and let me know if you
+> > need any info/test for it. Thanks.
+> >
+> > INFO: HEAD of cloned kernel
+> > commit 37a43fd770f3dcac8f72f3ea909b3e893e2385c9
+> > Merge: 13cd9b41227a c1dfbd7e71b0
+> > Author: Jens Axboe <axboe@kernel.dk>
+> > Date:   Wed Feb 25 08:37:06 2026 -0700
+> >
+> >     Merge branch 'for-7.1/block' into for-next
+> >
+> >     * for-7.1/block:
+> >       ublk: report BLK_SPLIT_INTERVAL_CAPABLE
+> >
+> > reproducer:
+> > compile and install https://github.com/ublk-org/ublksrv.git
+> > #echo 0 > /proc/sys/kernel/io_uring_disabled
+> > #modprobe ublk_drv
+> > #cd ublksrv
+> > #make test T=3Dnull
+> > #make test T=3Dloop
+> >
+> > dmesg log=EF=BC=9A
+> > Feb 26 00:24:30 ibm-p9z-27-lp26 journal: running null/002
+> > Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: start ublksrv io
+> > daemon ublksrvd-0
+> > Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: tid 57923: ublk dev
+> > 0 queue 0 started
+> > Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: tid 57924: ublk dev
+> > 0 queue 1 started
+> > Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083476.4882] platform-linux: do-add-ip6-address[2:
+> > fe80::8448:a3ff:fe51:f102]: failure 13 (Permission denied - ipv6: IPv6
+> > is disabled on this device)
+> > Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083476.4885] platform-linux: do-add-ip6-address[2:
+> > 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> > ipv6: IPv6 is disabled on this device)
+> > Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083476.4938] l3cfg[0f1985ec14299e62,ifindex=3D2]: unable to
+> > configure IPv6 route: type unicast fe80::/64 dev 2 metric 1024 mss 0
+> > rt-src ipv6ll
+> > Feb 26 00:24:38 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083478.4938] ipv6ll[95ab7f3fdbfe643d,ifindex=3D2]: changed: no IPv=
+6
+> > link local address to retry after Duplicate Address Detection failures
+> > (back off)
+> > Feb 26 00:24:38 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083478.4943] platform-linux: do-add-ip6-address[2:
+> > 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> > ipv6: IPv6 is disabled on this device)
+> > Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083488.5034] platform-linux: do-add-ip6-address[2:
+> > fe80::8448:a3ff:fe51:f102]: failure 13 (Permission denied - ipv6: IPv6
+> > is disabled on this device)
+> > Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083488.5037] platform-linux: do-add-ip6-address[2:
+> > 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> > ipv6: IPv6 is disabled on this device)
+> > Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083488.5041] l3cfg[0f1985ec14299e62,ifindex=3D2]: unable to
+> > configure IPv6 route: type unicast fe80::/64 dev 2 metric 1024 mss 0
+> > rt-src ipv6ll
+> > Feb 26 00:24:50 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083490.5034] ipv6ll[95ab7f3fdbfe643d,ifindex=3D2]: changed: no IPv=
+6
+> > link local address to retry after Duplicate Address Detection failures
+> > (back off)
+> > Feb 26 00:24:50 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> > [1772083490.5039] platform-linux: do-add-ip6-address[2:
+> > 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> > ipv6: IPv6 is disabled on this device)
+> > Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: Kernel attempted to read user
+> > page (7fff81210000) - exploit attempt? (uid: 0)
+> > Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: ------------[ cut here ]-------=
+-----
+> > Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: Bug: Read fault blocked by KUAP=
+!
+> > Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: WARNING:
+> > arch/powerpc/mm/fault.c:231 at bad_kernel_fault.isra.0+0xc8/0x2c0,
+> > CPU#5: lt-ublk.null/57924
 
-Since, alloc_bootmem() uses memblock_alloc(.., MEMBLOCK_ALLOC_ACCESSIBLE), this
-means these allocations are always going to happen below high_memory, where
-__pa() should return valid physical addresses. Hence this patch converts
-the two callers of virt_to_phys() in alloc_bootmem() path to __pa() to avoid
-this bootup warning:
+oops, it shouldn't be related with `ublk: report BLK_SPLIT_INTERVAL_CAPABLE=
+`,
+Perhaps one issue lies in the ppcle64 architecture code.
 
- ------------[ cut here ]------------
- WARNING: arch/powerpc/include/asm/io.h:879 at virt_to_phys+0x44/0x1b8, CPU#0: swapper/0
- Modules linked in:
- <...>
- NIP [c000000000601584] virt_to_phys+0x44/0x1b8
- LR [c000000004075de4] alloc_bootmem+0x144/0x1a8
- Call Trace:
- [c000000004d1fb50] [c000000004075dd4] alloc_bootmem+0x134/0x1a8
- [c000000004d1fba0] [c000000004075fac] __alloc_bootmem_huge_page+0x164/0x230
- [c000000004d1fbe0] [c000000004030bc4] alloc_bootmem_huge_page+0x44/0x138
- [c000000004d1fc10] [c000000004076e48] hugetlb_hstate_alloc_pages+0x350/0x5ac
- [c000000004d1fd30] [c0000000040782f0] hugetlb_bootmem_alloc+0x15c/0x19c
- [c000000004d1fd70] [c00000000406d7b4] mm_core_init_early+0x7c/0xdf4
- [c000000004d1ff30] [c000000004011d84] start_kernel+0xac/0xc58
- [c000000004d1ffe0] [c00000000000e99c] start_here_common+0x1c/0x20
+I will find one ppc box and try to reproduce this.
 
-[1]: https://lore.kernel.org/linuxppc-dev/87tsv5h544.ritesh.list@gmail.com/
-
-Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- mm/hugetlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 6e855a32de3d..43e0c95738a6 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3101,7 +3101,7 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
- 			 * extract the actual node first.
- 			 */
- 			if (m)
--				listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
-+				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
- 		}
-
- 		if (m) {
-@@ -3160,7 +3160,7 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	 * The head struct page is used to get folio information by the HugeTLB
- 	 * subsystem like zone id and node id.
- 	 */
--	memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
-+	memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
- 		huge_page_size(h) - PAGE_SIZE);
-
- 	return 1;
---
-2.53.0
+Thanks,
 
 
