@@ -1,57 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-17240-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17241-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDrrJeQToGlAfgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17240-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 10:35:32 +0100
+	id COzCDAkYoGmzfgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17241-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 10:53:13 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3FF1A37ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 10:35:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F041A3C91
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 10:53:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fM5sr4XW1z2yFd;
-	Thu, 26 Feb 2026 20:35:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fM6GF48sKz2yFc;
+	Thu, 26 Feb 2026 20:53:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=113.46.200.216
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772098528;
-	cv=none; b=NYq+BNhQVmUtIWLL/91tZHCRG67DW55Uy99ohcs4nKt13e/nBe5iXyMQ+LblKtu7JsC2vG6rtQ6etpQmwYeZWpPAFJvHve5RMLVfzzkN/FmZYLkWTZzcxCQlvyGnsw3DXsKi+5svs6YaxprkVTJZH11EdFenCEQ++3huQvALY8/kXqQjTIwHzgnvxLLp/Aa72XVHZJI1b5g5Ws3lK0ptfgoSodWlMjfXBVSyWUwIIfHK4Go3qX4flAANj46YcgJksCKLDE5j3AU17f07YIHWQLX/FJnzfVXcvkwNSvMkVWocQjw32ya0YroDIQopUAFLT7XW4bEg1Jt6m3LqaZwBQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772099589;
+	cv=none; b=IOLfw8aE0JYxiVIunbsBj/zXtYbL7PM8QlEloJydVQorb4NYLEFXljw/KsU5fkkB5Y+I+a5hOTC+LW6T81Xz9tfok644UHevh3LH5UAiyepn/Qsv/xgRatlJa4PkI1czRky52I8x6NDBaXSOg5l85hEbdIUIcaJLsU1rIo3CIJsk8zrtA0yTtFqiUbevJEiKbcsv4+1MzvszIJAEMY+k8F4Psuz1KqG/GT0uaEA40+zkHKC56+YyzSEacVYBb1+NtN+22w9+Qdm9oOIpp5JNdpjwhkxGevQATMv/wTzZjSjjPn5CVU7J4e29JcSTkjFuIeh/NHliGEaoziCl4vaxCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772098528; c=relaxed/relaxed;
-	bh=cArUbXgPd0s4ZtREeL/7x46kP7PE/lat666eUsS6sDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oOk3G/aw6XumIJ8g2TX5JFlfTPJ8MtPzVfX9u+RZjZtgG/TiB4FTDxH5JGJIhjWaX89Fk+N3N27JCun0vHoJIcAOvBli1Oqus7B1hyYrqxMcfDZznfWd55wF+TVCNBy470JVbZG4MtAV2Fi71iePJK5+KtvH7y3Z/lisQpKdU86mzGC5EJVNCI2o7vi9geIh8bbiZoF9dJerlGOleC73lVekKVNMV02KBgmUHwVWn+pe2Hj1lU5DtavJ5ekEANFN4dLpa4N6aZ4e7ldGIDerNIRCiO2uZY6PqDHeQSi2IaXbGmP4s1iHzB0GkPnJa6wm+HY4JznHyo2HBvigiVTD2g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=DWNv0GeH; dkim-atps=neutral; spf=pass (client-ip=113.46.200.216; helo=canpmsgout01.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+	t=1772099589; c=relaxed/relaxed;
+	bh=x2hmAPdeq+yK4yox6gFwVhrtvKKbGXLa4UpDk8msuzM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ThrxyBRJftETdoVaxh5GbMDBMKZtC0P2n7F7zMtVeleJF4/dFl9dXezFz6gStTJCjE3uT0VcItmHukdG5ix9WSRS7/FKVPy+KkF8h9PJ8cqMlygUueHLxRfF6mgglZ0ENWiI4n8S4Hne5oPBEXSRBTMouTSurw2WooEr4quAlwbEyQM47TZEkcYN7teLEHsHx0PrC7kc9EPL3Gkjfahw5zYYUSFzZL/sR9QttRg8bi2ota7xDXqsLFQ64y0ExlbhwLGOShV0I3T07efz+q6Zel/20l61qJs7v+u3MLtXaF2N4XvtKwCT1zOE71LIE1D6JGqzTFcyYQTsafz8m9F5TQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bKAl6+a6; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=DWNv0GeH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bKAl6+a6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=113.46.200.216; helo=canpmsgout01.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM5sn6Z0Lz2xMt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 20:35:25 +1100 (AEDT)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=cArUbXgPd0s4ZtREeL/7x46kP7PE/lat666eUsS6sDM=;
-	b=DWNv0GeHcKAOhD5xvaCowiagwlW275NAmdFdeG8qlLEXg0HK9DVne1d75o15RGyJa7vwcAWO6
-	vwEOtoSqxVKaatv+CDrTZSmvfXkTGoof3Dzf35VFrW/nnCipbp9TUQ6QsuUvS03Qv/DbB9CjEPb
-	Q7rsPApKKIvJvhGOP5dZOd0=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fM5m15ySPz1T4Fg;
-	Thu, 26 Feb 2026 17:30:25 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 11EC340567;
-	Thu, 26 Feb 2026 17:35:19 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 26 Feb 2026 17:35:15 +0800
-Message-ID: <15ea8a98-2b0c-dd51-b0d4-911905b194c3@huawei.com>
-Date: Thu, 26 Feb 2026 17:35:14 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fM6GD5XMhz2yFd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Feb 2026 20:53:08 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E82D643DD9;
+	Thu, 26 Feb 2026 09:53:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27A3C19422;
+	Thu, 26 Feb 2026 09:53:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772099586;
+	bh=gOp0kpfXl5Pk7tntCuMPl5ytXJG2Ia6XHeykt8grkxk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bKAl6+a63YoKhP045GVfWx0jHVFXhW9LZJwtaG1W4eWc1goGV4M4TfPBoQAA6izqI
+	 6WdQBpAv54eP1ND0tIBHQHI+GWfxGafuqN75FJ/POxBvVk+QceuIEnnd85M3egf5o3
+	 pCeDonuhpqPi3Q5JsPNW71YAQT68YxFW1abLbggLEb7X7tezojU4W02K9iE8iBv9cy
+	 VgBvu/TU6bNIYRIbEQ5QLvlwgl65/0WF9vYEMym0EF+pNunedprXYz4G1AGpCnrD0q
+	 9yWeaUPqehQ2DxyUkSk0kvZgsTFG5PoBx2dLGHDyLcNtEmzEKx81wVi4YZWkCj0xCb
+	 xFPIqy5iBsk7Q==
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Cc: Christophe Leroy <chleroy@kernel.org>,
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 0/6] fsl-mc: Move over to device MSI infrastructure
+Date: Thu, 26 Feb 2026 10:50:43 +0100
+Message-ID: <177209938125.547814.7154250802402503122.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260224100936.3752303-1-maz@kernel.org>
+References: <20260224100936.3752303-1-maz@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,139 +76,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v6 1/5] powerpc/crash: sort crash memory ranges before
- preparing elfcorehdr
-Content-Language: en-US
-To: Baoquan He <bhe@redhat.com>
-CC: <corbet@lwn.net>, <skhan@linuxfoundation.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <chenhuacai@kernel.org>, <kernel@xen0n.name>,
-	<maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
-	<chleroy@kernel.org>, <pjw@kernel.org>, <palmer@dabbelt.com>,
-	<aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <akpm@linux-foundation.org>, <vgoyal@redhat.com>,
-	<dyoung@redhat.com>, <rdunlap@infradead.org>, <pmladek@suse.com>,
-	<dapeng1.mi@linux.intel.com>, <kees@kernel.org>, <paulmck@kernel.org>,
-	<lirongqing@baidu.com>, <arnd@arndb.de>, <ardb@kernel.org>,
-	<leitao@debian.org>, <rppt@kernel.org>, <cfsworks@gmail.com>,
-	<ryan.roberts@arm.com>, <sourabhjain@linux.ibm.com>,
-	<tangyouling@kylinos.cn>, <eajames@linux.ibm.com>, <hbathini@linux.ibm.com>,
-	<ritesh.list@gmail.com>, <songshuaishuai@tinylab.org>,
-	<samuel.holland@sifive.com>, <kevin.brodsky@arm.com>,
-	<vishal.moola@gmail.com>, <junhui.liu@pigmoral.tech>, <coxu@redhat.com>,
-	<liaoyuanhong@vivo.com>, <fuqiang.wang@easystack.cn>, <jbohac@suse.cz>,
-	<brgerst@gmail.com>, <x86@kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-riscv@lists.infradead.org>, <kexec@lists.infradead.org>
-References: <20260224085342.387996-1-ruanjinjie@huawei.com>
- <20260224085342.387996-2-ruanjinjie@huawei.com>
- <aaARRZh9k_0oG3Qo@MiWiFi-R3L-srv>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <aaARRZh9k_0oG3Qo@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500011.china.huawei.com (7.185.36.131)
-X-Spam-Status: No, score=2.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: **
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1045; i=chleroy@kernel.org; h=from:subject:message-id; bh=boh47sxvFmCUdmRIsSFUJwcMqqWdfzkyZGUbgxkJCNk=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWQuEC/5yeVfffBG5F+JDwyhtnLatdJqQmdfN6+451Eof /MXj+2NjlIWBjEuBlkxRZbj/7l3zej6kpo/dZc+zBxWJpAhDFycAjAR5/0Mf7iP1Brdbp1lf/vd nH39+VdOHVs059/V8+df+0xw/dNbcmo9w/+s9i2MK73M59yteOu92Urq9mWZG9n5jhaLrF209+1 vSuIHAA==
+X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17240-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,infradead.org,suse.com,baidu.com,arndb.de,debian.org,kylinos.cn,tinylab.org,sifive.com,pigmoral.tech,vivo.com,easystack.cn,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17241-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ioana.ciornei@nxp.com,m:tglx@kernel.org,m:maz@kernel.org,m:chleroy@kernel.org,m:sascha.bischoff@arm.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:bhe@redhat.com,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:akpm@linux-foundation.org,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:rdunlap@infradead.org,m:pmladek@suse.com,m:dapeng1.mi@linux.intel.com,m:kees@kernel.org,m:paulmck@kernel.org,m:lirongqing@baidu.com,m:arnd@arndb.de,m:ardb@kernel.org,m:leitao@debian.org,m:rppt@kernel.org,m:cfsworks@gmail.com,m:ryan.roberts@arm.com,m:sourabhjain@linux.ibm.com,m:tangyouling@kylinos.cn,m:eajames@linux.ibm.com,m:hbathini@linux.ibm.com,m:ritesh.list@gmail.com,m:songshuaishuai@tinylab.org,m:samuel.holland@sifive.com,m:kevin.brodsky@arm.com,m:vishal.moola@gmail.com,m:junhui.liu@
- pigmoral.tech,m:coxu@redhat.com,m:liaoyuanhong@vivo.com,m:fuqiang.wang@easystack.cn,m:jbohac@suse.cz,m:brgerst@gmail.com,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:kexec@lists.infradead.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[58];
-	NEURAL_HAM(-0.00)[-0.872];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	HAS_XOIP(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:dkim,huawei.com:email,linux-foundation.org:email,ellerman.id.au:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 1E3FF1A37ED
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 41F041A3C91
 X-Rspamd-Action: no action
 
 
+On Tue, 24 Feb 2026 10:09:30 +0000, Marc Zyngier wrote:
+> This is the second drop of this cleanup series for the fsl-mc MSI
+> infrastructure, initially posted at [1].
+> 
+> * From v1 [1]:
+> 
+>   - Drop the now unused DOMAIN_BUS_FSL_MC_MSI bus token
+> 
+> [...]
 
-On 2026/2/26 17:24, Baoquan He wrote:
-> On 02/24/26 at 04:53pm, Jinjie Ruan wrote:
->> From: Sourabh Jain <sourabhjain@linux.ibm.com>
->>
->> During a memory hot-remove event, the elfcorehdr is rebuilt to exclude
->> the removed memory. While updating the crash memory ranges for this
->> operation, the crash memory ranges array can become unsorted. This
->> happens because remove_mem_range() may split a memory range into two
->> parts and append the higher-address part as a separate range at the end
->> of the array.
->>
->> So far, no issues have been observed due to the unsorted crash memory
->> ranges. However, this could lead to problems once crash memory range
->> removal is handled by generic code, as introduced in the upcoming
->> patches in this series.
->>
->> Currently, powerpc uses a platform-specific function,
->> remove_mem_range(), to exclude hot-removed memory from the crash memory
->> ranges. This function performs the same task as the generic
->> crash_exclude_mem_range() in crash_core.c. The generic helper also
->> ensures that the crash memory ranges remain sorted. So remove the
->> redundant powerpc-specific implementation and instead call
->> crash_exclude_mem_range_guarded() (which internally calls
->> crash_exclude_mem_range()) to exclude the hot-removed memory ranges.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Baoquan he <bhe@redhat.com>
->> Cc: Jinjie Ruan <ruanjinjie@huawei.com>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
->> Cc: linux-kernel@vger.kernel.org
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> 
-> You should add your own Signed-off-by since you sent it out.
+Applied, thanks!
 
-Ack, I'll add my Signed-off-by in the next revision.
-Thanks,
+[1/6] fsl-mc: Remove MSI domain propagation to sub-devices
+      commit: 1fb7392ee3408494d4d62c09a8c3e5f5934caba7
+[2/6] fsl-mc: Add minimal infrastructure to use platform MSI
+      commit: 0c9f522f2d41c7e055a602a0d2c41dc7af01010b
+[3/6] irqchip/gic-v3-its: Add fsl_mc device plumbing to the msi-parent handling
+      commit: cf3179b4e53f527aba9f0c6c3b921619c8adf761
+[4/6] fsl-mc: Switch over to per-device platform MSI
+      commit: 4a958e47c246fa3fb8954f4303e0da15ab3d026d
+[5/6] fsl-mc: Remove legacy MSI implementation
+      commit: 14b1cbcc6cec0b02298f4adf717646cd943b7ef6
+[6/6] platform-msi: Remove stale comment
+      commit: f0a2eac6a597268034fd40d92c1469182438b53d
 
-> 
->> ---
->>  arch/powerpc/include/asm/kexec_ranges.h |  4 +-
->>  arch/powerpc/kexec/crash.c              |  5 +-
->>  arch/powerpc/kexec/ranges.c             | 87 +------------------------
->>  3 files changed, 7 insertions(+), 89 deletions(-)
-> ......snip...
-> 
-> 
+Best regards,
+-- 
+Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
