@@ -1,51 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-17281-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17279-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFWaNsxioGk0jAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17281-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:12:12 +0100
+	id gGXkDbxioGk0jAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17279-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:11:56 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249E71A8500
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:12:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 352481A84E2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 16:11:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMFL06Jy2z3bkq;
-	Fri, 27 Feb 2026 02:11:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMFKy6g4Cz2yLH;
+	Fri, 27 Feb 2026 02:11:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772118712;
-	cv=none; b=dBFDpWLAe9SApifwDpU+gFfz86osE/zM17HPYX9/h0qW3MmPbI4Po3oyaj69L1nX7UZ6RsPw3uKuoU6YAs1gjDEp6RK2yUN0QG488KIq9Rus7nHcMGT0gGtXIE5xB5vvjjhP2rKeN61U4VhYZAyznMRAEoFI+JpjQ/SO91fz4f8/ISTaPs1sHRGNoEJPbK5aP/GvdrYYs2/O43Wu/YHmAy1/rPTVinGidikFo6jW8vYl5qXQXbp0hTumsTMJE+eq+NNmwRyNOV+9ee9Of8/W+dP8mp+sJXvr95Mn6c9SjZED5lMFK0uzQXEgL7pj4Fa3hOxY/9/8Avi+e5Kb+C+dEA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772118710;
+	cv=none; b=Q8fb4NRc9MnibCADcPm7Lax4gx91oIiV+wLQfF1UByA/ir4+psCSeMHTI2KVghwSkWBbCEVZgEOACNPS/7uNCFgDu8fHSZuZ2dHQXiinzEa1EsVdidLChEyKoPESejtZp3Z+Tp+UVQbHYu7bftf61VbFFznO9Lek98+nmqK4M2QpxTW9g2sWnTy7eez9oB9RB4hEw90QvjgNKW/j+iiM3ewMjvEXdEpJ6wIsXvFsWKK+MXZ52+ElMFuH+0crbvYwmqkFSMlhTpwmS0+lRk6D4E2yqBCM5GRS7qjmsRheapLN8D72o9Bvgclo+lJGfORbbBO4qGQrt/kEe3wPkcB2dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772118712; c=relaxed/relaxed;
-	bh=qP+8VdwzX18rY5bvgdY1sWuLjPIGZuDXB9vEoLM33a0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k3Q0b6Cpxecp5MbLqal4zFT2zugFDK3XKpZhewLhuo+D++AnBe8Q60xItl4a1uj4cyomvM5JxOEa5BKrBLCzc7NI6gdqtr4C42Hy0u+QgqwTIxpvJeNA/pSr7+PJ0GI9w+i7S0wpw0oYV3Uj5ywe0ntCm5HTdyHMneFQBqx7CqXnuU395OVtiDpTFT1EiqOOxvoQDoZg71aZF4LD+BBhfDjqLHZTip+vEsGY2JVN6c9RWsX4VJkAXeP1d+qfH06fMj8w+/oTBDQfZDmTH804HBjjysDv2p6vL8N32Tcmo9JyfzxRbJmaadQ33XFVme26Ug5AX8SC56GkAhJbWl4TiQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QR03zetW; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
+	t=1772118710; c=relaxed/relaxed;
+	bh=FL7hvoLUY2bMRMbRRlVqvQioL9cWbtICIXJOfzPCsUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XHxxMzINEBl61h2wSlZreS4cUGe8HB9XFVb9i/s+AUxlDNtShcCtrqDD4rNA0/rTCBU6Rp/58VOMsbaykHmEFXSO7o1ddc1hagDQmTiBCxbY6b9DKrHoa5mr3zf17iBpkgyHq5dIij5NggDFqJa0WEnMOfArxhaE3xuN0DKCtqiVNP5FGdWL3qOA3DGkzN0ItkX4nljxEob7SVrjJltYBKjen/EmsQ2g7v+1gQ6GXKEEWxJ+AdFVLA4A1NuLqNWea/UF7UEGfKl3eyJaEqNE3oRWvZ1n6MU3Exs3HMP1DVxLfXcLz2K1zrb2Q3YQZwuH/u4metpxLCf9+5Ahak4Qbw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=XHbUM+ZF; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QR03zetW;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=XHbUM+ZF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMFKs2kGtz2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 02:11:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMFKs2nbrz2yFd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 02:11:44 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=qP+8VdwzX18rY5bvgdY1sWuLjPIGZuDXB9vEoLM33a0=; b=QR03zetWTad5XyZ1Gw4pLwB3nJ
-	bBW2z8/AfBzf6ywTsDIo41OiCTtpsjYjgepK9QsrzsI7cElVXtM7rURrehCLHg7n3dJp3pEEuguPs
-	IV28EsbN9NXPibalVzcYNCMt7WUj5amt2cLL/uhfFZSbZasPO8mE2vPJU0F6TCesV+k682eK7OpEb
-	0s0PEhS0Lb4d7H7xxKtb1UPzv/QjIpRm5y7UyO6jsg8yFhe2aE6J9EjqkFmDdqerweEN4NKLgisiM
-	Kabaz6sDQQzQIMT6aHsvYmfsxULpzWH25hK5F1NxFrVLPKvob/3mX0qd2TgoR9ypObigmjPl/bDFb
-	OUEtcJnA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=FL7hvoLUY2bMRMbRRlVqvQioL9cWbtICIXJOfzPCsUY=; b=XHbUM+ZF+eSP9evvU2lA+aZ1n3
+	oz9Ng/VTFMX+nIIw8M9JfeIbbm/2EAGZ1foNiPO3rtUPgy84qdU4C7ALpzMghcKlS95XJhtfKcObZ
+	eeFwy3AFprG1+qG+QK0PIBGjEfeem7EvlPDk+zHeUhI1+7EF0IPebPg2GYmD4xerBWnUrLcAkdu9H
+	/h8OSjql+qMzW8g+6thcycmaSQfviqz2Ri8qZHzFsfQF7sQw3TwibkFR1SzYW2fXgx/ilethOTI1A
+	/G3wb0GF3L+x3N/Jf8Cpz/jE8ElaXqGDVufZG4psAPNN2O6qnihnpFs5RGBiEcy7ODOCl5qyYgr1y
+	8l7lootg==;
 Received: from [4.28.11.157] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvd1A-00000006Pxh-0z8F;
-	Thu, 26 Feb 2026 15:11:08 +0000
+	id 1vvd1B-00000006Pxy-2BGc;
+	Thu, 26 Feb 2026 15:11:09 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -101,10 +102,12 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	linux-btrfs@vger.kernel.org,
 	linux-arch@vger.kernel.org,
 	linux-raid@vger.kernel.org
-Subject: cleanup the RAID5 XOR library
-Date: Thu, 26 Feb 2026 07:10:12 -0800
-Message-ID: <20260226151106.144735-1-hch@lst.de>
+Subject: [PATCH 01/25] xor: assert that xor_blocks is not called from interrupt context
+Date: Thu, 26 Feb 2026 07:10:13 -0800
+Message-ID: <20260226151106.144735-2-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260226151106.144735-1-hch@lst.de>
+References: <20260226151106.144735-1-hch@lst.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -130,12 +133,12 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17281-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17279-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -145,7 +148,7 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	FORGED_SENDER(0.00)[hch@lst.de,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -155,120 +158,38 @@ X-Spamd-Result: default: False [-0.11 / 15.00];
 	RCPT_COUNT_GT_50(0.00)[54];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,infradead.org:url,infradead.org:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 249E71A8500
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,lst.de:email,infradead.org:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 352481A84E2
 X-Rspamd-Action: no action
 
-Hi all,
+Most of the optimized xor_blocks versions require FPU/vector registers,
+which generally are not supported in interrupt context.
 
-the XOR library used for the RAID5 parity is a bit of a mess right now.
-The main file sits in crypto/ despite not being cryptography and not
-using the crypto API, with the generic implementations sitting in
-include/asm-generic and the arch implementations sitting in an asm/
-header in theory.  The latter doesn't work for many cases, so
-architectures often build the code directly into the core kernel, or
-create another module for the architecture code.
+Both callers already are in user context, so enforce this at the highest
+level.
 
-Changes this to a single module in lib/ that also contains the
-architecture optimizations, similar to the library work Eric Biggers
-has done for the CRC and crypto libraries later.  After that it changes
-to better calling conventions that allow for smarter architecture
-implementations (although none is contained here yet), and uses
-static_call to avoid indirection function call overhead.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ crypto/xor.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-A git tree is also available here:
+diff --git a/crypto/xor.c b/crypto/xor.c
+index f39621a57bb3..864f3604e867 100644
+--- a/crypto/xor.c
++++ b/crypto/xor.c
+@@ -28,6 +28,8 @@ xor_blocks(unsigned int src_count, unsigned int bytes, void *dest, void **srcs)
+ {
+ 	unsigned long *p1, *p2, *p3, *p4;
+ 
++	WARN_ON_ONCE(in_interrupt());
++
+ 	p1 = (unsigned long *) srcs[0];
+ 	if (src_count == 1) {
+ 		active_template->do_2(bytes, dest, p1);
+-- 
+2.47.3
 
-    git://git.infradead.org/users/hch/misc.git xor-improvements
-
-Gitweb:
-
-    https://git.infradead.org/?p=users/hch/misc.git;a=shortlog;h=refs/heads/xor-improvements
-
-Diffstat:
- arch/arm64/include/asm/xor.h              |   73 --
- arch/loongarch/include/asm/xor.h          |   68 --
- arch/loongarch/include/asm/xor_simd.h     |   34 -
- arch/loongarch/lib/xor_simd_glue.c        |   72 --
- arch/powerpc/include/asm/xor.h            |   47 -
- arch/powerpc/include/asm/xor_altivec.h    |   22 
- arch/powerpc/lib/xor_vmx.h                |   22 
- arch/powerpc/lib/xor_vmx_glue.c           |   63 --
- arch/riscv/include/asm/xor.h              |   68 --
- arch/s390/include/asm/xor.h               |   21 
- arch/sparc/include/asm/xor.h              |    9 
- arch/sparc/include/asm/xor_64.h           |   79 ---
- arch/um/include/asm/xor.h                 |   24 
- arch/x86/include/asm/xor_64.h             |   28 -
- b/arch/alpha/Kconfig                      |    1 
- b/arch/arm/Kconfig                        |    1 
- b/arch/arm/lib/Makefile                   |    5 
- b/arch/arm64/Kconfig                      |    1 
- b/arch/arm64/lib/Makefile                 |    6 
- b/arch/loongarch/Kconfig                  |    1 
- b/arch/loongarch/lib/Makefile             |    2 
- b/arch/powerpc/Kconfig                    |    1 
- b/arch/powerpc/lib/Makefile               |    5 
- b/arch/riscv/Kconfig                      |    1 
- b/arch/riscv/lib/Makefile                 |    1 
- b/arch/s390/Kconfig                       |    1 
- b/arch/s390/lib/Makefile                  |    2 
- b/arch/sparc/Kconfig                      |    1 
- b/arch/sparc/include/asm/asm-prototypes.h |    1 
- b/arch/sparc/lib/Makefile                 |    2 
- b/arch/um/Kconfig                         |    1 
- b/arch/x86/Kconfig                        |    1 
- b/crypto/Kconfig                          |    2 
- b/crypto/Makefile                         |    1 
- b/crypto/async_tx/async_xor.c             |   16 
- b/fs/btrfs/raid56.c                       |   27 -
- b/include/asm-generic/Kbuild              |    1 
- b/include/linux/raid/xor.h                |   28 -
- b/lib/Kconfig                             |    1 
- b/lib/Makefile                            |    2 
- b/lib/raid/Kconfig                        |    7 
- b/lib/raid/Makefile                       |    2 
- b/lib/raid/xor/Makefile                   |   50 ++
- b/lib/raid/xor/alpha/xor.c                |   46 -
- b/lib/raid/xor/alpha/xor_arch.h           |   22 
- b/lib/raid/xor/arm/xor-neon-glue.c        |   19 
- b/lib/raid/xor/arm/xor-neon.c             |   22 
- b/lib/raid/xor/arm/xor.c                  |  105 ----
- b/lib/raid/xor/arm/xor_arch.h             |   22 
- b/lib/raid/xor/arm64/xor-neon-glue.c      |   26 +
- b/lib/raid/xor/arm64/xor-neon.c           |   94 +--
- b/lib/raid/xor/arm64/xor-neon.h           |    6 
- b/lib/raid/xor/arm64/xor_arch.h           |   21 
- b/lib/raid/xor/loongarch/xor_arch.h       |   33 +
- b/lib/raid/xor/loongarch/xor_simd_glue.c  |   37 +
- b/lib/raid/xor/powerpc/xor_arch.h         |   22 
- b/lib/raid/xor/powerpc/xor_vmx.c          |   40 -
- b/lib/raid/xor/powerpc/xor_vmx.h          |   10 
- b/lib/raid/xor/powerpc/xor_vmx_glue.c     |   28 +
- b/lib/raid/xor/riscv/xor-glue.c           |   25 +
- b/lib/raid/xor/riscv/xor_arch.h           |   17 
- b/lib/raid/xor/s390/xor.c                 |   15 
- b/lib/raid/xor/s390/xor_arch.h            |   13 
- b/lib/raid/xor/sparc/xor-niagara-glue.c   |   33 +
- b/lib/raid/xor/sparc/xor-niagara.S        |  346 --------------
- b/lib/raid/xor/sparc/xor-sparc32.c        |   32 -
- b/lib/raid/xor/sparc/xor-vis-glue.c       |   34 +
- b/lib/raid/xor/sparc/xor-vis.S            |  348 ++++++++++++++
- b/lib/raid/xor/sparc/xor_arch.h           |   35 +
- b/lib/raid/xor/um/xor_arch.h              |    9 
- b/lib/raid/xor/x86/xor-avx.c              |   52 --
- b/lib/raid/xor/x86/xor-mmx.c              |  120 +---
- b/lib/raid/xor/x86/xor-sse.c              |  105 +---
- b/lib/raid/xor/x86/xor_arch.h             |   36 +
- b/lib/raid/xor/xor-32regs-prefetch.c      |  267 ++++++++++
- b/lib/raid/xor/xor-32regs.c               |  217 ++++++++
- b/lib/raid/xor/xor-8regs-prefetch.c       |  146 +++++
- b/lib/raid/xor/xor-8regs.c                |  103 ++++
- b/lib/raid/xor/xor-core.c                 |  187 +++++++
- b/lib/raid/xor/xor_impl.h                 |   60 ++
- crypto/xor.c                              |  174 -------
- include/asm-generic/xor.h                 |  738 ------------------------------
- 82 files changed, 2033 insertions(+), 2433 deletions(-)
 
