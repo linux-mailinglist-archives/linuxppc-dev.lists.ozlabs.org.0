@@ -1,101 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-17310-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17311-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEdnELKMoGkNkwQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17310-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 19:10:58 +0100
+	id cMt2EQCPoGkokwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17311-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 19:20:48 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291C81AD512
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 19:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCCB1AD7D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 19:20:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMKJY2syXz305M;
-	Fri, 27 Feb 2026 05:10:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMKWw2SsNz2yvy;
+	Fri, 27 Feb 2026 05:20:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772129453;
-	cv=none; b=OTNZ19cFFBXUKiaMfBwyr65G/IILnWKO2I6o602GH9q6kLcgNwWqqb8qOpOcq0oD3c0xVtoMOPKP24HKNWKTtMBlS7A8vUlyeKFnigXRjDRkpEfzOQvEBDJLK3LaFdR1QpliP/slnotpCswdIfD6/beyv4XdfkLzOiBK4TyYuNNV7qYTUDBZCPOzMC9w7/TIuh2+AHmXQew3+PYa+RLMzMxwjD+NcnKq7xQqTUhZHxV4SiRbtx4hnorC/L+qNlPuk1wfmKUplZc/KRh/mZ7WAISFDGu4TYXPcUQwTqbAUcanY+CCBzKKjy6z4zREQIWziifC7WGUB/SoBBG77oznoQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772130044;
+	cv=none; b=ZaNE+veVus0xCRIoIL+a3D1mLmJygs0KpP4EQqAc/DK91JtG9jr7jG1aYaoXGRR4f5dALLPXBcwtCjwt1NIzc1mb3OoOexPQoByVejq0P3wrqjp1hzlJ4Mht9pn8wHMfmQ3bsbzviczANq0EKwD48RMOgvgsBqmup8q0ucaK9HTaYmLTtADYnS6DL2FnAyWOltoiIZgHo/02vQERUTEH0Li80Sx+PsyHy4imd1t1aFv3DrRg6CqkeN+w0YGoCpU6ixB7cA6tBxdzk5rKgZrscvcApQwWnY0Urnzz0WIIBlid6QVydfql8s50spRNImBB5iNtd56VtoMIEPqMm2dJLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772129453; c=relaxed/relaxed;
-	bh=EiFUwGlKvPHJc9AsU/Wqf2qX4SDWzVFk7B399xUfI9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A0zVwhQzDxptb2WD66E19hrcvVyKozD8n/4A7DzTOzD+5n4oxDUGHqTpZuhprW6cA6YZl6MFkBfpg5q3643CVUv0O3i3uV8BLdtgIoxeTbOYVJ09BneU0kc2uU6fhdoUBpTzXnIYJPzPK3SwVwYtark5U0ZyRkLFB2oOijfL662zSaTvdgG6wLAQsKb5qqSQubzxcLKaf2AffRX6+YFdpoURH8O6CoUQm8O3rr+M4lIokQQw605rntm2ZEzGCTsHDTs+J0BjobkFZ5vU9f2N8z/Le8BXIvcA3rP++3wJ8L5A5vLMFU0YYYvbQxUXZrAS8Ae+5/dsS5Yt1J/1fHj24w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A9XozN7y; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=imbrenda@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1772130044; c=relaxed/relaxed;
+	bh=WXiOIvtk26yYWNJ1hVlQ8tpZw7Zqs8QSW7JOhqMXK5A=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=KjjKPU/1UowGThDUqjhvTSpezO84Ve4sID7PbaC0iWFa11cPWivv2gefvcusTBCDwo0kuLjbjvQHeDvBDpyBm/h5GwJ+lPI55JD3WEfelA8pA+nDASDwoMo68CG66sf9Ez+U1gkdYKVq8mbL4kYnUT7WXoS1q7dc+PeOh13HvH9qtCD/eJK35nNSaXetaGhgw4EOih2vbXM/6jXWg8I9Erxho6LSiUUSnkwkCquNiol9e29icnwgIxFrADyqj2v4uaGOpRi9X/bZSCi6Fw1xmhQoPgtp4fJJ4l7xH9mzRX95Ra31/DvBqaIPcn7AiZLyWLQmNKAQECSWg27l1OkQ5w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=PabnRhzU; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A9XozN7y;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=PabnRhzU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=imbrenda@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMKJW5mxzz2yrW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 05:10:51 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QD6Faq2725309;
-	Thu, 26 Feb 2026 18:10:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EiFUwG
-	lKvPHJc9AsU/Wqf2qX4SDWzVFk7B399xUfI9M=; b=A9XozN7yADv+w734KoqjJu
-	cmY5URUgJGXV1lciduLFTJDjuvpGVRXqNodjYvdRm6srQYfX+JKkyTzLJ6oO3lid
-	lt1246JIMpLXN60GlHCw78QYjEclm7RCJaIOga82zWCfa4xr6Hw2ZXeO4gOdxI2k
-	6cGeTcMHVR8xSwxLTb7kJhPH4UdNUh4NAQwmwLEeArGnHOukzh7fA7eMLi41cgrf
-	zls2ufrfHcFIcmaY9B7hUC5cvbachdn+mq5Qjb9CRIeULa45GKXoDkd7b6ZzEVRj
-	LMwmN48tEzzMzCMerpEr7STe88AIe245K5+3VGYVEOWTNTkEXCfDNPyeMNBSCygA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4bs7aa8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 18:10:15 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QI2mNq001607;
-	Thu, 26 Feb 2026 18:10:14 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1nd82t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 18:10:14 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QIAAwk42991898
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 18:10:10 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C5B620043;
-	Thu, 26 Feb 2026 18:10:10 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A613320040;
-	Thu, 26 Feb 2026 18:10:09 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.52.223.175])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 26 Feb 2026 18:10:09 +0000 (GMT)
-Date: Thu, 26 Feb 2026 19:10:07 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org,
-        ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
-        rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
-        ying.huang@linux.alibaba.com, apopple@nvidia.com,
-        lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
-        Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-        dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-        vbabka@suse.cz, jannh@google.com, rppt@kernel.org, mhocko@suse.com,
-        pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
-        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        borntraeger@linux.ibm.com, frankja@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
-        gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] mm: use vma_start_write_killable() in
- process_vma_walk_lock()
-Message-ID: <20260226191007.409a7a21@p-imbrenda>
-In-Reply-To: <20260226070609.3072570-4-surenb@google.com>
-References: <20260226070609.3072570-1-surenb@google.com>
-	<20260226070609.3072570-4-surenb@google.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMKWv185Fz2yY0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 05:20:42 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93D1641A62;
+	Thu, 26 Feb 2026 18:20:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC48BC116C6;
+	Thu, 26 Feb 2026 18:20:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772130039;
+	bh=HV1S/qrSmKMNPz1JBIra1UdVobFVeWulvDlaZO10nbE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PabnRhzU6AHT18WWRNM+FYnoFqe+hChSMy4cjmvk9ZcHJNCXAdiqYd9DXMpTA4IgR
+	 7sZPKkxDq1KXm+4nAHkDanvWCFUJp9dczwmhvEv3LBaJTNwaXyTLAreHodUOMltsf+
+	 iYrZK8OgzA+d74p/SRx/nc8YUk2EuT6G2bkC4R7Q=
+Date: Thu, 26 Feb 2026 10:20:37 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Richard Henderson <richard.henderson@linaro.org>, Matt Turner
+ <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Paul Walmsley
+ <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>, Andreas Larsson
+ <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Herbert Xu <herbert@gondor.apana.org.au>, Dan Williams
+ <dan.j.williams@intel.com>, Chris Mason <clm@fb.com>, David Sterba
+ <dsterba@suse.com>, Arnd Bergmann <arnd@arndb.de>, Song Liu
+ <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>, Li Nan
+ <linan122@huawei.com>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-raid@vger.kernel.org
+Subject: Re: cleanup the RAID5 XOR library
+Message-Id: <20260226102037.b855483efa0bf23c72d130d3@linux-foundation.org>
+In-Reply-To: <20260226151106.144735-1-hch@lst.de>
+References: <20260226151106.144735-1-hch@lst.de>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,112 +94,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: CtrnfnLFeGbNILvMxH4zz7_6vXcy1bo2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE2NSBTYWx0ZWRfX92/iJsyzGWX+
- U7gNleqecboFJWTHpna/+exChG3YePLWbT7HIINpkqg0RRcbAghOgu83/JdENcOYjyMxHXyYS2J
- vxq09Edt50L8rapeL1iGqQfXep6UdFtEScs6PLrjliHJTfK4HkCtLV1f5gYqnr4+oR+P/TmrBrJ
- WHUPRr898gbzAFY0BpdSk4/GWwqKBJ07z/9d2A3JTukzTerEs7+5ySYw7XMrM/MTFa6foacNTwu
- ZzwE1fe97JUOUH3DNbY21+30YHBz0ECn7fkHHJ4mRtDcI9n0YT/WOppk/oEf16FvL4+a4QS/5xY
- UAk4/2ujObMmGbT5ewiKuYjsEYSWdCs29SxYLJCCj4/1z0zdDKNhZ7ATf/bTOCeEEIGocCE7sZy
- PwQ4UxojBvq7LC4FCsLrkANEzgg4tXzL50hIzKkCGgm65w87ImnGgtlyXd+XZXRjtxPBhS5EBYQ
- NQ7T/7hz36hqMdZ4aaw==
-X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=69a08c87 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=1XWaLZrsAAAA:8
- a=8MrrMA2wyEC7cuUn5CwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: 5vfp8VXyeBQAaEvJC7GasClW74sWeMkd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260165
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17310-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[imbrenda@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[42];
-	FORGED_RECIPIENTS(0.00)[m:surenb@google.com,m:akpm@linux-foundation.org,m:willy@infradead.org,m:david@kernel.org,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:vbabka@suse.cz,m:jannh@google.com,m:rppt@kernel.org,m:mhocko@suse.com,m:pfalcato@suse.de,m:kees@kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-s390@vger.kernel.org,m:joshuahahnjy
- @gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17311-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[imbrenda@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:richard.henderson@linaro.org,m:mattst88@gmail.com,m:linmag7@gmail.com,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:davem@davemloft.net,m:andreas@gaisler.com,m:richard@nod.at,m:anton.ivanov@cambridgegreys.com,m:johannes@sipsolutions.net,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:herbert@gondor.apana.org.au,m:dan.j.williams@intel.com,m:clm@fb.com,m:dsterba@suse.com,m:arnd@arndb.de,m:song@kernel.org,m:yukuai@fnnas.com,m:linan122@huawei.com,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.o
+ rg,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-crypto@vger.kernel.org,m:linux-btrfs@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-raid@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[akpm@linux-foundation.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,infradead.org,kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,oracle.com,redhat.com,arm.com,linux.dev,suse.cz,google.com,suse.com,suse.de,linux.ibm.com,ellerman.id.au,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 291C81AD512
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_GT_50(0.00)[54];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 2CCCB1AD7D8
 X-Rspamd-Action: no action
 
-On Wed, 25 Feb 2026 23:06:09 -0800
-Suren Baghdasaryan <surenb@google.com> wrote:
+On Thu, 26 Feb 2026 07:10:12 -0800 Christoph Hellwig <hch@lst.de> wrote:
 
-> Replace vma_start_write() with vma_start_write_killable() when
-> process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-> Adjust its direct and indirect users to check for a possible error
-> and handle it. Ensure users handle EINTR correctly and do not ignore
-> it.
+> the XOR library used for the RAID5 parity is a bit of a mess right now.
+> The main file sits in crypto/ despite not being cryptography and not
+> using the crypto API, with the generic implementations sitting in
+> include/asm-generic and the arch implementations sitting in an asm/
+> header in theory.  The latter doesn't work for many cases, so
+> architectures often build the code directly into the core kernel, or
+> create another module for the architecture code.
 > 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  arch/s390/kvm/kvm-s390.c |  2 +-
->  fs/proc/task_mmu.c       |  5 ++++-
->  mm/mempolicy.c           | 14 +++++++++++---
->  mm/pagewalk.c            | 20 ++++++++++++++------
->  mm/vma.c                 | 22 ++++++++++++++--------
->  mm/vma.h                 |  6 ++++++
->  6 files changed, 50 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 7a175d86cef0..337e4f7db63a 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -2948,7 +2948,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  		}
->  		/* must be called without kvm->lock */
->  		r = kvm_s390_handle_pv(kvm, &args);
-> -		if (copy_to_user(argp, &args, sizeof(args))) {
-> +		if (r != -EINTR && copy_to_user(argp, &args, sizeof(args))) {
->  			r = -EFAULT;
->  			break;
->  		}
+> Changes this to a single module in lib/ that also contains the
+> architecture optimizations, similar to the library work Eric Biggers
+> has done for the CRC and crypto libraries later.  After that it changes
+> to better calling conventions that allow for smarter architecture
+> implementations (although none is contained here yet), and uses
+> static_call to avoid indirection function call overhead.
 
-can you very briefly explain how we can end up with -EINTR here?
+Thanks, I'll add this to mm.git's mm-nonmm-unstable tree for some
+testing in linux-next.
 
-do I understand correctly that -EINTR is possible here only if the
-process is being killed?
-
-[...]
 
