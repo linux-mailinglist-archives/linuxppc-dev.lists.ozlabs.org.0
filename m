@@ -1,77 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-17366-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17367-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SN4fHu1VoWk+sQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17366-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 09:29:33 +0100
+	id WKkELApYoWldsQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17367-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 09:38:34 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0D01B48F0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 09:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E6E1B49E9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 09:38:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMhMG06Y0z2yFQ;
-	Fri, 27 Feb 2026 19:29:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMhYf6QTmz2xMt;
+	Fri, 27 Feb 2026 19:38:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772180969;
-	cv=none; b=lODmTZghJ+qq/WjbiL3xFOovYx0iTLN+gq6rs94fA3Sn2UNGVp/uc/7au04pCBj4xsDwskNYXWdrbNurwMVbPl7vDMwdfzF5i+O8Z87OQdVN9XO15vlikjyc2DngAWpbtt4n7RMZ5KpyycTxQAdAUXugCYJfg7T0EJT91UKbIQflGmjWNg4VIUOb98l2LMmvu4TI0twzPT/oNZ2Tr7Ow7pgB5jBG3IpVayEqUGD/FEzCAINhYGrW33lC3wNv942H6kYPUKCmB/mTMPOIS8q03Ysfwk9e8bJXQswxAc6Fc5MklVK0nrAw4806qKjFMTRLEXnCADtR/RoAigZOGvkJpw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772181510;
+	cv=none; b=CCP0bJC1k8Kqro3HOAef+Zse6EaLmyiHzdy+2Xjh/fOJ22y/vPIe6Vr+0SkgX7n7iKFOAb1rRSAZ+6POUx5z8zDnT5k4tXXR9+WW3VLZ0/hGLktI3j7dLzOB743dRPqvJcXay3vdOrmDsy/5KrxqK2jAumDD6XhScmgAkH+ukBQyqNqgy2IBOuZ9OX2l4SbBwMJscXUCuJq3icEUytLxfyDYee2zrEsN9U288zxzivu8yjsohxfy+L/74M1SHm5E7ZGDomuXmJAxkGncO5IoSb3zmz8arS6RB2ZPQAa6wLdIa3cJYVUPe6C5yHUyTUGZaMQ/1i+uQzQRUrL8y68iBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772180969; c=relaxed/relaxed;
-	bh=WjUTBMCek3Z8NujeohpUr7Q1Jg5lzgvRg/Kd1H3BpIc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vzjngjl8LwY6Yo0iRKb5EYt5uJTGForieLPQPEsIZXfAVO5INu2+YvugCjTjnXjRTsBQ2YVoEC20dDI0etLKIA1K+9toUFPKDe+Oiir5lV0GjOTlu6C785YzuG5vIIJXJ3vLeARVV75krTG/Hbr+QxVOOfyMS4XOFn0LkdN6OlPvj1K1F9xLubFlP+BJRWaNnmOSiQ2bPDOSmA22uqd7JYKNmlsNwyGep7Y42JjfWGoOE1q24cRS2i42y4iK3IuWfPPs2I95sn/LMk8RXu+CZGj94R7EW9EaqhmzqrPV2/c/8NH+kVMIw/61QIIJmZwgWa0zx+pnzCqJ9826g3HL5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rFZwGEED; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1772181510; c=relaxed/relaxed;
+	bh=B8/5bI+d66y81V2rFiaH4FWnj6qjMkY7SACemFjjFkQ=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z48XjU4IgkKxkI1q9fAsK6Vbu5M5GNMNgQ8lZMAlA226YSwCodhL3Z/q8HJ5MbSw40C66NwIKPLzns+BpSxY93Ge2roCHP8W0uh+FIdCTuTEmmiXlvDdeYNcE+g/XOqXIZJPpGkDyZke4ebPhBsJRfj5Y8XRZpXv0Ib1WH8ycoqfRcv/x076DnS36J5i/oLt5AAIIbE01v9CxisKdOLAenP27IWJZweXXZb9mTXJlYQE/TTmYauUaHvW4873TKlCVa4/9CXYHBl4hDw8bOX3rXJNAS3UKusx3v+Kt+ZaW2WAp0p4VN/CYIKYDUI+THkkFF3Z+vBSo7oq5sHIwqc1nA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rRWuw9/T; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=brgl@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rFZwGEED;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rRWuw9/T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=brgl@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMhMD3YmVz2xLv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 19:29:28 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R2K19s2935076;
-	Fri, 27 Feb 2026 08:29:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=WjUTBM
-	Cek3Z8NujeohpUr7Q1Jg5lzgvRg/Kd1H3BpIc=; b=rFZwGEEDjDPaB/ANdESy94
-	TO6krgNZIskePhF5hj8ZRHLwNrHTk12+nUhWgf0urOtSdCgQrQBl5F6vK2TC49dL
-	gO6LniLcOqUQIi00Tb8IV53MEiZ90/6wEdzfy7dv0SmtwMAdV0l8/UDvXFvIat5W
-	YTK2jL5fU2majG8iPIiyU7shfJ5/yjmSDb8Z5+4k1ubtwNiRPldkkhLS3B6OHQ1F
-	HmHliACN4ZXYFl3bZ4n8Umam7qa6gnJhzp19pwpnm2JSVpzAa39kiy+9F2JTI2DY
-	AawzE2MW4nrLFqLcPaTgpmHc1WGfL9g/lCDSkaXxgHIQHtiEmBTvF+bkjT1zFHfQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf24gtw60-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 08:29:15 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61R7k5tB015983;
-	Fri, 27 Feb 2026 08:29:15 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1t17ad-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 08:29:15 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61R8TDps11272704
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Feb 2026 08:29:13 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 29EAA58059;
-	Fri, 27 Feb 2026 08:29:13 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB43F58057;
-	Fri, 27 Feb 2026 08:29:08 +0000 (GMT)
-Received: from [9.98.107.249] (unknown [9.98.107.249])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Feb 2026 08:29:08 +0000 (GMT)
-Message-ID: <5d316ad2-a842-4d29-b155-ecfc47aa1066@linux.ibm.com>
-Date: Fri, 27 Feb 2026 13:59:07 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMhYf0krtz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 19:38:30 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EF65144548
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 08:38:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4FDC19422
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 08:38:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772181507;
+	bh=B8/5bI+d66y81V2rFiaH4FWnj6qjMkY7SACemFjjFkQ=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=rRWuw9/TnLwpOnG2Dpa/ftMLizMNL6RcO4Fp7w9HPl1gDrgoIXsuZRVJ6muNILsPc
+	 WTjb91b2F65aXORG6g28JbNgIdZUHVWHJCAYlCQB8eDyHhU2yeJG1YJp69uC4e/CwC
+	 C0WF8d5iqzKBJGc7+Qab+/E74MhB/O1WKKr6mEg7uf7NIV1JZyKDDlJ2rrXEWD+ary
+	 1INp5PzUpApixPN78wGg9+v+Eh6SP0OMrTYQVbJy9DjJjxQvsYdEOZ+O/rczHUzo63
+	 cXpJVCvz6/uOeaet8B4gG0IwxYWqKZC01R4d9xkn15DBakmkYwAbstEp170PWksfep
+	 hGiLJ/2BmEn+g==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-389f200c26eso17081131fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 00:38:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXISr7Ke0uEwXi+TZe8A8CKSzDo1XxAcibZXIYXf5dTzvvYRW9ijrSybNfzzcQ3BY+c2TceKBv2f3vuujU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YygI3u2mxZ5h/Km4HYHj3N3uuZcjMR/tj7AgGgk0FoY5zPt4PUL
+	xa4yHgmHzeT/YGEY7k/dkhGWhsHOTQJafjcIpAJjKmVGBnSSFIk6YIUDV6PnTT5AvOT7tlwTrCE
+	2thycRX0mHhgfW9SfV4eKzBwTRN1Gqz+w+rc8SiIimg==
+X-Received: by 2002:a2e:a10b:0:b0:389:ef35:fb9e with SMTP id
+ 38308e7fff4ca-389ff15f2f5mr11325631fa.24.1772181505403; Fri, 27 Feb 2026
+ 00:38:25 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 27 Feb 2026 00:38:23 -0800
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 27 Feb 2026 00:38:23 -0800
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <aaCrT1SvMCIKQDmc@ninjato>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,219 +76,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/6] Extend "trusted" keys to support a new trust
- source named the PowerVM Key Wrapping Module (PKWM)
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        James.Bottomley@HansenPartnership.com, jarkko@kernel.org,
-        zohar@linux.ibm.com, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20260201135930.898721-1-ssrish@linux.ibm.com>
- <31dfcf7a-5b3d-406d-bdd4-c8b09f7eb1f0@kernel.org>
-Content-Language: en-US
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-In-Reply-To: <31dfcf7a-5b3d-406d-bdd4-c8b09f7eb1f0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=TNRIilla c=1 sm=1 tr=0 ts=69a155dc cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=QyXUC8HyAAAA:8
- a=VwQbUJbxAAAA:8 a=zIm8Uhvo-wyo9pAa0GkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ftecudPO92h21O9-uuzMyzd80otBlo3e
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA2OCBTYWx0ZWRfXwpbjmUQTgC4u
- Ehy/QxKdbUadIYYvLL23tes8BFOFwCzmoZL2oIgujluNIS9TTyT42dTdlAesAtHZra4O+IvLIMq
- C351O6sdTT1SRwgUMv8gpRqRS+KbIiy4lIU/yAp+7UQS2I+V7/1aoB2ez8KtTk7nIMERsupJirk
- lxWj7HihPH6iJDTQiabEvunetvZbhg5vWcAmVlTpTRfTzANMjDGvtPMI4LEuvO1SCkypC/j8Kew
- l9xCuW65AvlizjOKMFho4XVmEnkBc2M6JcnrnB6i8Lj5BfuyG5ZjuH9V6i1nZJsF1uvShLk5rFE
- n0+YKBBkVrzTdo/oCUbvinICxhDTjwGIAnB2cADH0q4Lzubmm86IkikYzaE046ujazGhPRx1ZcT
- yi0ComgtwvUyED8oKcBAwq4byetHhVVdazdu0zQ3K2XAaiHWVVZOvrLjUvZ6qxDU5HZq4MGz/Jl
- hyIk/JjKi8SD15tJfRw==
-X-Proofpoint-ORIG-GUID: L_WJThrLdBOahqN_YT_rFmFPZnfrogXt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-27_01,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- spamscore=0 clxscore=1011 bulkscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602270068
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com> <aaCrT1SvMCIKQDmc@ninjato>
+Date: Fri, 27 Feb 2026 00:38:23 -0800
+X-Gmail-Original-Message-ID: <CAMRc=MfwR7TfAFXO4opu7a=v84MK9hY048woPg+-09wkGJgWFg@mail.gmail.com>
+X-Gm-Features: AaiRm52Yb9kd_att7B9hKBtSpFgOcTtzo7FDwU7A01PqlXP6UIrlHqDUHcGb-x8
+Message-ID: <CAMRc=MfwR7TfAFXO4opu7a=v84MK9hY048woPg+-09wkGJgWFg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/13] i2c: add and start using i2c_adapter-specific
+ printk helpers
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Khalil Blaiech <kblaiech@nvidia.com>, Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	=?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-actions@lists.infradead.org, Bartosz Golaszewski <brgl@kernel.org>, 
+	linux-media@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-17367-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17366-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:James.Bottomley@HansenPartnership.com,m:jarkko@kernel.org,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,HansenPartnership.com,kernel.org,vger.kernel.org];
+	FORGED_SENDER(0.00)[brgl@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,sholland.org,nvidia.com,suse.com,linux.ibm.com,ellerman.id.au,suse.de,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,oss.qualcomm.com];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FORGED_RECIPIENTS(0.00)[m:wsa+renesas@sang-engineering.com,m:andi.shyti@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:kblaiech@nvidia.com,m:asmaa@nvidia.com,m:jdelvare@suse.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:afaerber@suse.de,m:mani@kernel.org,m:mchehab@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-actions@lists.infradead.org,m:brgl@kernel.org,m:linux-media@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:wsa@sang-engineering.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.988];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 9B0D01B48F0
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: C8E6E1B49E9
 X-Rspamd-Action: no action
 
-Hi Christophe,
-
-On 2/27/26 1:21 PM, Christophe Leroy (CS GROUP) wrote:
+On Thu, 26 Feb 2026 21:21:35 +0100, Wolfram Sang
+<wsa+renesas@sang-engineering.com> said:
+> On Mon, Feb 23, 2026 at 09:59:29AM +0100, Bartosz Golaszewski wrote:
+>> It's been another year of discussing the object life-time problems at
+>> conferences. I2C is one of the offenders and its problems are more
+>> complex than those of some other subsystems. It seems the revocable[1]
+>> API may make its way into the kernel this year but even with it in
+>> place, I2C won't be able to use it as there's currently nothing to
+>> *revoke*. The struct device is embedded within the i2c_adapter struct
+>> whose lifetime is tied to the provider device being bound to its driver.
+>>
+>> Fixing this won't be fast and easy but nothing's going to happen if we
+>> don't start chipping away at it. The ultimate goal in order to be able
+>> to use an SRCU-based solution (revocable or otherwise) is to convert the
+>> embedded struct device in struct i2c_adapter into an __rcu pointer that
+>> can be *revoked*. To that end we need to hide all dereferences of
+>> adap->dev in drivers.
+>>
+>> This series addresses the usage of adap->dev in device printk() helpers
+>> (dev_err() et al). It introduces a set of i2c-specific helpers and
+>> starts using them across bus drivers. For now just 12 patches but I'll
+>> keep on doing it if these get accepted. Once these get upstream for
+>> v6.20/7.0, we'll be able to also start converting i2c drivers outside of
+>> drivers/i2c/.
 >
+> I applied the series to for-current but squashed the user conversions
+> into patch 1. Changes are trivial enough and I don't want the pull
+> request to look excessive, so it can go in smoothly. Hope you are fine
+> with it.
 >
-> Le 01/02/2026 à 14:59, Srish Srinivasan a écrit :
->> Power11 has introduced a feature called the PowerVM Key Wrapping Module
->> (PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
->> (PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
->> user secrets by wrapping them using a hypervisor generated wrapping key.
->> This wrapping key is an AES-GCM-256 symmetric key that is stored as an
->> object in the PLPKS. It has policy based protections that prevents it 
->> from
->> being read out or exposed to the user. This wrapping key can then be 
->> used
->> by the OS to wrap or unwrap secrets via hypervisor calls.
->>
->> This patchset intends to add the PKWM, which is a combination of IBM
->> PowerVM and PLPKS, as a new trust source for trusted keys. The 
->> wrapping key
->> does not exist by default and its generation is requested by the 
->> kernel at
->> the time of PKWM initialization. This key is then persisted by the 
->> PKWM and
->> is used for wrapping any kernel provided key, and is never exposed to 
->> the
->> user. The kernel is aware of only the label to this wrapping key.
->>
->> Along with the PKWM implementation, this patchset includes two 
->> preparatory
->> patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
->> another reorganizing PLPKS config variables in the sysfs.
->>
->> Changelog:
->>
->> v6:
->
-> Seems like v5 was applied, if needed can you send followup patch ?
->
-> Christophe
 
+Sure, do you still want me to send these changes in separate patches for
+review?
 
-I had sent out a patch on top of v5 to take care of this, and it has 
-been applied.
-
-thanks,
-Srish.
-
-
->
->>
->> * Patch 1 to Patch 3:
->>    - Add Nayna's Tested-by tag
->> * Patch 4
->>    - Fix build error reported by kernel test robot <lkp@intel.com>
->>    - Add Nayna's Tested-by tag
->> * Patch 5
->>    - Add Nayna's Tested-by tag
->>
->> v5:
->>
->> * Patch 1 to Patch 3:
->>    - Add Nayna's Reviewed-by tag
->> * Patch 4:
->>    - Fix build error identified by chleroy@kernel.org
->>    - Add Nayna's Reviewed-by tag
->> * Patch 5:
->>    - Add Reviewed-by tags from Nayna and Jarkko
->>
->> v4:
->>
->> * Patch 5:
->>    - Add a per-backend private data pointer in trusted_key_options
->>      to store a pointer to the backend-specific options structure
->>    - Minor clean-up
->>
->> v3:
->>
->> * Patch 2:
->>    - Add Mimi's Reviewed-by tag
->> * Patch 4:
->>    - Minor tweaks to some print statements
->>    - Fix typos
->> * Patch 5:
->>    - Fix typos
->>    - Add Mimi's Reviewed-by tag
->> * Patch 6:
->>    - Add Mimi's Reviewed-by tag
->>
->> v2:
->>
->> * Patch 2:
->>    - Fix build warning detected by the kernel test bot
->> * Patch 5:
->>    - Use pr_debug inside dump_options
->>    - Replace policyhande with wrap_flags inside dump_options
->>    - Provide meaningful error messages with error codes
->>
->> Nayna Jain (1):
->>    docs: trusted-encryped: add PKWM as a new trust source
->>
->> Srish Srinivasan (5):
->>    pseries/plpks: fix kernel-doc comment inconsistencies
->>    powerpc/pseries: move the PLPKS config inside its own sysfs directory
->>    pseries/plpks: expose PowerVM wrapping features via the sysfs
->>    pseries/plpks: add HCALLs for PowerVM Key Wrapping Module
->>    keys/trusted_keys: establish PKWM as a trusted source
->>
->>   .../ABI/testing/sysfs-firmware-plpks          |  58 ++
->>   Documentation/ABI/testing/sysfs-secvar        |  65 --
->>   .../admin-guide/kernel-parameters.txt         |   1 +
->>   Documentation/arch/powerpc/papr_hcalls.rst    |  43 ++
->>   .../security/keys/trusted-encrypted.rst       |  50 ++
->>   MAINTAINERS                                   |   9 +
->>   arch/powerpc/include/asm/hvcall.h             |   4 +-
->>   arch/powerpc/include/asm/plpks.h              |  95 +--
->>   arch/powerpc/include/asm/secvar.h             |   1 -
->>   arch/powerpc/kernel/secvar-sysfs.c            |  21 +-
->>   arch/powerpc/platforms/pseries/Makefile       |   2 +-
->>   arch/powerpc/platforms/pseries/plpks-secvar.c |  29 -
->>   arch/powerpc/platforms/pseries/plpks-sysfs.c  |  96 +++
->>   arch/powerpc/platforms/pseries/plpks.c        | 688 +++++++++++++++++-
->>   include/keys/trusted-type.h                   |   7 +-
->>   include/keys/trusted_pkwm.h                   |  33 +
->>   security/keys/trusted-keys/Kconfig            |   8 +
->>   security/keys/trusted-keys/Makefile           |   2 +
->>   security/keys/trusted-keys/trusted_core.c     |   6 +-
->>   security/keys/trusted-keys/trusted_pkwm.c     | 190 +++++
->>   20 files changed, 1207 insertions(+), 201 deletions(-)
->>   create mode 100644 Documentation/ABI/testing/sysfs-firmware-plpks
->>   create mode 100644 arch/powerpc/platforms/pseries/plpks-sysfs.c
->>   create mode 100644 include/keys/trusted_pkwm.h
->>   create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
->>
->
+Bart
 
