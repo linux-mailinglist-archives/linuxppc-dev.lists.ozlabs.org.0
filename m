@@ -1,55 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-17377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPlfCl9ioWnIsQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 10:22:39 +0100
+	id oHDrJp9koWn7sQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 10:32:15 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8E51B53AB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 10:22:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174691B557A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 10:32:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMjXW3xxZz3bjb;
-	Fri, 27 Feb 2026 20:22:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMjlb206Mz3bkL;
+	Fri, 27 Feb 2026 20:32:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772184155;
-	cv=none; b=QhTqLVX5YnXwG/zGEtO73jbQBR/DGxxWbv3Vim9XEnj33OiLWGKdfgQJohMUZuVLiDntvjlzOO7X4hHuqBP208e8TXS7mL9e9t8K3GKyEAqzTi6STFRQ9H8ioT9I1gyxiV24WUsZNuI6yD8ucuj9A49JzWmaU2wLrHleS7xbhYjuRH8pRvTFsVpghE8XwEZwRjsMNCU7e6zzpozWAVt8baA4P3thEyFOAfy5bRG4KplyUnT1g3OWXxftQAcZlSAkCeEg+RMTn68dbWLvIxfWL7fKdPv3VqXBeEb1rNTbR3dGksWiRAiFttrvsbtD+HPy288zjV+LEu1Xcd7NoZmRqQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772184731;
+	cv=none; b=FE5MObuun1rohdEg79JL5qIeZx2b6L+z5LA4SLlD0nqnunXtTCxS+MM3tosrgtgMcxieOQm/1BTkyFVfd0VGbpGNOWrwkzJ0+wBDKh9614uJeMurcWR3e7VpB+FdLr5Ey+HFXKY1aQxZ/kIMtGBmemLQPXmlX512X0Z6XQIHDZkRbnr0oLItXqgSdnkRypphX9oq+/bLFOgT5DgwB/7TYRa/r7EsC/p+vDP/M6e5GNFu+0iwcWeHqSHFlw0OZ0FZNgwBtQ0bPzVVtEk6geMbnv4Xrn+/ufazDs5A+i+8F1C2f+nKMi1PxOPXJ9ZW7qJnQ1M00HxtLkaSuTvibSgIzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772184155; c=relaxed/relaxed;
-	bh=Sqkc+HLFSGjjtwglZPf/6z3ywNSfXtpoHXXty0+TTus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EyMAu6KK3MtjymEsf/tBLVMXYut1SdkNMuXzmugia+ahrp1ohy0nKKQtg+XDTYG2rdJ3wJc5mSqEzISskdMCFHjP8zXVNJFLP68AGzzkfJUI5Tiwc9LCkI7s7a4jh2+rYk6KNBSglONgcfxj9tEuFByQXD4evHDo35JbPjTNg8oKrg77UothV+n7/di7hSuP43wEikjKrCQN3+IT4WyBc0fnZLUuFeUUfFd+OHUbvps+QKZZOTvV9j9Pu2lrC3kU5K1NK17oBADVF9PMPxP1XOU8SCWTm1qQ3/u6J+u+KhaWk2ezUwGHd0L0fDOMB1lLllMUedhB2DFLaaiSZlz2Bw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HOrLsUwT; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1772184731; c=relaxed/relaxed;
+	bh=XOdZaB3lOid4SOqrP5NMga5DLjNzennvRPzmBIDu08I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g25Eo+hKZkgSrpOO/JSkTY+T6hXZL20tvY4z7eKecBaCEaAaByaBLSZXisY6fdNbVgcMbPbyYxkPFyUaLrh85HwImWykza2cYVFQBDZ6/JfgO5mpyFpNr4cS4VOQi3f0RM89QDDtQi44Pts2a2oIYoCPLc/p2JwPqRuWGOGvl2iIAvj6o3xsZ/iu2XZdJHFShHQ8cnlCCP1zgAh4zXAYscbio5wZ02udl68VeYrUZCFe47lwl4u+q5haEJy79uAbRoBAs6XSmc0F53B9IyVH+6qB7oyJpfwgSPPNu3c+8FkLvVBKBxGsCJOgazv1SV/wki+2/GDUlC4jHPqqHaZM1g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=30xG3cOQ; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8swSz8Rs; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HOrLsUwT;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=30xG3cOQ;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8swSz8Rs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMjXV57Vmz2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 20:22:34 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 961374325C;
-	Fri, 27 Feb 2026 09:22:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7C1C116C6;
-	Fri, 27 Feb 2026 09:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772184152;
-	bh=1xRqsTK8wl/1ySu1f7UjH2uuObJ+YIC1m7OdvCqed6E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HOrLsUwTFVwzCFf01k0g199VVFA743n/jWlbrQdAu3CnDtKoILFFSAV7Ud1QaGYJ+
-	 z+itZmQ82+/P6Wkc/vrIAIbKFNxHSBjpbyX+oeX8BuNbbYgDfpTTWxEUPUpRwwCGy8
-	 WHvbtmc3qclf9NkJIKtz+MCuz+duevrTtiIFFzZ1Tyqy3B6CyQ4SvDeYQsrOau4f0o
-	 CR4liDwd8BMm6Z5d+dcfvKSwV6gl45QD9DhhstNaFaCKdmCsEFFMRt6zhq8q4uAdz2
-	 sqzxp8n/lF9xiwg2FrlQrbM73R5YB0LnVZ73Evnrmb27oBw9M9EotzhFTyokfFv5qg
-	 pOwGQJMnQpoZA==
-Message-ID: <a8f8fd17-7746-46da-8ae7-439d1e8f1f23@kernel.org>
-Date: Fri, 27 Feb 2026 10:22:28 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMjlZ24KKz2xYw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 20:32:10 +1100 (AEDT)
+Date: Fri, 27 Feb 2026 10:31:58 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772184718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XOdZaB3lOid4SOqrP5NMga5DLjNzennvRPzmBIDu08I=;
+	b=30xG3cOQq3Co+onLqk07Fl1SRub/xIIrWg5BlfgkzAWZ0VeIKC54fH8uO8eZEd+hg1DEWm
+	3lFzR/rzBx84ZT1ZKzZrWltXdpoXCZ0ibq9i/Dsptb/aoovS1STcf39oBFQSEeuj/xseGE
+	6K9RLDzVR2T8QKb0M8tvGIhDcPj4s3MmKysFRs7YVGQwx3ek5/b+BoabeLlNjEv9oYIZMb
+	YGETHpEAry3zfcuN5E2Npk67Vw6JW2IG2s1TzFPZSDONjRyV4lLzE+jXmUHCikBXLonAGz
+	fd3ywzi5SA0cqDHTHwGAWijGynVhIumuIoXjFDntV7gAIwKpTXIs6V1kTXWbUg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772184718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XOdZaB3lOid4SOqrP5NMga5DLjNzennvRPzmBIDu08I=;
+	b=8swSz8Rslvq4Ux1k+Q/Nlj4jfo/n+8Kwiv+xQ3xlP0PoCvw9xbWvPet52abVwHEuj2VTTA
+	7tuFl+I2R98cffCg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH 5/7] MIPS: VDSO: Drop kconfig MIPS_CLOCK_VSYSCALL
+Message-ID: <20260227100849-fb0bfec5-4d67-409c-8dc4-dad10c84fe98@linutronix.de>
+References: <20260227-vdso-compat_32bit_time-v1-0-3f0286a7bac3@linutronix.de>
+ <20260227-vdso-compat_32bit_time-v1-5-3f0286a7bac3@linutronix.de>
+ <7fb5b531-2d78-409f-8f65-e12757f9296e@app.fastmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,401 +85,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc: fix KUAP warning in VMX usercopy path
-To: Sayali Patil <sayalip@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com
-Cc: aboorvad@linux.ibm.com, sshegde@linux.ibm.com, riteshh@linux.ibm.com
-References: <20260217124457.89219-1-sayalip@linux.ibm.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260217124457.89219-1-sayalip@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <7fb5b531-2d78-409f-8f65-e12757f9296e@app.fastmail.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17377-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,armlinux.org.uk,arm.com,linux.ibm.com,ellerman.id.au,gmail.com,alpha.franken.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17378-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sayalip@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:aboorvad@linux.ibm.com,m:sshegde@linux.ibm.com,m:riteshh@linux.ibm.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:tsbogend@alpha.franken.de,m:vincenzo.frascino@arm.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-mips@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.996];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	REDIRECTOR_URL(0.00)[aka.ms];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aka.ms:url,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 3A8E51B53AB
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
+X-Rspamd-Queue-Id: 174691B557A
 X-Rspamd-Action: no action
 
-Hi,
+On Fri, Feb 27, 2026 at 09:46:23AM +0100, Arnd Bergmann wrote:
+> On Fri, Feb 27, 2026, at 07:57, Thomas Wei�schuh wrote:
+> > This configuration option exists so "that we don't provide the symbol
+> > when there's no possibility of there being a usable clocksource".
+> > However it only covers __vdso_gettimeofday() and none of the other vDSO
+> > functions which should be affected by the same circumstances.
+> > As these are more widely used than gettimeofday() and nobody seems to
+> > have had an issue with them so far, drop MIPS_CLOCK_VSYSCALL completely.
+> >
+> > The removal of the ifdeffery will also make some upcomming changes
+> > easier to read.
+> >
+> > Signed-off-by: Thomas Wei�schuh <thomas.weissschuh@linutronix.de>
+> 
+> The #ifdef was originally been added in commit 7d2aa4bb90f5 ("mips:
+> Fix gettimeofday() in the vdso library") as a bug fix. This may not
+> have been the correct fix because I don't see how it addressed the
+> case of a kernel with MIPS_CLOCK_VSYSCALL enabled running on a
+> CPU without the timer registers, but I think we should try to make
+> sure that there is no regression from reverting it now.
 
-Le 17/02/2026 à 13:44, Sayali Patil a écrit :
-> [Vous ne recevez pas souvent de courriers de sayalip@linux.ibm.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> On powerpc with PREEMPT_FULL or PREEMPT_LAZY and function tracing enabled,
-> KUAP warnings can be triggered from the VMX usercopy path under memory
-> stress workloads.
-> 
-> KUAP requires that no subfunctions are called once userspace access has
-> been enabled. The existing VMX copy implementation violates this
-> requirement by invoking enter_vmx_usercopy() from the assembly path after
-> userspace access has already been enabled. If preemption occurs
-> in this window, the AMR state may not be preserved correctly,
-> leading to unexpected userspace access state and resulting in
-> KUAP warnings.
-> 
-> Fix this by moving VMX selection and enter_vmx_usercopy()/
-> exit_vmx_usercopy() handling into the raw_copy_{to,from,in}_user()
-> wrappers in uaccess.h. The new flow is:
-> 
->    - Decide whether to use the VMX path based on size and CPU capability
->    - Call enter_vmx_usercopy() before enabling userspace access
->    - Enable userspace access and perform the VMX copy
->    - Disable userspace access
->    - Call exit_vmx_usercopy()
->    - Fall back to the base copy routine if the VMX copy faults
-> 
-> With this change, the VMX assembly routines no longer perform VMX state
-> management or call helper functions; they only implement the
-> copy operations.
-> The previous feature-section based VMX selection inside
-> __copy_tofrom_user_power7() is removed, and a dedicated
-> __copy_tofrom_user_power7_vmx() entry point is introduced.
-> 
-> This ensures correct KUAP ordering, avoids subfunction calls
-> while KUAP is unlocked, and eliminates the warnings while preserving
-> the VMX fast path.
+I can't make sense out of this commit. The generic vDSO automatically falls
+back to the syscall if it can not handle the current clocksource.
+There is no explanation *why* this should be broken on MIPS.
+It works correctly on my x86 machines.
+I will try to reproduce this in QEMU by removing the vDSO capability from
+the respective clocksources.
 
-You patch conflicts with the changes for adding masked user access.
+Also vdso_clock_gettime() uses the same codepaths as vdso_gettimeofday()
+and apparently that is not broken.
 
-Can you rebase on top of v7.0-rc1 ?
+> > -config MIPS_CLOCK_VSYSCALL
+> > -	def_bool CSRC_R4K || CLKSRC_MIPS_GIC
+> > -
+> 
+> An easy alternative might be to drop the entire VDSO in
+> configurations that turn off the gettimeofday vsyscall today:
+> 
+> diff --git a/arch/mips/vdso/Kconfig b/arch/mips/vdso/Kconfig
+> index 70140248da72..4f6fba9e108f 100644
+> --- a/arch/mips/vdso/Kconfig
+> +++ b/arch/mips/vdso/Kconfig
+> @@ -3,4 +3,4 @@
+>  # the lack of relocations. As such, we disable the VDSO for microMIPS builds.
+>  
+>  config MIPS_DISABLE_VDSO
+> -	def_bool CPU_MICROMIPS
+> +	def_bool CPU_MICROMIPS || !(CSRC_R4K || CLKSRC_MIPS_GIC)
 
-Comments below
+That is an an independent optimization IMO.
 
-> 
-> Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
-> Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/20260109064917.777587-2-sshegde@linux.ibm.com/
-> Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/uaccess.h | 67 ++++++++++++++++++++++++++++++
->   arch/powerpc/lib/copyuser_64.S     |  1 +
->   arch/powerpc/lib/copyuser_power7.S | 45 +++++++-------------
->   arch/powerpc/lib/vmx-helper.c      |  2 +
->   4 files changed, 85 insertions(+), 30 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 784a00e681fa..52e4a784d148 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -13,6 +13,11 @@
->   #define TASK_SIZE_MAX          TASK_SIZE_USER64
->   #endif
-> 
-> +#ifdef CONFIG_ALTIVEC
 
-remove the ifdef to avoid matching ifdef later
-
-> +/* Threshold above which VMX copy path is used */
-> +#define VMX_COPY_THRESHOLD 3328
-> +#endif
-> +
->   #include <asm-generic/access_ok.h>
-> 
->   /*
-> @@ -323,12 +328,42 @@ do {                                                              \
->   extern unsigned long __copy_tofrom_user(void __user *to,
->                  const void __user *from, unsigned long size);
-> 
-> +extern unsigned long __copy_tofrom_user_base(void __user *to,
-> +               const void __user *from, unsigned long size);
-> +
-
-extern keywork is pointless for function prototypes, don't add new ones.
-
-> +#ifdef CONFIG_ALTIVEC
-
-Remove the ifdef
-
-> +extern unsigned long __copy_tofrom_user_power7_vmx(void __user *to,
-> +               const void __user *from, unsigned long size);
-> +
-> +static inline bool will_use_vmx(unsigned long n)
-> +{
-> +       return cpu_has_feature(CPU_FTR_VMX_COPY) &&
-> +               n > VMX_COPY_THRESHOLD;
-
-Change to
-
-	return IS_ENABLED(CONFIG_ALTIVEC) && cpu_has_feature(CPU_FTR_VMX_COPY) 
-&&  n > VMX_COPY_THRESHOLD;
-
-Then will_use_vmx() will return false when CONFIG_ALTIVEC is not set
-
-> +}
-> +#endif
-> +
->   #ifdef __powerpc64__
->   static inline unsigned long
->   raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
->   {
->          unsigned long ret;
-> 
-> +#ifdef CONFIG_ALTIVEC
-
-Remove the ifdef, will_use_vmx() will return false with the above change 
-when CONFIG_ALTIVEC is not set
-
-> +       if (will_use_vmx(n) && enter_vmx_usercopy()) {
-> +               allow_read_write_user(to, from, n);
-> +               ret = __copy_tofrom_user_power7_vmx(to, from, n);
-> +               prevent_read_write_user(to, from, n);
-> +               exit_vmx_usercopy();
-> +               if (unlikely(ret)) {
-> +                       allow_read_write_user(to, from, n);
-> +                       ret = __copy_tofrom_user_base(to, from, n);
-> +                       prevent_read_write_user(to, from, n);
-> +               }
-> +
-> +               return ret;
-> +       }
-
-This block is starting to be a bit big for an inline function.
-I think we should just have:
-
-	if (will_use_vmx(n))
-		return __copy_tofrom_user_vmx()
-
-and then define a __copy_tofrom_user_vmx() in for instance 
-arch/powerpc/lib/vmx-helper.c
-
-This would also avoid having to export enter_vmx_usercopy() and 
-exit_vmx_usercopy()
-
-Christophe
-
-> +#endif
-> +
->          allow_read_write_user(to, from, n);
->          ret = __copy_tofrom_user(to, from, n);
->          prevent_read_write_user(to, from, n);
-> @@ -341,6 +376,22 @@ static inline unsigned long raw_copy_from_user(void *to,
->   {
->          unsigned long ret;
-> 
-> +#ifdef CONFIG_ALTIVEC
-> +       if (will_use_vmx(n) && enter_vmx_usercopy()) {
-> +               allow_read_from_user(from, n);
-> +               ret = __copy_tofrom_user_power7_vmx((__force void __user *)to, from, n);
-> +               prevent_read_from_user(from, n);
-> +               exit_vmx_usercopy();
-> +               if (unlikely(ret)) {
-> +                       allow_read_from_user(from, n);
-> +                       ret = __copy_tofrom_user_base((__force void __user *)to, from, n);
-> +                       prevent_read_from_user(from, n);
-> +               }
-> +
-> +               return ret;
-> +       }
-> +#endif
-> +
->          allow_read_from_user(from, n);
->          ret = __copy_tofrom_user((__force void __user *)to, from, n);
->          prevent_read_from_user(from, n);
-> @@ -352,6 +403,22 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
->   {
->          unsigned long ret;
-> 
-> +#ifdef CONFIG_ALTIVEC
-> +       if (will_use_vmx(n) && enter_vmx_usercopy()) {
-> +               allow_write_to_user(to, n);
-> +               ret = __copy_tofrom_user_power7_vmx(to, (__force const void __user *)from, n);
-> +               prevent_write_to_user(to, n);
-> +               exit_vmx_usercopy();
-> +               if (unlikely(ret)) {
-> +                       allow_write_to_user(to, n);
-> +                       ret = __copy_tofrom_user_base(to, (__force const void __user *)from, n);
-> +                       prevent_write_to_user(to, n);
-> +               }
-> +
-> +               return ret;
-> +       }
-> +#endif
-> +
->          allow_write_to_user(to, n);
->          ret = __copy_tofrom_user(to, (__force const void __user *)from, n);
->          prevent_write_to_user(to, n);
-> diff --git a/arch/powerpc/lib/copyuser_64.S b/arch/powerpc/lib/copyuser_64.S
-> index 9af969d2cc0c..25a99108caff 100644
-> --- a/arch/powerpc/lib/copyuser_64.S
-> +++ b/arch/powerpc/lib/copyuser_64.S
-> @@ -562,3 +562,4 @@ exc;        std     r10,32(3)
->          li      r5,4096
->          b       .Ldst_aligned
->   EXPORT_SYMBOL(__copy_tofrom_user)
-> +EXPORT_SYMBOL(__copy_tofrom_user_base)
-> diff --git a/arch/powerpc/lib/copyuser_power7.S b/arch/powerpc/lib/copyuser_power7.S
-> index 8474c682a178..17dbcfbae25f 100644
-> --- a/arch/powerpc/lib/copyuser_power7.S
-> +++ b/arch/powerpc/lib/copyuser_power7.S
-> @@ -5,13 +5,9 @@
->    *
->    * Author: Anton Blanchard <anton@au.ibm.com>
->    */
-> +#include <linux/export.h>
->   #include <asm/ppc_asm.h>
-> 
-> -#ifndef SELFTEST_CASE
-> -/* 0 == don't use VMX, 1 == use VMX */
-> -#define SELFTEST_CASE  0
-> -#endif
-> -
->   #ifdef __BIG_ENDIAN__
->   #define LVS(VRT,RA,RB)         lvsl    VRT,RA,RB
->   #define VPERM(VRT,VRA,VRB,VRC) vperm   VRT,VRA,VRB,VRC
-> @@ -47,10 +43,14 @@
->          ld      r15,STK_REG(R15)(r1)
->          ld      r14,STK_REG(R14)(r1)
->   .Ldo_err3:
-> -       bl      CFUNC(exit_vmx_usercopy)
-> +       ld      r6,STK_REG(R31)(r1)     /* original destination pointer */
-> +       ld      r5,STK_REG(R29)(r1)     /* original number of bytes */
-> +       subf    r7,r6,r3                /* #bytes copied */
-> +       subf    r3,r7,r5                /* #bytes not copied in r3 */
->          ld      r0,STACKFRAMESIZE+16(r1)
->          mtlr    r0
-> -       b       .Lexit
-> +       addi    r1,r1,STACKFRAMESIZE
-> +       blr
->   #endif /* CONFIG_ALTIVEC */
-> 
->   .Ldo_err2:
-> @@ -74,7 +74,6 @@
-> 
->   _GLOBAL(__copy_tofrom_user_power7)
->          cmpldi  r5,16
-> -       cmpldi  cr1,r5,3328
-> 
->          std     r3,-STACKFRAMESIZE+STK_REG(R31)(r1)
->          std     r4,-STACKFRAMESIZE+STK_REG(R30)(r1)
-> @@ -82,12 +81,6 @@ _GLOBAL(__copy_tofrom_user_power7)
-> 
->          blt     .Lshort_copy
-> 
-> -#ifdef CONFIG_ALTIVEC
-> -test_feature = SELFTEST_CASE
-> -BEGIN_FTR_SECTION
-> -       bgt     cr1,.Lvmx_copy
-> -END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
-> -#endif
-> 
->   .Lnonvmx_copy:
->          /* Get the source 8B aligned */
-> @@ -263,23 +256,14 @@ err1;     stb     r0,0(r3)
->   15:    li      r3,0
->          blr
-> 
-> -.Lunwind_stack_nonvmx_copy:
-> -       addi    r1,r1,STACKFRAMESIZE
-> -       b       .Lnonvmx_copy
-> -
-> -.Lvmx_copy:
->   #ifdef CONFIG_ALTIVEC
-> +_GLOBAL(__copy_tofrom_user_power7_vmx)
->          mflr    r0
->          std     r0,16(r1)
->          stdu    r1,-STACKFRAMESIZE(r1)
-> -       bl      CFUNC(enter_vmx_usercopy)
-> -       cmpwi   cr1,r3,0
-> -       ld      r0,STACKFRAMESIZE+16(r1)
-> -       ld      r3,STK_REG(R31)(r1)
-> -       ld      r4,STK_REG(R30)(r1)
-> -       ld      r5,STK_REG(R29)(r1)
-> -       mtlr    r0
-> 
-> +       std     r3,STK_REG(R31)(r1)
-> +       std     r5,STK_REG(R29)(r1)
->          /*
->           * We prefetch both the source and destination using enhanced touch
->           * instructions. We use a stream ID of 0 for the load side and
-> @@ -300,8 +284,6 @@ err1;       stb     r0,0(r3)
-> 
->          DCBT_SETUP_STREAMS(r6, r7, r9, r10, r8)
-> 
-> -       beq     cr1,.Lunwind_stack_nonvmx_copy
-> -
->          /*
->           * If source and destination are not relatively aligned we use a
->           * slower permute loop.
-> @@ -478,7 +460,8 @@ err3;       lbz     r0,0(r4)
->   err3;  stb     r0,0(r3)
-> 
->   15:    addi    r1,r1,STACKFRAMESIZE
-> -       b       CFUNC(exit_vmx_usercopy)        /* tail call optimise */
-> +       li r3,0
-> +       blr
-> 
->   .Lvmx_unaligned_copy:
->          /* Get the destination 16B aligned */
-> @@ -681,5 +664,7 @@ err3;       lbz     r0,0(r4)
->   err3;  stb     r0,0(r3)
-> 
->   15:    addi    r1,r1,STACKFRAMESIZE
-> -       b       CFUNC(exit_vmx_usercopy)        /* tail call optimise */
-> +       li r3,0
-> +       blr
-> +EXPORT_SYMBOL(__copy_tofrom_user_power7_vmx)
->   #endif /* CONFIG_ALTIVEC */
-> diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
-> index 54340912398f..554b248002b4 100644
-> --- a/arch/powerpc/lib/vmx-helper.c
-> +++ b/arch/powerpc/lib/vmx-helper.c
-> @@ -27,6 +27,7 @@ int enter_vmx_usercopy(void)
-> 
->          return 1;
->   }
-> +EXPORT_SYMBOL(enter_vmx_usercopy);
-> 
->   /*
->    * This function must return 0 because we tail call optimise when calling
-> @@ -49,6 +50,7 @@ int exit_vmx_usercopy(void)
->                  set_dec(1);
->          return 0;
->   }
-> +EXPORT_SYMBOL(exit_vmx_usercopy);
-> 
->   int enter_vmx_ops(void)
->   {
-> --
-> 2.52.0
-> 
-
+Thomas
 
