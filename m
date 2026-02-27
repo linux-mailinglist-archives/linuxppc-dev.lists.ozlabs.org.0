@@ -1,55 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-17350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cM5tCAY+oWnsrQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:47:34 +0100
+	id gN1qHsI/oWnsrQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:54:58 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DBA1B3758
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:47:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911741B38CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:54:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMf5Z35y6z3bnr;
-	Fri, 27 Feb 2026 17:47:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMfG674kxz2xMt;
+	Fri, 27 Feb 2026 17:54:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772174850;
-	cv=none; b=EgKuIJQzYQQRuJfAFNhjqipGZr5nTCAjLN57TBWtk7JBq6JykPqMYZLwfR5D5ecOQK2WiF16Yk57P+XhczemLNIaQg1soPY1WzMCqsuvZ999zy2HwYKL7QGDGxAPJCqBv7xswy377IF9jnM0DJehzZisKLxZ0AVHwlNgqzBALcxmj6UqMDslG3luj4jKsmp0nkUou86+/4SFInxiFjvyaIToo1QXwByxGZ4H8a7oUPVplBo30HSbxWvGwX1eE0+/rRfVN8VRdzt2h6VACNCchOBGeB0zoUA4/iLi9xolfO+9mmmx+PJBflx05YRKcpMQ1njs2ov0AuxOp8/GrYl7sA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772175294;
+	cv=none; b=d6ZIT3jx70Z7rmCaNFUTXeKGww8NShBmk8Cfy/2SzWNdQKmJCt8aOTVaGOy8lvowrIA8rtuM5CqgS38Umpcz4GlvT2nQGCnevZDKYYedItkL7Wfekvx/pOe7iUmAfYn5G/+OCJVlVhHhH4ejXFtCxfY1XnQtyH2IKWPjPn+kayhfQeQ1JJlj4w5vejgZO2P7fEHErRLyRLXxbgI9/hwXlE5bJuiiDCIkd9VXDAB9Gr8gCe9vqKQDfr1M308BMMPekO7BfJsJvGo3u20rDTnjyUO8rx/je0wfIKUAmwgrFi0xUYjHgl5OWLDRfie3+lZXlTA6TfdQ36kr0CH8z54iOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772174850; c=relaxed/relaxed;
-	bh=mEN5vr4kMOUu6FGvzSN84qC/mx/J6IWnb35GhSr8CZA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=moh3ij4ZnldRQEp/z6oywCRLG0iC+mlxSGawQCNCE+uFPVhhY/r2+5aCvWzrSr/X7/73LQhxLf4YBqZVCIS9ryhIK1nLABpvmrHIVfiDlkowInKEODcK/Ghuwua9wNWO5MLR3hOFvJLxNFZlboIh6GDR48tz3JK1sn10ZNL8+Guz2q8H/TFLquGvU1cmNRVvHEWvAodRrjlRNK26ZBq78Qo5ykmQa718dJKV0b390iAbp2xGU5vC8uPngXplAHetE+iusfhRLHLP3YrHD8FPsPQDIIQlulMo4oVOJHljC7JChcCiwyFWr8i3NYtl7jPww5VDtLc9nZwmsU26/P7Z3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PPYM0RiM; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1772175294; c=relaxed/relaxed;
+	bh=NYU2DjWIvo/s2zAJBv/B2HsELMqSCe9+by7E9gQC1/M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZEF8QeP/0XpFCyTtdY9sPn+lgYYi3XwcL5FTEFyDMNDb1DIShJnZgGLBRpFebTiZ6OUp2VH19PhDp5hfLE8UzpbtZeCycLADoMzYOecPty/kp/uvAX/+iFio2R7MToarlUs7e9OVetgrohbOs6SqvNrsqCMTErKiC44M3zwS8NMiTPwWYElYsQsR6iP/nNnVPZ4AXf4VnG44PmCyN7FSYFv0MTi+kcXmuChSKmetTHCUeoiJ1c9dq8b1xUcO+CBCn/QartUWj5+VcMreuMYt5Vb4W0nT/jjgsrAbdStcPnwHP+/kzCM5WaKD/o+7DKZLr1oZJL9vBFrrGPAC8rtVBg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zqCtK5Zu; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=EwUlFhki; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PPYM0RiM;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zqCtK5Zu;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=EwUlFhki;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 602 seconds by postgrey-1.37 at boromir; Fri, 27 Feb 2026 17:54:52 AEDT
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMf5Y3mjVz2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 17:47:29 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7C30600AA;
-	Fri, 27 Feb 2026 06:47:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF83C19422;
-	Fri, 27 Feb 2026 06:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772174847;
-	bh=KO2bW00MM7LDG//quqXYZmj/ahwm2FnxZhGD6CmuPkc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PPYM0RiMcmK4BZUonZBiN7hp3nR4ppxvaDhDxzl0NbcO5XRjZ91TMYXbShCI54IVZ
-	 JvN1rA3Ml1woOMP0m+wIjntDHOEu3aRhaIP0zOtPkZ9E/CKzgktxC/jyEMpkxbexf7
-	 /czR5FfE/5J98rtUZWaEnsjHK8VYxycf1GGbFpDpN3bMnxMxPSepmdiQaXS2Oyu+zG
-	 Npyx/UwNsnLxyP7A/JPD4f5fR831f9pRGSjIKcSNqRUy/5hLhU+NiFgvSF4d+s3mQ8
-	 v9AWPK6Y16exoSilsS+YLigMUjHo4g2eU/p0IHsvOVH4LZe6H7/i3oA/LzqlljZK9h
-	 zfarBq1DXpLUA==
-Message-ID: <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org>
-Date: Fri, 27 Feb 2026 07:47:22 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMfG43ygpz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 17:54:52 +1100 (AEDT)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772175288;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NYU2DjWIvo/s2zAJBv/B2HsELMqSCe9+by7E9gQC1/M=;
+	b=zqCtK5Zug38lALa1rDaX4rXov8yi0xleLfTP/Nn4hfLXb8yDFrjoRndvLJFHVquqsoFUNx
+	ZklTmvg1YYYCVP3Ms+CyZyNNncFjbMU4YAjtXtu9tDGAVIY62piCYh6x9xobvKFJRRRkSB
+	HKkaNO9hDCvBZ4y7/nVE6+ixU83YPvJd0k37zT45bEytH2N/wPDuTBlnSr+u9jRNzrRpSF
+	XoyJ3P1OfwR90IQy4STigmN6+bHk3rhmcyWudJHu3yAzuzOqGsmY1jSuUQkZX9NvkW0vbB
+	Bsgr67LnUgOfaqxWnY8yQlEkw3iVoOmri5SyVcHgP/Ji7wbp5sBNJxdNRaMZpQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772175288;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NYU2DjWIvo/s2zAJBv/B2HsELMqSCe9+by7E9gQC1/M=;
+	b=EwUlFhkia9zD/URLV1OXQqVzNJ+xebzIlkbqTkKVmX0eZAECbf9yMxPP/n4hdp8AiJPIzG
+	RmaDJT0KpQDfxFBw==
+Date: Fri, 27 Feb 2026 07:54:46 +0100
+Subject: [PATCH v2] powerpc: Implement ARCH_HAS_CC_CAN_LINK
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,167 +69,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org,
- Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
-References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com>
- <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Message-Id: <20260227-cc-can-link-powerpc-v2-1-7690e8030ea2@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQ6CMBBEf4X07Bq6CAFP/ofhAN2tbDQtaRExh
+ H+3Eo8e30zmzaoiB+GoztmqAs8SxbsEeMiUGTp3YxBKrDDHUiMiGAOmc/AQd4fRvziMBkoiwlP
+ VWCp7lZZjYCvLbr22iQeJkw/v/WTW3/TnK/K/vlmDhhqxqclWXPT2kurnFLyT5Uis2m3bPmUkr
+ Zm6AAAA
+X-Change-ID: 20251222-cc-can-link-powerpc-5ddd2469fd5b
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772175287; l=1975;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=fi5JLAbOTl/+1Nk3gJx/MoRlnQFDtzWfQs1ISlV2qGU=;
+ b=110tPJbd42OCVbDCmek+mzfdMZ88CUZNMgvUD6PZf3Qj4/IakaahKSpyZAYvOeHW/TFITHV+/
+ vjoRx7N/AHeBVZLUMnc6XeBankB5q2WrpV0SsePxtZjh3RzIp1wyeeS
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.58 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MIXED_CHARSET(0.63)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-17350-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lists.ozlabs.org];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-mm@kvack.org,m:kvm@vger.kernel.org,m:alex@shazbot.org,m:peterx@redhat.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	TAGGED_FROM(0.00)[bounces-17351-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:thomas.weissschuh@linutronix.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.999];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 32DBA1B3758
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 911741B38CC
 X-Rspamd-Action: no action
 
+The generic CC_CAN_LINK detection does not handle different byte orders.
+This may lead to userprogs which are not actually runnable on the target
+kernel.
 
+Use architecture-specific logic supporting byte orders instead.
 
-Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
-> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
-> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
-> follow_pfnmap APIs.
-> 
-> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
-> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
-> VFIO PCI core driver already supports fault handling at PMD / PUD level
-> for more efficient BAR mappings.
-> 
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Changes in v2:
+- Rebase on v7.0-rc1.
+- Link to v1: https://lore.kernel.org/r/20251230-cc-can-link-powerpc-v1-1-82298df6e3bf@linutronix.de
+---
+ arch/powerpc/Kconfig | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ad7a2fe63a2a..793e6b311143 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -127,6 +127,7 @@ config PPC
+ 	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
++	select ARCH_HAS_CC_CAN_LINK
+ 	select ARCH_HAS_COPY_MC			if PPC64
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+@@ -1343,6 +1344,20 @@ endif
+ config PPC_LIB_RHEAP
+ 	bool
+ 
++config ARCH_CC_CAN_LINK
++	bool
++	default $(cc_can_link_user,$(m64-flag) -mlittle-endian) if 64BIT && CPU_LITTLE_ENDIAN
++	default $(cc_can_link_user,$(m64-flag) -mbig-endian) if 64BIT && CPU_BIG_ENDIAN
++	default $(cc_can_link_user,$(m32-flag) -mlittle-endian) if CPU_LITTLE_ENDIAN
++	default $(cc_can_link_user,$(m32-flag) -mbig-endian) if CPU_BIG_ENDIAN
++
++config ARCH_USERFLAGS
++	string
++	default "$(m64-flag) -mlittle-endian" if 64BIT && CPU_LITTLE_ENDIAN
++	default "$(m64-flag) -mbig-endian" if 64BIT && CPU_BIG_ENDIAN
++	default "$(m32-flag) -mlittle-endian" if CPU_LITTLE_ENDIAN
++	default "$(m32-flag) -mbig-endian" if CPU_BIG_ENDIAN
++
+ source "arch/powerpc/kvm/Kconfig"
+ 
+ source "kernel/livepatch/Kconfig"
 
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20251222-cc-can-link-powerpc-5ddd2469fd5b
 
-> ---
-> 
-> @linux-mm:
-> Is there any official test which I could use to verify this functionality.
-> 
-> For now I used basic ivshmem setup + vfio using Qemu and validated using some
-> basic test to see that we are seeing these prints.
-> 
-> [ 4351.435050] vfio_pci_mmap_huge_fault: 3 callbacks suppressed
-> [ 4351.435234] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x0: 0x100
-> [ 4351.457005] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x40: 0x100
-> [ 4351.463684] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x20: 0x100
-> 
->   arch/powerpc/Kconfig                         |  1 +
->   arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++++++
->   arch/powerpc/include/asm/pgtable.h           | 12 ++++++++++
->   3 files changed, 36 insertions(+)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index ad7a2fe63a2a..cf9283757e5d 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -172,6 +172,7 @@ config PPC
->   	select ARCH_STACKWALK
->   	select ARCH_SUPPORTS_ATOMIC_RMW
->   	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
-> +	select ARCH_SUPPORTS_HUGE_PFNMAP	if PPC_BOOK3S_64 && TRANSPARENT_HUGEPAGE
->   	select ARCH_SUPPORTS_PAGE_TABLE_CHECK	if !HUGETLB_PAGE
->   	select ARCH_SUPPORTS_SCHED_MC		if SMP
->   	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
-> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> index 1a91762b455d..639cbf34f752 100644
-> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-> @@ -1289,6 +1289,29 @@ static inline pud_t pud_mkhuge(pud_t pud)
->   	return pud;
->   }
-> 
-> +#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-> +static inline bool pmd_special(pmd_t pmd)
-> +{
-> +	return pte_special(pmd_pte(pmd));
-> +}
-> +
-> +static inline pmd_t pmd_mkspecial(pmd_t pmd)
-> +{
-> +	return pte_pmd(pte_mkspecial(pmd_pte(pmd)));
-> +}
-> +#endif
-> +
-> +#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
-> +static inline bool pud_special(pud_t pud)
-> +{
-> +	return pte_special(pud_pte(pud));
-> +}
-> +
-> +static inline pud_t pud_mkspecial(pud_t pud)
-> +{
-> +	return pte_pud(pte_mkspecial(pud_pte(pud)));
-> +}
-> +#endif
-> 
->   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
->   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index dcd3a88caaf6..2d27cb1c2334 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
->   	return __pgprot(pte_flags);
->   }
-> 
-> +#define pmd_pgprot pmd_pgprot
-> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
-> +{
-> +	return pte_pgprot(pmd_pte(pmd));
-> +}
-> +
-> +#define pud_pgprot pud_pgprot
-> +static inline pgprot_t pud_pgprot(pud_t pud)
-> +{
-> +	return pte_pgprot(pud_pte(pud));
-> +}
-> +
->   static inline pgprot_t pgprot_nx(pgprot_t prot)
->   {
->   	return pte_pgprot(pte_exprotect(__pte(pgprot_val(prot))));
-> --
-> 2.53.0
-> 
-> 
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
