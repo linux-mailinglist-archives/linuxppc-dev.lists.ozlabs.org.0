@@ -1,63 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17344-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Np/IKY9oWnsrQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17344-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:45:58 +0100
+	id cM5tCAY+oWnsrQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:47:34 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44D21B36BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:45:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DBA1B3758
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:47:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMf2b248lz3cKm;
-	Fri, 27 Feb 2026 17:44:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMf5Z35y6z3bnr;
+	Fri, 27 Feb 2026 17:47:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772174695;
-	cv=none; b=ElKmph29wEYu/GatUg0u1taPuGBNRO8HrnfiFspEZhzwJM7dDAMXa/Pyy0NmTNs2jFwmjqr/0CTHxqq52NDwI21KxqLHB1wxXRvcZr9izt+n+Ip76LUWqxboTns1cNTnKjBXt4a0TotoqWbA3Q5ZEknNfobH374vgihcYwyXbYajkek1foPEw4lxt4f8IeF1asuKj48dNi18VZJBZFJGs3Wkaglkn8OHErue+GxqdX5gyRU4+vqjEfJgJR2gVGVomCwFymDlXMLePICXbec3ITBqF2ImVjG85BAUWM5bB910pFCKL80h1vY32dYBxdc3KFzhjiWKfVp7O/SGsDqRnw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772174850;
+	cv=none; b=EgKuIJQzYQQRuJfAFNhjqipGZr5nTCAjLN57TBWtk7JBq6JykPqMYZLwfR5D5ecOQK2WiF16Yk57P+XhczemLNIaQg1soPY1WzMCqsuvZ999zy2HwYKL7QGDGxAPJCqBv7xswy377IF9jnM0DJehzZisKLxZ0AVHwlNgqzBALcxmj6UqMDslG3luj4jKsmp0nkUou86+/4SFInxiFjvyaIToo1QXwByxGZ4H8a7oUPVplBo30HSbxWvGwX1eE0+/rRfVN8VRdzt2h6VACNCchOBGeB0zoUA4/iLi9xolfO+9mmmx+PJBflx05YRKcpMQ1njs2ov0AuxOp8/GrYl7sA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772174695; c=relaxed/relaxed;
-	bh=73eqjBr6NZdEDnZXr1CPa++8UKXkeQebz204fUBPgxU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KOtZCqCHDeLKyp/1fN+3bMuiQGW7r5yhTFhWOyNzMigRbWKyaysnJeJu8VrpPmnIX/bT4e899/e1wOA+V9dRZKo0rMyfsDFNNjY1W3qpEt15o3cqEOuJ/AO25yGiB3yxT4wyBrTlkjTQupWrBFQzbWsLlKORbNPpd/bSEgP8J/f/T9nhXI+UqFyD0VeKov4XooFOTPUncAG6n3HBbjevAFj5HBZvt9UGiUxgtcQrMBfLuL90KtlP5ALTbMB97juiMHBBpkpuquST78Yi58dGXysFRoGS8mxqHP1p7mobC9m9Pz/GqDKmBSVTmSOJkwmzJkl1nq7HfWifFRu8BGjTiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EHWp83mU; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MtHTIOHE; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1772174850; c=relaxed/relaxed;
+	bh=mEN5vr4kMOUu6FGvzSN84qC/mx/J6IWnb35GhSr8CZA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=moh3ij4ZnldRQEp/z6oywCRLG0iC+mlxSGawQCNCE+uFPVhhY/r2+5aCvWzrSr/X7/73LQhxLf4YBqZVCIS9ryhIK1nLABpvmrHIVfiDlkowInKEODcK/Ghuwua9wNWO5MLR3hOFvJLxNFZlboIh6GDR48tz3JK1sn10ZNL8+Guz2q8H/TFLquGvU1cmNRVvHEWvAodRrjlRNK26ZBq78Qo5ykmQa718dJKV0b390iAbp2xGU5vC8uPngXplAHetE+iusfhRLHLP3YrHD8FPsPQDIIQlulMo4oVOJHljC7JChcCiwyFWr8i3NYtl7jPww5VDtLc9nZwmsU26/P7Z3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PPYM0RiM; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EHWp83mU;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MtHTIOHE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PPYM0RiM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMf2Y6GjXz3cGS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 17:44:53 +1100 (AEDT)
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772174691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=73eqjBr6NZdEDnZXr1CPa++8UKXkeQebz204fUBPgxU=;
-	b=EHWp83mUC9sqmCRL4lC99TpnbEb3A1GXb9+8KiMgnvutKxhoh6utIAiDJXzxKuL7tAADAx
-	iHAb6kk9DIQaXTIB6jAYTCkJyhL/rjxv5hqpKmLPgE1b8lU9UQTu1mc/IxpaHelkXHCtQL
-	FLe17kLwGuRpzLrDw329bgv2GfKC9zt5KuIo5EdESzn6T9UIcT2Efv+VA/4BpjpqawtkKd
-	qYWKxnAXyfV7qTW7J6bc15aseZDwryfZ4cTzpGQbqMyKuOgw210GVKaOmYfkzslrfNlbSS
-	v8Yyz29fLRhdRzJjxPOAt10CE191nkq/ZjaxhwRWaTUpenLnYffBSoMaCgoqmg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772174691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=73eqjBr6NZdEDnZXr1CPa++8UKXkeQebz204fUBPgxU=;
-	b=MtHTIOHEnRpdXAih0ezpTAU9FGMaQ+i+ctr8UJ10a4fIOdQ5bXYUN/9BltCsSFq81bdVZS
-	aFb1AxBAaXAzQTDw==
-Date: Fri, 27 Feb 2026 07:44:41 +0100
-Subject: [PATCH v2 15/15] random: vDSO: remove ifdeffery
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMf5Y3mjVz2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 17:47:29 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B7C30600AA;
+	Fri, 27 Feb 2026 06:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF83C19422;
+	Fri, 27 Feb 2026 06:47:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772174847;
+	bh=KO2bW00MM7LDG//quqXYZmj/ahwm2FnxZhGD6CmuPkc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PPYM0RiMcmK4BZUonZBiN7hp3nR4ppxvaDhDxzl0NbcO5XRjZ91TMYXbShCI54IVZ
+	 JvN1rA3Ml1woOMP0m+wIjntDHOEu3aRhaIP0zOtPkZ9E/CKzgktxC/jyEMpkxbexf7
+	 /czR5FfE/5J98rtUZWaEnsjHK8VYxycf1GGbFpDpN3bMnxMxPSepmdiQaXS2Oyu+zG
+	 Npyx/UwNsnLxyP7A/JPD4f5fR831f9pRGSjIKcSNqRUy/5hLhU+NiFgvSF4d+s3mQ8
+	 v9AWPK6Y16exoSilsS+YLigMUjHo4g2eU/p0IHsvOVH4LZe6H7/i3oA/LzqlljZK9h
+	 zfarBq1DXpLUA==
+Message-ID: <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org>
+Date: Fri, 27 Feb 2026 07:47:22 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,132 +63,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org,
+ Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
+References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com>
+ <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260227-vdso-header-cleanups-v2-15-35d60acf7410@linutronix.de>
-References: <20260227-vdso-header-cleanups-v2-0-35d60acf7410@linutronix.de>
-In-Reply-To: <20260227-vdso-header-cleanups-v2-0-35d60acf7410@linutronix.de>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
- linux-mips@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772174681; l=2411;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Tai+RXoFwVJhTM1dVEO+ykZdBlXqme/L2pcT98/4EtE=;
- b=ylxvWJ/shVYJ8y0GfPnPSP2H8OGGFINUoMx2uEfocZT8keFFPHG+Sq9+BcBiIFrHUqvkQu0kT
- Bawf8udB+4qA110MV9KRLcG7mRXhNKdUvusDTpEXgKSWR2rtnAUXJyT
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17344-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-17350-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:catalin.marinas@arm.com,m:will@kernel.org,m:linux@armlinux.org.uk,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:tsbogend@alpha.franken.de,m:luto@kernel.org,m:tglx@kernel.org,m:vincenzo.frascino@arm.com,m:tytso@mit.edu,m:Jason@zx2c4.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:linux-mips@vger.kernel.org,m:thomas.weissschuh@linutronix.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_TO(0.00)[arm.com,kernel.org,armlinux.org.uk,linux.ibm.com,ellerman.id.au,gmail.com,xen0n.name,alpha.franken.de,mit.edu,zx2c4.com];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,lists.ozlabs.org];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-mm@kvack.org,m:kvm@vger.kernel.org,m:alex@shazbot.org,m:peterx@redhat.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: E44D21B36BD
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 32DBA1B3758
 X-Rspamd-Action: no action
 
-Recent cleanups of the vDSO headers allow the unconditional inclusion of
-vdso/datapage.h and the declarations it provides. This also means that
-the declaration of vdso_k_rng_data is always visible and its usage does
-not need to be guarded by ifdefs anymore. Instead use IS_ENABLED().
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- drivers/char/random.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 9738673018f3..9392a45852ec 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -56,9 +56,7 @@
- #include <linux/sched/isolation.h>
- #include <crypto/chacha.h>
- #include <crypto/blake2s.h>
--#ifdef CONFIG_VDSO_GETRANDOM
- #include <vdso/datapage.h>
--#endif
- #include <asm/archrandom.h>
- #include <asm/processor.h>
- #include <asm/irq.h>
-@@ -274,7 +272,7 @@ static void crng_reseed(struct work_struct *work)
- 	if (next_gen == ULONG_MAX)
- 		++next_gen;
- 	WRITE_ONCE(base_crng.generation, next_gen);
--#ifdef CONFIG_VDSO_GETRANDOM
-+
- 	/* base_crng.generation's invalid value is ULONG_MAX, while
- 	 * vdso_k_rng_data->generation's invalid value is 0, so add one to the
- 	 * former to arrive at the latter. Use smp_store_release so that this
-@@ -288,8 +286,9 @@ static void crng_reseed(struct work_struct *work)
- 	 * because the vDSO side only checks whether the value changed, without
- 	 * actually using or interpreting the value.
- 	 */
--	smp_store_release((unsigned long *)&vdso_k_rng_data->generation, next_gen + 1);
--#endif
-+	if (IS_ENABLED(CONFIG_VDSO_GETRANDOM))
-+		smp_store_release((unsigned long *)&vdso_k_rng_data->generation, next_gen + 1);
-+
- 	if (!static_branch_likely(&crng_is_ready))
- 		crng_init = CRNG_READY;
- 	spin_unlock_irqrestore(&base_crng.lock, flags);
-@@ -742,9 +741,8 @@ static void __cold _credit_init_bits(size_t bits)
- 		if (system_dfl_wq)
- 			queue_work(system_dfl_wq, &set_ready);
- 		atomic_notifier_call_chain(&random_ready_notifier, 0, NULL);
--#ifdef CONFIG_VDSO_GETRANDOM
--		WRITE_ONCE(vdso_k_rng_data->is_ready, true);
--#endif
-+		if (IS_ENABLED(CONFIG_VDSO_GETRANDOM))
-+			WRITE_ONCE(vdso_k_rng_data->is_ready, true);
- 		wake_up_interruptible(&crng_init_wait);
- 		kill_fasync(&fasync, SIGIO, POLL_IN);
- 		pr_notice("crng init done\n");
+Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
+> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
+> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
+> follow_pfnmap APIs.
+> 
+> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
+> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
+> VFIO PCI core driver already supports fault handling at PMD / PUD level
+> for more efficient BAR mappings.
+> 
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
--- 
-2.53.0
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
+
+> ---
+> 
+> @linux-mm:
+> Is there any official test which I could use to verify this functionality.
+> 
+> For now I used basic ivshmem setup + vfio using Qemu and validated using some
+> basic test to see that we are seeing these prints.
+> 
+> [ 4351.435050] vfio_pci_mmap_huge_fault: 3 callbacks suppressed
+> [ 4351.435234] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x0: 0x100
+> [ 4351.457005] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x40: 0x100
+> [ 4351.463684] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x20: 0x100
+> 
+>   arch/powerpc/Kconfig                         |  1 +
+>   arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++++++
+>   arch/powerpc/include/asm/pgtable.h           | 12 ++++++++++
+>   3 files changed, 36 insertions(+)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index ad7a2fe63a2a..cf9283757e5d 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -172,6 +172,7 @@ config PPC
+>   	select ARCH_STACKWALK
+>   	select ARCH_SUPPORTS_ATOMIC_RMW
+>   	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
+> +	select ARCH_SUPPORTS_HUGE_PFNMAP	if PPC_BOOK3S_64 && TRANSPARENT_HUGEPAGE
+>   	select ARCH_SUPPORTS_PAGE_TABLE_CHECK	if !HUGETLB_PAGE
+>   	select ARCH_SUPPORTS_SCHED_MC		if SMP
+>   	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index 1a91762b455d..639cbf34f752 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -1289,6 +1289,29 @@ static inline pud_t pud_mkhuge(pud_t pud)
+>   	return pud;
+>   }
+> 
+> +#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+> +static inline bool pmd_special(pmd_t pmd)
+> +{
+> +	return pte_special(pmd_pte(pmd));
+> +}
+> +
+> +static inline pmd_t pmd_mkspecial(pmd_t pmd)
+> +{
+> +	return pte_pmd(pte_mkspecial(pmd_pte(pmd)));
+> +}
+> +#endif
+> +
+> +#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> +static inline bool pud_special(pud_t pud)
+> +{
+> +	return pte_special(pud_pte(pud));
+> +}
+> +
+> +static inline pud_t pud_mkspecial(pud_t pud)
+> +{
+> +	return pte_pud(pte_mkspecial(pud_pte(pud)));
+> +}
+> +#endif
+> 
+>   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
+>   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
+> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+> index dcd3a88caaf6..2d27cb1c2334 100644
+> --- a/arch/powerpc/include/asm/pgtable.h
+> +++ b/arch/powerpc/include/asm/pgtable.h
+> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
+>   	return __pgprot(pte_flags);
+>   }
+> 
+> +#define pmd_pgprot pmd_pgprot
+> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
+> +{
+> +	return pte_pgprot(pmd_pte(pmd));
+> +}
+> +
+> +#define pud_pgprot pud_pgprot
+> +static inline pgprot_t pud_pgprot(pud_t pud)
+> +{
+> +	return pte_pgprot(pud_pte(pud));
+> +}
+> +
+>   static inline pgprot_t pgprot_nx(pgprot_t prot)
+>   {
+>   	return pte_pgprot(pte_exprotect(__pte(pgprot_val(prot))));
+> --
+> 2.53.0
+> 
+> 
 
 
