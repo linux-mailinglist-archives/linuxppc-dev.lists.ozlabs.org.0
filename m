@@ -1,88 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-17401-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17402-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHKILSzIoWkVwQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17401-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 17:37:00 +0100
+	id cD4GMivJoWmqwQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17402-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 17:41:15 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335281BADE9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 17:36:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36A01BAEA8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 17:41:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMv9g0kVqz30Sv;
-	Sat, 28 Feb 2026 03:36:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMvGc04TRz30Sv;
+	Sat, 28 Feb 2026 03:41:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772210214;
-	cv=none; b=Rua/w3dTXuIdjF5PydNEKjuqCuXt5YYQr48GdNbllz8xHO+VrjGJXcIowbsLbOiFTGfoUzXNdw8RjitLE6F4yIfZiILV/qIdHR+5IiKCTE5oql5lzh0QRXdJUXcIJXrr7wjmSkJJugGF589Z1Bqe+FvtvhLlmLe99NkyNsl+S97gkbO2vQ+gbZUdxEMu0FVOie8JFc9s9i5nT/cbVtx6jCeozbSPjmoLIKRg5KZ3c7nodOHTjfBHBneFwQ4UJ6KQOPXw1jBNhJ+uw2cDZ+mjPNfoXQfpoy34m0pVRLSwIJXeRi3uQXVYY6oFsJgG4WuFYbeP1ohgcAFD7iQFK43M2A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772210471;
+	cv=none; b=CjMJ4aDpDpOaVR1tVGBlnm3Aga5CackcpdsT5ymvqamBngpFKHeOs98DyuI0Bzps1DXwkkpOPVbArHrCBQDTOHtFEyms4bYhsYqcuPQl3gm9u772QfX51bPgpONZ97sq9fNSrMqcOB6YuVT0Loa7xf8nbvQ+BiprjEwW0A+bbQSZltouBg85AeX3sfz0Z0DPTHh3tsk0wF5lMwII28rg0vhhBK8qXXxQh/Ky0iWPgzx5OP/FTV22Fak7Np871ti0n9gyKKh7xleZhBTda9jQI1Bx4juKUjQbW1cDF5/xqaCe8/6bT6zwvMpFtCVJ+Imm5XDN4IxyzL1gj2tdKTAt7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772210214; c=relaxed/relaxed;
-	bh=/RMJ9vglHRabpfidLDVP2vBp9Odg4KBJTy36nr1qkQY=;
+	t=1772210471; c=relaxed/relaxed;
+	bh=Ra4gGeTukVvl+IUi3kpBx/h8Xrcr5tcq4BLIbbsXf6c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJlMjp2jDZMVt0osdGbWm7A0GhOXLgxcR6j73+nDhLgKv8QBvLkVnUoI3dqqtRrijN4MPYe3g7DSZPM9xv2yZWYE4OaP6NIHqs4BX8FYm0mbDd1+waxlXZiQiTZH81SV8PkQQ3Pl2ddOy/Vw6FsZ/YeSs0/+bIX16qsDiO4uQOpTG6PnB8ArVDwZKSGgiX1OY+i6YqO3CHiWhlWl1Dd+58g+Ko+EYZEb7o2yvGGV9Whc7RSpTUFi3AxlGuD1g6SJYIzX8J2NtLnrSUoyQuCQ9CMX3We1zYaD6nnh9GqM3a6z/6Y4kWejJX8ByU0CJ1G4+yLDD2005aqeugT8J8sv0A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MB9xUxSA; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=DSVuCvuG2vx3YCwR+ktBtr0aGabdudKESoNILlHotHbxMlrPUMZ84tMUXevCqUZDFwH0g5tjuKEt75by7ED0EFQCc6R8Tuw9/7wVtNgcGErM2ZtZ1itOVoUsGY7NB91pzCON3Zva9np/V+f14B0abNLk5KrXVhbY+UjXCsW7EbiTiVSsG4kDLi6EgGBMkvsO2y8t+6wJP/87lMUq9dqgylwBvKseycxnjNEEMWNX2ulhwOiehbLJrZ0vVRbzdHxZePoBTqqZ7ESJ7u5cIyEd2jQO4rMrEqBkUKm8FVu/lY1HEobmCV78TJRJMAIFBpyyT+kixh/GG+es/BjHpXxeKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kaYFALf4; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MB9xUxSA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kaYFALf4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMv9d2J2gz2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 03:36:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMvGb0RdDz2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 03:41:10 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E197160008;
-	Fri, 27 Feb 2026 16:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1501EC116C6;
-	Fri, 27 Feb 2026 16:36:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0784E60054;
+	Fri, 27 Feb 2026 16:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A9DC116C6;
+	Fri, 27 Feb 2026 16:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772210210;
-	bh=Z3uhduLHgelJSPSi026On/FywI8UKkvvjlJZUY1E4uI=;
+	s=k20201202; t=1772210468;
+	bh=Ra4gGeTukVvl+IUi3kpBx/h8Xrcr5tcq4BLIbbsXf6c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MB9xUxSAbn+Di/nKHpsy4Owu9dULnOKmLKkKAH28ikPcwz8E+RbfqqGz2GrfUKoS2
-	 rvjh4SLv6O9JiT+L+6SpQ0H/DrDTd5iZ4+QO2UVbr+MNaN2vtvrRDHMh8InzWzLS16
-	 cncFCKpao/cWYr+w7ULn5xRgtHEAxOxUtF8TV9x/Gfm0Xhf56APc04TeRI/vI1HLWn
-	 rCK2y6qdS+KgajafeMKD0K51X5N68v1p6QI6T4oKzSBTbcUtFAPrySuzhetHWqfeao
-	 I9O/HuD47cl1xQtwtjRali7R0u0JCyq+rfuleR6cQliX8wPX4/lv7UgeBNEjV4a1Vi
-	 RyCLvFYLUeHLQ==
-Date: Fri, 27 Feb 2026 17:36:33 +0100
-From: Nicolas Schier <nsc@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
+	b=kaYFALf4xSZVQAbA312F7K02ns0zy5kcaOvWHFJNWY9AvATt7pUW+bvMJKbdtChtm
+	 tH2uUwehXsL2Hj8fdwwpVCcWuHdDsb63uUFJP2cMF43xNCJTDSxZcHpwvTLSu1U7Sl
+	 M2FUvnb6mDY3PWKJMno+e3SWOYvxG8KKG8vxw4MEn6hOq41EUPBH23+RINiw2vhX+e
+	 FbHp3qUfZvbZuE+CnrnSZvs5NqaaWkofdWxMYqTtE/Z0RbEfnkD+zmDgc1t+2WJ5x1
+	 9nBJrTX+Zzefz1LyUgn8uO+y6uQ40gkpU5G5jKsZVOMPxB3x2051Wg3WzGAPsaffSQ
+	 nrMMZp0t1q53A==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vw0tB-000000002TD-2FBk;
+	Fri, 27 Feb 2026 17:40:29 +0100
+Date: Fri, 27 Feb 2026 17:40:29 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Khalil Blaiech <kblaiech@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH 1/2] kbuild: Consolidate C dialect options
-Message-ID: <aaHIEQPiAbd7DGlW@derry.ads.avm.de>
-References: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
- <20260223-fms-anonymous-structs-v1-1-8ee406d3c36c@kernel.org>
+	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-actions@lists.infradead.org,
+	linux-media@vger.kernel.org
+Subject: Re: [PATCH v2 00/13] i2c: add and start using i2c_adapter-specific
+ printk helpers
+Message-ID: <aaHI_VavZugXjVoL@hovoldconsulting.com>
+References: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com>
+ <aaFcs1miP88QWmtH@hovoldconsulting.com>
+ <aaFfEsfh0xTh0b1y@shikoro>
+ <aaFsZbiLYSz_YEjw@hovoldconsulting.com>
+ <CAMRc=MfcvD1nJy=zpoCkSkJq6WjyXQxFUZ4QE6vyCS+XFCn5AA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,9 +94,10 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260223-fms-anonymous-structs-v1-1-8ee406d3c36c@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MfcvD1nJy=zpoCkSkJq6WjyXQxFUZ4QE6vyCS+XFCn5AA@mail.gmail.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
@@ -109,65 +108,78 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17401-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:nathan@kernel.org,m:torvalds@linux-foundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:James.Bottomley@hansenpartnership.com,m:deller@gmx.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:ardb@kernel.org,m:ilias.apalodimas@linaro.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:kees@kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:linux-efi@vger.kernel.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[38];
-	FORGED_SENDER(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17402-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[johan@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[sang-engineering.com,oss.qualcomm.com,kernel.org,gmail.com,sholland.org,nvidia.com,suse.com,linux.ibm.com,ellerman.id.au,suse.de,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FORGED_RECIPIENTS(0.00)[m:brgl@kernel.org,m:wsa+renesas@sang-engineering.com,m:bartosz.golaszewski@oss.qualcomm.com,m:andi.shyti@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:kblaiech@nvidia.com,m:asmaa@nvidia.com,m:jdelvare@suse.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:afaerber@suse.de,m:mani@kernel.org,m:mchehab@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-actions@lists.infradead.org,m:linux-media@vger.kernel.org,m:wsa@sang-engineering.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,arm.com,kernel.org,xen0n.name,hansenpartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[derry.ads.avm.de:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 335281BADE9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: D36A01BAEA8
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 12:10:28PM -0700, Nathan Chancellor wrote:
-> Introduce CC_FLAGS_DIALECT to make it easier to update the various
-> places in the tree that rely on the GNU C standard and Microsoft
-> extensions flags atomically. All remaining uses of '-std=gnu11' and
-> '-fms-extensions' are in the tools directory (which has its own build
-> system) and other standalone Makefiles. This will allow the kernel to
-> use a narrower option to enable the Microsoft anonymous tagged structure
-> extension in a simpler manner. Place the CC_FLAGS_DIALECT block after
-> the configuration include (so that a future change can move the
-> selection of the flag to Kconfig) but before the
-> arch/$(SRCARCH)/Makefile include (so that CC_FLAGS_DIALECT is available
-> for use in those Makefiles).
-> 
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
->  Makefile                              | 16 ++++++++++++----
->  arch/arm64/kernel/vdso32/Makefile     |  3 +--
->  arch/loongarch/vdso/Makefile          |  2 +-
->  arch/parisc/boot/compressed/Makefile  |  2 +-
->  arch/powerpc/boot/Makefile            |  3 +--
->  arch/s390/Makefile                    |  3 +--
->  arch/s390/purgatory/Makefile          |  3 +--
->  arch/x86/Makefile                     |  6 +-----
->  arch/x86/boot/compressed/Makefile     |  6 +-----
->  drivers/firmware/efi/libstub/Makefile |  3 +--
->  scripts/Makefile.warn                 |  5 -----
->  11 files changed, 21 insertions(+), 31 deletions(-)
-> 
+On Fri, Feb 27, 2026 at 04:42:09PM +0100, Bartosz Golaszewski wrote:
+> On Fri, Feb 27, 2026 at 11:06 AM Johan Hovold <johan@kernel.org> wrote:
 
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
+> > It seems all that is needed is to decouple the struct i2c_adapter from
+> > the driver data and have core manage the lifetime of the former using
+> > the reference count of the embedded struct device.
+
+> This is a weird pattern you sometimes see where a driver allocates
+> something and passes the ownership to the subsystem.
+
+It's not weird at all, this is the standard way to handle this. We have
+these things called reference counts for a reason.
+
+> This often
+> causes confusion among driver authors, who logically assume that if
+> you allocate something, you are responsible for freeing it.Since this
+> is C and not Rust (where such things are tracked by the compiler), I
+> strongly believe we should strive to keep ownership consistent: the
+> driver should free resources it allocated within the bounds of the
+> lifetime of the device it controls. The subsystem should manage the
+> data it allocated - in this case the i2c adapter struct device.
+
+Drivers are responsible for dropping *their* reference, it doesn't mean
+that the resource is necessarily freed immediately as someone else may
+be holding a reference. Anyone surprised by this should not be doing
+kernel development.
+
+> I know there are a lot of places where this is done in the kernel but
+> let's not introduce new ones. This is a bad pattern.
+
+No, it's not. It's literally the standard way of doing this.
+
+> But even if you decided this is the way to go, I fail to see how it
+> would be easier than what I'm trying to do. You would have to modify
+> *all* I2C bus drivers as opposed to only modifying those that access
+> the underlying struct device. Or am I missing something?
+
+Yes, you have to update the allocation and replace container_of() with
+dev_get_drvdata() but it's a straight-forward transformation that brings
+the i2c subsystem more in line with the driver model (unlike whatever it
+is you're trying to do).
+
+Johan
 
