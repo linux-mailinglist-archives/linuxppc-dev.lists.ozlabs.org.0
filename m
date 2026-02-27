@@ -1,85 +1,40 @@
-Return-Path: <linuxppc-dev+bounces-17320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17330-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MP2IK4WwoGnUlgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 21:43:49 +0100
+	id QIe/AM4qoWkcqwQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17330-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 06:25:34 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F217B1AF410
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Feb 2026 21:43:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDC81B2D71
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 06:25:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMNhb5CpMz3c97;
-	Fri, 27 Feb 2026 07:43:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMcGx36Sgz2xMt;
+	Fri, 27 Feb 2026 16:25:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772138607;
-	cv=none; b=KMJTRqbFBwBYAdsA0Uzeowat5Tt9781sffP/QvsmD7vIDk72hrbcyqbydrhK6cKJCcG+vcDATWUgkvexbOr/fVo+z1TJP0yUG09aaOZwinfE5CoKOAKKonUGcgXIiO3f44BDZFWMpcR2QE3G+uFgZKHgVUQbTyh33+Uri8obQbd58Ga2Tae++eoF4ZR4AfiYKjHfgrckyp9uoWzR+3dZqGtd5+zG52CV8mY4XUXHIPjOolSfpLDpXiRBag05d0DEsCp+4cNhDbltuzAjLnOc172c3h6jSikXhwmHpJ5fzD8Kx22YJOJ//Sas0ZSx9cODcWyCOB3QoNsQD5w5De4VCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772169929;
+	cv=none; b=W7syKDOlyC8TDpUAdtccyr9ENJejpeW9E0V9RvPRExiQ+DSPaDOJGATDixYWhObCJ4fPnSjC7LjTiFCHPqTqOmfn1Hc8VCo/FUMQdzI92Eva3bYgytGmn6MLVulilOomPuy6wTSfUurd/sFn1Xz9H05bkgyaE/h22Q7acIQEXoQX7yMyEaOc8iQOhoKxq7SRvjBPHV6AkBBd2OLE9JjbANGL0H5x33OOHKA//WC8Clg/lpDq/QoCjESLyT7Q8qAiJtIr5kulFWDXvxAO3E5VlER1U/ogNfUk7fnwe5LjnHLr792HLqeTN8/Y63S0ET5OilIaO07Qnx3X4386yEpQ3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772138607; c=relaxed/relaxed;
-	bh=zR6NZ+PIQzkOImxuEoIedc+fyLzHwiU5uHKWg9CMDDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDuqFxcX71+B0fltItZ+uDIJYmrAESUlvlSAuUTAscwHLKw3ThY86OPev/KIR86Yep+0/8dotwMuzipqtxeAJ2IHqUN5m+bjDDwkuLbK01dUXvZnG/XNggHPwOj437ri3GbMtIpj0+VjvXg+CFdz+DYfE1nCIMmNi4fcWpsiA2fs1i2SPNC/3HDg07HhWPRQXPaFOo6N2UYrloXXz+/NWN/IcwjELKbowL35SWS3H+HJphNxA3g3tiIKWnbdsScG3VmFvr2Dn5+6WUlsD5PbE5yHTewMmdAQDKkG7hMwLbAv4YzUFWH5tT6FEpYyA6YT89P/7DgRtAzQPKFpbQ2WaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DEdmONkF; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DEdmONkF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	t=1772169929; c=relaxed/relaxed;
+	bh=UrQTgr8Z2Zj/VgbjC2bHNzR3OxdGv7iQW5hB/FUCfvU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MJQgtrv18iimCwB+SAJV+c/pLbbWbPyjjE9VExK7kefcJku4hS5ipZfX5rEN/nHekGfqpf3FgHZI4KfeHsCn3X/s+xKy2EJZqLLU6uqfmvmRY+8wsG0++rwsXPQOcRl9Pm5I8l7p5uOy7R99NVMDNG7H/+o5qwd9Tu+s7eLmAU2IEDSdNeBvpldpv515R1vPs+a/ZK7aYue4uN0MAcIOru5SJ10V8Glh6JjUVFMspbL094Jtm3QwtZXAf8SpIplucfdLfJlg483maUIascTA14wogozcuyVV5ZKTDlJaCyeOjWWTgE52anFFQkPr3hXvj/yHBxj76Xw871F60DyZAg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.21; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.21; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org)
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMNhb0KBTz309S
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 07:43:26 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QHpCZT2848171;
-	Thu, 26 Feb 2026 20:43:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=zR6NZ+PIQzkOImxuE
-	oIedc+fyLzHwiU5uHKWg9CMDDo=; b=DEdmONkFBdTo+8aMYMI29mLLucLMcTQXv
-	cfZ82MN84Mum3sfDz/acKaKp76PV2fi5Vwe3xESYFxI3u5tXboczpO4zGta6cbG6
-	HaJmOuVGG1h3eOiDNEtGMYEEqP0haWDtS+w9fsTfVqKuW1odZ/HUhQnbcHgTI4do
-	/2OcaZy4ezYD1YM+evapFiRUt0u7Pae4XQKD2KyW5wNvLjU0an8+KDm+ypsm9Fhm
-	BHkhVrkcZ8LUpAQqpvdYPKcecm/DC/jRRE4FXJIsIsz13J+LpalIF/Vy8w21F8++
-	9T5MdB0Fp/ulAFb0qjTX73ZaChwiE+8K5T1ekyDWEj3lsv7Jw8R2w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34cg3ct-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 20:43:13 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QJ7kJw027887;
-	Thu, 26 Feb 2026 20:43:12 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfsr25t4g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 20:43:12 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QKh9ar41353576
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 20:43:09 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0CB6E20040;
-	Thu, 26 Feb 2026 20:43:09 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6DB7C20043;
-	Thu, 26 Feb 2026 20:43:07 +0000 (GMT)
-Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Feb 2026 20:43:07 +0000 (GMT)
-From: adubey@linux.ibm.com
-To: linuxppc-dev@lists.ozlabs.org
-Cc: bpf@vger.kernel.org, hbathini@linux.ibm.com, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, maddy@linux.ibm.com,
-        Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH v2 4/4] selftest/bpf: Enable gotox tests for powerpc64
-Date: Thu, 26 Feb 2026 20:43:11 -0500
-Message-ID: <20260227014315.39980-5-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260227014315.39980-1-adubey@linux.ibm.com>
-References: <20260227014315.39980-1-adubey@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMcGw03vrz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 16:25:26 +1100 (AEDT)
+Received: from [192.168.0.103] (unknown [123.118.222.47])
+	by APP-01 (Coremail) with SMTP id qwCowABH72qvKqFp4fXQCA--.7323S2;
+	Fri, 27 Feb 2026 13:25:04 +0800 (CST)
+Message-ID: <c9329ae2-721d-4127-9380-b1ea454bd8f2@iscas.ac.cn>
+Date: Fri, 27 Feb 2026 13:25:03 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,100 +48,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4NCBTYWx0ZWRfX+PanbBT8qLYf
- c27pKqpxlOj7ZIey2PWNes76BenyyWbO77Np1wDc2k90g6NaYUlf71eKn/cjmaJC3phPPmsKUbN
- KilQktEs5oH+qF3SlzIv7eKA241eL+pKv1KVLLfbLJjy0ZsFNlMv4+82LizrK7FkNI/eYwad9fH
- dve6L9bC/yY+Q2B42ti0ONQ5zeqr2NT7l1WWnyxUlQpsVQDHMoLxQ8j70VKEEs8lpWA9sdCwvTq
- 5kyziNkhSSbcaiGbA71djLEZVodkj3sdy3x/d0B0ctGDGgblUEhc+maZeS9KvU3pJkVa01QHw5r
- 6HEzaBiA6qf9ULcQOKqZl/Wgh7GBcIk99oaDVnwB23Is3SLqq/JggYgh7Lr1wGfeYgqSv8nu5lB
- 2zVCnUKe4t/9I7pz2WCKOmQLjfyXgmvy+4IaNWvZeseI9QFR2KeIzCbYRMJInFM5JCll3vqqPAJ
- 4vA/Vs4KuW/TqrJdboA==
-X-Proofpoint-ORIG-GUID: _HiC_SpTgFNhNJMvQPZNyfKULQjHe7J4
-X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=69a0b061 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=UBUblTJxaNEy-f4YUGgA:9
-X-Proofpoint-GUID: _HiC_SpTgFNhNJMvQPZNyfKULQjHe7J4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602260184
-X-Spam-Status: No, score=1.7 required=3.0 tests=DATE_IN_FUTURE_03_06,
-	DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Level: *
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] PCI/MSI: Conservatively generalize no_64bit_msi
+ into msi_addr_mask
+To: Mark Bloch <mbloch@nvidia.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Brett Creeley <brett.creeley@amd.com>
+Cc: Han Gao <gaohan@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
+ sophgo@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+ Maor Gottlieb <maorg@nvidia.com>
+References: <20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn>
+ <20260129-pci-msi-addr-mask-v4-1-70da998f2750@iscas.ac.cn>
+ <fb23d54a-fca0-43a2-ae1d-03ae52112192@nvidia.com>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <fb23d54a-fca0-43a2-ae1d-03ae52112192@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qwCowABH72qvKqFp4fXQCA--.7323S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WrykArWkCrW7tr1xAr48tFb_yoW8Gr4fpF
+	WDWF4rtF4UKry7t39Fvw1DZF45Zws5Z3s3Wry5twnakan0v3W2qr1qyr4aga42gr48Jw4Y
+	kryjgw1vqrs8Z37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
+	evJa73UjIFyTuYvjTRM6wCDUUUU
+X-Originating-IP: [123.118.222.47]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.29 / 15.00];
-	DATE_IN_FUTURE(4.00)[4];
+X-Spamd-Result: default: False [-0.01 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17320-lists,linuxppc-dev=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:mbloch@nvidia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:bhelgaas@google.com,m:perex@perex.cz,m:tiwai@suse.com,m:brett.creeley@amd.com,m:gaohan@iscas.ac.cn,m:tglx@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:netdev@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:sophgo@lists.linux.dev,m:tiwai@suse.de,m:maorg@nvidia.com,m:andrew@lunn.ch,s:lists@lfdr.de];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	FORGED_SENDER(0.00)[wangruikang@iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	FREEMAIL_TO(0.00)[nvidia.com,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,amd.com,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,perex.cz,suse.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FROM_NO_DN(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17330-lists,linuxppc-dev=lfdr.de];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: F217B1AF410
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	HAS_XOIP(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.807];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 2DDC81B2D71
 X-Rspamd-Action: no action
 
-From: Abhishek Dubey <adubey@linux.ibm.com>
+On 2/27/26 02:25, Mark Bloch wrote:
 
-With gotox instruction and jumptable now supported,
-enable corresponding bpf selftest on powerpc.
+> On 29/01/2026 3:56, Vivian Wang wrote:
+>> Some PCI devices have PCI_MSI_FLAGS_64BIT in the MSI capability, but
+>> implement less than 64 address bits. This breaks on platforms where such
+>> a device is assigned an MSI address higher than what's reachable.
+>>
+>> Currently, the no_64bit_msi bit is set for these devices, meaning that
+>> only 32-bit MSI addresses are allowed for them. However, on some
+>> platforms the MSI doorbell address is above the 32-bit limit but within
+>> the addressable range of the device.
+>>
+>> As a first step to enabling MSI on those combinations of devices and
+>> platforms, conservatively generalize the single-bit flag no_64bit_msi
+>> into msi_addr_mask. (The name msi_addr_mask is chosen to avoid confusion
+>> with msi_mask.)
+>>
+>> The translation is essentially:
+>>
+>> - no_64bit_msi = 1    ->    msi_addr_mask = DMA_BIT_MASK(32)
+>> - no_64bit_msi = 0    ->    msi_addr_mask = DMA_BIT_MASK(64)
+>> - if (no_64bit_msi)   ->    if (msi_addr_mask < DMA_BIT_MASK(64))
+>>
+> Hey Vivian,
+>
+> We are seeing issues while reloading mlx5 on a PPC64 platform.
 
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
----
- tools/testing/selftests/bpf/progs/verifier_gotox.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Mea culpa. There's a fix on the list [1] since last Friday. I'm not sure
+why it hasn't moved yet, but please take a look.
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_gotox.c b/tools/testing/selftests/bpf/progs/verifier_gotox.c
-index 607dad058ca1..0f43b56ec2bc 100644
---- a/tools/testing/selftests/bpf/progs/verifier_gotox.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_gotox.c
-@@ -6,7 +6,7 @@
- #include "bpf_misc.h"
- #include "../../../include/linux/filter.h"
- 
--#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64)
-+#if defined(__TARGET_ARCH_x86) || defined(__TARGET_ARCH_arm64) || defined(__TARGET_ARCH_powerpc)
- 
- #define DEFINE_SIMPLE_JUMP_TABLE_PROG(NAME, SRC_REG, OFF, IMM, OUTCOME)	\
- 									\
-@@ -384,6 +384,6 @@ jt0_%=:								\
- 	: __clobber_all);
- }
- 
--#endif /* __TARGET_ARCH_x86 || __TARGET_ARCH_arm64 */
-+#endif /* __TARGET_ARCH_x86 || __TARGET_ARCH_arm64 || __TARGET_ARCH_powerpc*/
- 
- char _license[] SEC("license") = "GPL";
--- 
-2.52.0
+Vivian "dramforever" Wang
+
+[1]: https://lore.kernel.org/all/20260220070239.1693303-1-nilay@linux.ibm.com/
 
 
