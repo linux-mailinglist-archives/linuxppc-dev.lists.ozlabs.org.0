@@ -1,55 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-17363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +E8ODgJNoWkfsAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 08:51:30 +0100
+	id OOB5O5lqoWkOswQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 10:57:45 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5176A1B41AC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 08:51:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10101B5A77
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 10:57:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMgWK1HPRz2xMt;
-	Fri, 27 Feb 2026 18:51:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMkK0248Zz3bll;
+	Fri, 27 Feb 2026 20:57:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772178685;
-	cv=none; b=Z6CjwGeUiyCzzXTsrhzRVl9Nad1cZ4SKE9iuYlJk4FWpeo/GUUQrHoIje3HRoW7P4rgzTYvxONHRtUR9XK9mBwg0c5cC4n04KhSFd6BbQ/EJRTeJS3gsOrdU08r8+Gyv10c+KUKmRZPNqtokpaLb1KTek3FLeprKR04zZ3c3Lagahkl23wT2sCH5guS2yI0DE1iPvlaHiwVrmjoH9rZRlPAyXcfu/mRIPy0edaj64ZaM2TcIj5RM7bLGCGe6WSix/NLghINitPvKk69VPLZeG6dE3USGN4/2WPvHEsrH+V5nucWv4AoCc0NVvKjafpsm1UU/7GzZGPyLChsfWvR2VQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772178685; c=relaxed/relaxed;
-	bh=ONLCnHFNRtJkpxerUuAuuCzsQ8hq9429WA4aHg6YYaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P6b36DN8dDplvvq6mCoD4nVwOT1d0J6qHk201/i4qLFE2a9wds9IiX+oQkYMqthdHSH4lS+7yPu+gOWovEobnbfFpNTpHLdOXLxquBxp3gQOuY/htc0aIspSLDufkuPr/eOfTljSK/P5PiGclZB2Gnmcv/LyVIgPsLX20orKTvmEu3MFCFXNIAslfb2t0eX0Mr5L5OAd9RY+zRru5fLjY39dfultvXB2b7ZdxSfn2rL2+hoSDlA2Avn/fhLiP2u+VBpFll2S9OVfRYdjMxbG3CbZIhB+y2RgHJeK2XlaMijzyilEqa7pSHZ1kkhdxhkMHBBFwrdciQbAw5gUWyFHrQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mnJR1Ri0; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c10d::3" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772180207;
+	cv=pass; b=izUpPNg8NMgaqk/m8JT3vSvpqXY9rHqoeiFl/Y+sTV6ijUK1Ri4PuXeOWTpUXVUQcgDjm8v86dg3UsgDei+N2mGdCousTJCrr8biGyG0CQy6AYPWM/beKyKVi1Hz+KAKDwmYU0c3HPtdwgwe+joGzK04fqvXJsAtjoLGC3b6EeVIjkaxcScNBD2xycn7+QKBkg1NhdMbxyqnptLQVSYABR/Pj9v7NcDK/JGJjwHGxBDI6UqiJxoPb4lxznrXXHchwjXMATiaktBUwb1hemFtOjmnCk4xzUjecfMwu27bSzV6aLd3yiEJJmE5I7f0GB3GSqir8lP3dvKl5rH2nE9rvw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772180207; c=relaxed/relaxed;
+	bh=Y0GvZ94LsbIvdzkg30/vvx2NxMJIzNexPBR7Q8OOKm8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AEBoDKddBuFB6nvjgwh3AgLb2/Tjgmnr7qnD1cJqzqHWG5QsQb0dTLskOS8Ea+/Lml5L6oIf2oz2RcqejnT6MjVWgN0pl6+rNl+3BsgMkvfWOtyQ+QFdqzTEk2CVAwoDnwpG4eEpEeWIHcRJGn9wdcgpFh+WZkKi2dc2VYDiPjNFy2WtbWttXfuAC11l+U4irWzojSNDz//s6i4bpYIwS3dymPpZLZCRJuDfgJCG9lpL3NNCU3FEpaGJioEuZ64332RMxjfw6krhLDSxVzcj3S/gvVCnLRGcP9poNxLRa5fUkR9YK7uGFylG/mSvQZPiW22v4cmDk52bTlbcrsSgKQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HLS2oM6Y; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c10d::3; helo=sn4pr0501cu005.outbound.protection.outlook.com; envelope-from=mbloch@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mnJR1Ri0;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=HLS2oM6Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:c10d::3; helo=sn4pr0501cu005.outbound.protection.outlook.com; envelope-from=mbloch@nvidia.com; receiver=lists.ozlabs.org)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c10d::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMgWJ21X2z2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 18:51:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6CAF407D9;
-	Fri, 27 Feb 2026 07:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F4C116C6;
-	Fri, 27 Feb 2026 07:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772178681;
-	bh=FuwJ4dFEMoOWUXSsbBn5R1/MzLKf04Ey3jVnqdyvQaA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mnJR1Ri0HlkV4Dai35gEyErjrdRIBpO4AcgWYMZ32L/4AGLK5MBEWxqmkTaZ318N5
-	 pB7otq2jdQRQV1+qztqAs9fehuvEo9GgL0FoEw2Cht9wEXi2gUbi/U54aeB3C9nMad
-	 5az7xMleO+ONHOEwNTW90zNb9vJ5fkCtOleepZjN96Irept03ErO8dGTgSAdNbDrc+
-	 QSUyNhDg4W7+2/GL4RJ9jdI9N5xbD3YM7wKB9d4r26aDN1fyzsjE1eV1tEcQyHPIs3
-	 mNOilMCYGlXI3qJ6g4zThYMdKBtv1LA7MZauVX1rewLA+k2y8mhK/0LXxGpxfmxuWw
-	 juPlTGhSjEPCg==
-Message-ID: <31dfcf7a-5b3d-406d-bdd4-c8b09f7eb1f0@kernel.org>
-Date: Fri, 27 Feb 2026 08:51:15 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMh4Y6mxyz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 19:16:45 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uJieOIZIPJzbCchHrjR2DRw8upBqQK1a/IfUANcvO6hYXndwWrItGzCzLk4gLxyvKRFxbLd6Ny4fJc6/EqCQ95ZLYUPMv9ydRKc5gm7WLYipuThBVBZWwm6FVNrxZpStgWlctXuv279LlSxoHtPX3jG+eRRdWFVpYgENkETKjv8At6eS7FiUfU0sCOXz1ScGMNrxdq1vATQbI4PO7ojYu2p5PDbX2zQ3/EN9lY72hdhqVf2RwPuErND+u0tCPnwa0ED6pmEAsn6AHYfpCoIp3Ld8ZhhlV/AqPhJqLshayJt5f7+9zVNzVXfu9+s/IVYtqWjguSUXQex55pBRspfnrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y0GvZ94LsbIvdzkg30/vvx2NxMJIzNexPBR7Q8OOKm8=;
+ b=VJmHP08aod0UKvLBD23YD8s1b3j1ijbrfg9MiMfH/E2BILQhR29gtcBDpB3IdAEH7fdNXwapykoptDWnE8zs3cx/+0BAXl1HXCZsWXF5FRkPjfzcBmNR1PDjF+tKCBxEstfiDOAW1RGbf26A1U0QOokVeqRCmgMn5jcKpf1KlGpq/nlG+lkXS3h9IneIE14qHNfni+PjFaR7axh8yNGtPtpB3Ha5yg6baPyGAbEHEoamEty/ciQ8k6ZAKn3OpdzZwmdmoihGosUmtjbOxsmWXg7IPXJacqJbKuM4HQOliKUEQQ4fCjHGM7YRzXXZAxBpXP+99ihoHiwS3/ps+dVYsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y0GvZ94LsbIvdzkg30/vvx2NxMJIzNexPBR7Q8OOKm8=;
+ b=HLS2oM6YHj78oxFBtIRCBAT0ielEsM5gp2mfwaBUwwpzmPIQ5cJ9/1KLQ0+RDm8cz1+l1+2UEV6kqkEfgibec+HYAIVMfQQlYzHDtty7Sm13KUEJJTF7SPke3y/SBzCJEhzVPatkfuCSLIwO6nPk0ArBoaKQ18rFozmaWFtEvg02zlBtG+rBIybHbr9wY4fZPMyueknNw8zv2CVVhBDnLM/BaHJdwNP94PxBVNZcgKrO8WBKsLoMd6fYDGvSmC/L/gBU2arBoFclxI+/JCxauKsYTBE03B+a+VNWileRQRtqFJsWug/1eGZoM17UXtKVspcfj46RCBmiWQpogzS+2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA1PR12MB7541.namprd12.prod.outlook.com (2603:10b6:208:42f::13)
+ by DM4PR12MB7671.namprd12.prod.outlook.com (2603:10b6:8:104::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Fri, 27 Feb
+ 2026 08:16:07 +0000
+Received: from IA1PR12MB7541.namprd12.prod.outlook.com
+ ([fe80::4445:7716:8576:62c7]) by IA1PR12MB7541.namprd12.prod.outlook.com
+ ([fe80::4445:7716:8576:62c7%5]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
+ 08:16:06 +0000
+Message-ID: <6391499b-d665-466a-a4df-b3d0b4921e28@nvidia.com>
+Date: Fri, 27 Feb 2026 10:16:00 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] PCI/MSI: Conservatively generalize no_64bit_msi
+ into msi_addr_mask
+To: Vivian Wang <wangruikang@iscas.ac.cn>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Brett Creeley <brett.creeley@amd.com>
+Cc: Han Gao <gaohan@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
+ sophgo@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+ Maor Gottlieb <maorg@nvidia.com>
+References: <20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn>
+ <20260129-pci-msi-addr-mask-v4-1-70da998f2750@iscas.ac.cn>
+ <fb23d54a-fca0-43a2-ae1d-03ae52112192@nvidia.com>
+ <c9329ae2-721d-4127-9380-b1ea454bd8f2@iscas.ac.cn>
+Content-Language: en-US
+From: Mark Bloch <mbloch@nvidia.com>
+In-Reply-To: <c9329ae2-721d-4127-9380-b1ea454bd8f2@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0252.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:af::14) To IA1PR12MB7541.namprd12.prod.outlook.com
+ (2603:10b6:208:42f::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,175 +108,151 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/6] Extend "trusted" keys to support a new trust
- source named the PowerVM Key Wrapping Module (PKWM)
-To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
- keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- James.Bottomley@HansenPartnership.com, jarkko@kernel.org,
- zohar@linux.ibm.com, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20260201135930.898721-1-ssrish@linux.ibm.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260201135930.898721-1-ssrish@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB7541:EE_|DM4PR12MB7671:EE_
+X-MS-Office365-Filtering-Correlation-Id: a84e08db-4c3f-433d-bc96-08de75d874bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	fpzdURIRXwUCpTnVZ/zeklUKfb7AJtI4zWuDuv19kcgTkpu1hhONXNDuM01R8wGq9OizN+ncACddFCicyNuWJUJlN5hrNaOuBl7xmAyQqVsEK2lUlw9ysoTr8rbTEf7W+3hM37Z9rImZal7bRMYymCoLzYtAnRczjgoFyaoZqIwcmqnT77kdI2DwAJKe2ORTz63yF8OEOm5mO8pB5jA4Zrz/YgokFlI7yEKuYHFmvYYfxtZLQ1HJaQKBTN3BW4tvD9f0RCMB0u1MyKByh+BAlnhP/E/HWhW1Dcd1cuntPnCOkDvPfKa9lgBzGZ3lgdWI/z8XyT/8IlfTr9pRBngwPIWgouNiaO2DtcnrsuiIF+ZzkLSJ/hPzyTCgX24oIXKi6NqzbmowR03R/CGYNSOCk+8puM/WWVLYMU1Eq1JCC5d+LYUqkke2Ht0lF+0pEaDjQROZfVNSUKkn7HSjYomJXKC1zi5MuxRRcUgtmG1xX800n6tmlzjXZ/4dXoK5ZAYZfy3/cc7Tw5v6ZvDzdGSUj2s1GM7f2OAhee8L1TYmdblsd7KBAqyQwY+aQOxmrFEFU4XjwVi0B1uvnsHED3s+439yt+9kG64ocL7pMrI+ZqUMmNZ/u2bzShplUOpdIo2laY3UXJVfBxKVAuiWQsEsEHtXRZL4yCqrpFrW03c0eVvgEO03iSogm21icoOhCpL/Rs+FBbzUZpegKSenYSWnZs8j/eB5aN4HjLMvZeySqidrFdpb1kucRz4QBFy5SWWj+O3EqwgWA6xhl8d0NZxtNrO7Wq2gqWC2PTaRs+r+mWg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB7541.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N3VMc2t5ZVltamlPT2hWZHV1TW40QVVXT05UMTBBTkU3M1BIbDlYNXRveVQz?=
+ =?utf-8?B?eENOTkFCM2kxYk5DMUZabXE4VzFSZWZpNTRqT1RqdjlPdEYyMUc0UDIwSzFW?=
+ =?utf-8?B?T1NDVnZIWEJIY3h0N2t6RTh4YStTU0piS3N5cUZ1OWF5V25MdGRkMDJJSGVw?=
+ =?utf-8?B?STFXemJ4YTNxZUhNSlVPQmMwTStrNlNIa0U3UG5lTGUxd3RtWlpwR2ZiZmd1?=
+ =?utf-8?B?T2NPY0ZRNlpBYkx2WFpsOFYrOHJudzlnNHNBK3dQbXVoU1RZVkMyUTNvNHFE?=
+ =?utf-8?B?Z09obEt6SE9MVERSM25EYXFteVMrVldKdXQxeUkzaXNZUlRaYWlNOE9sY0VQ?=
+ =?utf-8?B?RlluZTRrRFJBQTRJdHZ6dlNjNlEyOEZOZTRHYXYyT2QzNnRkb0lUai91dFc4?=
+ =?utf-8?B?ZXVRdTFxdUlPU0NkLzRUc3VtMXVKNkFhUGNkODJWMWV2V0d4ay9yK1h4ZThz?=
+ =?utf-8?B?anJRSS9hVkZ4eVBlVjhwYXM0RVR3czlFYkMrTEVSRm9PYjNiVjFWdC9Jbmlk?=
+ =?utf-8?B?YkNEOExuYXlLWnRyTjNJTXo0alhIRnh2L0dIbEJMdG5UTVgwS2IyN3Rrb1By?=
+ =?utf-8?B?V0lGWFhTTUFUeVFhUEp2bC9ZbUNLam9Ta1NLNmM5TGFqc2tILzZBVnJQa0hn?=
+ =?utf-8?B?bUxUNVFhamRvbmlmTWQyYXlSZjh2YWVKWGwrM1VUYkUvL2tFT3ZScHR2bUVC?=
+ =?utf-8?B?REJ0VDFLdHI4RmUyNjhVbkJ4VnNMSkJJUmFOUG9tVStFZ0tUUEtuTTdPRSs4?=
+ =?utf-8?B?VjV0R3VRRmRVZE5MZjJ5YlhaVzBsQkY2R0JvMEZUeGt6TGNIdWZWLzA0YlY0?=
+ =?utf-8?B?MTQ4K2g5ZnVaYUlUMUVRY1FQQ0d6eFRWa0h3T1ZPRXVWaC8vV1hsd2xBZ2Fv?=
+ =?utf-8?B?cnFxeDN3anN6N1RUdmxmT0lBclB2TW5WVjVtVjZSVXFUamdaYTlhM2g0cUU5?=
+ =?utf-8?B?ZGx2ZGhLZ0JFNkdob043cWlzREEvUE4zdTU0RlJFdDFGUEFreW0wQmZUcGxr?=
+ =?utf-8?B?U21oSlNmckozcVJFYzBnbFZ3WGZ6NE1DdUZYWjM3ZkdYWnVIU25IWWVjWUZn?=
+ =?utf-8?B?S1FHdldJdlN2Q21USjdZTklPOENZRXYyMDQzanM4OHBKS0ZsM3AwNEtMaXFI?=
+ =?utf-8?B?bHdHbXlQU3ZZdnBSNUZlNFhkdUl4bCtkalVnSzlpdXV4Q0dxcWo3cGtQcVNE?=
+ =?utf-8?B?cXdzZTBCQiswbjY1ZlhtbS9CZWRZUXFkeTgvYlNoNU9RNTlUYTlBSXN4NE5F?=
+ =?utf-8?B?YjhMZ0lEOHlvVnFOc2hGeXhlZzFDNEJiUCtoczUrOU56V0NlajZHVUd2Wk9T?=
+ =?utf-8?B?ZFl4VG1kWHF6TWhvZTRidHhEZVN2a1ZhTVUxUzBqK2pESDluRUtoSFM2WUJC?=
+ =?utf-8?B?SHlvS0pwQnp5VFgvVUZGcmxJUGVBU05XMWxhTE1hczFSelhiK2tJREp6MHBV?=
+ =?utf-8?B?UERXNkcybmsyeWRMQWpTNVpvVFBETm1TRjQ0NDRaUGJYL2NVUGxIL3k4M1B2?=
+ =?utf-8?B?ZEdUL0x3RzhjclcyenFSdkYydFdNSzJzOVgzWDVZZUR6UWFIVGIrNWhuSlFh?=
+ =?utf-8?B?cXJhN3ZCNkRKM3Fyc211cGpkT2xmcksxT0hmTlFrOGt2Um9GS1JTZU1ud3Er?=
+ =?utf-8?B?Ym1WMDM4ak5ERlhYUGZ6c1FBNzE2MzlhcEhaUnJVQUdKZXRDRG9QTlR6eE9k?=
+ =?utf-8?B?Y0t0b2VCOEpiSnZCb05GYS9FWlcxK3pOVE9iaUZXWDA0N05DVnEwWEhGSGFw?=
+ =?utf-8?B?R1RneCtqeGx1UFpETDVjWDBPb0ozbEJGVVhWZjFNZ0lzQi9WZDhNdG5Qdlh2?=
+ =?utf-8?B?RXB4MkZjdTlqTVlUb2NhUEp1QlVLSU9qNllzbGFMUlVkckFQQ0xvck0ydDkr?=
+ =?utf-8?B?clBKNnFxd3N4RWl1MGNTV3JGS094Vkw1UWN1Uyt1WHMxcHpGeGhPR3VPYjRh?=
+ =?utf-8?B?NkQxbDF4ZmhPdklaMkowR2w3NThUaCtOUFRxdnpmVXI0TXF0UTdkM0dHQStm?=
+ =?utf-8?B?Uis5MTRWVzdFVXRacURTdmRNYmZiK21xVVBGQTZCL0JVYlExc095a25tUDNo?=
+ =?utf-8?B?ajR6dVIzcHg0cXBOdm02VEd2NkJFRTdDMG5EbThyLzVQZmd2b0dCZU9SRXo1?=
+ =?utf-8?B?WWxWZzJ4QUFKRGkwVUpUL0NNVURFZDlYZXlhSGFoYW94d0E4bC90Z0RHYzlC?=
+ =?utf-8?B?ZGVONkExUEpUaktxdlFlZTAxRFFQRnA1bEtBSm43UjQxV2RjK3owWnArU1dx?=
+ =?utf-8?B?cDBqWWFMdGxMV3J1TTJOb25nbXZjQWdsSGtCQ3QydzhsUGpaZXJhVjBiV3BO?=
+ =?utf-8?B?OWlZaTlhbmVNUzBUajc2TXVDZWhjaXltcm9FdklhakZ5ZTB2by9MQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a84e08db-4c3f-433d-bc96-08de75d874bf
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB7541.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 08:16:06.6869
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2zFIVGaP3j9FcAxUGOJ0tvWB6UjfapvrQRLAaNHUaEsCEDY/tsupjIUrFodbGi42+R7TjJvMcWj7T5Ka7arwLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7671
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17363-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,HansenPartnership.com,kernel.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:ssrish@linux.ibm.com,m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:James.Bottomley@HansenPartnership.com,m:jarkko@kernel.org,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[iscas.ac.cn,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,amd.com,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,perex.cz,suse.com];
+	FORGED_SENDER(0.00)[mbloch@nvidia.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	FORGED_RECIPIENTS(0.00)[m:wangruikang@iscas.ac.cn,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:bhelgaas@google.com,m:perex@perex.cz,m:tiwai@suse.com,m:brett.creeley@amd.com,m:gaohan@iscas.ac.cn,m:tglx@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:netdev@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:sophgo@lists.linux.dev,m:tiwai@suse.de,m:maorg@nvidia.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17380-lists,linuxppc-dev=lfdr.de];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[mbloch@nvidia.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 5176A1B41AC
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,Nvidia.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: E10101B5A77
 X-Rspamd-Action: no action
 
 
 
-Le 01/02/2026 à 14:59, Srish Srinivasan a écrit :
-> Power11 has introduced a feature called the PowerVM Key Wrapping Module
-> (PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
-> (PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
-> user secrets by wrapping them using a hypervisor generated wrapping key.
-> This wrapping key is an AES-GCM-256 symmetric key that is stored as an
-> object in the PLPKS. It has policy based protections that prevents it from
-> being read out or exposed to the user. This wrapping key can then be used
-> by the OS to wrap or unwrap secrets via hypervisor calls.
+On 27/02/2026 7:25, Vivian Wang wrote:
+> On 2/27/26 02:25, Mark Bloch wrote:
 > 
-> This patchset intends to add the PKWM, which is a combination of IBM
-> PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
-> does not exist by default and its generation is requested by the kernel at
-> the time of PKWM initialization. This key is then persisted by the PKWM and
-> is used for wrapping any kernel provided key, and is never exposed to the
-> user. The kernel is aware of only the label to this wrapping key.
+>> On 29/01/2026 3:56, Vivian Wang wrote:
+>>> Some PCI devices have PCI_MSI_FLAGS_64BIT in the MSI capability, but
+>>> implement less than 64 address bits. This breaks on platforms where such
+>>> a device is assigned an MSI address higher than what's reachable.
+>>>
+>>> Currently, the no_64bit_msi bit is set for these devices, meaning that
+>>> only 32-bit MSI addresses are allowed for them. However, on some
+>>> platforms the MSI doorbell address is above the 32-bit limit but within
+>>> the addressable range of the device.
+>>>
+>>> As a first step to enabling MSI on those combinations of devices and
+>>> platforms, conservatively generalize the single-bit flag no_64bit_msi
+>>> into msi_addr_mask. (The name msi_addr_mask is chosen to avoid confusion
+>>> with msi_mask.)
+>>>
+>>> The translation is essentially:
+>>>
+>>> - no_64bit_msi = 1    ->    msi_addr_mask = DMA_BIT_MASK(32)
+>>> - no_64bit_msi = 0    ->    msi_addr_mask = DMA_BIT_MASK(64)
+>>> - if (no_64bit_msi)   ->    if (msi_addr_mask < DMA_BIT_MASK(64))
+>>>
+>> Hey Vivian,
+>>
+>> We are seeing issues while reloading mlx5 on a PPC64 platform.
 > 
-> Along with the PKWM implementation, this patchset includes two preparatory
-> patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
-> another reorganizing PLPKS config variables in the sysfs.
+> Mea culpa. There's a fix on the list [1] since last Friday. I'm not sure
+> why it hasn't moved yet, but please take a look.
 > 
-> Changelog:
-> 
-> v6:
 
-Seems like v5 was applied, if needed can you send followup patch ?
+Thanks! I've looked at the patch, it seems fine and should fix the issue we
+are seeing.
 
-Christophe
+Mark
 
+> Vivian "dramforever" Wang
 > 
-> * Patch 1 to Patch 3:
->    - Add Nayna's Tested-by tag
-> * Patch 4
->    - Fix build error reported by kernel test robot <lkp@intel.com>
->    - Add Nayna's Tested-by tag
-> * Patch 5
->    - Add Nayna's Tested-by tag
-> 
-> v5:
-> 
-> * Patch 1 to Patch 3:
->    - Add Nayna's Reviewed-by tag
-> * Patch 4:
->    - Fix build error identified by chleroy@kernel.org
->    - Add Nayna's Reviewed-by tag
-> * Patch 5:
->    - Add Reviewed-by tags from Nayna and Jarkko
-> 
-> v4:
-> 
-> * Patch 5:
->    - Add a per-backend private data pointer in trusted_key_options
->      to store a pointer to the backend-specific options structure
->    - Minor clean-up
-> 
-> v3:
-> 
-> * Patch 2:
->    - Add Mimi's Reviewed-by tag
-> * Patch 4:
->    - Minor tweaks to some print statements
->    - Fix typos
-> * Patch 5:
->    - Fix typos
->    - Add Mimi's Reviewed-by tag
-> * Patch 6:
->    - Add Mimi's Reviewed-by tag
-> 
-> v2:
-> 
-> * Patch 2:
->    - Fix build warning detected by the kernel test bot
-> * Patch 5:
->    - Use pr_debug inside dump_options
->    - Replace policyhande with wrap_flags inside dump_options
->    - Provide meaningful error messages with error codes
-> 
-> Nayna Jain (1):
->    docs: trusted-encryped: add PKWM as a new trust source
-> 
-> Srish Srinivasan (5):
->    pseries/plpks: fix kernel-doc comment inconsistencies
->    powerpc/pseries: move the PLPKS config inside its own sysfs directory
->    pseries/plpks: expose PowerVM wrapping features via the sysfs
->    pseries/plpks: add HCALLs for PowerVM Key Wrapping Module
->    keys/trusted_keys: establish PKWM as a trusted source
-> 
->   .../ABI/testing/sysfs-firmware-plpks          |  58 ++
->   Documentation/ABI/testing/sysfs-secvar        |  65 --
->   .../admin-guide/kernel-parameters.txt         |   1 +
->   Documentation/arch/powerpc/papr_hcalls.rst    |  43 ++
->   .../security/keys/trusted-encrypted.rst       |  50 ++
->   MAINTAINERS                                   |   9 +
->   arch/powerpc/include/asm/hvcall.h             |   4 +-
->   arch/powerpc/include/asm/plpks.h              |  95 +--
->   arch/powerpc/include/asm/secvar.h             |   1 -
->   arch/powerpc/kernel/secvar-sysfs.c            |  21 +-
->   arch/powerpc/platforms/pseries/Makefile       |   2 +-
->   arch/powerpc/platforms/pseries/plpks-secvar.c |  29 -
->   arch/powerpc/platforms/pseries/plpks-sysfs.c  |  96 +++
->   arch/powerpc/platforms/pseries/plpks.c        | 688 +++++++++++++++++-
->   include/keys/trusted-type.h                   |   7 +-
->   include/keys/trusted_pkwm.h                   |  33 +
->   security/keys/trusted-keys/Kconfig            |   8 +
->   security/keys/trusted-keys/Makefile           |   2 +
->   security/keys/trusted-keys/trusted_core.c     |   6 +-
->   security/keys/trusted-keys/trusted_pkwm.c     | 190 +++++
->   20 files changed, 1207 insertions(+), 201 deletions(-)
->   create mode 100644 Documentation/ABI/testing/sysfs-firmware-plpks
->   create mode 100644 arch/powerpc/platforms/pseries/plpks-sysfs.c
->   create mode 100644 include/keys/trusted_pkwm.h
->   create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
+> [1]: https://lore.kernel.org/all/20260220070239.1693303-1-nilay@linux.ibm.com/
 > 
 
 
