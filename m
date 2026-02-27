@@ -1,50 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-17387-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17389-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIUjEyWKoWnAuAQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17387-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 13:12:21 +0100
+	id oKxrEO2NoWnouAQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17389-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 13:28:29 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2EB1B6F5E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 13:12:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571C71B7127
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 13:28:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMnJJ6hdpz3bmR;
-	Fri, 27 Feb 2026 23:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMnfx58g0z3bmR;
+	Fri, 27 Feb 2026 23:28:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772194336;
-	cv=none; b=cNFPZNeJM5INJWqlZFrj/bphJFXDgmNeOLZC48NnyUZ5ULDdARgALnV7TpvFraz88bNfJLAE23PDAy4bEVmbb3Iu7qt/IGhjGNLMlYje4h77J3fAU/1gre+ol4cAXzjELJKrLTXDSV5wMzaQe7MS7nnsTYiv1rP2eUFXCp4Rzt++WXFSRGSO/ZAFXFRU97VE++FQr/RwnllrmCYGetFDF9OQBaxvkoysxjnqRUP79LLi1KBeZO4Kod6iRU3QMpf31uWU5alaFd0WZEEYaBojyIRwe4TJ0k8SJdp5yShHok4RA7NRpi1b+zwU1ydc5/AwRTBFhk4Lhnbn++km/w8Uuw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.99
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772195305;
+	cv=none; b=S6FD9jlM7RicIicIzYITJCc7LAEzn7j9nAiGmoD0iu2MCxabXa0VOXQ1v3INNNy3WOOIKBFmkz1ynOS/YWIgAJbJn0Dk3C1ZkaB4DvdZrJwVFOT3+ibpZTKNWwk68D/Rkm32eReIoLBr4KfFmW6W5xj2H5IV+05GDpewmzeqhc1BtR9iWU4SfU0ry1qfVQZooKzB7CZD0Nojk8zC5jOmOD5G7aHuFrjHMCPeewVsIeDWG0s0J1WKzzMBiB/rJVKEaEgDpyyvyLrI3YU8+JMLR+iBxj4I70Xd7ciTQQ+ve6jFyqycFemdghDn1m8i9z+AR5wbiRbpHuExWlxcWaVqow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772194336; c=relaxed/relaxed;
-	bh=A9VnUUVWt2OivEInnP/5hnH7A1kF+epUMtvXzdzCsRg=;
+	t=1772195305; c=relaxed/relaxed;
+	bh=YAnptZhgz1649pWMwYw9NqZhdnSslf/yjACo95roL/I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SmM38Wpyf9VJrIj47XiN4p1NqqzbbV7s2TAWmuQc+nmwAEWQz4YLJ4pznjvyJV0s/aVTVkiLhEuQTfbVFRV31O9NbUyhg0OM6OXFELVPrUtIZqEUwEj0ylVV6AWEModoOKat+T4RzYGoQZxLc+prhpVUnBkDQ+GSFct+mLGHmSdrK5x3FBPJSndl738SLSSu6gZDlQ8nzfXrRXThfr5sYJ83yQJRXTizsAXE9Wc+Fz5d9yzOSAnanVIHnwV/gspW4CGHV/8/6EUNBFL5WKikwNkjn4MlFsNyYSkSXAMW11KCsYi+OIsqCulTXv4yb1sN7DyNqViyfeKJAuzzOKQ7cQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=G73YvlTI; dkim-atps=neutral; spf=pass (client-ip=91.218.175.172; helo=out-172.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	 In-Reply-To:Content-Type; b=IV2QNoXNwbYG3JASKCc3fQotAhqHliJxa9v4SYigF9hMc4fdl4I5bgce4EJIsYEbX4Cp1hsTsslufbRKb2VDKSPYXcfheJdIDeoj9Fhc805tIevGVu57Uo4xgLBMTjclcZ+8zVUESSPPNIQQ3bZbLtx5yx9DCpQIteEHXs/v0QDkLg/k0mb4Aeezfoh0eFo+rOYVPLXT1NZH2cNi2q98TwkxuWT4GHIVZf9ypC88U8OGNZzK7QdqhdGLVXl0qbU/yaeNZWQknHpw6gWycQqVWHH1nAMoR7HX4PUCL0lWzAW0zlWOw0Gs6bs5zReJmmlsuRxfy6lREq2XhUMUYNE/Hw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=x+W4cYDW; dkim-atps=neutral; spf=pass (client-ip=115.124.30.99; helo=out30-99.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=G73YvlTI;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=x+W4cYDW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.172; helo=out-172.mta0.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.99; helo=out30-99.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMnJF2MRkz30N8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 23:12:11 +1100 (AEDT)
-Message-ID: <4672053f-c9d9-4694-81ad-9b5fe741013a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772194310;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A9VnUUVWt2OivEInnP/5hnH7A1kF+epUMtvXzdzCsRg=;
-	b=G73YvlTItW/u/rHPyW7CK+7PMpVtGhIzMOv1+2p9NrT7k4zRVoaOf2NzDUgdgP0DB933Kw
-	FryLANPcbvAUfbuhOq0PAoZA9+6fSEp1UeRgwgS84+HZU3nq7i3sqNUZ2hl1aMgf8gchpW
-	Ttxn5+wmgqiIl17kKNPBrc5OfS3bRa0=
-Date: Fri, 27 Feb 2026 12:11:46 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMnft5Sm6z30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 23:28:21 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772195293; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=YAnptZhgz1649pWMwYw9NqZhdnSslf/yjACo95roL/I=;
+	b=x+W4cYDWOzbQZ+6UpmqRzIU8PULTOcBB1HHbP2m8NryA7G5YqnwqhU1lO0zZhwq0i10EXRCu1i4aphZvTqtKb+mD5VqNYibmUqgvnYLHzQdbiTFYeuSfkXcii/sXa8tfUZxYdB0/NncXBWRcyUkuTQpxLVzSLH7y24UbBPyGaZU=
+Received: from 30.246.163.43(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WzuNC9i_1772195290 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 27 Feb 2026 20:28:11 +0800
+Message-ID: <a0ec1ce8-06cc-463d-86b4-a6d6a625a808@linux.alibaba.com>
+Date: Fri, 27 Feb 2026 20:28:17 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,127 +56,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Subject: Re: [RFC v2 13/21] mm: huge_mm: Make sure all split_huge_pmd calls
- are checked
-Content-Language: en-GB
-To: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- lorenzo.stoakes@oracle.com, willy@infradead.org, linux-mm@kvack.org
-Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
-References: <20260226113233.3987674-1-usama.arif@linux.dev>
- <20260226113233.3987674-14-usama.arif@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260226113233.3987674-14-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/5] PCI/DPC: Run recovery on device that detected the
+ error
+To: Lukas Wunner <lukas@wunner.de>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org,
+ sathyanarayanan.kuppuswamy@linux.intel.com, mahesh@linux.ibm.com,
+ oohall@gmail.com, Jonathan.Cameron@huawei.com, terry.bowman@amd.com,
+ tianruidong@linux.alibaba.com
+References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
+ <20260124074557.73961-3-xueshuai@linux.alibaba.com>
+ <aYCujqZIvxElSsOE@wunner.de> <aYESh4bCE2lzTg2S@wunner.de>
+ <924dce22-171e-4508-907c-74f57f1bdea8@linux.alibaba.com>
+ <234dcf9e-05ff-485c-a330-019a4fbb5f3b@linux.alibaba.com>
+ <aaF2PAOZsHr4PuC_@wunner.de>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <aaF2PAOZsHr4PuC_@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-9.21 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17387-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17389-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:david@kernel.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:npache@redhat.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:lukas@wunner.de,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:Jonathan.Cameron@huawei.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[xueshuai@linux.alibaba.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,huawei.com,amd.com,linux.alibaba.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xueshuai@linux.alibaba.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: BA2EB1B6F5E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.alibaba.com:mid,linux.alibaba.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 571C71B7127
 X-Rspamd-Action: no action
 
 
 
-On 26/02/2026 11:23, Usama Arif wrote:
-> Mark __split_huge_pmd(), split_huge_pmd() and split_huge_pmd_address()
-> with __must_check so the compiler warns if any caller ignores the return
-> value. Not checking return value and operating on the basis that the pmd
-> is split could result in a kernel bug. The possibility of an order-0
-> allocation failing for page table allocation is very low, but it should
-> be handled correctly.
+On 2/27/26 6:47 PM, Lukas Wunner wrote:
+> On Fri, Feb 27, 2026 at 04:28:59PM +0800, Shuai Xue wrote:
+>> On 2/7/26 3:48 PM, Shuai Xue wrote:
+>>> Regarding pci_restore_state() in slot_reset(): I see now that it does
+>>> call pci_aer_clear_status(dev) (at line 1844 in pci.c), which will
+>>> clear the AER Status registers. So if we walk the hierarchy after
+>>> the slot_reset callbacks, the error bits accumulated during DPC will
+>>> already be cleared.
+>>>
+>>> To avoid losing those errors, I think the walk should happen after
+>>> dpc_reset_link() succeeds but *before* pcie_do_recovery() invokes the
+>>> slot_reset callbacks. That way, we can capture the AER Status bits
+>>> before pci_restore_state() clears them.
+>>>
+>>> Does that sound like the right approach, or would you prefer a
+>>> different placement?
 > 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> The problem is that if the hierarchy that was reset is deeper than
+> one level, you first need to call pci_restore_state() on all the
+> PCIe Upstream and Downstream Ports that were reset before you can
+> access the Endpoints at the bottom of the hierarchy.
+> 
+> E.g. if DPC occurs at a Root Port with multiple nested PCIe switches
+> below, the Endpoints at the "leafs" of that tree are only accessible
+> once Config Space has been restored at all the PCIe switches
+> in-between the Endpoints and the DPC-capable Root Port.
+> 
+> Hence your proposal unfortunately won't work.
+> 
+> I think the solution is to move pci_aer_clear_status() out of
+> pci_restore_state() into the callers that actually need it.
+> But that requires going through every single caller.
+> I've begun doing that last week and am about 60% done.
+> 
+> Once pci_restore_state() no longer clears the error bits, we can
+> report and clear them after the "report_slot_reset" stage (which
+> is where drivers call pci_restore_state()).
+> 
+> I've also changed my mind and I think reporting and clearing
+> the error bits *could* happen in pcie_do_recovery() even if it
+> were used for EEH and s390 because those platforms may plug in
+> AER-capable devices as well and so we do need to clear the bits
+> regardless of the error recovery mechanism used.
+> 
+> Let me get back to you once I've gone through all the callers of
+> pci_restore_state().  Please be patient.
+> 
+
+Sure, glad to hear you have been working on that.
 
 
-Kernel test bot reported that I missed one split_huge_pmd call. I will include
-the below patch in the next revision.
+Thanks.
+SHuai
 
-
-commit 9e1bb250ea8ef0a39c738cd4137ed6c98131ebb0 (HEAD)
-Author: Usama Arif <usama.arif@linux.dev>
-Date:   Thu Feb 26 10:45:35 2026 -0800
-
-    mm: proc: handle split_huge_pmd failure in pagemap_scan
-    
-    pagemap_scan_thp_entry() splits a huge PMD when the PAGEMAP_SCAN ioctl
-    needs to write-protect only a portion of a THP. It then returns -ENOENT
-    so pagemap_scan_pmd_entry() falls through to PTE-level handling.
-    
-    Check the split_huge_pmd() return value and propagate the error on
-    failure. Returning -ENOMEM instead of -ENOENT prevents the fallthrough
-    to PTE handling, and the error propagates through walk_page_range() to
-    do_pagemap_scan() where it becomes the ioctl return value.
-    pagemap_scan_backout_range() already undoes the buffered output, and
-    walk_end is written back to userspace so the caller knows where the
-    scan stopped.
-    
-    If the split fails, the PMD remains huge. An alternative to the approach
-    in the patch is to return -ENOENT, causing the caller to proceed to
-    pte_offset_map_lock(). ___pte_offset_map() detects the trans_huge PMD
-    and returns NULL, which sets ACTION_AGAIN — restarting the walker on the
-    same PMD by which time the system might have enough memory to satisfy
-    the split from succeeding.
-    
-    Signed-off-by: Usama Arif <usama.arif@linux.dev>
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e091931d7ca19..f5f459140b5c0 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2714,9 +2714,13 @@ static int pagemap_scan_thp_entry(pmd_t *pmd, unsigned long start,
-         * needs to be performed on a portion of the huge page.
-         */
-        if (end != start + HPAGE_SIZE) {
-+               int err;
-+
-                spin_unlock(ptl);
--               split_huge_pmd(vma, pmd, start);
-+               err = split_huge_pmd(vma, pmd, start);
-                pagemap_scan_backout_range(p, start, end);
-+               if (err)
-+                       return err;
-                /* Report as if there was no THP */
-                return -ENOENT;
-        }
 
