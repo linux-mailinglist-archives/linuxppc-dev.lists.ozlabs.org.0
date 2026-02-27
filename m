@@ -1,64 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-17335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17334-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uQM/FGQ9oWkyrgQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	id QM7ZEmQ9oWnsrQQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17334-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
 	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:44:52 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6B81B3610
+	by mail.lfdr.de (Postfix) with ESMTPS id 586591B360F
 	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 07:44:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMf2R3CCNz3bkq;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMf2R37lNz3bkL;
 	Fri, 27 Feb 2026 17:44:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772174687;
-	cv=none; b=B+/IpKopYzUXNIycla4R2HfpHAQprgeSuqK3JJUCiNHc2PqTNV6BVPsTG5BMv6lCjEZuDeZ/7h0P5P7v+M0AbMTQ6SilnloXTxZMbGDXBbwGLH4I/qLBut2J5t4mPJjBgN7+KNW9uihHyNqm8vNZoyV9K9sWyO0+eREeGEWe76R7VB0+Scvgh0XGb3hbcbBseapT7tp06utoXXDnrhujfOukUmRF3gzTi8SjZnjYFTHL8RS8DXOocDSTgXIwwppvHa4fFPYx3sBIRx9vOfYfPNX3QUkZ0vDT5Kdw5nVEvRUQ5eWfqOrwW+Sw00JeiHK6F+HOogWVvsVSnYUsZThnjA==
+	cv=none; b=dhDg46g424BdL1hpX0kb8nJ5OpWL6I5fIXvJP6bzIprNE4YLxgC72TC0k1QX0pLRv6zWhUBHH7hbOjVe9VKqf1x6sjDY0iSwMVZexxbUxIvvTwe2CC3DfKp4KqSUVBwTt7FQ2uxYYnzxc63H6cYnBeHQtwrwIEtiCHwTWCGDOli2d4Vg1Q3HBzUyFsieZUoTidb8a9Do3dwfusOoHfi/oZwvtC7ktk7v3cr2fsoNVyhzCB67ya6RFj1+I6bV16dJ2MP0mInQJtJo5IIGsBDqW5w4n6DzEJim3KcjU+JoCZ1lNRqCfM//fZjAEwAiJ3nPNi3Td8Ejn/VrNTBKJWd36g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1772174687; c=relaxed/relaxed;
-	bh=sdFUUlU8YM0o6VyeNKRzp/DOfUbD4WRTS4ygszyQZTo=;
+	bh=tIzyOBO0MUC1gjnQlOZaz5WdpoHJoIjGFPUUXU0dq7E=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gALObbk9bXFmG77lZUPFO5+ypffSMhOSeIak5il5l1MJtAneVuBFQLwGE3YPqBx7ATZ0o8+Hf3cyCDT68uTC9J8GueyuwTAcHqlHY70Fofgwsxk9BkKjYNkS1B6kpHk6yn2Ce9T2zYAWtJZfcLMysS9yeHyBtyqnZZ7NPdBC7ni9qhmgFSXMZ+rMHUcgsF/3CX9ynIMPUgQ5edUWjTkchDsKDxY6KETOBJhdrJX3YANTaQ51X0MIh/Wd38ZSH7Na8LSjiR/3iTVEtmMFtY6NKymopxoZqMC80oxOsfOGqLmV2cVyL7g6p/5bHpmAS4jeXD3NSXV+xRcQ6+DO0g+W9g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=acXbSzcl; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=64N+lwSN; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=hHKtOlD9U7yybRceA/emVLtmhjuvzLeO0qiWalZIveSgtThJM/nS04SRDzh5jAvgZemSIufvE9VM+HZJysZRDUGnjIuqatjtSKKJ4fad2z9NpcPofmxxdWo/vjzfvvZCHpA4pIhrbHWhM2rUkGy2f8ZSAm3icEX6ldZHCmhiWP3VVlzYgfwvIa7HtXhk20g6T3gwBY6VGtqjp4dOfCrs2BcH2vTnCPzMPh6HyQ5hjVGp3ryNJsAF2eMLLEgpLtI5pe3REtKUYiygoW0bS5j7+EtPl8wWs4gn4l56JqdEy2JRH+uPXACuM5efw3PXU74OKLEZBz/6BM11hzPOTbq7sA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=E81MX9z2; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=U94drMM5; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=acXbSzcl;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=64N+lwSN;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=E81MX9z2;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=U94drMM5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMf2Q2jT5z2xLv
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMf2Q2pnBz2xMt
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 17:44:46 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772174682;
+	s=2020; t=1772174683;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sdFUUlU8YM0o6VyeNKRzp/DOfUbD4WRTS4ygszyQZTo=;
-	b=acXbSzclUrurp80PG0+fAyoUBWKSjXDVZqaEtoj8/RVPP+PLjt3GupUBLm3PILwGEDcmm6
-	gmWi/+1jNyzdF+2sua8Q+R95D+RDd3PHW9wP/4vFUakNybRw4IJmUwJIuijbCOSu8qrWuC
-	OX+b2BWAsQKuMCRMQraJ0m1p0psP86UgWSnAvf2UvZmmZUvyySDN+iwvZpY0O7r2/ZDwYK
-	FCRfX5Yn8U/Oe21BUkcqS04TcsqWWw55ob8FZySl4dTnorTelm0ROWW8EfBvbTq/LkKJCt
-	RwzHhuz634UZB6QRgbh3Kd9qbhl0kRB5IWvHp9LGIgUEaY4UM0fUgGGEZ6ifXA==
+	bh=tIzyOBO0MUC1gjnQlOZaz5WdpoHJoIjGFPUUXU0dq7E=;
+	b=E81MX9z27fb6iOgDPvOjHyZq9lLoj5k7Xn4lhkXaNGe+gQTytI7YYl/p5GxyCR0bpojyEl
+	I+ytafun06DCmWYljV840vgi/0RqQ0PrTsgD1b6mau/3ev4WlS35Flv65khQJPJm69OB19
+	5/Ui4qC67Lli03t78tLB3XaKiMWrgsXYg3sSUT5skJ7m85q/xhqehxm2ciaKp9LgGaqrtp
+	cwgKZPwiOPxbxB2axoaVmFdKlSr87wTTQU7R3UTjM7UJQ2RyquhN7VyIdVNYjuAwr99jkn
+	k7CNW3By19H79/yNTztN1GKacKgRTLbJVqum68Ca0M4YVfCpEteDCjyhoVNLMQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772174682;
+	s=2020e; t=1772174683;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sdFUUlU8YM0o6VyeNKRzp/DOfUbD4WRTS4ygszyQZTo=;
-	b=64N+lwSNZac8Cf0Ey5PbaJQV7uGBG7blCdI+GkkIljVqGkR9CCp5iKvDa84caXy0u2IFPj
-	MXM396HbFbJ2o+AQ==
-Date: Fri, 27 Feb 2026 07:44:28 +0100
-Subject: [PATCH v2 02/15] arm64: vDSO: compat_gettimeofday: Add explicit
- includes
+	bh=tIzyOBO0MUC1gjnQlOZaz5WdpoHJoIjGFPUUXU0dq7E=;
+	b=U94drMM56wMv6zpBylLQPwmLFuDXo72akf5+eb1y2OjPiFv44gi9g/toB2rqCZHPxOpY1/
+	5xKusqE5XrZEMwBQ==
+Date: Fri, 27 Feb 2026 07:44:29 +0100
+Subject: [PATCH v2 03/15] ARM: vdso: gettimeofday: Add explicit includes
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,7 +73,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260227-vdso-header-cleanups-v2-2-35d60acf7410@linutronix.de>
+Message-Id: <20260227-vdso-header-cleanups-v2-3-35d60acf7410@linutronix.de>
 References: <20260227-vdso-header-cleanups-v2-0-35d60acf7410@linutronix.de>
 In-Reply-To: <20260227-vdso-header-cleanups-v2-0-35d60acf7410@linutronix.de>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
@@ -91,11 +90,11 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772174681; l=973;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772174681; l=899;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Eaw7e67Q2te9EZvmR96CdfmDp1KIfoTuR5UbP8dxulc=;
- b=3OuahSNReBiPRuqoaLBpLN/JEX8iDVn/BcKBSiE+DA//SxSqiQPPogs7Z07/0DvpuO59Q7uZF
- J8H2ZtJgBREA4Y4SXfmQMnWLVugQZQSFq5ODdBR0W+0eK3JdfsNyOwv
+ bh=aYrHWJd0bhmjChMmo+JGha4OUSHIgaD7jcuPC+kTlSg=;
+ b=L+nxYTe4Xu7tbOaysmodJ3f65uyex5hwuv4KS3TnbH0HYi4mZ5/LtcKTrbLS5iK5/ygPPMWVi
+ i+XTjg51+63DE4ZupdB1nrJ3vyHCCtJqQWsPOwIN0nJQy9oIttoD0qK
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -112,7 +111,7 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17335-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17334-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:catalin.marinas@arm.com,m:will@kernel.org,m:linux@armlinux.org.uk,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:tsbogend@alpha.franken.de,m:luto@kernel.org,m:tglx@kernel.org,m:vincenzo.frascino@arm.com,m:tytso@mit.edu,m:Jason@zx2c4.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:linux-mips@vger.kernel.org,m:thomas.weissschuh@linutronix.de,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
@@ -134,11 +133,11 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: 7A6B81B3610
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
+X-Rspamd-Queue-Id: 586591B360F
 X-Rspamd-Action: no action
 
-The reference to VDSO_CLOCKMODE_ARCHTIMER requires vdso/clocksource.h and
+The reference to VDSO_CLOCKMODE_NONE requires vdso/clocksource.h and
 'struct old_timespec32' requires vdso/time32.h. Currently these headers
 are included transitively, but those transitive inclusions are about to go
 away.
@@ -146,25 +145,23 @@ away.
 Explicitly include the headers.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm64/include/asm/vdso/compat_gettimeofday.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/include/asm/vdso/gettimeofday.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/include/asm/vdso/compat_gettimeofday.h b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-index 0d513f924321..a03e34b572f1 100644
---- a/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/compat_gettimeofday.h
-@@ -7,6 +7,9 @@
- 
- #ifndef __ASSEMBLER__
- 
+diff --git a/arch/arm/include/asm/vdso/gettimeofday.h b/arch/arm/include/asm/vdso/gettimeofday.h
+index 1e9f81639c88..26da5d8621cc 100644
+--- a/arch/arm/include/asm/vdso/gettimeofday.h
++++ b/arch/arm/include/asm/vdso/gettimeofday.h
+@@ -11,6 +11,8 @@
+ #include <asm/errno.h>
+ #include <asm/unistd.h>
+ #include <asm/vdso/cp15.h>
 +#include <vdso/clocksource.h>
 +#include <vdso/time32.h>
-+
- #include <asm/barrier.h>
- #include <asm/unistd_compat_32.h>
- #include <asm/errno.h>
+ #include <uapi/linux/time.h>
+ 
+ #define VDSO_HAS_CLOCK_GETRES		1
 
 -- 
 2.53.0
