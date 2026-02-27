@@ -1,81 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-17404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17406-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ukS+CBrLoWnYwQQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 17:49:30 +0100
+	id APIFMInXoWlcwgQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17406-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 18:42:33 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070691BAFE2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 17:49:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D771BB909
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Feb 2026 18:42:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fMvS41MwDz30Sv;
-	Sat, 28 Feb 2026 03:49:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fMwdJ3zrXz2xYw;
+	Sat, 28 Feb 2026 04:42:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772210964;
-	cv=none; b=FSaAb7j29eBbPaC3iFuLS2/eq5URY/gLAYeB51n6dPcUXut9zM2vaUtMJYU48QJo7916Na0MlGDmHC8RSOxbN/HnyxPFqOsOx6T4hG/EFSta9Z3f9BtdiIqSJuPTKXOkJuvsVQU6Az5OuPQvKwDxf7DZ7g7qWrFxHd8s0Xi/iyFJG5atdDBwJt1iWsr7RqUYTIABn+DL2H1Ozo+ZQRavYlYmH+Y646vIqwrjym62MclUYY30Mjly7UAwIa1gEYqdt2rY7mAgFVZ7tMuWzLmQWm8jrrZrXWykNLHGVpHxulImC3TKjQiPYbJAc4dv1ptxYQk1xlKqf9JnXuapENLZ4Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772214148;
+	cv=none; b=XITcJ7qeAl/6W6x9leUG+SuKHPDO+8HwoWU1/Bf6ivTGiHMrGu1fwc0WDpQ5clqM1b0XuJljtauEj3OCzQldbr4tVgpOjlS7d3O24N/KL01bBmeg/XlOfILoe+h4U0fpDZuGqE+1l2ot5I+N3SyrTkI3MTRm1CeCnPYSAUoYgk136Fn2SokWkfM212jrR/Ln+mf2SOSO5v++u8vFMfiDY+xjflmMbuDXjs0LbjsahlIKpYO9M9XCt/PHHk6T4BGG2o4nOhlqbL35Umf1woYXyGNFsx03OjBD7nfWWGS6uBsZJ1VlYSpdNYh7NdaKG7oINMQOnTVgZphvkujgZo0RWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772210964; c=relaxed/relaxed;
-	bh=2cN4bzTtx9EFFY7kBEaMOSYHOz0z1pLi1iFqWIjUpZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=HF8DU7FYt3EOlCkW3OPBAJLXT29N7+sfUjbbd6bfYqpMPxtVcnpK9I3jj1Mh4dtIXhVV5jXVcf5jGPTQ5KJR4TzH8FL7Bnun/8a58PdRqdM0D2MHcUn9bWyZygB8rV/9j7GAugSv64QGDiIfSTld0ub+o7HMjU55O/4i2N+L+yWz9cDqdzmZnFmaZnO+pYOJGMHC6n/hWDa0rNvMoPSaNzwA7luNicGvdj72VT9Pd+LotdG6bNtyJcbHcUCJ9H1lLjLkTFcJvevNJGmKX4f3o506jlrOYQB+Lw+fhjIKzs/CfFh2MP481SGHMumDXMlmKk23zdceRTjekBQZRu71/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BMGK66Il; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1772214148; c=relaxed/relaxed;
+	bh=Et77aHJTeuGzmmNrAkPK/DYt1o94w5tXvKsba6OelYM=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=K78d380garwIOY9YhmM7q1HGoA1dofSTh71OvkrOKnbvHlR4SCBCaMtzjcgRx29q8/YsZVpsMj6ONM9VsDgUnY/TuM8K/FQ6+QKQo+04SPk3ZKy96CLDXZcl2n8F9a4XvX0pW8ssJxXZ/hd+xf2tjlmttUY6uaidmiZqubAJczXf/l39vMXWTu/o6Hn+Ofii4493roXDmGvFJz7rL/uaYGpHDeQLgBjLkto5D8jc9I7jjqQawod5YzW5ZDdAMuswY3zHYZyLWKcW0LJPhV6Mm5KVqo9lUgRdobK7HrND+UhGpgbH5YAPdqRHLbrDffvVQmLCW4bmX33EqpgemTgAmg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XCpzIZK+; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BMGK66Il;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XCpzIZK+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMvS32fT1z2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 03:49:23 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 269B9444D5;
-	Fri, 27 Feb 2026 16:49:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3011C116C6;
-	Fri, 27 Feb 2026 16:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772210961;
-	bh=jznU9LDSkQYILvcSIV46IxA3CrI9OTrcodpcP2KE/Rk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=BMGK66IlpUYHanCwORkjV1r5gD4tZdmf3FdgQyvpYqd87OnPE/XYM3XTkW4Ksw/Y2
-	 Y3jxv1rvP5tPMlEvJt5tjaSTDHFbZ6E0cmQiJ4sJ1nQ4Fa0ouKncl5VoVtiCuVxIzZ
-	 wWKIJt52O1sSUx08jbmlf8//snPIjiC+zltv0lkdOUs2BhGHuFA3bE4uAUcyVVBSxy
-	 qaQx337ysm56rZiMRyNkrrziyLzOmk1FheLkVIlnP9JOrOh9Vg2yq723loCPFce4ld
-	 PQ+fWhfMBe0FBUqcD3yCDZF4bHUCb4tFZLXFqqmmZy1DAO7HVlmZIQO39PRRlHaFGU
-	 +2b9qvGprKjDg==
-Date: Fri, 27 Feb 2026 10:49:19 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Vivian Wang <wangruikang@iscas.ac.cn>,
-	Thomas Gleixner <tglx@kernel.org>
-Cc: Mark Bloch <mbloch@nvidia.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Brett Creeley <brett.creeley@amd.com>, Han Gao <gaohan@iscas.ac.cn>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
-	sophgo@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
-	Maor Gottlieb <maorg@nvidia.com>
-Subject: Re: [PATCH v4 1/4] PCI/MSI: Conservatively generalize no_64bit_msi
- into msi_addr_mask
-Message-ID: <20260227164919.GA3897300@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fMwdG6n1Sz2xLv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 04:42:25 +1100 (AEDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so25275495ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 09:42:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772214142; x=1772818942; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Et77aHJTeuGzmmNrAkPK/DYt1o94w5tXvKsba6OelYM=;
+        b=XCpzIZK+TivE0WMm9fwaqGru/tBXzHiwKZ3FP8MKiSoIaFCg4zhQfuMfg8ws3uaenK
+         W4jiDKhNfriVYwU6tiQmwM9uT6/DajpLM+JjOGkESiRixLMqDHILcejT+sFlgcgX7pxv
+         GfhfPJcvi+6N8C2FBAt/FigNYHuEG3zjoFXt0/lJH/oeTuI5B1yn8cCLsap2rkedMmLg
+         nDwHne96CUal1OuhSRMIb9i3pvUga0XkDG5HCOyyH8y5aaLawS3ZsfWtlviegtGAvs59
+         DaawDLOy4JOUcc4TjTNi43uacM3GSYhvXUkYN/n9196dYrGdmVueg1Qnh15XqniFLDUI
+         wyag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772214142; x=1772818942;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Et77aHJTeuGzmmNrAkPK/DYt1o94w5tXvKsba6OelYM=;
+        b=XToa1XqaNBFfm4UxKS+wgNNYd4uqpEztSJoCBt/gllR4UkvvIbX/qg3LnCyctpSlOO
+         XN6dBqSG4Q3LaeylNmBP/6uMfBVtXzQEYer0F3i2T6MABma4MTjq6nSQNAE9dx398eRD
+         ISWt4cCPcD4SppKvYD446dbUcWJygtfFHai6Nxa4mHPC22cZfztSH8/myo3rLsRz2NWK
+         vCTzG+mnsNwTchvy1L1sN2/SoSit6vJHrxvjs0a0bcZ9prNlJrWkCJX0RP5RhgE9jZM9
+         5o8ki12kK4h0Lup5h27PVwEzlemDgTDacIlYDBRamCCb8qonzV40fg8SV4WGN+xNmWL8
+         enPw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2MtwRtMmbLySKMccOduu4Z+L63dmYV1QYHhPTZnXaVIJemaWNIlRVYxfI2xuBlbgnXiWnkNWj8mtJDIg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yya3/4Zudc8J7joyjaw+hDOrVVywSlRPlnM9GIMMfNNdO1uhg1+
+	PttajhDM3PYbSbdI+tskyu2tNWbrdC/55jfLIbzv+XKQGEqPGl+lG6Ye
+X-Gm-Gg: ATEYQzzAEn177+4uRucyrYxv76vlJpKLPfvGvHOZ+kSyZ+HqoZiyIBKzRoCkQBoTQ4S
+	y8equtFpbxM1QBIOyBc9Eo5YFWIe34/Gb8gaoaZSuN8mJ/+s9BH/PvWczEOFaezQ8Ffg7k/bZox
+	JIvSCTcFfDkEUgvwe9xPdYI2V8rOb1CjQEvz32KFHH+rXqlw0A/EWxmkSSw57/YxpUIxzfV3zzA
+	Pp7FCq0gigFJQPpm5Du5wcNgZxjaKPOCp2MfWTB7I52SV9pqS3UPuTgWo0Bg65qAF1YxV9Fv+JT
+	PNCZ+ofcNFpokEIHcqFx6ydfeqQXt703byBAzvzts1HXjQWahkl7MUja2rzc/mStsfrsCxgTYq0
+	Tt8R/CxhvDo2BZEDoulMm4wgXg007M1k3o+Txuact+tqx6WHSzxUuh5MYsz3brXti3nzgON47y9
+	wniLrHYuwvMZmYlGf02E1ptrJfBewZ
+X-Received: by 2002:a17:902:f647:b0:2aa:d350:fbf0 with SMTP id d9443c01a7336-2ae2e4a5ff3mr42125155ad.26.1772214142121;
+        Fri, 27 Feb 2026 09:42:22 -0800 (PST)
+Received: from dw-tp ([171.76.229.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b974csm58040095ad.65.2026.02.27.09.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 09:42:21 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>
+Cc: Donet Tom <donettom@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-mm@kvack.org
+Subject: Re: powerpc/fadump: CMA init is failing
+In-Reply-To: <4c338a29-d190-44f3-8874-6cfa0a031f0b@linux.ibm.com>
+Date: Fri, 27 Feb 2026 22:39:53 +0530
+Message-ID: <87o6lagljy.ritesh.list@gmail.com>
+References: <4c338a29-d190-44f3-8874-6cfa0a031f0b@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,94 +95,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c9329ae2-721d-4127-9380-b1ea454bd8f2@iscas.ac.cn>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17404-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:wangruikang@iscas.ac.cn,m:tglx@kernel.org,m:mbloch@nvidia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:bhelgaas@google.com,m:perex@perex.cz,m:tiwai@suse.com,m:brett.creeley@amd.com,m:gaohan@iscas.ac.cn,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:netdev@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:sophgo@lists.linux.dev,m:tiwai@suse.de,m:maorg@nvidia.com,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	FORGED_SENDER(0.00)[helgaas@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-17406-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:maddy@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:mpe@ellerman.id.au,m:rppt@kernel.org,m:donettom@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:linux-mm@kvack.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[nvidia.com,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,amd.com,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,perex.cz,suse.com,iscas.ac.cn,lists.ozlabs.org,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev,suse.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DBL_PROHIBIT(0.00)[54.174.64.0:email];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 070691BAFE2
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,1.201.195.198:email]
+X-Rspamd-Queue-Id: A8D771BB909
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 01:25:03PM +0800, Vivian Wang wrote:
-> On 2/27/26 02:25, Mark Bloch wrote:
-> > On 29/01/2026 3:56, Vivian Wang wrote:
-> >> Some PCI devices have PCI_MSI_FLAGS_64BIT in the MSI capability, but
-> >> implement less than 64 address bits. This breaks on platforms where such
-> >> a device is assigned an MSI address higher than what's reachable.
-> >>
-> >> Currently, the no_64bit_msi bit is set for these devices, meaning that
-> >> only 32-bit MSI addresses are allowed for them. However, on some
-> >> platforms the MSI doorbell address is above the 32-bit limit but within
-> >> the addressable range of the device.
-> >>
-> >> As a first step to enabling MSI on those combinations of devices and
-> >> platforms, conservatively generalize the single-bit flag no_64bit_msi
-> >> into msi_addr_mask. (The name msi_addr_mask is chosen to avoid confusion
-> >> with msi_mask.)
-> >>
-> >> The translation is essentially:
-> >>
-> >> - no_64bit_msi = 1    ->    msi_addr_mask = DMA_BIT_MASK(32)
-> >> - no_64bit_msi = 0    ->    msi_addr_mask = DMA_BIT_MASK(64)
-> >> - if (no_64bit_msi)   ->    if (msi_addr_mask < DMA_BIT_MASK(64))
-> >>
-> > Hey Vivian,
-> >
-> > We are seeing issues while reloading mlx5 on a PPC64 platform.
-> 
-> Mea culpa. There's a fix on the list [1] since last Friday. I'm not sure
-> why it hasn't moved yet, but please take a look.
-> 
-> [1]: https://lore.kernel.org/all/20260220070239.1693303-1-nilay@linux.ibm.com/
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-We needed testing on powerpc and sparc, which has now been done,
-thanks to Han Gao (SPARC Enterprise T5220), Nathaniel Roach (SPARC
-T5-2), and Venkat Rao Bagalkote (IBM Power System LPAR (pseries)).
+> I noticed CMA init for fadump crashkernel memory is failing.
+>
+> [    0.000000] cma: pageblock_order not yet initialized. Called during 
+> early boot?
+> [    0.000000] fadump: Failed to init cma area for firmware-assisted 
+> dump,-22
+>
+>
+> kernel command-line:
+> BOOT_IMAGE=(ieee1275//vdevice/v-scsi@30000070/disk@8100000000000000,msdos2)/vmlinuz-7.0.0-rc1+ 
+> root=/dev/mapper/rhel_ltcden3--lp12-root ro 
+> rd.lvm.lv=rhel_ltcden3-lp12/root rd.lvm.lv=rhel_ltcden3-lp12/swap 
+> fadump=on crashkernel=3G
+>
+>
+> Same issue with kdump CMA reservation:
+>
+> [    0.000000][    T0] cma: pageblock_order not yet initialized. Called 
+> during early boot?
 
-It would be ideal to have acks from the powerpc and sparc maintainers,
-so I just solicited those.
+Good that we added those debug prints ;)
 
-Thomas merged 386ced19e9a3 ("PCI/MSI: Convert the boolean no_64bit_msi
-flag to a DMA address mask"), and could merge the fixes.  Otherwise I
-can merge via PCI.
+I think I know what went wrong, as part of this arch,mm consolidation
+patch series [1], I think the order of initialization is changed.
 
-Bjorn
+With this patch the new order is ... 
+start_kernel()
+    - setup_arch()
+       - xxx_cma_reserve();
+    - mm_core_init_early()
+       - free_area_init()
+          - sparse_init()
+             - set_pageblock_order() // this sets the pageblock_order.
+
+Whereas earlier set_pageblock_order() was called from initmem_init(),
+just before cma reservations were being made. 
+
+start_kernel()
+    - setup_arch()
+       - initmem_init()
+         - sparse_init()
+           - set_pageblock_order();  // this sets the pageblock_order
+       - xxx_cma_reserve();
+
+So that means, pageblock_order is not initialized before these cma
+reservation function calls, hence we are seeing these failures.
+
+setup_arch() {
+    ...
+
+	/*
+	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
+	 * hugetlb. These must be called after initmem_init(), so that
+	 * pageblock_order is initialised.
+	 */
+	fadump_cma_init();
+	kdump_cma_reserve();
+	kvm_cma_reserve();
+
+    ...
+}
+
+
+So what if we do.. 
+
+start_kernel() {
+  ...
+	setup_arch(&command_line);
+	mm_core_init_early();
+    setup_arch_post_mm_core_init(); // and here we call CMA reservation functions ?
+
+
+References:
+[1]: https://lore.kernel.org/linuxppc-dev/20260111082105.290734-1-rppt@kernel.org/T/#m5adf1a845e0a0867066c4f7055f28e6304b73fa5
+[2]: https://lore.kernel.org/all/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com/
+
+
+-ritesh
 
