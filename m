@@ -1,101 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-17429-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCR/Nv8uommQ0gQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17429-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 00:55:43 +0100
+	id AKN0OJ0xomke0wQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 01:06:53 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176001BF3E4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 00:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24D61BF558
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 01:06:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fN4vs4TFDz30VV;
-	Sat, 28 Feb 2026 10:55:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fN58n6dvWz30VV;
+	Sat, 28 Feb 2026 11:06:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772236537;
-	cv=none; b=a2+VI4SYS62sqbvm6fJFouoBK8cCBl4DUSpu2QmC+zO7YRrA7v8sB5ZI7SbLMFCMXi0NNZxZqDA03OfxTgjyNHyo5anCWZlWYTWFoUZ4HcDzl3TW4yeRsLS53QnN8It1eT/wt2o6xGByUtkhEB1eSa3sdiOlA5DjJwTYcgQnj6Zpest1zrgXfRKqSWX/UlQDL9lc+ykGEOjAcNPELWHdWmCcV9UtA1cjjFljqLDXOu6xN9ggx3ctISUIj4kJnbl1F7XJfOaMvYD6XL8qbNkJj8rbS4cKYMcGW+g7pBG2c4lec33p7a/HomMiPhmzrxW5ILDFumv9bhStcxLCEgpWFw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772237209;
+	cv=none; b=IkxSTgw4DUzPTB2Iml3F0H+NdnnpuI8237OK8cNUu0gak8Dm7Lx3V5SXnSgTw1z6XC0ln2g2Teav/O2W+gokMC/B699qkE4NriOZaG55R3UlpfuSA9OY0tuj9u4SYFCD4JJvWSYoUtbBMcrqfeM9ioQtoDoCgpL6kMz84rU9KMHyswI6zXJkE82Df9qXr1JBWLhGkwkHTQgHkl+ZHEvVrcBspwYC83Y3JamjZ2E3RAtZp1d4ib2zMm7Z3RwFbvXIrMvsGuQc/h2AX9Uo29l52CEJsmcEg0AmVOk3AYGh45tSLSFcf5V+pdVrRhA8aUvmu64gVN5YCjRbxh72fKUY0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772236537; c=relaxed/relaxed;
-	bh=OapKvdiEwQYu8NOR3j/Rtm7Hb+46RUg9fRdsdH5rsws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f0ES3RVP1+KDed2HM4J0YX4kYspPwRllpUimiu8LSG6TBtk60Ji5RQrdbz4EXVCV2b9zN6ZUIOnmZixVu8yVcCyGBblQjZtB203JZyOxCNnzgzjCy2HLYGXX3OxrVVBZYMupDROLSLbuVi5oKlN8YoDsjW8zfoNl4Tkua8Jt2xWp9/oDRNO/7m0ne0Qq6ljRRw2wQgcrg9sAmyVclqjcjVxSCLltb8XI2ZdFjr0he4zCYpsruu1jR1ulRBmjLE5GZJJ69hiwdXoOC1RvKGYLC/Tt9qUd4dX55CUZjj/MxcjGtaXZxZh7a+sbC+8D3Sv64SEwfGXsBfGoXtAfNRwZLw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XVTF8TDa; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1772237209; c=relaxed/relaxed;
+	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T4A4DI8sWMqH0Wnz/+q475jWt6HM91WasDkGujZfSfsIVASbyqhLolZeH72JFQwu0/iuooOD56Z97p3Biv5coQ5wjzjaPNxPEku+zIqwNnXwFOTLQdOgFNA98PBek5Cht9d6w/ZCkaK80d5uMm4zfAUQ5iZrp68BpbJ2xrlUIFSXUoPSksBWRjWUThJjO82eFojFdoUOG6u6V1nBoqp3yyyOgLHf30T0ePdYNLL37ENg1cRgZjayNO66l61/vOlfdAaogBgvdaC/Na4aDtt064uXViZY5oJ3TI3yzFPkZoqpuFtUPa7kOhUvPKZAtQAHyXzRCok7NScknqTgPTfXQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bndOuJAU; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hnwk+AMn; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=npache@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XVTF8TDa;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bndOuJAU;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hnwk+AMn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=npache@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN4vr10Ctz30T8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 10:55:36 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9859C6111B;
-	Fri, 27 Feb 2026 23:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97119C116C6;
-	Fri, 27 Feb 2026 23:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772236532;
-	bh=9epsKT1Tqv7365SBQ+LgdgBkS+QLvJq0YDfqzGCQppg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XVTF8TDa48poxgWx9OMrHOWcWeX+DIvF8W0Cz9PzVZzIIYVyeCBp8CVqVCQqnKv6k
-	 5zzYRJst/PHEWqq92j85maQBi7plq+GNVhfHcc+9Pog+YMNqi1zTL7+4Ehtq9UJ7o9
-	 QJHa0cD62wS9Zi36AMnb9/VkZXXyv/qc0FNC/OF8hsDCWgrlGfX7gqqn/VNAfN6Fee
-	 CkNTC4E/BHSyzLgTwiN6IqzHfjJo9okaT9JcgxYGTsEHUQc31er3WUHfK/2Gx865yY
-	 ogRz41c7RbSVwCM0hpH/O2zyx2nKKDpUW5eh/FdyMQPRe2Q68ih/qS1f7bbUEX5IYc
-	 3kMoxNtkaet5g==
-Date: Fri, 27 Feb 2026 15:55:29 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Dan Williams <dan.j.williams@intel.com>, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>, Arnd Bergmann <arnd@arndb.de>,
-	Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-raid@vger.kernel.org
-Subject: Re: [PATCH 18/25] x86: move the XOR code to lib/raid/
-Message-ID: <20260227235529.GA31321@quark>
-References: <20260226151106.144735-1-hch@lst.de>
- <20260226151106.144735-19-hch@lst.de>
- <20260227143016.GH1282955@noisy.programming.kicks-ass.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN58m3BG1z30T8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 11:06:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772237202;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
+	b=bndOuJAUep+M1OcbKc2xWulrc339tW1KEJRli8O8ElIV8iLJ1/l6tLTxOLeTdXqvacatkO
+	4IHhYPcA0vGoJUmKxCHzZV3Xn2XDacX8B1vywxvufxtSxYAxi5/eRl8pmT9y5KqOQfdi4Q
+	83ujudbeDXrFYUkvTA5a2POEACstj/c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772237203;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
+	b=hnwk+AMnFSWXTWx35FAjfXXeL5qUJx4Jq3P9lTewoeZnWbJDMREpuDKr3uoZg1T8XnFKlJ
+	k2GmMtVhVYqTQtd0ytwpnWCp90pP2vjmbHse1TRpEOC3uVlgyi/p+IjApTllXyzsqgqPJM
+	hIPiZhEkin05ICJQpP+jIIJun51bsiM=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-215-ckBdvHuWMHSrfCWlWC840g-1; Fri, 27 Feb 2026 19:06:38 -0500
+X-MC-Unique: ckBdvHuWMHSrfCWlWC840g-1
+X-Mimecast-MFC-AGG-ID: ckBdvHuWMHSrfCWlWC840g_1772237198
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-64cb719e778so4917941d50.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 16:06:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772237198; x=1772841998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
+        b=tvVKLQZrjVCGQQl7+DvY6CwU2oGfD3S51P/o8sJkn6SKfCGZwdwT/KizmVHlNtseA3
+         uAOZ2qiMQ9BVx74CdHL8EA6RZi1kBTwjprBKamr71AnBLfKCZIk/aprF5NJEFydKrSbe
+         ya2h6mmyQ3kkBObxqfs3smlLYSVlbK5v8MJkOiH4023Npg7SD8uf+1k6H8cWX2MEdihB
+         YctaNnCg9kJtObV3KSIuUbNOJxs7lO2UkqD4PWCemkY/OGYKKPQGNdWvKLTqJttDQ88j
+         YkPFgBclNjiTgOwOBiNCNPPhWTJ/P4SFRY3GqKvcoebkw/6LRVtDYZKAJO036SR/AtBM
+         PvdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXj2zvKDJboAc/xMdot0C0AsMkMwbdGB+JnHwXAAg85W9NEJLAxEEym5FSUZwfyXwTGoH5vKIrxVCQFBkU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwxtCgxgBM1OsNGYOZjazolNZTB3AUH6vVhlZT36v4GJR0hbOtA
+	ymV2tzojC5swOdis+zdB4o9gGaIKu5tRKEc5UqdOsC10y5M4UepxIOAcLW5VFQv+DMyJzHFOkQA
+	uj/sTBm6jCsir1d2JR73YCZcaX6HFehVxICGa1PiWFEpnz4AFEpTTBcBGVegGuEsvA9ahDrTql5
+	UhGo7htpc3OY/dbFq1rFWF4Ysgc8j59SzxmbVNvdiXww==
+X-Gm-Gg: ATEYQzxxhEjMasc4FSpA87/y0K7yjheItZZsbZzUPfR3+SGGODvQbABcEZQBx9FJ2uO
+	qEJA/KrN9xqrMhyTIh3hIR1eF2EzVV/EvRQGUvKLtkC8ratIIXuuDhaiLg9rZEW+iSGzRHils56
+	9mwrTQYSVhFNqBgy38ho7l56ghhz7PJugFiQB2YqRMsnTBIZp54QHaSEQLwbEWD4ZM6wizDTHIb
+	8Ux
+X-Received: by 2002:a05:690e:edb:b0:64c:9a08:9948 with SMTP id 956f58d0204a3-64cc2302f31mr3708786d50.76.1772237198198;
+        Fri, 27 Feb 2026 16:06:38 -0800 (PST)
+X-Received: by 2002:a05:690e:edb:b0:64c:9a08:9948 with SMTP id
+ 956f58d0204a3-64cc2302f31mr3708764d50.76.1772237197814; Fri, 27 Feb 2026
+ 16:06:37 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,84 +101,159 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260227143016.GH1282955@noisy.programming.kicks-ass.net>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20260226113233.3987674-1-usama.arif@linux.dev>
+ <CAA1CXcAYt3OfW_uBTYZgr-dBhg99x=5pUs5uvqtpg+PNJ1KxGQ@mail.gmail.com> <1d3a4e8e-9ea0-42e7-b8e7-d92fb27f80f4@linux.dev>
+In-Reply-To: <1d3a4e8e-9ea0-42e7-b8e7-d92fb27f80f4@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Fri, 27 Feb 2026 17:06:12 -0700
+X-Gm-Features: AaiRm50atKm0LplrPamqC93Qv4KgvjRMNXj12GuBsNodzUDc90TXdhaD9w6BIXM
+Message-ID: <CAA1CXcCygvA9uUJjB-+2J00srnHbiNGwbvcbqpRer8Vy8QBxWg@mail.gmail.com>
+Subject: Re: [RFC v2 00/21] mm: thp: lazy PTE page table allocation at PMD split
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QAvPtdYYVWDV64seWEYuusPowVsfb8_ug62pW6xQcEU_1772237198
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_BL_SPAMCOP_NET,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17429-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:hch@lst.de,m:akpm@linux-foundation.org,m:richard.henderson@linaro.org,m:mattst88@gmail.com,m:linmag7@gmail.com,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:davem@davemloft.net,m:andreas@gaisler.com,m:richard@nod.at,m:anton.ivanov@cambridgegreys.com,m:johannes@sipsolutions.net,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:herbert@gondor.apana.org.au,m:dan.j.williams@intel.com,m:clm@fb.com,m:dsterba@suse.com,m:arnd@arndb.de,m:song@kernel.org,m:yukuai@fnnas.com,m:linan122@huawei.com,m:linux-alpha@vger.kernel.org,m:linux-kernel@v
- ger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-crypto@vger.kernel.org,m:linux-btrfs@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-raid@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[lst.de,linux-foundation.org,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[npache@redhat.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	TAGGED_FROM(0.00)[bounces-17430-lists,linuxppc-dev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[56];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[npache@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 176001BF3E4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: F24D61BF558
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 03:30:16PM +0100, Peter Zijlstra wrote:
-> On Thu, Feb 26, 2026 at 07:10:30AM -0800, Christoph Hellwig wrote:
-> > Move the optimized XOR code out of line into lib/raid.
-> > 
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  arch/x86/include/asm/xor.h                    | 518 ++----------------
-> >  arch/x86/include/asm/xor_64.h                 |  32 --
-> >  lib/raid/xor/Makefile                         |   8 +
-> >  .../xor_avx.h => lib/raid/xor/x86/xor-avx.c   |  14 +-
-> >  .../xor_32.h => lib/raid/xor/x86/xor-mmx.c    |  60 +-
-> >  lib/raid/xor/x86/xor-sse.c                    | 476 ++++++++++++++++
-> 
-> I gotta ask, why lib/raid/xor/$arch/ instead of something like
-> arch/$arch/lib/xor ?
+On Fri, Feb 27, 2026 at 4:14=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
+rote:
+>
+>
+>
+> On 26/02/2026 21:01, Nico Pache wrote:
+> > On Thu, Feb 26, 2026 at 4:33=E2=80=AFAM Usama Arif <usama.arif@linux.de=
+v> wrote:
+> >>
+> >> When the kernel creates a PMD-level THP mapping for anonymous pages, i=
+t
+> >> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
+> >> page table sits unused in a deposit list for the lifetime of the THP
+> >> mapping, only to be withdrawn when the PMD is split or zapped. Every
+> >> anonymous THP therefore wastes 4KB of memory unconditionally. On large
+> >> servers where hundreds of gigabytes of memory are mapped as THPs, this
+> >> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
+> >> could otherwise satisfy other allocations, including the very PTE page
+> >> table allocations needed when splits eventually occur.
+> >>
+> >> This series removes the pre-deposit and allocates the PTE page table
+> >> lazily =E2=80=94 only when a PMD split actually happens. Since a large=
+ number
+> >> of THPs are never split (they are zapped wholesale when processes exit=
+ or
+> >> munmap the full range), the allocation is avoided entirely in the comm=
+on
+> >> case.
+> >>
+> >> The pre-deposit pattern exists because split_huge_pmd was designed as =
+an
+> >> operation that must never fail: if the kernel decides to split, it nee=
+ds
+> >> a PTE page table, so one is deposited in advance. But "must never fail=
+"
+> >> is an unnecessarily strong requirement. A PMD split is typically trigg=
+ered
+> >> by a partial operation on a sub-PMD range =E2=80=94 partial munmap, pa=
+rtial
+> >> mprotect, partial mremap and so on.
+> >> Most of these operations already have well-defined error handling for
+> >> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
+> >> fail and propagating the error through these existing paths is the nat=
+ural
+> >> thing to do. Furthermore, split failing requires an order-0 allocation=
+ for
+> >> a page table to fail, which is extremely unlikely.
+> >>
+> >> Designing functions like split_huge_pmd as operations that cannot fail
+> >> has a subtle but real cost to code quality. It forces a pre-allocation
+> >> pattern - every THP creation path must deposit a page table, and every
+> >> split or zap path must withdraw one, creating a hidden coupling betwee=
+n
+> >> widely separated code paths.
+> >>
+> >> This also serves as a code cleanup. On every architecture except power=
+pc
+> >> with hash MMU, the deposit/withdraw machinery becomes dead code. The
+> >> series removes the generic implementations in pgtable-generic.c and th=
+e
+> >> s390/sparc overrides, replacing them with no-op stubs guarded by
+> >> arch_needs_pgtable_deposit(), which evaluates to false at compile time
+> >> on all non-powerpc architectures.
+> >
+> > Hi Usama,
+> >
+> > Thanks for tackling this, it seems like an interesting problem. Im
+> > trying to get more into reviewing, so bare with me I may have some
+> > stupid comments or questions. Where I can really help out is with
+> > testing. I will build this for all RH-supported architectures and run
+> > some automated test suites and performance metrics. I'll report back
+> > if I spot anything.
+> >
+> > Cheers!
+> > -- Nico
+> >
+>
+> Thanks for the build and looking into reviewing this. All comments
+> and questions are welcome! I had only tested on x86, and I had a look
+> at the link you shared so its great to know that powerPC and s390 are fin=
+e.
 
-Similar to lib/crypto/ and lib/crc/, it allows the translation units
-(either .c or .S files) containing architecture-optimized XOR code to be
-included directly in the xor.ko module, where they should be.
+Good news: as you noted all the builds succeeded, and the sanity tests
+dont show any signs of an immediate issue across the architectures.
+I'll proceed to debug kernels, and then performance testing. I will
+try to start reviewing the actual code changes in depth next week :)
 
-Previously, these were always built into the core kernel even if
-XOR_BLOCKS was 'n' or 'm', or they were built into a separate module
-xor-neon.ko which xor.ko depended on.  So either the code was included
-unnecessarily, or there was an extra module.
+Cheers,
+-- Nico
 
-Technically we could instead have the lib makefile compile stuff in
-arch/, but that would be unusual.  It's much cleaner to have the
-directory structure match the build system.
+>
 
-If we made this code always built-in, like memcpy(), then we could put
-it anywhere.  But (like many of the crypto and CRC algorithms) many
-kernels don't need this code, and even if they do it may be needed only
-by 'm' code.  So it makes sense to support tristate.
-
-- Eric
 
