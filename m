@@ -1,88 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-17432-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17439-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IF7MI9JVomng1wQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17432-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 03:41:22 +0100
+	id MOkGLt2Gomn03gQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17439-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 07:10:37 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F7D1C0011
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 03:41:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B091C07C3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 07:10:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fN8b011bbz30T8;
-	Sat, 28 Feb 2026 13:41:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fNFDS5x07z3bjN;
+	Sat, 28 Feb 2026 17:10:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772246476;
-	cv=none; b=bu/gUdIfru8zPhqQ2Jstt2tDcvV1iVUyiXycvyPHKCzwOLcYXZ8qrU2Z7VjjTn2+ttR8/fLZ8aqKLhETSYKubmxPKYeI63cxEEBT7yHAwOZCr1NpFPMXcREKlbKLn6RMByUGlL161XjFC+OQojL8wemm8y4/S8Dw1JftJpRxexg8v6UZpgxI/t5zDBdR5s3ZK+lENKX+od9VmQuoZ2umXAd1Ds4uLQtLUkEx2x2MikJqa1EoJnA0ePV8R/76avElrtgwwtKRLLl05BAWaWE72tLaxozn3Ho/vxDGBTJ81MZ8ZDMDMUfwKvPOfZoV9PAH0T5u1oNS8WyKvBqEpJg1Jw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772247477;
+	cv=none; b=OD6Gh3/lXlDP4Aq/KyyxPeJDIwYal23ZVGVtOP07inSpnRSESwePhr/gCNv4t4wSUrGjl77Jh/wO3h+NkXTn+K3AemRpLdYraUpbmwTSWdZIhLYrwT6Lh2wpTobLFKWoy9QYf4JgR/rAQtaBpeesZXmGzgdjMou4v37BgwAYiRfsXkO4S/TtMmpF2/rI6mciwWZlFfWm/daYLxYGIHd7vcgZyn7E1ZL/VPIJPCJAH+ZjNNRWap6qi8LHyCuAY9jR7xE6+Lr/dLRT1FM3KNJAbXMBeonwdCtN5+LyvJu1zMnDVDk5nirAQzTnp1Q5fttv4HFX7oyBoL4LiEbQ9CbFtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772246476; c=relaxed/relaxed;
-	bh=+42melSSCeyVi5c0QcjrNxM/6c8TQZ/GmkZEvra0bKY=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=GihhlRj/F5lnj+A6Y3Ia711eMbKWAaUuDYU/451qDkyXea06YnvpNhHSq5PVU+tTFLkm39fN3+N01NprIbmzhpa5H+pMUKBCCPKXH5XTYrx5stu6D7Xf3G9gO90/SJIWxOi5L2Bpj8wEiCscmw8GZyJnBoGM+383BFcx7OUWQ5HMlhT4JZYR/uRJ689za+cbT//Fk6EHZU/eIg2suYK82fpJd/uWnUc3HavAZXw4xudbn+I/mhFePYnklGId5EGRM3/6sZCwbxCN3DTJBU8wwPHS4dJWuQIefp+4kJn78A2iq0KBV6JiOfh5jFTU9sRQorGdsEihBrU/4nBqvKRFyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NvEGlIa8; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1772247477; c=relaxed/relaxed;
+	bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pez0sdhXJ6P7QdJhRrL/7QqR/6NtL0zV/1Z+75RP/aoSgQUwUrAvRvGh2suybSz9Th6MWAXdJqI6V3EsDSjbQVSPINmsyNw2nXqyaZ7kmA9mWrBS9yMS/wb4TveOu9KNsOJ6F7IoCf6XxLkJ9ApG/AIz93o1r1Z4vCuQKZg8yn8F6TBYGeWFvMRRI1tuTX8Z9csuBL9JBLt2PZFRJ1sv91kY+sPYj2ba7QfwaLHBukFDeycLraUgWtghOkOf9h7F1tIwDmtlQVTscTdxare5P+T6Bp7+8VTPbnD3sz0wg1rEXiRgnMLW/kOEGHWH1LA1NqWNF/qTo5vqE9KHHyvA4A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=czhong@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NvEGlIa8;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=czhong@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN8Zy4JCjz2xlj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 13:41:13 +1100 (AEDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-2adbfab4501so12416155ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 18:41:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772246470; x=1772851270; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+42melSSCeyVi5c0QcjrNxM/6c8TQZ/GmkZEvra0bKY=;
-        b=NvEGlIa8BkkdJ9PUDRmodZpihx/Byf0236XBrKia7M6rEf3d9EsXVr093AzKBILWX7
-         6NNN4biw6UL3eeDkHGThPbmj+rTPoRx7A4yajb4PzcUK64uQfUFDh+kPyeF3DO3ceN9e
-         9GRmKBrABr4sL5GgXjWKtQGQL1suhzxqjvO68jeKZ3gRkmSBxma/s8diI3QfKPiFTYEI
-         /qHrTQYOPo9/h+ko2sfYi7s85SxTXpbetH/WlgNbmpKOSqHolvRBHomA//yz8EGAaMBU
-         WT6fFPHOUQTCD1BI8wT1HAsF4nbtWTYeuerbQf7dfQUWuX8FxidQPNCyvfJIOf89WJ5d
-         8bEA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN8yC6wLSz2xlj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 13:57:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772247470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
+	b=InHpyns8aX4mTKl8+octJleoOVLtWKHuFdfuyRSzp6BIfOfc+RCXs9NyQvDUq6p1W6zaFo
+	bC3T1xTbxeoJudxjZUcUrvnOIrYuSKLwbSEstFOkOiJUJJV+owo+LaH/y5j+Y5jrVGmvkX
+	AkzpRomGb1rKTEpW2nDSO1PDtjKPWD8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772247470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
+	b=InHpyns8aX4mTKl8+octJleoOVLtWKHuFdfuyRSzp6BIfOfc+RCXs9NyQvDUq6p1W6zaFo
+	bC3T1xTbxeoJudxjZUcUrvnOIrYuSKLwbSEstFOkOiJUJJV+owo+LaH/y5j+Y5jrVGmvkX
+	AkzpRomGb1rKTEpW2nDSO1PDtjKPWD8=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-402-SgA9s710PrWbLBU1mMwQdQ-1; Fri, 27 Feb 2026 21:57:48 -0500
+X-MC-Unique: SgA9s710PrWbLBU1mMwQdQ-1
+X-Mimecast-MFC-AGG-ID: SgA9s710PrWbLBU1mMwQdQ_1772247467
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-389fc2e65adso18560611fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 18:57:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772246470; x=1772851270;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+42melSSCeyVi5c0QcjrNxM/6c8TQZ/GmkZEvra0bKY=;
-        b=RSVK5PVXj87Q/EKplaoELWKgwvuPV4Z913EfM0JwYzHb+uE2Ilz44shNWakcqOYgZY
-         zZJ2ay2TT+kv6cg7pu1Ry6nHLcpejRHUJSRSXOE1Wgxvk5VXlGkYc0QYQf31/y6doJse
-         nIOiBhiMbQynLlqqMJmTQsrAnmCWbdkZk6N5XR59YUya9rWfRMXkIfqSY6ZhS3YGo5NH
-         yuXo/AJBaFQU3/mLc0fsPiGV8ughc69gjx24AvyWSUEON4PJKBSSrnN0s9lzdTZSNx4v
-         Omy2+4v0Kk97nQGZxRsW1dEnXAcZL5NixxQuYxLE3UAE4gJBR6yrJKysrFh56Jguht0L
-         W7sg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7f4ghX4Iy/IYZIBkhNmQc4kRraVHIO0WaVKKIdZhG3MC84w2S9TvyvawvfZFFx7jFZhNwMZFW2M+4/YI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwPsF18H5idf6VaJrl9uyb+InhX57WajnYRlOwJO0ApbyVfGzvr
-	xGmo7KsJ3nuifrd/eZBavR0PBQtnMNFZl6D0bE+mjG4+EGCgs4f0T1xL
-X-Gm-Gg: ATEYQzxKtShwuSd+a9s+Ngw1qrv5MHKYrsklixWv1XWSmc/VXWniDvZxqH8Yd1ZZdE5
-	AqYlCvpy1+quQyFMIeRleIRlTZlgZndKdARjPKu65JmXQDQjVYv4sQ28xKd7MZvAggv1vCWfd8H
-	ENhW/7rAuLf85bLLBWIFJdCjLf9sZWeQFnMt1w3tfkxLDkg0A/E/d+a/cyf9hHVkgI+yHAx+ZF3
-	ycz+9d9ktF85Y3uoy7mCcUVUw4z5KHTgtMtooMt8NVSTV7xXqv0ohTZIxqyXrQ645rE0QtN2HfB
-	yA2ASXKDNaHGbj6ck/Nc2WmPVUxGl47d3NSgMpqDFl2wCfEaK+22HBDH3reNqN8ARxfPSIvqeQq
-	DUkdvc+GWmK4E/+1wQyaCAItEYes4xV+pbqP6O8GK1SbqYeGlsaLuobuSOB7lXfxlaKPkoYipxX
-	oVFNsYNWy9nBkJ6+iUSg==
-X-Received: by 2002:a17:903:1212:b0:2ab:3ac6:8d01 with SMTP id d9443c01a7336-2ae2e496d6amr62031895ad.29.1772246470373;
-        Fri, 27 Feb 2026 18:41:10 -0800 (PST)
-Received: from dw-tp ([203.81.240.187])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5dbad2sm69336145ad.34.2026.02.27.18.41.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 18:41:09 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>, Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, Donet Tom <donettom@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-mm@kvack.org
-Subject: Re: powerpc/fadump: CMA init is failing
-In-Reply-To: <aaIDkB2xLABDyV1y@kernel.org>
-Date: Sat, 28 Feb 2026 08:05:26 +0530
-Message-ID: <87ms0th9xt.ritesh.list@gmail.com>
-References: <4c338a29-d190-44f3-8874-6cfa0a031f0b@linux.ibm.com> <87o6lagljy.ritesh.list@gmail.com> <aaIDkB2xLABDyV1y@kernel.org>
+        d=1e100.net; s=20230601; t=1772247467; x=1772852267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
+        b=NGHpiMw16/+lA4RkFVZeOO9UMRH4jP9tk9mchlPxwOTXJU0KNrtOko9hnM/dgX+pUW
+         JXbSmfLym8IaowOrPAkGhbGVORoVxyCcvhRYcxkmH5F+Q8XtyZxhUhm5NedJ8DUAB9i7
+         vI/n+VTn5MInwD6IZ54W5DSWtbUR2QinSU33mUzsfizmLY/CunkJjAtuWE8i+46p6yyl
+         T/J+MBfkTy9Dx/nnEhpZcAW7e+Z7z70wSwC0rwjOtsbLfGmFKtuQVY+K+Lk8jGV8jnUY
+         XRvNlFZFJZTn5SXz6lFw6/5fRdYtS69dxnFd9DLsy3GqB2BR7wIjB1c7ayUPnvq9llU9
+         ERvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVymYq0HsMzV9iJGFS21/R66wJmr6f3qZOaZZy2KcVEucQ+lUzNRASdf/6F1Z/G2ySVXLsfL3YSuopKqvo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyfmK8XiwdmJU3doe8zp8xMyXK8T+5gu1UyBYS75hiLtA706H2A
+	Vn+Y5xupyuSThfInU8b3/XyGF3SVrk6O9KaoU3aDzOshqwefemb8EOZmH5iHgJLkPLgCA6MeXAV
+	t5YvUkFb2VSduMVTgkeJeFYwRTfZGQku57j3kZPlK3Zv9iXBxAkFZB+LljsRUk+JLTM3Fw8Z1rP
+	NvYKIdnQKXZRiqt29shgQ8eZ+m5U6t2klNt28ws5JxyA==
+X-Gm-Gg: ATEYQzxmsEhZh56RfgtNdLuXqFPEGXj40qWpqrMh7kVqhgRtx/TS25B8VUB9eCC33bX
+	d1d3hUP2ghz5JO3+jlEhCD10lMBhrCvcRHE4K5WDa4I3g4SwNnVY/z5Vlp+Yewmq3ZaSV0JrVbP
+	2dmgNf8AlYatr+wdgSf0Xp8btwe7BjFXvnMj3VdwNuxB0jK0pffJnp5jkc4+YMMv8HY5zAQ2DLS
+	xMpOsfdnAXmoCFUklK6DaDfM7+mtMt+VN1GP/G5Er5GI8AEIZw1nG6mBhr91UGQHNSVk3TFcydk
+	k/EYJQ==
+X-Received: by 2002:a05:651c:893:b0:389:fc69:45e8 with SMTP id 38308e7fff4ca-389ff13552fmr36092191fa.13.1772247466604;
+        Fri, 27 Feb 2026 18:57:46 -0800 (PST)
+X-Received: by 2002:a05:651c:893:b0:389:fc69:45e8 with SMTP id
+ 38308e7fff4ca-389ff13552fmr36092081fa.13.1772247466164; Fri, 27 Feb 2026
+ 18:57:46 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,215 +101,217 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+References: <CAGVVp+U0EYVX+VbbEHzcYP70zdmOXwAmUvpMYV9y3jBSRFmS6g@mail.gmail.com>
+ <CAFj5m9L8ahNYFf-tUAZFKAUzkeyqV-Sx94MxC268XJ-hqHPCig@mail.gmail.com>
+ <CAFj5m9+OCswLULgVx8eSydTG0OeN4f-8dK1-JyoAA70CNF88Qg@mail.gmail.com>
+ <CADUfDZrq96YGiMN9==gMitAHZtXydOAwy-767-d0j5LdUqO91Q@mail.gmail.com> <df5dac1b-286d-43d5-a742-375b6de8730f@kernel.org>
+In-Reply-To: <df5dac1b-286d-43d5-a742-375b6de8730f@kernel.org>
+From: Changhui Zhong <czhong@redhat.com>
+Date: Sat, 28 Feb 2026 10:57:34 +0800
+X-Gm-Features: AaiRm50A-oreMROg-IZY0a7VYOIC_N5HQ9n4L5iqJp7NRvUvCh2O8zvAPssSEws
+Message-ID: <CAGVVp+X6jSJeKoJ0YAjGqcvrwPMBThLRpD176SG2OR20s08XgA@mail.gmail.com>
+Subject: Re: [bug report] Bug: Write fault blocked by KUAP!
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Caleb Sander Mateos <csander@purestorage.com>, Ming Lei <ming.lei@redhat.com>, 
+	Linux Block Devices <linux-block@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5_f82oU7oyc1YZEo2q8NAj39hoSsNKF8Lndl1ZQ1374_1772247467
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17432-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:sourabhjain@linux.ibm.com,m:maddy@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:mpe@ellerman.id.au,m:donettom@linux.ibm.com,m:hbathini@linux.ibm.com,m:mahesh@linux.ibm.com,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:csander@purestorage.com,m:ming.lei@redhat.com,m:linux-block@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	SUBJECT_ENDS_EXCLAIM(0.00)[];
+	FORGED_SENDER(0.00)[czhong@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-17439-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_PROHIBIT(0.00)[54.174.64.0:email];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[czhong@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,1.201.195.198:email]
-X-Rspamd-Queue-Id: E6F7D1C0011
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: C6B091C07C3
 X-Rspamd-Action: no action
 
-Mike Rapoport <rppt@kernel.org> writes:
-
-> Hi Ritesh,
+On Fri, Feb 27, 2026 at 3:05=E2=80=AFAM Christophe Leroy (CS GROUP)
+<chleroy@kernel.org> wrote:
 >
-> On Fri, Feb 27, 2026 at 10:39:53PM +0530, Ritesh Harjani wrote:
->> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->> 
->> > I noticed CMA init for fadump crashkernel memory is failing.
->> >
->> > [    0.000000] cma: pageblock_order not yet initialized. Called during 
->> > early boot?
->> > [    0.000000] fadump: Failed to init cma area for firmware-assisted 
->> > dump,-22
->> >
->> >
->> > kernel command-line:
->> > BOOT_IMAGE=(ieee1275//vdevice/v-scsi@30000070/disk@8100000000000000,msdos2)/vmlinuz-7.0.0-rc1+ 
->> > root=/dev/mapper/rhel_ltcden3--lp12-root ro 
->> > rd.lvm.lv=rhel_ltcden3-lp12/root rd.lvm.lv=rhel_ltcden3-lp12/swap 
->> > fadump=on crashkernel=3G
->> >
->> >
->> > Same issue with kdump CMA reservation:
->> >
->> > [    0.000000][    T0] cma: pageblock_order not yet initialized. Called 
->> > during early boot?
->> 
->> Good that we added those debug prints ;)
->> 
->> I think I know what went wrong, as part of this arch,mm consolidation
->> patch series [1], I think the order of initialization is changed.
->> 
->> With this patch the new order is ... 
->> start_kernel()
->>     - setup_arch()
->>        - xxx_cma_reserve();
->>     - mm_core_init_early()
->>        - free_area_init()
->>           - sparse_init()
->>              - set_pageblock_order() // this sets the pageblock_order.
->> 
->> Whereas earlier set_pageblock_order() was called from initmem_init(),
->> just before cma reservations were being made. 
->> 
->> start_kernel()
->>     - setup_arch()
->>        - initmem_init()
->>          - sparse_init()
->>            - set_pageblock_order();  // this sets the pageblock_order
->>        - xxx_cma_reserve();
->> 
->> So that means, pageblock_order is not initialized before these cma
->> reservation function calls, hence we are seeing these failures.
->> 
->> setup_arch() {
->>     ...
->> 
->> 	/*
->> 	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
->> 	 * hugetlb. These must be called after initmem_init(), so that
->> 	 * pageblock_order is initialised.
->> 	 */
->> 	fadump_cma_init();
->> 	kdump_cma_reserve();
->> 	kvm_cma_reserve();
->> 
->>     ...
->> }
->> 
->> 
->> So what if we do.. 
->> 
->> start_kernel() {
->>   ...
->> 	setup_arch(&command_line);
->> 	mm_core_init_early();
->>     setup_arch_post_mm_core_init(); // and here we call CMA reservation functions ?
->  
-> Unless I'm missing something these cma reservations can be moved to
-> arch_mm_preinit().
-> It runs after mm_core_init_early() and before memblock moves the free
-> memory to the buddy.
+>
+>
+> Le 26/02/2026 =C3=A0 17:59, Caleb Sander Mateos a =C3=A9crit :
+> > On Thu, Feb 26, 2026 at 4:44=E2=80=AFAM Ming Lei <ming.lei@redhat.com> =
+wrote:
+> >>
+> >> On Thu, Feb 26, 2026 at 6:48=E2=80=AFPM Ming Lei <ming.lei@redhat.com>=
+ wrote:
+> >>>
+> >>> Hi Changhui,
+> >>>
+> >>> Thanks for the report!
+> >>>
+> >>> Loop Caleb Sander Mateos  in.
+> >>>
+> >>> Thanks,
+> >>>
+> >>> On Thu, Feb 26, 2026 at 6:37=E2=80=AFPM Changhui Zhong <czhong@redhat=
+.com> wrote:
+> >>>>
+> >>>> Hello,
+> >>>>
+> >>>> on the ppc64le arch, I hit the issue below with ublksrv on the lates=
+t
+> >>>> linux-block/for-next, please help check it, and let me know if you
+> >>>> need any info/test for it. Thanks.
+> >>>>
+> >>>> INFO: HEAD of cloned kernel
+> >>>> commit 37a43fd770f3dcac8f72f3ea909b3e893e2385c9
+> >>>> Merge: 13cd9b41227a c1dfbd7e71b0
+> >>>> Author: Jens Axboe <axboe@kernel.dk>
+> >>>> Date:   Wed Feb 25 08:37:06 2026 -0700
+> >>>>
+> >>>>      Merge branch 'for-7.1/block' into for-next
+> >>>>
+> >>>>      * for-7.1/block:
+> >>>>        ublk: report BLK_SPLIT_INTERVAL_CAPABLE
+> >>>>
+> >>>> reproducer:
+> >>>> compile and install https://eur01.safelinks.protection.outlook.com/?=
+url=3Dhttps%3A%2F%2Fgithub.com%2Fublk-org%2Fublksrv.git&data=3D05%7C02%7Cch=
+ristophe.leroy2%40cs-soprasteria.com%7Cf0b0066758be476be95508de75587a73%7C8=
+b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639077220067774377%7CUnknown%7CTW=
+FpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOI=
+joiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3Dki4yUMx%2FBTANcpfzEoVMdBKs=
+uflIbzhHO2Wqpxtvj5g%3D&reserved=3D0
+> >>>> #echo 0 > /proc/sys/kernel/io_uring_disabled
+> >>>> #modprobe ublk_drv
+> >>>> #cd ublksrv
+> >>>> #make test T=3Dnull
+> >>>> #make test T=3Dloop
+> >>>>
+> >>>> dmesg log=EF=BC=9A
+> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 journal: running null/002
+> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: start ublksrv io
+> >>>> daemon ublksrvd-0
+> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: tid 57923: ublk d=
+ev
+> >>>> 0 queue 0 started
+> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: tid 57924: ublk d=
+ev
+> >>>> 0 queue 1 started
+> >>>> Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083476.4882] platform-linux: do-add-ip6-address[2:
+> >>>> fe80::8448:a3ff:fe51:f102]: failure 13 (Permission denied - ipv6: IP=
+v6
+> >>>> is disabled on this device)
+> >>>> Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083476.4885] platform-linux: do-add-ip6-address[2:
+> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> >>>> ipv6: IPv6 is disabled on this device)
+> >>>> Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083476.4938] l3cfg[0f1985ec14299e62,ifindex=3D2]: unable to
+> >>>> configure IPv6 route: type unicast fe80::/64 dev 2 metric 1024 mss 0
+> >>>> rt-src ipv6ll
+> >>>> Feb 26 00:24:38 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083478.4938] ipv6ll[95ab7f3fdbfe643d,ifindex=3D2]: changed: no =
+IPv6
+> >>>> link local address to retry after Duplicate Address Detection failur=
+es
+> >>>> (back off)
+> >>>> Feb 26 00:24:38 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083478.4943] platform-linux: do-add-ip6-address[2:
+> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> >>>> ipv6: IPv6 is disabled on this device)
+> >>>> Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083488.5034] platform-linux: do-add-ip6-address[2:
+> >>>> fe80::8448:a3ff:fe51:f102]: failure 13 (Permission denied - ipv6: IP=
+v6
+> >>>> is disabled on this device)
+> >>>> Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083488.5037] platform-linux: do-add-ip6-address[2:
+> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> >>>> ipv6: IPv6 is disabled on this device)
+> >>>> Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083488.5041] l3cfg[0f1985ec14299e62,ifindex=3D2]: unable to
+> >>>> configure IPv6 route: type unicast fe80::/64 dev 2 metric 1024 mss 0
+> >>>> rt-src ipv6ll
+> >>>> Feb 26 00:24:50 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083490.5034] ipv6ll[95ab7f3fdbfe643d,ifindex=3D2]: changed: no =
+IPv6
+> >>>> link local address to retry after Duplicate Address Detection failur=
+es
+> >>>> (back off)
+> >>>> Feb 26 00:24:50 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
+> >>>> [1772083490.5039] platform-linux: do-add-ip6-address[2:
+> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
+> >>>> ipv6: IPv6 is disabled on this device)
+> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: Kernel attempted to read use=
+r
+> >>>> page (7fff81210000) - exploit attempt? (uid: 0)
+> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: ------------[ cut here ]----=
+--------
+> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: Bug: Read fault blocked by K=
+UAP!
+> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: WARNING:
+> >>>> arch/powerpc/mm/fault.c:231 at bad_kernel_fault.isra.0+0xc8/0x2c0,
+> >>>> CPU#5: lt-ublk.null/57924
+> >>
+> >> oops, it shouldn't be related with `ublk: report BLK_SPLIT_INTERVAL_CA=
+PABLE`,
+> >> Perhaps one issue lies in the ppcle64 architecture code.
+> >
+> > Agreed, the "Kernel attempted to read user page" error seems
+> > incorrect. The call trace shows this is in copy_from_iter(), so
+> > reading a user page is expected. I too would be suspicious of the
+> > powerpc copy_from_iter() implementation.
+>
+> Looks similar to:
+>
+> https://lore.kernel.org/all/20260109064917.777587-2-sshegde@linux.ibm.com=
+/
+>
+> That fix was rejected, more acceptable fix here:
+>
+> https://lore.kernel.org/all/20260217124457.89219-1-sayalip@linux.ibm.com/
+>
+> Let us know if it fixes the issue for you.
+>
+> Christophe
 >
 
-Right. I think, we should be able to use that...
+Hi=EF=BC=8C Christophe
 
-@Sourabh, 
+confirmed that after applying the patch
+https://lore.kernel.org/all/20260217124457.89219-1-sayalip@linux.ibm.com/,
+this issue has not been hit again, the fix works.
 
-I don't have access to the systems (travelling back...). Could you
-please give this a try?
+Thanks,
+Changhui
 
-
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index cb5b73adc250..b1761909c23f 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -35,7 +35,6 @@
- #include <linux/of_irq.h>
- #include <linux/hugetlb.h>
- #include <linux/pgtable.h>
--#include <asm/kexec.h>
- #include <asm/io.h>
- #include <asm/paca.h>
- #include <asm/processor.h>
-@@ -995,15 +994,6 @@ void __init setup_arch(char **cmdline_p)
- 
- 	initmem_init();
- 
--	/*
--	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
--	 * hugetlb. These must be called after initmem_init(), so that
--	 * pageblock_order is initialised.
--	 */
--	fadump_cma_init();
--	kdump_cma_reserve();
--	kvm_cma_reserve();
--
- 	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
- 
- 	if (ppc_md.setup_arch)
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 29bf347f6012..5ba947e4fe37 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -30,6 +30,10 @@
- #include <asm/setup.h>
- #include <asm/fixmap.h>
- 
-+#include <asm/fadump.h>
-+#include <asm/kexec.h>
-+#include <asm/kvm_ppc.h>
-+
- #include <mm/mmu_decl.h>
- 
- unsigned long long memory_limit __initdata;
-@@ -268,6 +272,16 @@ void __init paging_init(void)
- 
- void __init arch_mm_preinit(void)
- {
-+
-+	/*
-+	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM
-+	 * and hugetlb. These must be called after pageblock_order is
-+	 * initialised.
-+	 */
-+	fadump_cma_init();
-+	kdump_cma_reserve();
-+	kvm_cma_reserve();
-+
- 	/*
- 	 * book3s is limited to 16 page sizes due to encoding this in
- 	 * a 4-bit field for slices.
-
-
--ritesh
-
->> References:
->> [1]: https://lore.kernel.org/linuxppc-dev/20260111082105.290734-1-rppt@kernel.org/T/#m5adf1a845e0a0867066c4f7055f28e6304b73fa5
->> [2]: https://lore.kernel.org/all/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com/
->> 
->> 
->> -ritesh
->
-> -- 
-> Sincerely yours,
-> Mike.
 
