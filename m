@@ -1,94 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-17439-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17433-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOkGLt2Gomn03gQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17439-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 07:10:37 +0100
+	id GAzfC1xvomlq3AQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17433-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 05:30:20 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B091C07C3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 07:10:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499D81C044B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 05:30:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fNFDS5x07z3bjN;
-	Sat, 28 Feb 2026 17:10:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fNC0k1TKtz30T8;
+	Sat, 28 Feb 2026 15:30:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772247477;
-	cv=none; b=OD6Gh3/lXlDP4Aq/KyyxPeJDIwYal23ZVGVtOP07inSpnRSESwePhr/gCNv4t4wSUrGjl77Jh/wO3h+NkXTn+K3AemRpLdYraUpbmwTSWdZIhLYrwT6Lh2wpTobLFKWoy9QYf4JgR/rAQtaBpeesZXmGzgdjMou4v37BgwAYiRfsXkO4S/TtMmpF2/rI6mciwWZlFfWm/daYLxYGIHd7vcgZyn7E1ZL/VPIJPCJAH+ZjNNRWap6qi8LHyCuAY9jR7xE6+Lr/dLRT1FM3KNJAbXMBeonwdCtN5+LyvJu1zMnDVDk5nirAQzTnp1Q5fttv4HFX7oyBoL4LiEbQ9CbFtA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772253014;
+	cv=none; b=ERiAzsYX+G0vetW1s76cj+6/Fh+ocSXiYh394D5jqb3UUqlME+5Nq1jli1PBleTzAEQraAhIhqOLFMKgU73SFuGpXTWrx+2M6MN3GySMwi4zlFvmVQfVYkOcbbBiexAj45vhzxCgoqKBzJKzd9DiMo3tByd3Sfgi1UFJnNROMPcAxCIoEogF/3SRQUTYQ9/rJvSZEmv9zw/g4XJTAPOzY5xQj9p7NwUb2+7YxQC14JJsrD1AF6swMX7woZN/z0gTawa3FwnLOxGezaOlJnYHrReAFstbfF/uu2hjQjX5b/eJFV5a0ANIuUktzDKNiZI9VlFFKu1FlndWV8vSIzjxIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772247477; c=relaxed/relaxed;
-	bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pez0sdhXJ6P7QdJhRrL/7QqR/6NtL0zV/1Z+75RP/aoSgQUwUrAvRvGh2suybSz9Th6MWAXdJqI6V3EsDSjbQVSPINmsyNw2nXqyaZ7kmA9mWrBS9yMS/wb4TveOu9KNsOJ6F7IoCf6XxLkJ9ApG/AIz93o1r1Z4vCuQKZg8yn8F6TBYGeWFvMRRI1tuTX8Z9csuBL9JBLt2PZFRJ1sv91kY+sPYj2ba7QfwaLHBukFDeycLraUgWtghOkOf9h7F1tIwDmtlQVTscTdxare5P+T6Bp7+8VTPbnD3sz0wg1rEXiRgnMLW/kOEGHWH1LA1NqWNF/qTo5vqE9KHHyvA4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=czhong@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1772253014; c=relaxed/relaxed;
+	bh=HxHllU4ceXSYzkZVN7jXp5kDkLsJe3gAM2lgZ6PCW3Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lQNcKM0ar0hHKhnWp1zX4qzBJ7FyJlaEYHnCl5+BiCTNAaGEfNi1+79tzATrvIgsvUQ81xusCf2dzS/d95sNz5RnMv3BBm8kLBMBG9bIbpvkdfV6JfgfJMaAuaKxZFSIwHevACGFKB/+gD+A5JZG2S41U7pgBLy8Y8KOQxllmJR0gH7uZqFHaOMxgIVK4YAZCnhUQq/KY+AR3vzmYTUH89w+dK7LEiohHtZ43A+cXmfyNrVok1rI7Oe/Ud2MKDQdO2Kpyjb8NsF/BYyyvut7jcAg6RGJ7PRKO7Rf3ZunFg2JvN7pd7SLmGiXWO/uC4mnglPHgelv5JPnKeu0yKjuZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fyh0YCjc; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=InHpyns8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fyh0YCjc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=czhong@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN8yC6wLSz2xlj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 13:57:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772247470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
-	b=InHpyns8aX4mTKl8+octJleoOVLtWKHuFdfuyRSzp6BIfOfc+RCXs9NyQvDUq6p1W6zaFo
-	bC3T1xTbxeoJudxjZUcUrvnOIrYuSKLwbSEstFOkOiJUJJV+owo+LaH/y5j+Y5jrVGmvkX
-	AkzpRomGb1rKTEpW2nDSO1PDtjKPWD8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772247470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
-	b=InHpyns8aX4mTKl8+octJleoOVLtWKHuFdfuyRSzp6BIfOfc+RCXs9NyQvDUq6p1W6zaFo
-	bC3T1xTbxeoJudxjZUcUrvnOIrYuSKLwbSEstFOkOiJUJJV+owo+LaH/y5j+Y5jrVGmvkX
-	AkzpRomGb1rKTEpW2nDSO1PDtjKPWD8=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-402-SgA9s710PrWbLBU1mMwQdQ-1; Fri, 27 Feb 2026 21:57:48 -0500
-X-MC-Unique: SgA9s710PrWbLBU1mMwQdQ-1
-X-Mimecast-MFC-AGG-ID: SgA9s710PrWbLBU1mMwQdQ_1772247467
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-389fc2e65adso18560611fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 18:57:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772247467; x=1772852267;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ul9ErbzYFrTHEYKr0As/6D1/FUSyXsPZPt7ruX+ITJg=;
-        b=NGHpiMw16/+lA4RkFVZeOO9UMRH4jP9tk9mchlPxwOTXJU0KNrtOko9hnM/dgX+pUW
-         JXbSmfLym8IaowOrPAkGhbGVORoVxyCcvhRYcxkmH5F+Q8XtyZxhUhm5NedJ8DUAB9i7
-         vI/n+VTn5MInwD6IZ54W5DSWtbUR2QinSU33mUzsfizmLY/CunkJjAtuWE8i+46p6yyl
-         T/J+MBfkTy9Dx/nnEhpZcAW7e+Z7z70wSwC0rwjOtsbLfGmFKtuQVY+K+Lk8jGV8jnUY
-         XRvNlFZFJZTn5SXz6lFw6/5fRdYtS69dxnFd9DLsy3GqB2BR7wIjB1c7ayUPnvq9llU9
-         ERvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVymYq0HsMzV9iJGFS21/R66wJmr6f3qZOaZZy2KcVEucQ+lUzNRASdf/6F1Z/G2ySVXLsfL3YSuopKqvo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyfmK8XiwdmJU3doe8zp8xMyXK8T+5gu1UyBYS75hiLtA706H2A
-	Vn+Y5xupyuSThfInU8b3/XyGF3SVrk6O9KaoU3aDzOshqwefemb8EOZmH5iHgJLkPLgCA6MeXAV
-	t5YvUkFb2VSduMVTgkeJeFYwRTfZGQku57j3kZPlK3Zv9iXBxAkFZB+LljsRUk+JLTM3Fw8Z1rP
-	NvYKIdnQKXZRiqt29shgQ8eZ+m5U6t2klNt28ws5JxyA==
-X-Gm-Gg: ATEYQzxmsEhZh56RfgtNdLuXqFPEGXj40qWpqrMh7kVqhgRtx/TS25B8VUB9eCC33bX
-	d1d3hUP2ghz5JO3+jlEhCD10lMBhrCvcRHE4K5WDa4I3g4SwNnVY/z5Vlp+Yewmq3ZaSV0JrVbP
-	2dmgNf8AlYatr+wdgSf0Xp8btwe7BjFXvnMj3VdwNuxB0jK0pffJnp5jkc4+YMMv8HY5zAQ2DLS
-	xMpOsfdnAXmoCFUklK6DaDfM7+mtMt+VN1GP/G5Er5GI8AEIZw1nG6mBhr91UGQHNSVk3TFcydk
-	k/EYJQ==
-X-Received: by 2002:a05:651c:893:b0:389:fc69:45e8 with SMTP id 38308e7fff4ca-389ff13552fmr36092191fa.13.1772247466604;
-        Fri, 27 Feb 2026 18:57:46 -0800 (PST)
-X-Received: by 2002:a05:651c:893:b0:389:fc69:45e8 with SMTP id
- 38308e7fff4ca-389ff13552fmr36092081fa.13.1772247466164; Fri, 27 Feb 2026
- 18:57:46 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fNC0h6zvTz2xlj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 15:30:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A6BB4388D;
+	Sat, 28 Feb 2026 04:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198B3C116D0;
+	Sat, 28 Feb 2026 04:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772253010;
+	bh=NxIyVYtgLysk+spkHOyEoka9HT1s3BaoNbqWwqQmPXE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fyh0YCjcPmsVmzz5h+F1Yy8gWejjphUUrGeKnqhIxGQ+qjYtEztmeP1kaQL7ddsRN
+	 jdkA6zr3qARSLzOxvszanCJtbGe6MxgPdM+Z6+dhb7aZQXTNmMRzbGAktPG2fY5fUl
+	 TBJYgxI6xb9qhwF67ngcAYU9OKtc/uqzcX+3yEYAKMVGlX0rGBTQLNzUCfh3Qw8tog
+	 0VEAgqbQJ3xpTSjCyP3w5YgI628hkJaD1By1DZb0TabsJZRA6BOO4+elbK3T8jYutF
+	 xqGj5SaKcx64Foh0YOFWYjXkw2x5ciOjaB0TEjg5I3513gVMPITkGZ7CF1NbrQ8JTi
+	 72nJ1I+TSmVTQ==
+Date: Fri, 27 Feb 2026 20:30:06 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dan Williams <dan.j.williams@intel.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+	Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-raid@vger.kernel.org
+Subject: Re: [PATCH 03/25] um/xor: don't override XOR_SELECT_TEMPLATE
+Message-ID: <20260228043006.GA65277@quark>
+References: <20260226151106.144735-1-hch@lst.de>
+ <20260226151106.144735-4-hch@lst.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,216 +107,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <CAGVVp+U0EYVX+VbbEHzcYP70zdmOXwAmUvpMYV9y3jBSRFmS6g@mail.gmail.com>
- <CAFj5m9L8ahNYFf-tUAZFKAUzkeyqV-Sx94MxC268XJ-hqHPCig@mail.gmail.com>
- <CAFj5m9+OCswLULgVx8eSydTG0OeN4f-8dK1-JyoAA70CNF88Qg@mail.gmail.com>
- <CADUfDZrq96YGiMN9==gMitAHZtXydOAwy-767-d0j5LdUqO91Q@mail.gmail.com> <df5dac1b-286d-43d5-a742-375b6de8730f@kernel.org>
-In-Reply-To: <df5dac1b-286d-43d5-a742-375b6de8730f@kernel.org>
-From: Changhui Zhong <czhong@redhat.com>
-Date: Sat, 28 Feb 2026 10:57:34 +0800
-X-Gm-Features: AaiRm50A-oreMROg-IZY0a7VYOIC_N5HQ9n4L5iqJp7NRvUvCh2O8zvAPssSEws
-Message-ID: <CAGVVp+X6jSJeKoJ0YAjGqcvrwPMBThLRpD176SG2OR20s08XgA@mail.gmail.com>
-Subject: Re: [bug report] Bug: Write fault blocked by KUAP!
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Caleb Sander Mateos <csander@purestorage.com>, Ming Lei <ming.lei@redhat.com>, 
-	Linux Block Devices <linux-block@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5_f82oU7oyc1YZEo2q8NAj39hoSsNKF8Lndl1ZQ1374_1772247467
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226151106.144735-4-hch@lst.de>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:csander@purestorage.com,m:ming.lei@redhat.com,m:linux-block@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17433-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:akpm@linux-foundation.org,m:richard.henderson@linaro.org,m:mattst88@gmail.com,m:linmag7@gmail.com,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:davem@davemloft.net,m:andreas@gaisler.com,m:richard@nod.at,m:anton.ivanov@cambridgegreys.com,m:johannes@sipsolutions.net,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:herbert@gondor.apana.org.au,m:dan.j.williams@intel.com,m:clm@fb.com,m:dsterba@suse.com,m:arnd@arndb.de,m:song@kernel.org,m:yukuai@fnnas.com,m:linan122@huawei.com,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-
+ arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-crypto@vger.kernel.org,m:linux-btrfs@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-raid@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	SUBJECT_ENDS_EXCLAIM(0.00)[];
-	FORGED_SENDER(0.00)[czhong@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-17439-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_GT_50(0.00)[55];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[czhong@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: C6B091C07C3
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 499D81C044B
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 3:05=E2=80=AFAM Christophe Leroy (CS GROUP)
-<chleroy@kernel.org> wrote:
->
->
->
-> Le 26/02/2026 =C3=A0 17:59, Caleb Sander Mateos a =C3=A9crit :
-> > On Thu, Feb 26, 2026 at 4:44=E2=80=AFAM Ming Lei <ming.lei@redhat.com> =
-wrote:
-> >>
-> >> On Thu, Feb 26, 2026 at 6:48=E2=80=AFPM Ming Lei <ming.lei@redhat.com>=
- wrote:
-> >>>
-> >>> Hi Changhui,
-> >>>
-> >>> Thanks for the report!
-> >>>
-> >>> Loop Caleb Sander Mateos  in.
-> >>>
-> >>> Thanks,
-> >>>
-> >>> On Thu, Feb 26, 2026 at 6:37=E2=80=AFPM Changhui Zhong <czhong@redhat=
-.com> wrote:
-> >>>>
-> >>>> Hello,
-> >>>>
-> >>>> on the ppc64le arch, I hit the issue below with ublksrv on the lates=
-t
-> >>>> linux-block/for-next, please help check it, and let me know if you
-> >>>> need any info/test for it. Thanks.
-> >>>>
-> >>>> INFO: HEAD of cloned kernel
-> >>>> commit 37a43fd770f3dcac8f72f3ea909b3e893e2385c9
-> >>>> Merge: 13cd9b41227a c1dfbd7e71b0
-> >>>> Author: Jens Axboe <axboe@kernel.dk>
-> >>>> Date:   Wed Feb 25 08:37:06 2026 -0700
-> >>>>
-> >>>>      Merge branch 'for-7.1/block' into for-next
-> >>>>
-> >>>>      * for-7.1/block:
-> >>>>        ublk: report BLK_SPLIT_INTERVAL_CAPABLE
-> >>>>
-> >>>> reproducer:
-> >>>> compile and install https://eur01.safelinks.protection.outlook.com/?=
-url=3Dhttps%3A%2F%2Fgithub.com%2Fublk-org%2Fublksrv.git&data=3D05%7C02%7Cch=
-ristophe.leroy2%40cs-soprasteria.com%7Cf0b0066758be476be95508de75587a73%7C8=
-b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639077220067774377%7CUnknown%7CTW=
-FpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOI=
-joiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3Dki4yUMx%2FBTANcpfzEoVMdBKs=
-uflIbzhHO2Wqpxtvj5g%3D&reserved=3D0
-> >>>> #echo 0 > /proc/sys/kernel/io_uring_disabled
-> >>>> #modprobe ublk_drv
-> >>>> #cd ublksrv
-> >>>> #make test T=3Dnull
-> >>>> #make test T=3Dloop
-> >>>>
-> >>>> dmesg log=EF=BC=9A
-> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 journal: running null/002
-> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: start ublksrv io
-> >>>> daemon ublksrvd-0
-> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: tid 57923: ublk d=
-ev
-> >>>> 0 queue 0 started
-> >>>> Feb 26 00:24:30 ibm-p9z-27-lp26 ublksrvd-0[57921]: tid 57924: ublk d=
-ev
-> >>>> 0 queue 1 started
-> >>>> Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083476.4882] platform-linux: do-add-ip6-address[2:
-> >>>> fe80::8448:a3ff:fe51:f102]: failure 13 (Permission denied - ipv6: IP=
-v6
-> >>>> is disabled on this device)
-> >>>> Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083476.4885] platform-linux: do-add-ip6-address[2:
-> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
-> >>>> ipv6: IPv6 is disabled on this device)
-> >>>> Feb 26 00:24:36 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083476.4938] l3cfg[0f1985ec14299e62,ifindex=3D2]: unable to
-> >>>> configure IPv6 route: type unicast fe80::/64 dev 2 metric 1024 mss 0
-> >>>> rt-src ipv6ll
-> >>>> Feb 26 00:24:38 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083478.4938] ipv6ll[95ab7f3fdbfe643d,ifindex=3D2]: changed: no =
-IPv6
-> >>>> link local address to retry after Duplicate Address Detection failur=
-es
-> >>>> (back off)
-> >>>> Feb 26 00:24:38 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083478.4943] platform-linux: do-add-ip6-address[2:
-> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
-> >>>> ipv6: IPv6 is disabled on this device)
-> >>>> Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083488.5034] platform-linux: do-add-ip6-address[2:
-> >>>> fe80::8448:a3ff:fe51:f102]: failure 13 (Permission denied - ipv6: IP=
-v6
-> >>>> is disabled on this device)
-> >>>> Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083488.5037] platform-linux: do-add-ip6-address[2:
-> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
-> >>>> ipv6: IPv6 is disabled on this device)
-> >>>> Feb 26 00:24:48 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083488.5041] l3cfg[0f1985ec14299e62,ifindex=3D2]: unable to
-> >>>> configure IPv6 route: type unicast fe80::/64 dev 2 metric 1024 mss 0
-> >>>> rt-src ipv6ll
-> >>>> Feb 26 00:24:50 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083490.5034] ipv6ll[95ab7f3fdbfe643d,ifindex=3D2]: changed: no =
-IPv6
-> >>>> link local address to retry after Duplicate Address Detection failur=
-es
-> >>>> (back off)
-> >>>> Feb 26 00:24:50 ibm-p9z-27-lp26 NetworkManager[818]: <warn>
-> >>>> [1772083490.5039] platform-linux: do-add-ip6-address[2:
-> >>>> 2620:52:9:160c:8448:a3ff:fe51:f102]: failure 13 (Permission denied -
-> >>>> ipv6: IPv6 is disabled on this device)
-> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: Kernel attempted to read use=
-r
-> >>>> page (7fff81210000) - exploit attempt? (uid: 0)
-> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: ------------[ cut here ]----=
---------
-> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: Bug: Read fault blocked by K=
-UAP!
-> >>>> Feb 26 00:24:58 ibm-p9z-27-lp26 kernel: WARNING:
-> >>>> arch/powerpc/mm/fault.c:231 at bad_kernel_fault.isra.0+0xc8/0x2c0,
-> >>>> CPU#5: lt-ublk.null/57924
-> >>
-> >> oops, it shouldn't be related with `ublk: report BLK_SPLIT_INTERVAL_CA=
-PABLE`,
-> >> Perhaps one issue lies in the ppcle64 architecture code.
-> >
-> > Agreed, the "Kernel attempted to read user page" error seems
-> > incorrect. The call trace shows this is in copy_from_iter(), so
-> > reading a user page is expected. I too would be suspicious of the
-> > powerpc copy_from_iter() implementation.
->
-> Looks similar to:
->
-> https://lore.kernel.org/all/20260109064917.777587-2-sshegde@linux.ibm.com=
-/
->
-> That fix was rejected, more acceptable fix here:
->
-> https://lore.kernel.org/all/20260217124457.89219-1-sayalip@linux.ibm.com/
->
-> Let us know if it fixes the issue for you.
->
-> Christophe
->
+On Thu, Feb 26, 2026 at 07:10:15AM -0800, Christoph Hellwig wrote:
+> XOR_SELECT_TEMPLATE is only ever called with a NULL argument, so all the
+> ifdef'ery doesn't do anything.  With our without this, the time travel
+> mode should work fine on CPUs that support AVX2, as the AVX2
+> implementation is forced in this case, and won't work otherwise.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/um/include/asm/xor.h | 10 ----------
+>  1 file changed, 10 deletions(-)
+> 
+> diff --git a/arch/um/include/asm/xor.h b/arch/um/include/asm/xor.h
+> index 647fae200c5d..c9ddedc19301 100644
+> --- a/arch/um/include/asm/xor.h
+> +++ b/arch/um/include/asm/xor.h
+> @@ -4,21 +4,11 @@
+>  
+>  #ifdef CONFIG_64BIT
+>  #undef CONFIG_X86_32
+> -#define TT_CPU_INF_XOR_DEFAULT (AVX_SELECT(&xor_block_sse_pf64))
+>  #else
+>  #define CONFIG_X86_32 1
+> -#define TT_CPU_INF_XOR_DEFAULT (AVX_SELECT(&xor_block_8regs))
+>  #endif
+>  
+>  #include <asm/cpufeature.h>
+>  #include <../../x86/include/asm/xor.h>
+> -#include <linux/time-internal.h>
+> -
+> -#ifdef CONFIG_UML_TIME_TRAVEL_SUPPORT
+> -#undef XOR_SELECT_TEMPLATE
+> -/* pick an arbitrary one - measuring isn't possible with inf-cpu */
+> -#define XOR_SELECT_TEMPLATE(x)	\
+> -	(time_travel_mode == TT_MODE_INFCPU ? TT_CPU_INF_XOR_DEFAULT : x)
+> -#endif
 
-Hi=EF=BC=8C Christophe
+I'm not following this change.  Previously, in TT_MODE_INFCPU mode,
+XOR_SELECT_TEMPLATE(NULL) returned &xor_block_avx, &xor_block_sse_pf64,
+or &xor_block_8regs, causing the benchmark to be skipped.  After this
+change, the benchmark starts being done on CPUs that don't support AVX.
 
-confirmed that after applying the patch
-https://lore.kernel.org/all/20260217124457.89219-1-sayalip@linux.ibm.com/,
-this issue has not been hit again, the fix works.
-
-Thanks,
-Changhui
-
+- Eric
 
