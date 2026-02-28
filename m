@@ -1,93 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-17430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKN0OJ0xomke0wQAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 01:06:53 +0100
+	id eOSaFzlDomlz1QQAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 02:22:01 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24D61BF558
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 01:06:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE1A1BFB2A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 02:21:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fN58n6dvWz30VV;
-	Sat, 28 Feb 2026 11:06:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fN6qP65Ckz30T8;
+	Sat, 28 Feb 2026 12:21:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772237209;
-	cv=none; b=IkxSTgw4DUzPTB2Iml3F0H+NdnnpuI8237OK8cNUu0gak8Dm7Lx3V5SXnSgTw1z6XC0ln2g2Teav/O2W+gokMC/B699qkE4NriOZaG55R3UlpfuSA9OY0tuj9u4SYFCD4JJvWSYoUtbBMcrqfeM9ioQtoDoCgpL6kMz84rU9KMHyswI6zXJkE82Df9qXr1JBWLhGkwkHTQgHkl+ZHEvVrcBspwYC83Y3JamjZ2E3RAtZp1d4ib2zMm7Z3RwFbvXIrMvsGuQc/h2AX9Uo29l52CEJsmcEg0AmVOk3AYGh45tSLSFcf5V+pdVrRhA8aUvmu64gVN5YCjRbxh72fKUY0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=113.46.200.218
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772241713;
+	cv=none; b=UE+7fosMd66LFAeLqClmK3W1tqCrF6kinFKkU345/lkcn3h1ygRa0t4s8JBXyypEHSho9/MRCL/Zwz9l4Z90Q0xAFS7cMHLq21yIXYVXxRueVNd5l8KCmeeZRyQ9s0S8UTKtpeTa4kYebeDpRJmh9JVzSCFFZWWjeeOhPskpTIipYRsh0q0My7HokM9c2j2Jpm4OATsX4/ZBq/nLvydSYrYU3ntH2OE6x6psjbK7b8i3CO2v3eW/iFapWq6UKmS0KiONSUquSDBluMd4K2ywofdND5nwvZtX0CPVOjkroGdTgWo/GnYB3A/lTkBhQdKU7ojou+YgoxKQx3JfT0Oz5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772237209; c=relaxed/relaxed;
-	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T4A4DI8sWMqH0Wnz/+q475jWt6HM91WasDkGujZfSfsIVASbyqhLolZeH72JFQwu0/iuooOD56Z97p3Biv5coQ5wjzjaPNxPEku+zIqwNnXwFOTLQdOgFNA98PBek5Cht9d6w/ZCkaK80d5uMm4zfAUQ5iZrp68BpbJ2xrlUIFSXUoPSksBWRjWUThJjO82eFojFdoUOG6u6V1nBoqp3yyyOgLHf30T0ePdYNLL37ENg1cRgZjayNO66l61/vOlfdAaogBgvdaC/Na4aDtt064uXViZY5oJ3TI3yzFPkZoqpuFtUPa7kOhUvPKZAtQAHyXzRCok7NScknqTgPTfXQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bndOuJAU; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hnwk+AMn; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=npache@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1772241713; c=relaxed/relaxed;
+	bh=g3ZfEIXgV3HlWkTi5COZHl8zAZUARnL7AI5EioOhi5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=oQSNg23oj/xkx27yiqEYvVMd2Aoq3XQT4TMKIpcIqHBOF3LjEUGf0U5M1dSZMsCPKhCyxJJysMJ4W8G5PTc+71ZsHrdupZam1GVZtEFFE/+BnD1Ie97+y01pRXMZjcapXPS+c/1i0XnaJu/WRRwBm0bp68RpCPXv7ZbMhx9zfEOOiyjstK7aYVs+BmryNqUbuCGq4Nqqyr+1PAwcvtI/TL7aYjuIJIKd+BVtO9QtaIlC54AynCYKoFd89FRaL7lyBZ1DaYf31UggNtluOLDgAxTv9+LxcB8UXZ1NSuTBNxzXDpzgXWwYHfMAFUNM73CREcSs+cPCVBrbGHbxZeX31Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=y33XKsOj; dkim-atps=neutral; spf=pass (client-ip=113.46.200.218; helo=canpmsgout03.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bndOuJAU;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hnwk+AMn;
+	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=y33XKsOj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=npache@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=113.46.200.218; helo=canpmsgout03.his.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN58m3BG1z30T8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 11:06:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772237202;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-	b=bndOuJAUep+M1OcbKc2xWulrc339tW1KEJRli8O8ElIV8iLJ1/l6tLTxOLeTdXqvacatkO
-	4IHhYPcA0vGoJUmKxCHzZV3Xn2XDacX8B1vywxvufxtSxYAxi5/eRl8pmT9y5KqOQfdi4Q
-	83ujudbeDXrFYUkvTA5a2POEACstj/c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772237203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-	b=hnwk+AMnFSWXTWx35FAjfXXeL5qUJx4Jq3P9lTewoeZnWbJDMREpuDKr3uoZg1T8XnFKlJ
-	k2GmMtVhVYqTQtd0ytwpnWCp90pP2vjmbHse1TRpEOC3uVlgyi/p+IjApTllXyzsqgqPJM
-	hIPiZhEkin05ICJQpP+jIIJun51bsiM=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-ckBdvHuWMHSrfCWlWC840g-1; Fri, 27 Feb 2026 19:06:38 -0500
-X-MC-Unique: ckBdvHuWMHSrfCWlWC840g-1
-X-Mimecast-MFC-AGG-ID: ckBdvHuWMHSrfCWlWC840g_1772237198
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-64cb719e778so4917941d50.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Feb 2026 16:06:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772237198; x=1772841998;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-        b=tvVKLQZrjVCGQQl7+DvY6CwU2oGfD3S51P/o8sJkn6SKfCGZwdwT/KizmVHlNtseA3
-         uAOZ2qiMQ9BVx74CdHL8EA6RZi1kBTwjprBKamr71AnBLfKCZIk/aprF5NJEFydKrSbe
-         ya2h6mmyQ3kkBObxqfs3smlLYSVlbK5v8MJkOiH4023Npg7SD8uf+1k6H8cWX2MEdihB
-         YctaNnCg9kJtObV3KSIuUbNOJxs7lO2UkqD4PWCemkY/OGYKKPQGNdWvKLTqJttDQ88j
-         YkPFgBclNjiTgOwOBiNCNPPhWTJ/P4SFRY3GqKvcoebkw/6LRVtDYZKAJO036SR/AtBM
-         PvdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXj2zvKDJboAc/xMdot0C0AsMkMwbdGB+JnHwXAAg85W9NEJLAxEEym5FSUZwfyXwTGoH5vKIrxVCQFBkU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwxtCgxgBM1OsNGYOZjazolNZTB3AUH6vVhlZT36v4GJR0hbOtA
-	ymV2tzojC5swOdis+zdB4o9gGaIKu5tRKEc5UqdOsC10y5M4UepxIOAcLW5VFQv+DMyJzHFOkQA
-	uj/sTBm6jCsir1d2JR73YCZcaX6HFehVxICGa1PiWFEpnz4AFEpTTBcBGVegGuEsvA9ahDrTql5
-	UhGo7htpc3OY/dbFq1rFWF4Ysgc8j59SzxmbVNvdiXww==
-X-Gm-Gg: ATEYQzxxhEjMasc4FSpA87/y0K7yjheItZZsbZzUPfR3+SGGODvQbABcEZQBx9FJ2uO
-	qEJA/KrN9xqrMhyTIh3hIR1eF2EzVV/EvRQGUvKLtkC8ratIIXuuDhaiLg9rZEW+iSGzRHils56
-	9mwrTQYSVhFNqBgy38ho7l56ghhz7PJugFiQB2YqRMsnTBIZp54QHaSEQLwbEWD4ZM6wizDTHIb
-	8Ux
-X-Received: by 2002:a05:690e:edb:b0:64c:9a08:9948 with SMTP id 956f58d0204a3-64cc2302f31mr3708786d50.76.1772237198198;
-        Fri, 27 Feb 2026 16:06:38 -0800 (PST)
-X-Received: by 2002:a05:690e:edb:b0:64c:9a08:9948 with SMTP id
- 956f58d0204a3-64cc2302f31mr3708764d50.76.1772237197814; Fri, 27 Feb 2026
- 16:06:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fN6qL3SmNz2xlj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 12:21:48 +1100 (AEDT)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=g3ZfEIXgV3HlWkTi5COZHl8zAZUARnL7AI5EioOhi5c=;
+	b=y33XKsOjrl1QPprmFk09CWLS91eyuVn46hY5LCz9lV646qeLi/6dMSMulXugarz9N8ILeIO+N
+	bJLJXGjfRFU2PrRMleHTL4N1wZXFSd63gZzNuj1Fd5HTVKu8Q/eD9yscO5RcmIvCjgwCn0Mf3jK
+	U8P3Rbs9yf6dM6kXmFYTB9E=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fN6jV3JjXzpT0X;
+	Sat, 28 Feb 2026 09:16:46 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 53C4740569;
+	Sat, 28 Feb 2026 09:21:38 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 28 Feb 2026 09:21:34 +0800
+Message-ID: <0a776b5f-5a88-2c71-7305-d30d9240c2cb@huawei.com>
+Date: Sat, 28 Feb 2026 09:21:33 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,159 +65,256 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260226113233.3987674-1-usama.arif@linux.dev>
- <CAA1CXcAYt3OfW_uBTYZgr-dBhg99x=5pUs5uvqtpg+PNJ1KxGQ@mail.gmail.com> <1d3a4e8e-9ea0-42e7-b8e7-d92fb27f80f4@linux.dev>
-In-Reply-To: <1d3a4e8e-9ea0-42e7-b8e7-d92fb27f80f4@linux.dev>
-From: Nico Pache <npache@redhat.com>
-Date: Fri, 27 Feb 2026 17:06:12 -0700
-X-Gm-Features: AaiRm50atKm0LplrPamqC93Qv4KgvjRMNXj12GuBsNodzUDc90TXdhaD9w6BIXM
-Message-ID: <CAA1CXcCygvA9uUJjB-+2J00srnHbiNGwbvcbqpRer8Vy8QBxWg@mail.gmail.com>
-Subject: Re: [RFC v2 00/21] mm: thp: lazy PTE page table allocation at PMD split
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, hannes@cmpxchg.org, 
-	riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
-	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
-	svens@linux.ibm.com, linux-s390@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QAvPtdYYVWDV64seWEYuusPowVsfb8_ug62pW6xQcEU_1772237198
-X-Mimecast-Originator: redhat.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v7 3/5] crash: Use crash_exclude_core_ranges() on powerpc
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
+	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <chleroy@kernel.org>,
+	<pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
+	<alex@ghiti.fr>, <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <robh@kernel.org>,
+	<saravanak@kernel.org>, <akpm@linux-foundation.org>, <bhe@redhat.com>,
+	<vgoyal@redhat.com>, <dyoung@redhat.com>, <pmladek@suse.com>,
+	<rdunlap@infradead.org>, <dapeng1.mi@linux.intel.com>, <kees@kernel.org>,
+	<paulmck@kernel.org>, <lirongqing@baidu.com>, <arnd@arndb.de>,
+	<rppt@kernel.org>, <ardb@kernel.org>, <leitao@debian.org>, <jbohac@suse.cz>,
+	<cfsworks@gmail.com>, <ryan.roberts@arm.com>, <tangyouling@kylinos.cn>,
+	<ritesh.list@gmail.com>, <hbathini@linux.ibm.com>, <eajames@linux.ibm.com>,
+	<songshuaishuai@tinylab.org>, <samuel.holland@sifive.com>,
+	<kevin.brodsky@arm.com>, <vishal.moola@gmail.com>,
+	<junhui.liu@pigmoral.tech>, <coxu@redhat.com>, <liaoyuanhong@vivo.com>,
+	<brgerst@gmail.com>, <fuqiang.wang@easystack.cn>, <x86@kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <kexec@lists.infradead.org>
+References: <20260226130437.1867658-1-ruanjinjie@huawei.com>
+ <20260226130437.1867658-4-ruanjinjie@huawei.com>
+ <3576865b-65bd-4289-babc-975a543eb775@linux.ibm.com>
+Content-Language: en-US
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <3576865b-65bd-4289-babc-975a543eb775@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_BL_SPAMCOP_NET,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: *
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[npache@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:sourabhjain@linux.ibm.com,m:corbet@lwn.net,m:skhan@linuxfoundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:robh@kernel.org,m:saravanak@kernel.org,m:akpm@linux-foundation.org,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:pmladek@suse.com,m:rdunlap@infradead.org,m:dapeng1.mi@linux.intel.com,m:kees@kernel.org,m:paulmck@kernel.org,m:lirongqing@baidu.com,m:arnd@arndb.de,m:rppt@kernel.org,m:ardb@kernel.org,m:leitao@debian.org,m:jbohac@suse.cz,m:cfsworks@gmail.com,m:ryan.roberts@arm.com,m:tangyouling@kylinos.cn,m:ritesh.list@gmail.com,m:hbathini@linux.ibm.com,m:eajames@linux.ibm.com,m:songshuaishuai@tinylab.org,m:samuel.holland@sifive.com,m:ke
+ vin.brodsky@arm.com,m:vishal.moola@gmail.com,m:junhui.liu@pigmoral.tech,m:coxu@redhat.com,m:liaoyuanhong@vivo.com,m:brgerst@gmail.com,m:fuqiang.wang@easystack.cn,m:x86@kernel.org,m:linux-doc@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:devicetree@vger.kernel.org,m:kexec@lists.infradead.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	TAGGED_FROM(0.00)[bounces-17430-lists,linuxppc-dev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,lwn.net,linuxfoundation.org,arm.com,kernel.org,xen0n.name,ellerman.id.au,gmail.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,redhat.com,alien8.de,linux.intel.com,zytor.com,linux-foundation.org,suse.com,infradead.org,baidu.com,arndb.de,debian.org,suse.cz,kylinos.cn,tinylab.org,sifive.com,pigmoral.tech,vivo.com,easystack.cn,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17431-lists,linuxppc-dev=lfdr.de];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[npache@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FROM_NEQ_ENVFROM(0.00)[ruanjinjie@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCPT_COUNT_GT_50(0.00)[61];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	HAS_XOIP(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: F24D61BF558
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 0AE1A1BFB2A
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 4:14=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
->
->
->
-> On 26/02/2026 21:01, Nico Pache wrote:
-> > On Thu, Feb 26, 2026 at 4:33=E2=80=AFAM Usama Arif <usama.arif@linux.de=
-v> wrote:
-> >>
-> >> When the kernel creates a PMD-level THP mapping for anonymous pages, i=
-t
-> >> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
-> >> page table sits unused in a deposit list for the lifetime of the THP
-> >> mapping, only to be withdrawn when the PMD is split or zapped. Every
-> >> anonymous THP therefore wastes 4KB of memory unconditionally. On large
-> >> servers where hundreds of gigabytes of memory are mapped as THPs, this
-> >> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
-> >> could otherwise satisfy other allocations, including the very PTE page
-> >> table allocations needed when splits eventually occur.
-> >>
-> >> This series removes the pre-deposit and allocates the PTE page table
-> >> lazily =E2=80=94 only when a PMD split actually happens. Since a large=
- number
-> >> of THPs are never split (they are zapped wholesale when processes exit=
- or
-> >> munmap the full range), the allocation is avoided entirely in the comm=
-on
-> >> case.
-> >>
-> >> The pre-deposit pattern exists because split_huge_pmd was designed as =
-an
-> >> operation that must never fail: if the kernel decides to split, it nee=
-ds
-> >> a PTE page table, so one is deposited in advance. But "must never fail=
-"
-> >> is an unnecessarily strong requirement. A PMD split is typically trigg=
-ered
-> >> by a partial operation on a sub-PMD range =E2=80=94 partial munmap, pa=
-rtial
-> >> mprotect, partial mremap and so on.
-> >> Most of these operations already have well-defined error handling for
-> >> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
-> >> fail and propagating the error through these existing paths is the nat=
-ural
-> >> thing to do. Furthermore, split failing requires an order-0 allocation=
- for
-> >> a page table to fail, which is extremely unlikely.
-> >>
-> >> Designing functions like split_huge_pmd as operations that cannot fail
-> >> has a subtle but real cost to code quality. It forces a pre-allocation
-> >> pattern - every THP creation path must deposit a page table, and every
-> >> split or zap path must withdraw one, creating a hidden coupling betwee=
-n
-> >> widely separated code paths.
-> >>
-> >> This also serves as a code cleanup. On every architecture except power=
-pc
-> >> with hash MMU, the deposit/withdraw machinery becomes dead code. The
-> >> series removes the generic implementations in pgtable-generic.c and th=
-e
-> >> s390/sparc overrides, replacing them with no-op stubs guarded by
-> >> arch_needs_pgtable_deposit(), which evaluates to false at compile time
-> >> on all non-powerpc architectures.
-> >
-> > Hi Usama,
-> >
-> > Thanks for tackling this, it seems like an interesting problem. Im
-> > trying to get more into reviewing, so bare with me I may have some
-> > stupid comments or questions. Where I can really help out is with
-> > testing. I will build this for all RH-supported architectures and run
-> > some automated test suites and performance metrics. I'll report back
-> > if I spot anything.
-> >
-> > Cheers!
-> > -- Nico
-> >
->
-> Thanks for the build and looking into reviewing this. All comments
-> and questions are welcome! I had only tested on x86, and I had a look
-> at the link you shared so its great to know that powerPC and s390 are fin=
-e.
 
-Good news: as you noted all the builds succeeded, and the sanity tests
-dont show any signs of an immediate issue across the architectures.
-I'll proceed to debug kernels, and then performance testing. I will
-try to start reviewing the actual code changes in depth next week :)
 
-Cheers,
--- Nico
+On 2026/2/27 22:50, Sourabh Jain wrote:
+> Resend of:
+> https://lore.kernel.org/all/19cf18b5-362d-4ff2-8b85-e2e72809250c@linux.ibm.com/
+> 
+> On 26/02/26 18:34, Jinjie Ruan wrote:
+>> The crash memory exclude of crashk_res and crashk_cma memory on powerpc
+>> are almost identical to the generic crash_exclude_core_ranges().
+>>
+>> By introducing the architecture-specific arch_crash_exclude_mem_range()
+>> function with a default implementation of crash_exclude_mem_range(),
+>> and using crash_exclude_mem_range_guarded as powerpc's separate
+>> implementation, the generic crash_exclude_core_ranges() helper function
+>> can be reused.
+>>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>   arch/powerpc/kexec/ranges.c | 16 ++++------------
+>>   include/linux/crash_core.h  |  4 ++++
+>>   kernel/crash_core.c         | 19 +++++++++++++------
+>>   3 files changed, 21 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
+>> index 6c58bcc3e130..e5fea23b191b 100644
+>> --- a/arch/powerpc/kexec/ranges.c
+>> +++ b/arch/powerpc/kexec/ranges.c
+>> @@ -553,9 +553,9 @@ int get_usable_memory_ranges(struct crash_mem
+>> **mem_ranges)
+>>   #endif /* CONFIG_KEXEC_FILE */
+>>     #ifdef CONFIG_CRASH_DUMP
+>> -int crash_exclude_mem_range_guarded(struct crash_mem **mem_ranges,
+>> -                       unsigned long long mstart,
+>> -                       unsigned long long mend)
+>> +int arch_crash_exclude_mem_range(struct crash_mem **mem_ranges,
+>> +                 unsigned long long mstart,
+>> +                 unsigned long long mend)
+> 
+> 
+> update_crash_elfcorehdr() in arch/powerpc/kexec/crash.c still calls
+> crash_exclude_mem_range_guarded(), causing a build failure.
+> 
+> ld: arch/powerpc/kexec/crash.o: in function `update_crash_elfcorehdr':
+> /root/linux/arch/powerpc/kexec/crash.c:454: undefined reference to
+> `crash_exclude_mem_range_guarded'
+> 
+> 
+> To fix this:
+> --------------
+> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+> index 898742a5205c..e59e909c369d 100644
+> --- a/arch/powerpc/kexec/crash.c
+> +++ b/arch/powerpc/kexec/crash.c
+> @@ -451,7 +451,7 @@ static void update_crash_elfcorehdr(struct kimage
+> *image, struct memory_notify *
+>                 base_addr = PFN_PHYS(mn->start_pfn);
+>                 size = mn->nr_pages * PAGE_SIZE;
+>                 end = base_addr + size - 1;
+> -               ret = crash_exclude_mem_range_guarded(&cmem, base_addr,
+> end);
+> +              ret = arch_crash_exclude_mem_range(&cmem, base_addr, end);
+>                 if (ret) {
+>                         pr_err("Failed to remove hot-unplugged memory
+> from crash memory ranges\n");
+>                         goto out;
+> 
+> With the above change included, things are working fine on powerpc.
 
->
+It seems the declaration of crash_exclude_mem_range_guarded() added in
+arch/powerpc/include/asm/kexec_ranges.h can also be removed.
 
+> 
+> 
+>>   {
+>>       struct crash_mem *tmem = *mem_ranges;
+>>   @@ -604,18 +604,10 @@ int get_crash_memory_ranges(struct crash_mem
+>> **mem_ranges)
+>>               sort_memory_ranges(*mem_ranges, true);
+>>       }
+>>   -    /* Exclude crashkernel region */
+>> -    ret = crash_exclude_mem_range_guarded(mem_ranges,
+>> crashk_res.start, crashk_res.end);
+>> +    ret = crash_exclude_core_ranges(mem_ranges);
+>>       if (ret)
+>>           goto out;
+>>   -    for (i = 0; i < crashk_cma_cnt; ++i) {
+>> -        ret = crash_exclude_mem_range_guarded(mem_ranges,
+>> crashk_cma_ranges[i].start,
+>> -                          crashk_cma_ranges[i].end);
+>> -        if (ret)
+>> -            goto out;
+>> -    }
+>> -
+>>       /*
+>>        * FIXME: For now, stay in parity with kexec-tools but if RTAS/OPAL
+>>        *        regions are exported to save their context at the time of
+>> diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
+>> index 033b20204aca..dbec826dc53b 100644
+>> --- a/include/linux/crash_core.h
+>> +++ b/include/linux/crash_core.h
+>> @@ -68,6 +68,7 @@ extern int crash_prepare_elf64_headers(struct
+>> crash_mem *mem, int need_kernel_ma
+>>                          void **addr, unsigned long *sz);
+>>   extern int crash_prepare_headers(int need_kernel_map, void **addr,
+>>                    unsigned long *sz, unsigned long *nr_mem_ranges);
+>> +extern int crash_exclude_core_ranges(struct crash_mem **cmem);
+>>     struct kimage;
+>>   struct kexec_segment;
+>> @@ -88,6 +89,9 @@ extern int kimage_crash_copy_vmcoreinfo(struct
+>> kimage *image);
+>>   extern unsigned int arch_get_system_nr_ranges(void);
+>>   extern int arch_crash_populate_cmem(struct crash_mem *cmem);
+>>   extern int arch_crash_exclude_ranges(struct crash_mem *cmem);
+>> +extern int arch_crash_exclude_mem_range(struct crash_mem **mem,
+>> +                    unsigned long long mstart,
+>> +                    unsigned long long mend);
+>>     #else /* !CONFIG_CRASH_DUMP*/
+>>   struct pt_regs;
+>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>> index 96a96e511f5a..300d44ad5471 100644
+>> --- a/kernel/crash_core.c
+>> +++ b/kernel/crash_core.c
+>> @@ -287,24 +287,31 @@ unsigned int __weak
+>> arch_get_system_nr_ranges(void) { return 0; }
+>>   int __weak arch_crash_populate_cmem(struct crash_mem *cmem) { return
+>> -1; }
+>>   int __weak arch_crash_exclude_ranges(struct crash_mem *cmem) {
+>> return 0; }
+>>   -static int crash_exclude_core_ranges(struct crash_mem *cmem)
+>> +int __weak arch_crash_exclude_mem_range(struct crash_mem **mem,
+>> +                    unsigned long long mstart,
+>> +                    unsigned long long mend)
+>> +{
+>> +    return crash_exclude_mem_range(*mem, mstart, mend);
+>> +}
+>> +
+>> +int crash_exclude_core_ranges(struct crash_mem **cmem)
+>>   {
+>>       int ret, i;
+>>         /* Exclude crashkernel region */
+>> -    ret = crash_exclude_mem_range(cmem, crashk_res.start,
+>> crashk_res.end);
+>> +    ret = arch_crash_exclude_mem_range(cmem, crashk_res.start,
+>> crashk_res.end);
+>>       if (ret)
+>>           return ret;
+>>         if (crashk_low_res.end) {
+>> -        ret = crash_exclude_mem_range(cmem, crashk_low_res.start,
+>> crashk_low_res.end);
+>> +        ret = arch_crash_exclude_mem_range(cmem,
+>> crashk_low_res.start, crashk_low_res.end);
+>>           if (ret)
+>>               return ret;
+>>       }
+>>         for (i = 0; i < crashk_cma_cnt; ++i) {
+>> -        ret = crash_exclude_mem_range(cmem, crashk_cma_ranges[i].start,
+>> -                          crashk_cma_ranges[i].end);
+>> +        ret = arch_crash_exclude_mem_range(cmem,
+>> crashk_cma_ranges[i].start,
+>> +                           crashk_cma_ranges[i].end);
+>>           if (ret)
+>>               return ret;
+>>       }
+>> @@ -331,7 +338,7 @@ int crash_prepare_headers(int need_kernel_map,
+>> void **addr, unsigned long *sz,
+>>       if (ret)
+>>           goto out;
+>>   -    ret = crash_exclude_core_ranges(cmem);
+>> +    ret = crash_exclude_core_ranges(&cmem);
+>>       if (ret)
+>>           goto out;
+>>   
+> 
 
