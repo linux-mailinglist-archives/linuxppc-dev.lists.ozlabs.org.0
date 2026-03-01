@@ -1,88 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-17457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELQlKq9do2lxBQUAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 22:27:11 +0100
+	id CPlRG1yVo2l7HQUAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Mar 2026 02:24:44 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5EF61C9124
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Feb 2026 22:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680F71CA75D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Mar 2026 02:24:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fNdZ15Kstz2xQs;
-	Sun, 01 Mar 2026 08:27:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fNkr700Z0z30MZ;
+	Sun, 01 Mar 2026 12:24:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772314025;
-	cv=none; b=WzQiZLqKzsGq7+W6AEqB8hLovH2MK6ON1l4Hiw2S71sYNivdF5F5t6LsnccTTM/US3xHm4kSGrP+zpdKn41/zRIlObHvMw/GjKL0qaJO+xdTpHCN5OBq9KsaY+k9VdWUB7KT5105bluqtDcK9LoBQJ8HpvHVEwGlgS3jxrkpQYCM+6AtpQAJey8VPHAkCD+pzHYeZHK2LQOtQt0wVzHGoSt7OjUyAIbNvOg03FjT/T7wk6GeiULWxJXSmpf89m4Spp0bEfv3AQoo7oDR/79SIB4nV5Ns86qXZpbGa6qu3indEcFw+aRNV0D6jhpaqTQrHXyKHquqm4rFrxLKhb4t2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772328278;
+	cv=none; b=fA21jRmDkEsDSyn8WQn4N3XWDtlKuOW7g5bYzk4U8gFynGspacBmzv/jCfMNLYuTPrQM4Y4wOHzRSfq/yhR4OwM1BLTHYhncvsy9mPq0D0IrG+QlyMGfwueQBkBJO6u/fwp+FnamX6oq9j77afxppvAIzsk1pqlqKdU0sZMG5XV36gUiPNnNXPzPakC4JcdRBFDTPcLoPzPNIYum17fPxxrSz4Mz3WiOROpNQ0xtzdqtJRT9tCbWwhooIbOLu3vC5All63qwHMSc1XgztDfV/tnG3VhWIueFctuC+iBkYLoHbsFJ0uTS2NDp3ULJse7elV6QNDsThstG0eHwRFPktg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772314025; c=relaxed/relaxed;
-	bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=AYHkyCJHwJNC7ttCwsuCBxhTKrJLCFav+eI343GjX5l63uWjOemHXDV/pscSApSzc32cL0ESLSZL0r6djL4hJpsioWTOAJ44t7GCS/uD65RAdf349/BRftsfAyIjlVELQyZqlvUPhDxDrn6wdJ0grOVVQJIYREhBKvM/X37pl2EUVK2h8/bV5/7/PCth5QXnHs68ioRZb+jmGbC3y72VMIpPjFwiHeJphIt60011BzwDDBjZ0VDVQ3yJG1te3jLH64W4K380fELW6fPz7jdROxyTVMsEkzyn5wOb1mhkrEywZnepHsbSwPtqEQaZb2Sw6BaMImxZ1jAt3aOmMeWw+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UWpY7E6x; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1772328278; c=relaxed/relaxed;
+	bh=It9wz2doIo8fQVXpEE4VEhyC1IZRuI4HBxneVCG4lbw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VQUADGBG2t0I1YrklbltmgwgRJTv0JVPKABZioKOW3NcDCTkktaqACDL17ueNdWce4RP2KqaTrO7QIYzR0RfclpzXB2ifU86iZOIDL1TwKB53VyFl0oDaZohXMmysbBdkjBKtaqaCLf0q1RddH5/ZvTzshExSbaKZ4M3oxAgSbosOfuWg8MTFIQIZxrtxPYQ+7YD+AnSKZCVWI+3w7lQbR0Ii5DnmqHJ17dscRiZ01si5Mt2OEU2zyXLU2qHNpk5MinceAIJH3naRj2vflCeGLo5vTYoMNVPDye7bGS0+Z5bwjP4ekrlgKkJErrNubJ3Pmp+A1gB2FQZPR8x1PpQIQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YBs49Hzp; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UWpY7E6x;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YBs49Hzp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fNdZ028wLz2xNT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Mar 2026 08:27:03 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-2ab39b111b9so15929885ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Feb 2026 13:27:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772314020; x=1772918820; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
-        b=UWpY7E6xNLSSQhdXHFbf4fCT2zLYwRwy87AtA2RCgyAwhZ3EvUN94Mma5jRhOSVEZ0
-         u0zCWnjj3D1jrxfW6UYjwpN2PoMmN1oJbX1hzIxkgfjhw3GJ9LgMzgP4ubhsX5b2pS3l
-         1ZXdpAVxzd23b9hMtcYd4cG3tJpGHxQGlI8h31pO5IxAfrYibscf34NyC+7Zb//EKkJi
-         ct5cG+QOTstg87podQXgKUc3JXG1zKRV1yGPWNXHcpF0GAr4FjXPOIgfMEyYVdake85n
-         cRSgFN8rSKG5lVd7D4oF6L2Mmq7hJ+9OuwfaD/oe5xABQuren9z3trKzxBDAiXo7sRrN
-         Nn1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772314020; x=1772918820;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
-        b=ZlTN2OHLC3IRpJV9PbsvQtChkpNRRkcbdq9BJdaBpNawsj91+pXpzIih68/p0Vj0HI
-         0tzxy3hB0Anb8tE354obRDJchhE4OPulQleH/lUQqCkWvvADt15P8SNdFSU87R1h2wHV
-         ZlvcUSzTT9v/+zHnXhOURHAjMNLYii9TNvri2scCR4/toRANSgEtdwPTOVFvQUmKeiEk
-         R2865ksAp9m0fGc1E++q7J8Tv95Bk5MqizOxC4vDJuobMZ44DqgoS2WzrYvls+6AMmnK
-         sIxL940wwXZqLVfWq0OvNnoCkfk7figSuEkv6NcCh6QLoTHCaKeNOS9/XTaO+rKz1epj
-         KEvA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5un60AIjAOgieALOjtrM4B+SDiorAJu9M2TM6jhMYSxERep+Bu6qOJFFuf33ZAiOqtOqvGT0Mxauyrpw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw8iXFU9OVzSxm/3lrlR0PX7xU2ePqASoftrG8A/eIpgX6TKl7x
-	et4qv8TRrgje4yy2qZMj/JGemos5hYNhv/3vi0nxUAsh+RsW5T2rAQqW
-X-Gm-Gg: ATEYQzz6fQU89fwPW/sZFtkNzbt+lXIPL06eWxzKEa52j39zZWrXRBmsWiiueFrkuU0
-	0500IshHVIrrrgfwc7Lpuv+RjfnbZtJgKr9z2Zvb+/WOdsY/tBfIdTkJdpdrHkPhT5fjlIbcKYD
-	4WVdxlf2J9+h+29DJJ855SymqgUk+jZOEo/0vdO6+H1Dgld9nr+gZN77ys1ADKMUbx0uImauONN
-	jka/soXxiUDUni8mBLQUvzZR7a/X9jUV9LiSXnGBTzgOeGRMDaK3Jf0X7rRRx5mkiWJTkh+TMB7
-	ifBYs/k7jpqgx+0g6fz91WKydOn//OJalE9cbEhgNRFMV21lhpyU6kW9hqbmAKLfjCka0SbZ6Lh
-	OrXQj6iiTzEAZvHGu3D8Uw4qXnuDgoDJ05Zdt/VUCQqYFJ7aHmG/l4lI+wgmFVLGY7Lh+CnHyy6
-	rAnOkGWfvbo/YpbLFd
-X-Received: by 2002:a17:903:1aad:b0:2aa:ecec:a43d with SMTP id d9443c01a7336-2ae2e401f52mr62465095ad.21.1772314019931;
-        Sat, 28 Feb 2026 13:26:59 -0800 (PST)
-Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae3e4e34e6sm26334335ad.30.2026.02.28.13.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Feb 2026 13:26:58 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
-Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
-In-Reply-To: <87pl5qh3ye.ritesh.list@gmail.com>
-Date: Sun, 01 Mar 2026 02:44:32 +0530
-Message-ID: <87tsv0in9j.ritesh.list@gmail.com>
-References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com> <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com> <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org> <87pl5qh3ye.ritesh.list@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fNkr56dqjz2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Mar 2026 12:24:37 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C59BE4086F;
+	Sun,  1 Mar 2026 01:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA736C19421;
+	Sun,  1 Mar 2026 01:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772328275;
+	bh=WZYvYsbaDrkbZfvWiKNS3s0peY5M15DSV9k5w42HmV4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YBs49HzpxEkVq8XjRg6tNv2rDP6u/A/Zw+izruFxagBlHGThkKXeoZPfjd3jTnk8a
+	 X9O/W3gyJw4vQJQCzYyALB/AIv7Ll3KnfavjcyKnGaRY14CJAPo9MOBJZYnvTfxso0
+	 iqb3CSy5DfGhzX/SlUF/uX6/1nw7uzCaODS7GDVeoVMbVgn7DVXJD8eW97AkAo50nb
+	 TMB5kMOTUBIUPem1xBHDo1WDeyncM2VNbUJHjEz18qhZhM+0B5ItePQ5sAzA1atrCv
+	 5/WpnWutqXtXEVtNFG8pohsHb0X96K/6GqHEkSl8nnTdg3Ah/kUb/T+xlOHYZDMm0F
+	 9A6Va1dH0FYxw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	lihaoxiang@isrc.iscas.ac.cn
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "bus: fsl-mc: fix an error handling in fsl_mc_device_add()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:33 -0500
+Message-ID: <20260301012433.1681444-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,128 +71,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+MIME-Version: 1.0
+X-Patchwork-Hint: ignore
+X-stable: review
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-mm@kvack.org,m:kvm@vger.kernel.org,m:alex@shazbot.org,m:peterx@redhat.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17457-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17458-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:lihaoxiang@isrc.iscas.ac.cn,m:dan.carpenter@linaro.org,m:suhui@nfschina.com,m:chleroy@kernel.org,m:ioana.ciornei@nxp.com,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: A5EF61C9124
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,nfschina.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 680F71CA75D
 X-Rspamd-Action: no action
 
-Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
->
->> Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
->>> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
->>> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
->>> follow_pfnmap APIs.
->>> 
->>> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
->>> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
->>> VFIO PCI core driver already supports fault handling at PMD / PUD level
->>> for more efficient BAR mappings.
->>> 
->>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>
->> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
->>
->>
->
-> Thanks for the review!
->
->>>   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
->>>   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
->>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
->>> index dcd3a88caaf6..2d27cb1c2334 100644
->>> --- a/arch/powerpc/include/asm/pgtable.h
->>> +++ b/arch/powerpc/include/asm/pgtable.h
->>> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
->>>   	return __pgprot(pte_flags);
->>>   }
->>> 
->>> +#define pmd_pgprot pmd_pgprot
->>> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
->>> +{
->>> +	return pte_pgprot(pmd_pte(pmd));
->>> +}
->>> +
->>> +#define pud_pgprot pud_pgprot
->>> +static inline pgprot_t pud_pgprot(pud_t pud)
->>> +{
->>> +	return pte_pgprot(pud_pte(pud));
->>> +}
->>> +
->
-> In v2 - I will add above under #ifdef CONFIG_PPC_BOOK3S_64 
-> to avoid build issues with 32-bit PPC.
->
+Thanks,
+Sasha
 
-On second thoughts, I am thinking maybe we should guard it with CONFIG_PPC64.  
-Currently the build fails on 32-bit since no definitions of pmd_pte()
-and pud_pte().  Though, we could open-code that, but I think as of
-today, this only gets excercised from follow_pfnmap_start() which gates
-it with VM_PFNMAP | VM_IO, which I think could only happen for THP which
-is only true for book3s/64. 
-But to keep the generic definitions of pXd_pgprot() and since pmd_pte()
-and pud_pte() are anyways available on book3s/64 & nohash/64, so let's
-just guard this with PPC64.
+------------------ original commit in Linus's tree ------------------
 
-I will amend this change in RFC-v2 and will keep the RB from Christophe.
+From 52f527d0916bcdd7621a0c9e7e599b133294d495 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Sat, 24 Jan 2026 18:20:54 +0800
+Subject: [PATCH] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
+
+In fsl_mc_device_add(), device_initialize() is called first.
+put_device() should be called to drop the reference if error
+occurs. And other resources would be released via put_device
+-> fsl_mc_device_release. So remove redundant kfree() in
+error handling path.
+
+Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
+Cc: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 08b99b0b342f3..007223549887d 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -896,11 +896,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+ 	return 0;
+ 
+ error_cleanup_dev:
+-	kfree(mc_dev->regions);
+-	if (mc_bus)
+-		kfree(mc_bus);
+-	else
+-		kfree(mc_dev);
++	put_device(&mc_dev->dev);
+ 
+ 	return error;
+ }
+-- 
+2.51.0
 
 
-+#ifdef CONFIG_PPC64
-+#define pmd_pgprot pmd_pgprot
-+static inline pgprot_t pmd_pgprot(pmd_t pmd)
-+{
-+       return pte_pgprot(pmd_pte(pmd));
-+}
-+
-+#define pud_pgprot pud_pgprot
-+static inline pgprot_t pud_pgprot(pud_t pud)
-+{
-+       return pte_pgprot(pud_pte(pud));
-+}
-+#endif /* CONFIG_PPC64 */
-+
 
-
--ritesh
 
 
