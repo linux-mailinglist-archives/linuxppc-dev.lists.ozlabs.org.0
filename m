@@ -1,84 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-17477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHT+ACSbpGnZmAUAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Mar 2026 21:01:40 +0100
+	id MB38EEe1pGlHpgUAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Mar 2026 22:53:11 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801371D16FB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Mar 2026 21:01:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A9D1D1C03
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Mar 2026 22:53:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fPCcv54Mkz30MY;
-	Mon, 02 Mar 2026 07:01:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fPG5Z21qkz2xR4;
+	Mon, 02 Mar 2026 08:53:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772395295;
-	cv=none; b=LDQXmbXJgQTrKCnZtE7Aj9VRF75ZBK++656J3ABaL78vdDxA73PVrIO/N/bd76C+WCGl6KkCXtgicjOpnbn+iS8QRBV2otEtTnAqsQsHEfJbPKu+11ys0/XnH61v620j1DbA18xSpw92p4YSiIZ89MMgt0C+Abqdt6ZByqI3N/31EJ8c/ccdbftPlBAraB/d0NMLb5CUbhCiOlT7sK5j0t42yJJTwoCY+eWzilYn9hdeOZ+tyGfo0RRGJKa8Us/G08vp7l5WvhpkMP4DQyOPMJBZ2E4aDr6IIcpMlhpBCCTK/Iynzzm+sZgzqhB4m95DYAa2h6WaG3tfboGBxy9fag==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772401986;
+	cv=none; b=gZCwj04hOL4xl7rF7n97XyJQFvCz601eo1ANxx4DLcNIQVrhNZkmRSP1hfRJi7YZKpJqhGORKbg8oYHktXUBqVtUjEFQd6v3rOAGxNfStxPseov/MWAjbqMeYj7O+fKn1V+GYc3LqnrstqEIaIE59ZGSygiDrfSYoUvyeK+JIl4qYgmC47jnbpCghMvT/uWtWvtF6Nkedm8q67m+E4u2Za1+UxtTxRmW2k6pdfNROdJs4EVNrbT4Oi9VoNHwmGQD5HXbSbM8LfFeGqCowJ1PGkwbDpKMIFhzDa3LfctzZORefrFXPsNGFkhdm6BPlurWc6RL1qwvhOzUa8Jy+l8t0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772395295; c=relaxed/relaxed;
-	bh=9jB/XXPWSS4Vb7E8KI5vsQ0OyjX/VbHAJPkU3Kvm8KQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VkQuLUqocatWi2TULeUfSFSScuE55RqUzXi2km1dS+HSPcoiRoweLVKi3rMpTkNfZkPFMZUk6lVY3fuZt1w0r24tXLUVoERqTm2mgXIemJm4yJYzYIBdMjLiIva69+t/8Af95FwGuzrIwgpBR1Gqid9Zyzhi3iwtpH7CDoJ/epgEvAAfjcKl36CLU1Kd7p0x3ibms1wjEQ0RxGmLL8HBDaj2hEcl0OApxre4eam8i85FbHyXSw73bofzSYoOw3mmod/c51O7KsWjtVPRSjp98Em51zShged/U3k6NgLI1LKK7BGpNe5+e3t4k1QuNE32s8nBGhPv+ZJzqXd+gc22Qw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=PfYFzJvT; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1772401986; c=relaxed/relaxed;
+	bh=ylRWWUwK5o3MfEB7pGrnKLZH79m/zlgSbzMzkIBZ2EE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UTTHVLGE6iUi7SXxt3I6VSJOoxGz3hK/tUDb8IfWj+Omij5dtZ6Iy6Z0L96o4l0brP3W87ttCDIo08tvuE/a7R1jJfK52pp+EpdehY7YEa4jK4rwj9+XEc0MUSSylbNJGN+iVNiIWWize/ckMhU8u9wNK7s3J73roVA+UFx9OOvXJjXhFCrhptOK+P7jvLcrPIBZAy66qDbKwau1B6WTPOH6jUz5dlAw/paClXxrHLyKoRIdaqY8yfgqLg3Mp5MXqONNXFlyIqqAphiefZ4tPtrGKwzW8Uh/JoY8b/J/UCu0gtQZnP2qki08EFQCPft6FnOxRdgx0c3qc2PB7DpyBw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d6PtZQVo; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=PfYFzJvT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d6PtZQVo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPCcs6H2Dz2xqm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 07:01:33 +1100 (AEDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so446427466b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Mar 2026 12:01:33 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPG5X1XZVz2xN8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 08:53:03 +1100 (AEDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-439afc58ac7so895997f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Mar 2026 13:53:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1772395289; x=1773000089; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9jB/XXPWSS4Vb7E8KI5vsQ0OyjX/VbHAJPkU3Kvm8KQ=;
-        b=PfYFzJvT0EkQ58JgDjAfzIyvtXlswo/GSEm9Jo/bFQYvDx/HLxNMAsaXeDjdL5c/93
-         HwnfUsvRpyWo1aMmTlcdVx3E4OTn58JZHdsZH8uh3+N1ribCzOSAW/Qz5fUC02vD82NB
-         N4o9V9yVK6iqZotGhwh2+fdNHZy/pYQ/EsR0Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772395289; x=1773000089;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772401979; x=1773006779; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9jB/XXPWSS4Vb7E8KI5vsQ0OyjX/VbHAJPkU3Kvm8KQ=;
-        b=jXtPAWMPQJ4UzLe3/l1SkrXTF3M/HF8jjN/WcK56wsFuPWWtvLWtKgY2gn4H0vPBGk
-         sfkOCqZllO3T9spw5S8Sr9n3kla6u/36zJBU6Y2Fy9c63id+CoVIDbD38BXZ4Trk8WEk
-         vYXs+zEishh2Nl5a/pX8KtSVEKYPBOc+7qY5QSmHmV/wRY6zpbk4LGHQ0RVOWkH7tGrQ
-         QC3KeXM5lL+BEgwbcYVCVx0OrhhvoQp+ZRgDEJoNX/oJUZveCMUpP9XSAKJnQXxzUO/4
-         MI8iXDeybAHp5c5JYsxFuizr45wu4f+sCd0c6bDMpxe1A1kBzD+A7c5hV3fROt6Ewniq
-         s/5w==
-X-Forwarded-Encrypted: i=1; AJvYcCV6HteewJJMTUU5gUMnf2doHhjHYw4Oro7ozln56nPjNwUshBQupcf0dJrDXrX2aEPS9LJQqBx5SFMGapg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwC9cmqBWoz8kreNFuWnvxP/YdjlEEOalUkNBAdXEDtmAmO6vgD
-	z4zjYONN5V/kwQJ6eESqtMiiurvUzVdPd2PX2HEauHbj7vlIOkpv0tLgZICCJ1KII9ohUJxt1UJ
-	j9+04gp3wVw==
-X-Gm-Gg: ATEYQzzKLi/F1n0ysF522525m9xoq6yA1LwE3kSRyT6FNxzW4r3yevxA2Gc4/f49Ior
-	GsJq+oF20z6iO9LVNmW27FWP2O74vTRTup70MKEwBVNXEg5XtlMQZ4H6BVmGX6esECdoHSv1jWO
-	v2APnEqRi9uwgXiN1gJ++eM6JgTSXm6EVuCcx377WIzUvVHzcqYzn3JzCCdh1ujFae+QlOENDK7
-	0uWxu0Xw5yj4IukRMEv9/SYoe87IkkBlVd+v2uj4NKGYM54da5dF8O4ASBn6U6qpTLpfDs2qMGb
-	q9O8WcmE8IxLZnI61/jhttPbDYY/68nCyy9a/qFzt7Gp+oqeEDGH1n0lH5qJXVfATnOInPb9Cox
-	zDXP3Ym4tXAJ4bAoE/G3WMWkzUcCHKM+ThJO1gkCZCFrxyRDP0VZD3Zb06lh0o46OLtC1hDnkpw
-	jl65fhSWpMwnobVg/VBwgGD53Uahs5AqlTWLxJ4AvXhDKhmkMKmjfvn9SaETdCgf4arpaBQLru
-X-Received: by 2002:a17:907:3f1d:b0:b93:5405:9260 with SMTP id a640c23a62f3a-b937c64ef77mr572442866b.30.1772395288700;
-        Sun, 01 Mar 2026 12:01:28 -0800 (PST)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935aec3ea3sm390816566b.57.2026.03.01.12.01.26
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Mar 2026 12:01:28 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b939cfc1e83so108484066b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Mar 2026 12:01:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVpF4s2zOZUove0uU4UEqDnEnjB9199M4B5p/8D4uZrTT1eOgEsSqA+k7Eex1eGS+cq1IQpvMcF7OTlEtk=@lists.ozlabs.org
-X-Received: by 2002:a17:907:3f1d:b0:b93:5405:9260 with SMTP id
- a640c23a62f3a-b937c64ef77mr572433266b.30.1772395284743; Sun, 01 Mar 2026
- 12:01:24 -0800 (PST)
+        bh=ylRWWUwK5o3MfEB7pGrnKLZH79m/zlgSbzMzkIBZ2EE=;
+        b=d6PtZQVoGqy+8OUgSbK35O1p2A59dVIfoQz8k5pN8MLdfYJVFUZanFmAejJvtixrDc
+         5XZCd7VekNTlBHyhf70VLq/JXGJZ+W3NNJVpkeDlkXvGpAtJi9ybfMEGNE5vNffxi5MQ
+         dKafMJ5XnQmmL150lHen1oiadxVEUr6N36V9GiGCZJnYG2WGNa39KQUa1P2oNvD5JJto
+         hZu6JuSKKZm7l/q8xVC6M2oSYDXq8VE1AwMyVvj95wNInvDQJF1QbEsBXHl7y4BTNrhO
+         D+D93IXcw20JGpUOd5+jiruzGR44duY7vAAlz3IcLTwHOIMfEWlGcVU8epfqieNIXSWl
+         1hYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772401979; x=1773006779;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ylRWWUwK5o3MfEB7pGrnKLZH79m/zlgSbzMzkIBZ2EE=;
+        b=koQImFXpLkADZ1LojXg4lG7gJGl9+vA57vGDI59IYvFZH1ynkjgUvLkpC9+MWkD4uR
+         IXbpqSBrUwJu6tvpKi74bpNgJFuszsx4E2CdR73JFndQCwEI9iCihGdTLvGrNeXC+B+8
+         4zZ0s2AcTCuvdLF3ae2uh234ELP3Nh/Ahquu7KfqQj5eE5oG4H4aZ79hr+PldwhBT99H
+         oRSnLnUgwMSrQLNn0mexHCJYYruF10YO6q6UC8OZYKgRWAPe3A8U3VR1hiZo03EDfQ9i
+         RTu09qgz2WtDfGHiTXfUYkNA2JRpnOYRALc+O/lWBtKMX6ny2oSgwn/1NB2y6UQCYVq1
+         KBRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwIW6NE+edUMP4K/U5/hDHb6Pa4Wi4vr34D1VrdjNCJfIiRtNIWCXgutda5beVObxbPRzVXrQfBGU0fg4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxM8OLYakcylgY4nBmPhZ+ZYfLU5UuGK//w9oAGDUmoJVy+tJ+F
+	vD+SUGc0IoNAKMMgfUeuXr5bs3AB7dTh9oJCQd8Bj858bciRpAowFJcc
+X-Gm-Gg: ATEYQzy1KDaG3FK7R6Mym9CRTIG6bqwOhvTdyuRp9gS+6x+DQ/vi22IUoT8ceA3nmHA
+	2Se4T/I+FuC9Pj/YlsnlZWMXO6SE28XpC0nl4btk7dt5u1VkTLZgfqPkm3ejf6DC9XUaZVJF9+5
+	3hXE9Esh1F9uEHNAjV2+Am5voe52UpThZjL3NGqbCXUQOZhitfj9L4GhxgYTs8zil8IWLeIiMUz
+	bRvmdE4Rq/HNPSJ3q8Zq7cwtQg0zOyc6dX1Lzt+Q8c7XheyO+ioK24cgM8SWX2BDhhKAtXZvqZe
+	Yl+/b2s5aQ699pROtyqh/Iwb9gduvQ+JaVkuD3qLICAAJDjhUg3zhDH8lreRrf5DKQ0kxFZ9Fx8
+	Ry7EI5TxEKYdzdxPBg+bsJKw7ftl3lvdzfWJbEq116N8Y8Gi1cTwqgiPagSuFIdJcVYYvsAByBZ
+	DW6XeslppkMdziUlX6ySMTcye+r79ngClG18RP5OCzdV69W0jYmQNumiEv2fTinpXILNYhC5zos
+	TM=
+X-Received: by 2002:a5d:588f:0:b0:439:afd8:6235 with SMTP id ffacd0b85a97d-439afd86565mr5809623f8f.18.1772401979049;
+        Sun, 01 Mar 2026 13:52:59 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439ba2a58dasm61132f8f.27.2026.03.01.13.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Mar 2026 13:52:58 -0800 (PST)
+Date: Sun, 1 Mar 2026 21:52:57 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, LKML
+ <linux-kernel@vger.kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Cooper
+ <andrew.cooper3@citrix.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, kernel test robot <lkp@intel.com>, Russell
+ King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ x86@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, Heiko
+ Carstens <hca@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas
+ Palix <nicolas.palix@imag.fr>, Peter Zijlstra <peterz@infradead.org>,
+ Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Andre Almeida <andrealmeid@igalia.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] uaccess: Fix build of scoped user access with const
+ pointer
+Message-ID: <20260301215257.7bdad5f1@pumpkin>
+In-Reply-To: <4e994e13b48420ef36be686458ce3512657ddb41.1772393211.git.chleroy@kernel.org>
+References: <4e994e13b48420ef36be686458ce3512657ddb41.1772393211.git.chleroy@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,100 +117,103 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <4e994e13b48420ef36be686458ce3512657ddb41.1772393211.git.chleroy@kernel.org>
-In-Reply-To: <4e994e13b48420ef36be686458ce3512657ddb41.1772393211.git.chleroy@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 1 Mar 2026 12:01:08 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wixyP1mzyVcpZqQZd_xbabZQ873KVph3L-EkrNZGv3Ygw@mail.gmail.com>
-X-Gm-Features: AaiRm51s3eNxZj_25SK_rlwxCS0TV1EUyjNISFnudmurbAezRL6om8RwkB99_8Y
-Message-ID: <CAHk-=wixyP1mzyVcpZqQZd_xbabZQ873KVph3L-EkrNZGv3Ygw@mail.gmail.com>
-Subject: Re: [PATCH] uaccess: Fix build of scoped user access with const pointer
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
-	David Laight <david.laight.linux@gmail.com>, kernel test robot <lkp@intel.com>, 
-	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
-	x86@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, 
-	Heiko Carstens <hca@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
-	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FORGED_GMAIL_RCVD,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:tglx@linutronix.de,m:linux-kernel@vger.kernel.org,m:christophe.leroy@csgroup.eu,m:mathieu.desnoyers@efficios.com,m:andrew.cooper3@citrix.com,m:torvalds@linux-foundation.org,m:lkp@intel.com,m:linux@armlinux.org.uk,m:linux-arm-kernel@lists.infradead.org,m:x86@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:linux-riscv@lists.infradead.org,m:hca@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,m:Julia.Lawall@inria.fr,m:nicolas.palix@imag.fr,m:peterz@infradead.org,m:dvhart@infradead.org,m:dave@stgolabs.net,m:andrealmeid@igalia.com,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:linux-fsdevel@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17477-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:tglx@linutronix.de,m:linux-kernel@vger.kernel.org,m:christophe.leroy@csgroup.eu,m:mathieu.desnoyers@efficios.com,m:andrew.cooper3@citrix.com,m:david.laight.linux@gmail.com,m:lkp@intel.com,m:linux@armlinux.org.uk,m:linux-arm-kernel@lists.infradead.org,m:x86@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:linux-riscv@lists.infradead.org,m:hca@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,m:Julia.Lawall@inria.fr,m:nicolas.palix@imag.fr,m:peterz@infradead.org,m:dvhart@infradead.org,m:dave@stgolabs.net,m:andrealmeid@igalia.com,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:linux-fsdevel@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[torvalds@linux-foundation.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[32];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linutronix.de,vger.kernel.org,csgroup.eu,efficios.com,citrix.com,gmail.com,intel.com,armlinux.org.uk,lists.infradead.org,kernel.org,linux.ibm.com,ellerman.id.au,lists.ozlabs.org,dabbelt.com,inria.fr,imag.fr,infradead.org,stgolabs.net,igalia.com,zeniv.linux.org.uk,suse.cz];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[torvalds@linux-foundation.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-17478-lists,linuxppc-dev=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linutronix.de,vger.kernel.org,csgroup.eu,efficios.com,citrix.com,linux-foundation.org,intel.com,armlinux.org.uk,lists.infradead.org,kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,lists.ozlabs.org,dabbelt.com,inria.fr,imag.fr,infradead.org,stgolabs.net,igalia.com,zeniv.linux.org.uk,suse.cz];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,mail.gmail.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 801371D16FB
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 73A9D1D1C03
 X-Rspamd-Action: no action
 
-On Sun, 1 Mar 2026 at 11:34, Christophe Leroy (CS GROUP)
-<chleroy@kernel.org> wrote:
->
-> -       for (void __user *_tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl); \
-> +       for (void __user *_tmpptr = (void __user *)                                     \
-> +                                   __scoped_user_access_begin(mode, uptr, size, elbl); \
+On Sun,  1 Mar 2026 20:33:58 +0100
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
 
-Why are you casting this return value? Wouldn't it be a lot better to
-just make the types be the CORRECT ones?
+> After converting powerpc checksum wrappers to scoped user access,
+> following build failure happens:
+> 
+> 	  CC      arch/powerpc/lib/checksum_wrappers.o
+> 	In file included from arch/powerpc/lib/checksum_wrappers.c:12:
+> 	arch/powerpc/lib/checksum_wrappers.c: In function 'csum_and_copy_from_user':
+> 	./include/linux/uaccess.h:691:1: error: initialization discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]
+> 	  691 | ({                                                                      \
+> 	      | ^
+> 	./include/linux/uaccess.h:755:37: note: in expansion of macro '__scoped_user_access_begin'
+> 	  755 |         for (void __user *_tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl); \
+> 	      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> 	./include/linux/uaccess.h:770:9: note: in expansion of macro '__scoped_user_access'
+> 	  770 |         __scoped_user_access(read, usrc, size, elbl)
+> 	      |         ^~~~~~~~~~~~~~~~~~~~
+> 	arch/powerpc/lib/checksum_wrappers.c:17:9: note: in expansion of macro 'scoped_user_read_access_size'
+> 	   17 |         scoped_user_read_access_size(src, len, efault)
+> 	      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Cast __scoped_user_access_begin() to (void __user *) to fix it.
 
-I didn't test this, so maybe I'm missing something, but why isn't that
-just doing
+I posted a patch to fix this in december, I'll find it and resend it.
 
-        for (auto _tmpptr = __scoped_user_access_begin(mode, uptr,
-size, elbl);         \
+	David
 
-instead? No cast, just a "use the right type automatically".
+> 
+> Fixes: e497310b4ffb ("uaccess: Provide scoped user access regions")
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> ---
+> Thomas, I encountered this problem while preparing some patches to start using
+> scope user access widely on powerpc in order to benefit more from masked user
+> access. Can you make this patch go into 7.0 as a fix in order avoid dependency
+> on this change when we start using scoped user access ?
+> 
+>  include/linux/uaccess.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 1f3804245c06..5d9f6d45d301 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -752,7 +752,8 @@ USER_ACCESS_GUARD(rw)
+>   */
+>  #define __scoped_user_access(mode, uptr, size, elbl)					\
+>  for (bool done = false; !done; done = true)						\
+> -	for (void __user *_tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl); \
+> +	for (void __user *_tmpptr = (void __user *)					\
+> +				    __scoped_user_access_begin(mode, uptr, size, elbl); \
+>  	     !done; done = true)							\
+>  		for (CLASS(user_##mode##_access, scope)(_tmpptr); !done; done = true)	\
+>  			/* Force modified pointer usage within the scope */		\
 
-That macro actually does something similar just a few lines later, in
-that the innermost loop uses
-
-         for (const typeof(uptr) uptr = _tmpptr; !done; done = true)
-
-which picks up the type automatically from the argument (and then it
-uses the argument both for the type and name, which is horrendously
-confusing, but that's a separate thing).
-
-Does that simple "auto" approach break something else?
-
-                   Linus
 
