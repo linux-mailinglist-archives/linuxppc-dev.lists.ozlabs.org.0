@@ -1,110 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-17550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qN+nNB/dpWkvHgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 19:55:27 +0100
+	id 4Ha9HUb/pWljIwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 22:21:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565881DE814
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 19:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF6B1E27F3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 22:21:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fPp621CFPz3bnL;
-	Tue, 03 Mar 2026 05:55:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fPsL90yXbz2xSF;
+	Tue, 03 Mar 2026 08:21:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772477722;
-	cv=none; b=Vl4aewvRdtyw7SFrUvEmMUTofdjLHpDQjTAYkWZBaosWCMIDXTepLevg4tJb07ZkgA9cazznz0RcdMrkeAa1L6WHdQIWTLOIwmmZKcAlM7vPzHA90a8M8bt1DTCfT7tsbypMFcXbF/ZlbMb4KaMqdPDeA9ZHfvdOTKI83IulF69TzpnJ3H9VwzpzkQvkFASvATApXPsqzmUx4AYPV8NGz+Bu5XlUIquG02FAtUdKAuJhgrl/H4R+b/Gmjlcdn4zP7HYOYhtm2mVGHtynKlV5qiqDu9yhRAGnPQeu9RldDzCUY4nuivNt/AfaSCBykzjjPM3O+6vbga2R7fZJCnIDMA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772486465;
+	cv=none; b=SdnC8jqC68xT0ZXrqJ34EH0P2jxxPjliGYq+eORyDJVvlNvPDCiCCApSfmfQdKQBzRoQl7fdqx2ycpBXiRuveZgNgMubtIGf8xbOi96YyaKzhKD78K6EQ6V0572ARVZl04w9Gmc2RUPe1XZXn2PsFkfQwt87OUKIKCkqyIxDYjQ3snRR+ntnUaVyBbL33ljV5ZKwIjQ2ruRbK16BrFn4fshMqDNMpMOKvKl08p4iKRkzi+V7pJb/S8Sj/V+OQb27m2treo58/jsHyQtXU1Pw3NCxgi0EeOv5VjK7oZyoVhZNc+7wjlniT6G3iU7ugkZMOQFtIu4uSMVDiwDpz+fcsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772477722; c=relaxed/relaxed;
-	bh=hRlJolTcfRvzUSQHPs3dCXFlQx1DAFYYMFjz2DuLSf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AqpnmsB2Xgx+HO9qrLCvwL48XRtZ3b1CtwpCq2u8VwJc8Hu6QvCy5lqy31ctKzBvSwPiE6bwArSl6e3tI8fDgKQsxnterVaUCEa/qP18SiyW3HrZGNOhTM2kSwxIDyCwMHx+QWTGZ8pO/0hj4cUCdSUVzWunJypJHZzbPfmbNNgJk4fdOGFANLIsqYJ+zM7Un+UjEu9sweVgvXpEkIflhfPKIEzpnY7yvADtHVcxv0kMl6GotombtIsf9GMn93UUN02ZT1QgvjRN4BzNp7NI2qXupi/NNC4uScPuiyuz+ydFD2FS+x284lRtHzbdIRM/fEhirqKOlovzmwjrkjqZSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gunrv5Cw; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1772486465; c=relaxed/relaxed;
+	bh=6kFsAiWjV29y4/mqvpo63lZBzBcmEx6G8LioYTWyjt8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KRnfv6hJ0gjAhVZRdfDVk4xxNf17DDpiU5QbB9FYmphxL8490/HiczU3+WrAFajMI7xLeJA1asfm8AWcPlpcmrGjJdYNjGl81mqJZ7MLWeDGY/k6jhX8WLYEw1kwASILcnJeMSCQUIrahLbCp8AwxylyzVtbpH0lGluMz8wdz3rY5MosBNlkuj0oiJPBhvsvmW+o0q3SG89q6GT21sJOPvd+8yC+MSaPqym0qBEJRzGbiwGUrec3c4wfoo+Cr2IhJ8aZ8oWXFe7mdXnCaWGa8Kdhm7dpcufk8HVvziNXl/F5qUuBW0DaxBf3YWBqzL5VhJ1bPVwOcBbNuMS20/0Wzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h6YsIDTb; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ng6hdH/e; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=npache@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gunrv5Cw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h6YsIDTb;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ng6hdH/e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=npache@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPp601lVBz3bn4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2026 05:55:19 +1100 (AEDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-483a233819aso46542575e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 10:55:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772477714; x=1773082514; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hRlJolTcfRvzUSQHPs3dCXFlQx1DAFYYMFjz2DuLSf4=;
-        b=gunrv5Cw/nNuwFofY6ymH0IqWuW34CSct1NzwV8GXEhC51wc7FMBB7gZFb+G5rQWB1
-         108yuCQdC8Ux3Gdux6AtA0wtB21AD+RM3vmVPvH1e5ddTIelEOQH1928Tpc50ZpxgqEe
-         FxVR5RM69Xf6bNBgMOHItohfovfQMAWl9qfucWM9PEgsv/WYwl9nl6xmqK8AYHSqvulC
-         Qh3Pjj5vIlB6rsR6WDelmom0I0w4SfP9ooe2kvk5U4KnvL+7wl0UiJQYECj53vfc4KzR
-         euO9hjHubYvkbew/0t2bFoMtp9SCiIfJwRPvr4PW4AULhrZ5zp3aQEu1ZzaB5Bcx60GN
-         kZWA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPsL654Rfz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2026 08:21:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772486455;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6kFsAiWjV29y4/mqvpo63lZBzBcmEx6G8LioYTWyjt8=;
+	b=h6YsIDTb6H1r7K7oCSDfj6Ivj5tdMgnB6Il7nxXard4qcf7EKWPPsMwlbNEWBprjqK75uV
+	bswtcCCpkoNaVA98XT2eqI1jK9MpjAiqZ5lJqNS5iTD0lhR0UIBAmC4OIt4UE9BPAyjB0Y
+	g0ruEMup7jghKvu8+E0YbOlr+3UMiWc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772486456;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6kFsAiWjV29y4/mqvpo63lZBzBcmEx6G8LioYTWyjt8=;
+	b=Ng6hdH/e8PQoVAal7KDEMjY0B1QDoj+Jcw2faIQolzR8I09+xqR0Up1ImOFb8CUeNHzER0
+	b1wbDjgEE7U8+my/sXo9nWEByRDWweclTEYNMSSyLEEncNrO7BVgd6ag1Tin+y5jhHzCHX
+	RQ+G8NzwGfZQ98V5BN7Eaj5wB2mhN34=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-xO0Ci5S0Ph-jb9QYMk-KmA-1; Mon, 02 Mar 2026 16:20:54 -0500
+X-MC-Unique: xO0Ci5S0Ph-jb9QYMk-KmA-1
+X-Mimecast-MFC-AGG-ID: xO0Ci5S0Ph-jb9QYMk-KmA_1772486454
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7986dd1b9e1so93653317b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 13:20:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772477714; x=1773082514;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1772486454; x=1773091254;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hRlJolTcfRvzUSQHPs3dCXFlQx1DAFYYMFjz2DuLSf4=;
-        b=XyVGwtPxUaer6iLA82lGbdWv+xpMFCim9scJkmI0lpZ9tzr7dRH6xT6wNax1iCm53c
-         ENYxNanqbGafzvdLALVAkMGHf/RxvnQTSAn3SyFpv2cpzp03eFVWy40e6bcXVJkyHvGh
-         wt0LTEogSN517A5KtNV1DlmBsNmCHvDBjiNNa0BERzhHGqn+Xg0phS6I7kcJywYW1PG1
-         bQNUTnnH64D+4zX0JTN9x95QH8m/DnRvE0rcvNN8acAvVw2FpSbdISQmzQyq7olNfTNl
-         Btu0O8F1DgLurlH37j6mMXKn6BCdmAYny3DWrnjr0druF+Ymm9GCGbUd92yc0KFHuDqH
-         QvgA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLqEsqJHV8HT0lZnVy7zjHGBy3BPdsaCG4/vZMc4Rq83ebCWeFcS6dNlN5ZvDWoKokczLm1rUWgMUjjH8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxj/atE0poZIudN5QAeFhGI/JaDTf9GoEX2KBkPp3UVjG9ICFgP
-	YTxoHz80Gjt/JVwJiMleQxcNSTXfYV1q/6RgjDToOq4wA/5BlfLqRjUa
-X-Gm-Gg: ATEYQzxQglieSNpLwpQ5OHnyhbr/j2VOufxSmJgrK8DXR7J5UYVhcSnpCfsNr2DwwmK
-	P2o2z3V4b7bx3oDqTo4+ojhFY/W59zkM0DlEWoWkHblSOCROi4J00b7/m2kTuBI0fib/XppqvyG
-	pucVHlhaf3sIC0I4g9nLDYX5oLwZ+xoG+g4rdcGY0Y6wysSlYsu1KPrBD98rsdhi9IDaA7xjjyR
-	ZBOQZLZSDRjNDLfiksi1JvzTT1tCONZqlIEvf3Xq9Sq3ha3dBO4q8eilnb8mXK80cYmdwXxOHud
-	Np9tpw6MXCP3BgvD3ohdqDGGq4gFu2FWWD5n1XAJId6cu7NncRrLSPvhvfEQvqnisYmOkyNZI4P
-	0kFsR0FVBTzW0D90W8yijlyGtfS+jlkvcsf072emWcBAuJbcb8dYQvzf9zsoGYhU5qy7cKfts5W
-	t+9kYBlNEWDkBHu+IT6A==
-X-Received: by 2002:a05:600c:350d:b0:483:a8e9:201b with SMTP id 5b1f17b1804b1-483c9b81265mr267465545e9.0.1772477712531;
-        Mon, 02 Mar 2026 10:55:12 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483c3b89c99sm299471225e9.15.2026.03.02.10.55.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 10:55:12 -0800 (PST)
-Date: Mon, 2 Mar 2026 18:55:10 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Andre Almeida <andrealmeid@igalia.com>, Andrew
- Cooper <andrew.cooper3@citrix.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Christian Brauner <brauner@kernel.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Darren Hart
- <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>, Heiko Carstens
- <hca@linux.ibm.com>, Jan Kara <jack@suse.cz>, Julia Lawall
- <Julia.Lawall@inria.fr>, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, LKML
- <linux-kernel@vger.kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Nicolas Palix
- <nicolas.palix@imag.fr>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Russell King
- <linux@armlinux.org.uk>, Sven Schnelle <svens@linux.ibm.com>, Thomas
- Gleixner <tglx@linutronix.de>, x86@kernel.org, Kees Cook <kees@kernel.org>,
- akpm@linux-foundation.org
-Subject: Re: [PATCH v2 1/5] uaccess: Fix scoped_user_read_access() for
- 'pointer to const'
-Message-ID: <20260302185510.6b49a025@pumpkin>
-In-Reply-To: <CAHk-=wjKWi=j_xcMBAi2Hkuut6aNeqXTwOFoMGkHfDA+3WXsgg@mail.gmail.com>
-References: <20260302132755.1475451-1-david.laight.linux@gmail.com>
-	<20260302132755.1475451-2-david.laight.linux@gmail.com>
-	<e8a688b3-97e1-4523-9a82-8d9dd16e3d90@kernel.org>
-	<CAHk-=wjKWi=j_xcMBAi2Hkuut6aNeqXTwOFoMGkHfDA+3WXsgg@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=6kFsAiWjV29y4/mqvpo63lZBzBcmEx6G8LioYTWyjt8=;
+        b=QzuOkw4P1PTwYzULy7YiWE7Lv1vfFcr01MSXjyThp5WHU2XuAIpK7uOQ+mU6HGNKLO
+         g8q4z+y9hwFdO7OFYx90ppHTKmbzy0bQEqnF2qJqkda15KEFB9WgR6m/3jacv1lBgcdx
+         n1fT6p3BgD9VQMcHY9XZiN/cayaZJiPF9webIfOlX6phqCFU/BBFUA6dbchBpRN6hL4d
+         +muWDr6/c8WE7Z/oR/AsbWKPqB+PkLoWol2s8tsm+laRv3O9fhPHYOYgjJBMvvEelAif
+         b1dORT4jzZxTpF1GxY3x+l8brR8OFZWfNArcNczuy8JFu3KtKPUBqrQeDZCGLeYbzK0l
+         ibjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUb8xFftkYwKzuFB/72qaPSpNO0c/dbRbV+vtiiwVK8gi7CCrAr31lO5YWJJqGFhBEMUh1G+ZuD08T+2gs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyktD7q5SVwxwkMZdwTUPZQB5ViUPq2ceKElibzvxlOSa9cOHjj
+	GncNP3vxz+fCPVhJcIsn2/7ElRe/N//UByPQP3UYYp2llev6GhFLc2QOOQFSqoK/8DhAD9Ek0Zt
+	/GLLnnP8j67c1OGdcouPEzxR395p36esSqvXmCB6S7ky6YModJu9wkPdxrEOxtNxf3vTz5gudH8
+	VO38Wm2ieqhP5Az9QTpTO3SECeSVkpUXW/yS2+LHBt5w==
+X-Gm-Gg: ATEYQzzkGZVDj7jiIjKjq88fanQLPZxxO1SxhPbYpeHA9Cmad9sXBSgsfd4GCOA1NWy
+	UJjoM0r3q8XG3fXXxUxtSPUA6NRWkmGVPuSzQierlj5sV0DcUTj7PJgUDYKe/8Sf9nBXFuFn5g3
+	rYgPqExa2r7XcmfIqm0xZR/Bb8dkdokMA83LVJhrMbGgv/fvYh+M6DAgDiGfwyIXEVGOYJASCI8
+	Kzg
+X-Received: by 2002:a53:a04d:0:b0:64a:ee9d:8b7c with SMTP id 956f58d0204a3-64cc2225811mr7952724d50.42.1772486453726;
+        Mon, 02 Mar 2026 13:20:53 -0800 (PST)
+X-Received: by 2002:a53:a04d:0:b0:64a:ee9d:8b7c with SMTP id
+ 956f58d0204a3-64cc2225811mr7952704d50.42.1772486453337; Mon, 02 Mar 2026
+ 13:20:53 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,78 +101,139 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20260226113233.3987674-1-usama.arif@linux.dev> <20260226113233.3987674-13-usama.arif@linux.dev>
+In-Reply-To: <20260226113233.3987674-13-usama.arif@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Mon, 2 Mar 2026 14:20:27 -0700
+X-Gm-Features: AaiRm50qkaj59sngcutouq41dPDnCRD-fKXemv-mcnstHZb0L6rgl_hR_ovxMIM
+Message-ID: <CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com>
+Subject: Re: [RFC v2 12/21] mm: thp: handle split failure in device migration
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1JJhCFrxpTgVxwWbny-qVl1q6bKbcgUenLrZ4MvEy7s_1772486454
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 565881DE814
+X-Rspamd-Queue-Id: 3FF6B1E27F3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FORGED_RECIPIENTS(0.00)[m:torvalds@linux-foundation.org,m:chleroy@kernel.org,m:viro@zeniv.linux.org.uk,m:andrealmeid@igalia.com,m:andrew.cooper3@citrix.com,m:borntraeger@linux.ibm.com,m:brauner@kernel.org,m:christophe.leroy@csgroup.eu,m:dvhart@infradead.org,m:dave@stgolabs.net,m:hca@linux.ibm.com,m:jack@suse.cz,m:Julia.Lawall@inria.fr,m:linux-arm-kernel@lists.infradead.org,m:linux-fsdevel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:maddy@linux.ibm.com,m:mathieu.desnoyers@efficios.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:nicolas.palix@imag.fr,m:palmer@dabbelt.com,m:pjw@kernel.org,m:peterz@infradead.org,m:linux@armlinux.org.uk,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:x86@kernel.org,m:kees@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[npache@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17551-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:usama.arif@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17550-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,zeniv.linux.org.uk,igalia.com,citrix.com,linux.ibm.com,csgroup.eu,infradead.org,stgolabs.net,suse.cz,inria.fr,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,efficios.com,ellerman.id.au,gmail.com,imag.fr,dabbelt.com,armlinux.org.uk,linutronix.de,linux-foundation.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[npache@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[29];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon, 2 Mar 2026 09:26:31 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On Thu, Feb 26, 2026 at 4:34=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
+rote:
+>
+> Device memory migration has two call sites that split huge PMDs:
+>
+> migrate_vma_split_unmapped_folio():
+>   Called from migrate_vma_pages() when migrating a PMD-mapped THP to a
+>   destination that doesn't support compound pages.  It splits the PMD
+>   then splits the folio via folio_split_unmapped().
+>
+>   If the PMD split fails, folio_split_unmapped() would operate on an
+>   unsplit folio with inconsistent page table state.  Propagate -ENOMEM
+>   to skip this page's migration. This is safe as folio_split_unmapped
+>   failure would be propagated in a similar way.
+>
+> migrate_vma_insert_page():
+>   Called from migrate_vma_pages() when inserting a page into a VMA
+>   during migration back from device memory.  If a huge zero PMD exists
+>   at the target address, it must be split before PTE insertion.
+>
+>   If the split fails, the subsequent pte_alloc() and set_pte_at() would
+>   operate on a PMD slot still occupied by the huge zero entry.  Use
+>   goto abort, consistent with other allocation failures in this function.
+>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  mm/migrate_device.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 78c7acf024615..bc53e06fd9735 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -909,7 +909,13 @@ static int migrate_vma_split_unmapped_folio(struct m=
+igrate_vma *migrate,
+>         int ret =3D 0;
+>
+>         folio_get(folio);
 
-> On Mon, 2 Mar 2026 at 06:59, Christophe Leroy (CS GROUP)
-> <chleroy@kernel.org> wrote:
-> >
-> > Can we get this fix merged in 7.0-rc3 so that we can start building 7.1
-> > on top of it ?  
-> 
-> Applied this first patch. I'm not so convinced about the others in the
-> series, although people can always try to argue for them..
+Should we be concerned about this folio_get? Are we incrementing a
+reference that was already held if we back out of the split?
 
-Patches 2 and 3 seemed a reasonable idea to me.
-Removes a lot of code that is only there to make the whole thing work.
-The 'with' is a bit of a take on Pascal - but without the 'making the
-code completely unreadable' side effect.
+-- Nico
 
-I don't do WARN=1 builds, never mind WARN=2 :-)
-Although -Wshadow can find real bugs - so I would turn it on and
-suffer the annoyances. 
-
-Patch 5 was just what I was experimenting with.
-Doing the equivalent change to the non-compat version (IIRC it
-uses the (likely) much slower copy_to/from_user() because the
-structures match) might even be more sensible.
-
-	David
-
-
-> 
->               Linus
+> -       split_huge_pmd_address(migrate->vma, addr, true);
+> +       /*
+> +        * If PMD split fails, folio_split_unmapped would operate on an
+> +        * unsplit folio with inconsistent page table state.
+> +        */
+> +       ret =3D split_huge_pmd_address(migrate->vma, addr, true);
+> +       if (ret)
+> +               return ret;
+>         ret =3D folio_split_unmapped(folio, 0);
+>         if (ret)
+>                 return ret;
+> @@ -1005,7 +1011,13 @@ static void migrate_vma_insert_page(struct migrate=
+_vma *migrate,
+>                 if (pmd_trans_huge(*pmdp)) {
+>                         if (!is_huge_zero_pmd(*pmdp))
+>                                 goto abort;
+> -                       split_huge_pmd(vma, pmdp, addr);
+> +                       /*
+> +                        * If split fails, the huge zero PMD remains and
+> +                        * pte_alloc/PTE insertion that follows would be
+> +                        * incorrect.
+> +                        */
+> +                       if (split_huge_pmd(vma, pmdp, addr))
+> +                               goto abort;
+>                 } else if (pmd_leaf(*pmdp))
+>                         goto abort;
+>         }
+> --
+> 2.47.3
+>
 
 
