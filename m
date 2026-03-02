@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17500-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17501-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGRdOwFIpWlj7wUAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17500-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 09:19:13 +0100
+	id gNo+G+JIpWlj7wUAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17501-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 09:22:58 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D811D48EA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 09:19:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540A11D495F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 09:22:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fPWzx4srGz3bW7;
-	Mon, 02 Mar 2026 19:19:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fPX4G3Ktfz3bW7;
+	Mon, 02 Mar 2026 19:22:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772439549;
-	cv=none; b=A1Cjt82V5tIVJfZkdJUpDBwqIgC+NI0Xj+ZQacmUZKsZfubf9PqayaebLygeb3JDQc2lr/vQwqgbeSdJGq5I00CGcV5YKPi4O2FrfIJyjgvO4Z4zxj72CIGeixvFPH+j2noxyli/QODVE79MCibpFeMW1SKcJTCDjrnJBNMSkivq3WZL8761tJ3pNcz2jQEAO2q8wqV42uD4pAdSEqUQdppZbohTCPBubsnKc7ttfczIvvM0B0DM/D8ew+lYSI19rlsHWkPNmTMIR2bSUAcegEQfS33s9sV+3/svJcb+1cl4mDDAiYQAWBaks2V77RMF1jpFnq6OENWOWHDHYg5Y8w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772439774;
+	cv=none; b=MDD682/uD55erMQbieYGG0PGzr3UzKx+ZkZtrptZjAPWWWf8ztYw8H3EdYLIOL5MjJLGf8fLEOgrskGK0dLzBddujNANa9y/FisUv3+TOplOei49sYgsfWtxJJQSruUB8RITHYlM3SFLiFM3Kg+mktZ6k7blcUEFrnnoLMbaPMuSjIWRLvYt9IUREY6R53ocqGUl6FePhzbFAMykpkq+0tMkEmDKIdWz9nziC06sGBT7C95W/FNhxhRkOIUzf46V2EdSPP/TF8o9NGNHHFehiIMaXUxB5V+uCovcA8GeI2GYStNcyLhHiWtOa9Wp4+FMHPMSXJU001+MJLqgq6QaaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772439549; c=relaxed/relaxed;
-	bh=Igypx7l3IKNdtGaG+I4FfjkpBJrncwUml+1yFoAO2Yk=;
+	t=1772439774; c=relaxed/relaxed;
+	bh=6xmCrFWw+yvgcWGK2jQ5KqFcskOI+oqjYmu3aekYgIc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PtwGjbOINQDyT42XLsi5+MU6Fu+UyhZ2P8BQceH2r2Tx/RUYvVlZCAuFKmQuKgEKPDawsNzVDthV7zXeyX/xeIYH3v9YzZyULTS1llCPISge9fI4SrqZmDWjHc9AVvlNMS6sasb2UDnCBeuUNOslxgL53yzoI5YLan/nOxJROoyVRDrceYMWJ6gKdTUx6Lkpr83Xz4N7wi2lB+Quq9WeCtedpK6snORNqSBJrBNbRPenoGzzuugVX1iJyj4JKtoB3NvRfwGX9C1BvWHQes8l1JTc7K9QECdZEVoQkvmKmYLw+uot/3bS7Ip4FSpxgWw1zwJRtMG77fTaCqE/UhsHPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VtcHjAcd; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=btmrDELQCNax5MAwlbvW1Z1bct+9u3aUsDJplMVQZKM9YqtQkTXcgTT/wkF3lRmzD8FMX4YP3QeTnXHMf6lGO03BKu5JWg7Gc9+JEAyT1SCZAnUIcmR1zHe1Cr7aK4C39cQri0n3WqabNPfwrmvzmmmVe4QAUPutoR16XzE0MWHLMBC+EMqnFzhtde8T0i3n9qnoJKghnHeKKqzjfcfxywGZ50nsrGY8mGx3k3bN9/xrRH3SUAqEHTbG5MVZ8cri/Yo/GDowB4MRMAfd0gvXgKlV83ifcqqzqunP/HXj4CWYVDcnUM2FVkF9NuPRPbF0FE2ca7y4H6HnprVFAz3c2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fi9qbBnC; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VtcHjAcd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fi9qbBnC;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPWzw3vBBz2xYw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 19:19:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPX4F3dbZz2xYw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 19:22:53 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 81674600AD;
-	Mon,  2 Mar 2026 08:19:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42C3C19423;
-	Mon,  2 Mar 2026 08:18:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E055060018;
+	Mon,  2 Mar 2026 08:22:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6CDC19423;
+	Mon,  2 Mar 2026 08:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772439545;
-	bh=WmUymOIJMfyfhcBz2h3rfkkfmDcPbAvC1z+3AaqwZ0g=;
+	s=k20201202; t=1772439770;
+	bh=XDKJkaVhQfYzVUj3ho/S80emIEXa893QeTlONkL4P1o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VtcHjAcdNUspXks9MnWnffCAOqhBHNybP+7Ni7w8KdFY/trDOnhcMQKmf8ZqBAo9v
-	 2oPq6TzzmlTs/C9RNRmZ/bhgByD+u1nfj6UxwxomjOQCu2sY9HuCtu0I3smP44soG1
-	 z3JiHjnOWXVROlMpnAOszR6Llw0KBEFBuQA/dpMNDX95fR6stQpR5WnTZjAG5K+8C3
-	 J8dr/QWrvH7T+g/mBKT5sBlBT5fQFIHiyIyYAdI/Wil4qScmZd5DeCh046NcNpwp9+
-	 rTrW2LUZVcITpNBX5owhZeWoh57rxakj8ZFLJUaCvflED3tgx9mlEtXGwa4FzT086v
-	 UCdEEMmXLFPAA==
-Message-ID: <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
-Date: Mon, 2 Mar 2026 09:18:45 +0100
+	b=Fi9qbBnCFSKTVd+ug21vuDlAi7DzRlnYMKJGAuXRQMzE43DC/DTPknV2/delTOlUN
+	 QA6XFh+xbVpMSMVu51hR58tTjm2Oi+IHTYmtFOwTUz5kDyM25Bv/CD47bqGImWTsGA
+	 Xx72UDJWQsYLHva66lVFR8w9EI6Q89wXI+87ro6UBqUVlO+W+Ve83utQ2uC8cfvToG
+	 +aD3dO+R2rZlEoqF7GuvEI+/NyO4JvLmd7EEDzu5pE/jvuvgfFLXABqTen2akk4FTT
+	 DHeWQN6tlgkQkbPQc02rL0mxOhVrxxRN8s7xO8qmNmz7FGmJaFy7IU4+i7AcWW0zxM
+	 u8BBuqn/3yaqA==
+Message-ID: <15fcc4f9-a2e8-4979-8e67-6a9c9cc86740@kernel.org>
+Date: Mon, 2 Mar 2026 09:22:31 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,8 +64,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from
- zap_page_range_single()
+Subject: Re: [PATCH v1 14/16] mm: rename zap_page_range_single() to
+ zap_vma_range()
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
  <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
@@ -113,7 +113,7 @@ Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
  linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
 References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-3-david@kernel.org> <aaLh2BxSgC9Jl5iS@google.com>
+ <20260227200848.114019-15-david@kernel.org> <aaLjK2Q2q5ghE-uE@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -160,7 +160,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aaLh2BxSgC9Jl5iS@google.com>
+In-Reply-To: <aaLjK2Q2q5ghE-uE@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -171,102 +171,138 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17500-lists,linuxppc-dev=lfdr.de];
 	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,oracle.com,kernel.org,google.com,suse.com,suse.de,linux.dev,infradead.org,linux.ibm.com,ellerman.id.au,redhat.com,alien8.de,linuxfoundation.org,android.com,mev.co.uk,visionengravers.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,ziepe.ca,hpe.com,arndb.de,iogearbox.net,arm.com,davemloft.net,lists.ozlabs.org,lists.freedesktop.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-17501-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:aliceryhl@google.com,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:rientjes@google.com,m:shakeel.butt@linux.dev,m:willy@infradead.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:jarkko@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:cmllamas@google.com,m:abbotti@mev.co.uk,m:hsweeten@visionengravers.com,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:jgg@ziepe.ca,m:leon@kernel.or
  g,m:dimitri.sivanich@hpe.com,m:arnd@arndb.de,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:edumazet@google.com,m:ncardwell@google.com,m:davem@davemloft.net,m:dsahern@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:ojeda@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sgx@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-rdma@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:netdev@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	RCPT_COUNT_GT_50(0.00)[73];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 60D811D48EA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 540A11D495F
 X-Rspamd-Action: no action
 
-On 2/28/26 13:38, Alice Ryhl wrote:
-> On Fri, Feb 27, 2026 at 09:08:33PM +0100, David Hildenbrand (Arm) wrote:
->> Nobody except memory.c should really set that parameter to non-NULL. So
->> let's just drop it and make unmap_mapping_range_vma() use
->> zap_page_range_single_batched() instead.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On 2/28/26 13:44, Alice Ryhl wrote:
+> On Fri, Feb 27, 2026 at 09:08:45PM +0100, David Hildenbrand (Arm) wrote:
+>> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+>> index fdd97112ef5c..2fddd4ed8d4c 100644
+>> --- a/drivers/android/binder/page_range.rs
+>> +++ b/drivers/android/binder/page_range.rs
+>> @@ -130,7 +130,7 @@ pub(crate) struct ShrinkablePageRange {
+>>      pid: Pid,
+>>      /// The mm for the relevant process.
+>>      mm: ARef<Mm>,
+>> -    /// Used to synchronize calls to `vm_insert_page` and `zap_page_range_single`.
+>> +    /// Used to synchronize calls to `vm_insert_page` and `zap_vma_range`.
+>>      #[pin]
+>>      mm_lock: Mutex<()>,
+>>      /// Spinlock protecting changes to pages.
+>> @@ -719,7 +719,7 @@ fn drop(self: Pin<&mut Self>) {
+>>  
+>>      if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+>>          let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+>> -        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
+>> +        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+>>      }
+> 
+> LGTM. Be aware that this will have a merge conflict with patches
+> currently in char-misc-linus that are scheduled to land in an -rc.
+
+Thanks. @Andrew will likely run into that when rebasing, where we can fix it up.
+
+> 
+>> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+>> index dd2046bd5cde..e4488ad86a65 100644
+>> --- a/drivers/android/binder_alloc.c
+>> +++ b/drivers/android/binder_alloc.c
+>> @@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>>  	if (vma) {
+>>  		trace_binder_unmap_user_start(alloc, index);
+>>  
+>> -		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+>> +		zap_vma_range(vma, page_addr, PAGE_SIZE);
+>>  
+>>  		trace_binder_unmap_user_end(alloc, index);
+> 
+> LGTM.
 > 
 >> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
->> index da21d65ccd20..b8e59e4420f3 100644
+>> index b8e59e4420f3..04b3cc925d67 100644
 >> --- a/rust/kernel/mm/virt.rs
 >> +++ b/rust/kernel/mm/virt.rs
+>> @@ -113,7 +113,7 @@ pub fn end(&self) -> usize {
+>>      /// kernel goes further in freeing unused page tables, but for the purposes of this operation
+>>      /// we must only assume that the leaf level is cleared.
+>>      #[inline]
+>> -    pub fn zap_page_range_single(&self, address: usize, size: usize) {
+>> +    pub fn zap_vma_range(&self, address: usize, size: usize) {
+>>          let (end, did_overflow) = address.overflowing_add(size);
+>>          if did_overflow || address < self.start() || self.end() < end {
+>>              // TODO: call WARN_ONCE once Rust version of it is added
 >> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
 >>          // sufficient for this method call. This method has no requirements on the vma flags. The
 >>          // address range is checked to be within the vma.
 >>          unsafe {
->> -            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
->> +            bindings::zap_page_range_single(self.as_ptr(), address, size)
+>> -            bindings::zap_page_range_single(self.as_ptr(), address, size)
+>> +            bindings::zap_vma_range(self.as_ptr(), address, size)
 >>          };
+>>      }
 > 
-> Please run rustfmt on Rust changes. Here, rustfmt leads to this being
-> formatted on a single line:
-
-Having to run tooling I don't even have installed when removing a single
-function parameter; did not expect that :)
-
+> Same as previous patch: please run rustfmt. It will format on a single
+> line, like this:
 > 
-> unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
+>         unsafe { bindings::zap_vma_range(self.as_ptr(), address, size) };
 > 
 
-@Andrew, can you squash:
-
-From 5128f2e34d219722a8883c1fa94e057bd34601f2 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 2 Mar 2026 09:17:19 +0100
-Subject: [PATCH] fixup: mm/memory: remove zap_details parameter from
- zap_page_range_single()
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- rust/kernel/mm/virt.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+@Andrew, after squashing the fixup into patch #2, this hunk should look like this:
 
 diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index b8e59e4420f3..6bfd91cfa1f4 100644
+index 6bfd91cfa1f4..63eb730b0b05 100644
 --- a/rust/kernel/mm/virt.rs
 +++ b/rust/kernel/mm/virt.rs
-@@ -123,9 +123,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+@@ -113,7 +113,7 @@ pub fn end(&self) -> usize {
+     /// kernel goes further in freeing unused page tables, but for the purposes of this operation
+     /// we must only assume that the leaf level is cleared.
+     #[inline]
+-    pub fn zap_page_range_single(&self, address: usize, size: usize) {
++    pub fn zap_vma_range(&self, address: usize, size: usize) {
+         let (end, did_overflow) = address.overflowing_add(size);
+         if did_overflow || address < self.start() || self.end() < end {
+             // TODO: call WARN_ONCE once Rust version of it is added
+@@ -123,7 +123,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
          // SAFETY: By the type invariants, the caller has read access to this VMA, which is
          // sufficient for this method call. This method has no requirements on the vma flags. The
          // address range is checked to be within the vma.
--        unsafe {
--            bindings::zap_page_range_single(self.as_ptr(), address, size)
--        };
-+        unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
+-        unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
++        unsafe { bindings::zap_vma_range(self.as_ptr(), address, size) };
      }
  
      /// If the [`VM_MIXEDMAP`] flag is set, returns a [`VmaMixedMap`] to this VMA, otherwise
--- 
-2.43.0
 
 
-
-> with the above changed:
+> with the above change applied:
 > 
 > Acked-by: Alice Ryhl <aliceryhl@google.com> # Rust and Binder
 
