@@ -1,63 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-17497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17495-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIwpClBDpWkg7AUAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 08:59:12 +0100
+	id sNvtCElDpWkg7AUAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17495-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 08:59:05 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5731D440C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 08:59:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0471D43E8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 08:59:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fPWXg1BMWz3c1J;
-	Mon, 02 Mar 2026 18:58:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fPWXf1px9z3bmc;
+	Mon, 02 Mar 2026 18:58:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772438338;
-	cv=none; b=U9uz6IWU3JJ9qTJuWR2xmsgYNc5zZ0rUz78wvkstcsD78DGQpgF5BztB4vq5N2jD0ooPc2+q5TXGnrdd5xcWpR+TsQB9wEVQqxZySu5Fm8882MFF0YjoTWFysCCdt3Rutbtp7HplkvqBgKHLBVuEfgXpXv3tCM33y487BK5/Tzb9fFGGuhPjPCGPwljnc7elURAvSlQ/A+qVW9nkLbCxmdRChdzQOvohe19UhZOWZ93Xai/znVLTguOWegAsw8Tnqg17fAAByTrRX8HNhz94XHUebUe0I2AWCj5FeyWFVGCkAM9riqM5K0MVSNXcEmoEQ0dOGlrG/bnHqvKiHAoBvg==
+	cv=none; b=RmU/+vOnL4w61OHGUem9GrNekKnluSiqBPajJkquCRJZvYvPE9/C2fuoDFplShGeBVKdvTgQVXMjewbP3CtYAa0kjNrPiFnyk8c95m+IysM0eNlm10sx04lX/7+4517HWRZEGrmRBK0r2MsU+i1lweOkHXfsna3QfDB83CnSNpjX6z18cqrR39Qee/F47oXBteq66PAOQrnkWtHk0p3hLa1z3edvVvlvJXuveoLyjUiRaIYtp0feiA3WmgmoHZ/ejy9W2rzzkCL8QlKEsKLhCegewomjcuLLLUapsNyVEUK61EXkedWeR5gNwxDbkWvDUIYGpGg3wZalfGLpU9N3TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1772438338; c=relaxed/relaxed;
-	bh=UF10sktaE3a/u60QuU3fU7HqMA3bwXEWu54Wnq4Vn5g=;
+	bh=8mcgepFI0mjBE0CWOdrG5t6m+R1W63RB4CuAREY+63Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KEi4T3dYzd2KYZ+U4c9DH+lbEPBeUuY6u3jGMw0Y4hnZ+BjB2LbcuQVcdbz1f7mumrqs16vsaXenUrDVqNa/P+Q4Cy6Xea6XDl0pjMv7r3ZNA6ejwxVOOYH/3E8/3pMmxNzD0L3vAh7ywS+VAQVZ4E3K6+sHDUWc0+YgG/mwtT2OFapE3Qmld5wQJ+nl7+eIJ1oscxYjK1fXehXkUvbvQjuHUhqvFW8fpY33l9UnkQPnQKs5FkYc5RVVmStLoJZ7nINf6Rz5HVciALWua0NZwPkwu5jRECNZ0fgS8WG6HIEvCexoXfmOFsF3Bqf9osviCSmllDZ63OYjow42KWSpRQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ciydefi2; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=/oOqZJOd; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=fGJk8rQp1NsPxzgHmjPGuaWCbjlWIoJ1xyKosV/aUV57/Z/KfJ2Twjl4VxTzLSxNU8Z3c0SyZ8b2+NPL97QbBvovwnOy0UlLbarZhP4oKW7hEP5vULvPFq64B5Iav4vxy8TdJjvhnFMLQV/54+jH9cl8Bq03/5y+toyKf3GNTRHFnarKOFjVJkJvhdlccExmIfU7+vIn5mggxv1eJMQR+mUin57I+rYKBZmt2R6PpbxU1gLTiy02gliIbPRWbt5V+QupY79bTRmfmdNHotYDKld3HA5XrHP3LW4xKe155YHQK3WfxG54xR0tyb6c+B/HPmsU1+QB5umzCNX4KHt5Wg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=HLcwMe71; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=P+DKLgDO; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ciydefi2;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=/oOqZJOd;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=HLcwMe71;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=P+DKLgDO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPWXc4zqPz2xc8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPWXc4TzKz2xYw
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 18:58:56 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772438331;
+	s=2020; t=1772438332;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UF10sktaE3a/u60QuU3fU7HqMA3bwXEWu54Wnq4Vn5g=;
-	b=ciydefi2+IGpGjxuJ8S0Pi+V3OE2L2KTESiiSpFlWMdULYcmkYxxE1PJyxSZo34YX9HCvC
-	otxxjHp2oFTPL9j9x3qD59f3ZnvENSKPwzlcjDF9gwOAoWjmGg+Kl2GOzjsuuqOkUN8EFR
-	MpaBg4Wm8BR5LSNmS/vo72/wV/m8ujzC+zXJsxM/E5eHSDwg5a+SCYVX5LcbFGs9WLZx1o
-	IqabJtHg5sn7IO0PwbjNhXU3mLreIj2ehewv2aXyfQnB+vS6/6g72GHvLiu7IUXCA2Dns3
-	jj6Qctvz2ySNMQjcEbRkObXtPQ32W4ozS6FFjJEQYmO4+ZGx86/y86p5sT36/w==
+	bh=8mcgepFI0mjBE0CWOdrG5t6m+R1W63RB4CuAREY+63Q=;
+	b=HLcwMe71m9ympi7l8ojF719Wk0h5dn83FMfTV2eQj+BsIGnoLt//wF957nA94RMrcQ+cmP
+	qEC5Fp6Iyck1YtuGVOrktMAZlKQHS9yEcLQmo/0wcN7rgByvJbjRgbQRJ4C26cNL0Kf0gN
+	eGssvjqFfCb3b0h3edf16P2CoW1NLM2vfN5yicNUdGT5MB0EDEDaXA6ZMY0MagK3NbS6BC
+	9QdfYfxeKl1IcOkuSxQNEGL2+uvVZJWE7va6DfdZnxVpiYTRSienFC/jT5xg8PPopE+j7j
+	Xig5KOwPNRDG9jfz2/lrP/9iUFo5fA9iSHIPhf6qj6eAMfPdiLjACBWXGcsq0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772438331;
+	s=2020e; t=1772438332;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UF10sktaE3a/u60QuU3fU7HqMA3bwXEWu54Wnq4Vn5g=;
-	b=/oOqZJOd60lffdI+2m/cDGB+gvLeO1GfCoV5HvJr4+3CHFqEyKt8w0Em37WkJfh2QW+Rxk
-	lrrT3Gblc0IA2uBg==
-Date: Mon, 02 Mar 2026 08:58:39 +0100
-Subject: [PATCH v2 3/5] s390: Add -m64 to KBUILD_CPPFLAGS
+	bh=8mcgepFI0mjBE0CWOdrG5t6m+R1W63RB4CuAREY+63Q=;
+	b=P+DKLgDOi3dnOL/kQA6aCgkM34iRMwcaE2eHH/CHlKfBv8Ls2GwbOPP9cSN6G7kAkOHhWN
+	4m0jvGhZo/3wd4BA==
+Date: Mon, 02 Mar 2026 08:58:40 +0100
+Subject: [PATCH v2 4/5] powerpc/audit: directly include unistd_32.h from
+ compat_audit.c
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,7 +74,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260302-vdso-compat-checkflags-v2-3-78e55baa58ba@linutronix.de>
+Message-Id: <20260302-vdso-compat-checkflags-v2-4-78e55baa58ba@linutronix.de>
 References: <20260302-vdso-compat-checkflags-v2-0-78e55baa58ba@linutronix.de>
 In-Reply-To: <20260302-vdso-compat-checkflags-v2-0-78e55baa58ba@linutronix.de>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -93,15 +94,15 @@ Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
  David Laight <david.laight.linux@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772438327; l=1115;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772438327; l=1025;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=BTq+tG721IWvmNZKRhmYuiBTJvXYohTSP94/jYKFkyc=;
- b=sX+mpo7qFfoRgBke0bz6zAxXtqo1MhErKWEmsMFk1R+7DQ6DdvNT3JOeYuQjWk75pK4XrWWHX
- /ugF1GYyl71DtJ1gQ0FcfcZ9SjFd/F4MkzoR7GPOsO1elfICLhEYH+T
+ bh=CVSp9N7ojydH+g55wpL0oEQy1NPWvz/8vcri2dbmViY=;
+ b=5UJigRuF1ls39QQ7kYsZuAT52JM94nxcB/HBtSSri5qEB/zHIEP+ctD0UzjErLMR8hzmiHDY+
+ asSEu4ht1X7COVSQi1dPSE+PM1nFTj8O0AyRPzX/iKSvzdf9gNJv3ej
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
@@ -110,12 +111,12 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17497-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17495-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:andreas@gaisler.com,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:arnd@arndb.de,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:sparclinux@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-s390@vger.kernel.org,m:david.laight.linux@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:thomas.weissschuh@linutronix.de,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[davemloft.net,gaisler.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,arndb.de,linux.ibm.com,ellerman.id.au,gmail.com];
 	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
@@ -132,46 +133,43 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	RCVD_COUNT_TWO(0.00)[2];
 	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[linutronix.de:+];
-	NEURAL_HAM(-0.00)[-0.990];
+	NEURAL_HAM(-0.00)[-0.985];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: 7D5731D440C
+X-Rspamd-Queue-Id: 2E0471D43E8
 X-Rspamd-Action: no action
 
-Some non-code files, like linkescripts, are preprocessed with the C
-preprocessor and make use of regular kernel headers.
-As -m64 is not passed to those preprocessor invocations this leads
+This source file undefines '__powerpc64__' to get the 32-bit system call
+numbers from asm/unistd.h. However this symbol is also evaluated by
+other headers, among them is asm/bitsperlong.h. The undefinition leads
 to an inconsistency between __BITS_PER_LONG and the C type 'long'.
 An upcoming consistency check will be tripped by this.
 
-Make sure -m64 is also defined for those preprocessing steps.
-
-As KBUILD_CPPFLAGS is inherited by both KBUILD_AFLAGS and KBUILD_CFLAGS,
-drop -m64 from these variables.
+Directly include asm/unistd_32.h to get access to the 32-bit system call
+numbers instead.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/s390/Makefile | 3 +--
+ arch/powerpc/kernel/compat_audit.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/s390/Makefile b/arch/s390/Makefile
-index d78ad6885ca2..02bc948a4a56 100644
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -12,8 +12,7 @@ LD_BFD		:= elf64-s390
- KBUILD_LDFLAGS	:= -m elf64_s390
- KBUILD_AFLAGS_MODULE += -fPIC
- KBUILD_CFLAGS_MODULE += -fPIC
--KBUILD_AFLAGS	+= -m64
--KBUILD_CFLAGS	+= -m64
-+KBUILD_CPPFLAGS	+= -m64
- KBUILD_CFLAGS	+= -fPIC
- LDFLAGS_vmlinux	:= $(call ld-option,-no-pie)
- extra_tools	:= relocs
+diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+index 57b38c592b9f..b4d81a57b2d9 100644
+--- a/arch/powerpc/kernel/compat_audit.c
++++ b/arch/powerpc/kernel/compat_audit.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#undef __powerpc64__
+ #include <linux/audit_arch.h>
+-#include <asm/unistd.h>
++#include <asm/unistd_32.h>
+ 
+ #include "audit_32.h"
+ 
 
 -- 
 2.53.0
