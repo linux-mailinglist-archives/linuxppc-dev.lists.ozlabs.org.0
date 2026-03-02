@@ -1,63 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-17521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17518-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EJXNP+BpWltCwYAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 13:26:39 +0100
+	id CIsvAeuBpWl1CgYAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17518-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 13:26:19 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D8A1D8524
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 13:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1A61D84DF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 13:26:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fPdSj3SDlz3cGY;
-	Mon, 02 Mar 2026 23:25:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fPdSg5Dbyz3cBP;
+	Mon, 02 Mar 2026 23:25:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772454357;
-	cv=none; b=YXLrj/JreMt0oaXQYT7mxPAtMPpwJtn16TXlq/8kqG4z5ZaESAlPDijRZbOV3VMG/ktT+NBc7ACXCyyM1J6V+jSo8iA2Tmokn7Rl1Ul78cGG5WbtomUAMQOK1eMil5uHfwd3XatcWxMJ/Lrgddk+YUPoiV7KzbzdAwia3jJL7hIOsRQ5bmaLfQDa0tJbZPUVcdDiVzI2w0b8RoTXlfXy7eWsFrbeEI9720B4iTWnKXqrQ2/o4uBUfpB/SxwyXJCHZyNt8CmfeRzp19ZAK3QjD/Bxi8uJgXjjGdDeC9Yw9r7j74SqjSh39TzZerX6wyEtJ8POsvtYzKPTiCEMUrCDuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772454355;
+	cv=none; b=NBaFAy9qUKbUE1P+QqlmtxgUB4SurH7jh2Ux9ObgWYuEItQ4OLNAEwDU7V/MiGXXQLuxSGLZ9g4aaYS8Dy4uqihavQuQQytkKUkZ0VwxtTkBiNPJhHalvrb2Z0mgSIn2Diw3p8wB2uIEWatGKXmhWloeeIDHPCQnB56ZFgsziXVSEomBI19zErlTwgjKiMTOGWE5om5SfKYXOjBpkbofpKlnGDmkT+cnRkCF+KVI/74qPIqeoqc3bzMzX2We2sPlaQhQVKSQNan8IOgphXb335fUaJCnYN0qAsxIdqk0N2uIHBnklWGpSE2ALGuODyMA75tSEdyfS89mGg9/GSLZYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772454357; c=relaxed/relaxed;
-	bh=p/rC8JaKdvarxwfXTuFmyKVLUxrMKeBR1vS+B+mbt60=;
+	t=1772454355; c=relaxed/relaxed;
+	bh=KXDeF7UDpB8ZiPE3iLm028k2zogpL4XBUC66IjBoygE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d8Ip1XPB+LUbj118YWr5GTbuhLUUdFO7y0cXBwkLJfXyc0QPsgtcq35zqhzSu1KNU8kdaSMTHfZfqR4qKGUQV7uS8Waw/EzEALEmt9NKkb4Vt0CEpbm413lJONptgHAQlYponSE3haUWHD02jFVa20405Q+FGCL79iCdiEE7se2Mim3nK5Ntb5qnnEsLXnXCXzyDgz1kz6FUHFWpgRrkH5x3FPcxJx6kDwB73MITTiK9p+FYThx5JrAVIiLuW6nmg6G48gRVNrBqOryQztvZFPAjaOFvgePAzZoGdOc4+HA4Y9EGSg6wSGeS3BbaOasdcxNyz/Rg1mHOjBtlCt7B8g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ajSAQlia; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=JwfnIxj0; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=f1geYt2VCnYNkoQoBbqRFBIgnam5mly28RM4rjwqOTmV4vDkYQK9fheUvO45ZmBzofVHbc6xJ1jgRRHnjgE9D9UWcUp/y6iH+yFeqmIvxOdUy9GrEq38pQ7D0kt6gpjmSsBEuKfS/0Sp9E8ZTPd7IRR9KV/cL5aI71eR8bdfEhwBWGZrq+4LN+Azv1eYsIJHN9xqlJH0PWkZBaZRBs43sXU6oCDVX5IPw48lXm+gvEryy3VAOwkS3YCVAOQKgNzLQnprVEKAYozF5T9uFfyVoZOlhbU2eP9h39q0478N0XsE0H6sZYqU3gM/cNLnv/9R/DIXJoOliUHlY1UrhwepQA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=u5zypD0/; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=YRuN5Am8; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ajSAQlia;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=JwfnIxj0;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=u5zypD0/;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=YRuN5Am8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPdSg0TFLz3c8x
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPdSf53h5z3c5y
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 23:25:54 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772454348;
+	s=2020; t=1772454349;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p/rC8JaKdvarxwfXTuFmyKVLUxrMKeBR1vS+B+mbt60=;
-	b=ajSAQliaS2qS7tskq6tMH3t68+qJUkIdQPRiKkQMCt0DsJ7PTdi8iUy+3o2QlTfA/80+BY
-	pL4KjEeMLMt5yVfqYI8OjS5j5Hgc0vW1HnPf+ayu8rkOjs3Vqzr3P8Pvk1qR09O6GiUPU7
-	UjvxcgX0fxJ2BXwr0xwniOcLVDPzRXV2NpnJ6qmMXgvTVUCqPxt79l9TQoCuPBc5LqctF5
-	MOP0zzVzjZIt8A9dHgSUvittHeK7AIKBGH1r07yFDH3F1nOQGX7jARYyieK4yCcZ8SyVqP
-	WgJmsqUP71HlSfhNa2LCC30IGSGkt4eDD2DxsNAdFLLAYMipDWo+OKxY7VeX8A==
+	bh=KXDeF7UDpB8ZiPE3iLm028k2zogpL4XBUC66IjBoygE=;
+	b=u5zypD0/i7Uz5OODrlF49hQ+lpWWTOdLI3nJOWR1OIvOaMO/3vb+rs4YWorLAbvP3SeupE
+	efw3ir1dAVgCC7GhhgW3qdEFCEqGz/gSDiFzw5LRuYIKpRBxkhhBowXFddLuhZtiaOP4gF
+	dlepkL6XEteTWqc5T9no4ZA3k61IKxfE6IyhfQStErarfrPL67AkxEbr6CYYlqNEZQVMqN
+	NX7z/XIV3AaMIkKD+rc7xX8BEr+XDtbuCIpEFqfZ3QBZQ8mYAYth30AHwbN8dJIxz2QK7H
+	BcQ+zup4ER2aBs9NnJ3azWnJ9/PQBtVXq08kdgFnw32rydUXnsqSCDbbdOlVJg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772454348;
+	s=2020e; t=1772454349;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p/rC8JaKdvarxwfXTuFmyKVLUxrMKeBR1vS+B+mbt60=;
-	b=JwfnIxj0Sdg5oU0oqOjI3YutVwzh75rX2vx7bewd7VBp+XEcIlK6TmXTrPbufqiMTXJYxv
-	PB8QnQj/S2BFCGBA==
-Date: Mon, 02 Mar 2026 13:25:31 +0100
-Subject: [PATCH 07/15] RISC-V: Remove AT_VECTOR_SIZE_ARCH from UAPI
+	bh=KXDeF7UDpB8ZiPE3iLm028k2zogpL4XBUC66IjBoygE=;
+	b=YRuN5Am8QTcAru6KtUv5IvXWiWNuN4ajxCeRCgIAwKrJtoAJkHubhsTbdBJDWkHmvs5dPw
+	Q4dALwGBXmkPgVBw==
+Date: Mon, 02 Mar 2026 13:25:32 +0100
+Subject: [PATCH 08/15] LoongArch: Remove AT_VECTOR_SIZE_ARCH from UAPI
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,7 +73,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260302-at-vector-size-arch-v1-7-a11f03ba2ca8@linutronix.de>
+Message-Id: <20260302-at-vector-size-arch-v1-8-a11f03ba2ca8@linutronix.de>
 References: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de>
 In-Reply-To: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de>
 To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
@@ -84,15 +84,15 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
  linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772454343; l=1455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772454343; l=1725;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Zpl+G7mVLygoIP0MMSeWtai1WKLwvJyTNt46U7Sw0iE=;
- b=1sF3PQMcvc8QkKpWrYiRBLQP3NxEkxGiX9D/WLc7u5XoilAqV1Gvh/xCY9I+JL4qVtUA6VIVB
- dt3gdx2a1ezB0KhTVbLa5Br+JAHDOGRPvkd3jjBSo797OWQR9U01GlA
+ bh=+/a7BCuaRvs/grFgisGI29OqfBKuEYQlySRlV2+Ad3w=;
+ b=PsVs/lovJCA1Gx2WwwkdDjFmcUu2Juw49xEDuMkmmUjNuORoQIekOKf3Yr14UygMky0lYF1th
+ pALKMlLZtR4CkzYTF734/hb85wQvMSVlXVQIwWJIc24yD/mabNmcyJT
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
@@ -106,7 +106,7 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17521-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17518-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: 36D8A1D8524
+X-Rspamd-Queue-Id: 1B1A61D84DF
 X-Rspamd-Action: no action
 
 There is nothing userspace can do with this value. In the kernel is
@@ -139,42 +139,50 @@ Move the symbol to a kernel-internal header.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/riscv/include/asm/auxvec.h      | 13 +++++++++++++
- arch/riscv/include/uapi/asm/auxvec.h |  2 --
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/auxvec.h      | 14 ++++++++++++++
+ arch/loongarch/include/uapi/asm/auxvec.h |  8 +++-----
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/include/asm/auxvec.h b/arch/riscv/include/asm/auxvec.h
+diff --git a/arch/loongarch/include/asm/auxvec.h b/arch/loongarch/include/asm/auxvec.h
 new file mode 100644
-index 000000000000..fb4233445276
+index 000000000000..37dd717a3a22
 --- /dev/null
-+++ b/arch/riscv/include/asm/auxvec.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/arch/loongarch/include/asm/auxvec.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * Copyright (C) 2012 ARM Ltd.
-+ * Copyright (C) 2015 Regents of the University of California
++ * Author: Hanlu Li <lihanlu@loongson.cn>
++ *         Huacai Chen <chenhuacai@loongson.cn>
++ *
++ * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
 + */
 +
-+#ifndef _ASM_RISCV_AUXVEC_H
-+#define _ASM_RISCV_AUXVEC_H
++#ifndef __ASM_AUXVEC_H
++#define __ASM_AUXVEC_H
 +
-+/* entries in ARCH_DLINFO */
-+#define AT_VECTOR_SIZE_ARCH	10
++#define AT_VECTOR_SIZE_ARCH 1 /* entries in ARCH_DLINFO */
 +
-+#endif /* _UAPI_ASM_RISCV_AUXVEC_H */
-diff --git a/arch/riscv/include/uapi/asm/auxvec.h b/arch/riscv/include/uapi/asm/auxvec.h
-index 95050ebe9ad0..0a725f2aa2e7 100644
---- a/arch/riscv/include/uapi/asm/auxvec.h
-+++ b/arch/riscv/include/uapi/asm/auxvec.h
-@@ -33,8 +33,6 @@
- #define AT_L3_CACHESIZE		46
- #define AT_L3_CACHEGEOMETRY	47
++#endif /* __ASM_AUXVEC_H */
+diff --git a/arch/loongarch/include/uapi/asm/auxvec.h b/arch/loongarch/include/uapi/asm/auxvec.h
+index 922d9e6b5058..79691c422c7e 100644
+--- a/arch/loongarch/include/uapi/asm/auxvec.h
++++ b/arch/loongarch/include/uapi/asm/auxvec.h
+@@ -6,12 +6,10 @@
+  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
+  */
  
--/* entries in ARCH_DLINFO */
--#define AT_VECTOR_SIZE_ARCH	10
- #define AT_MINSIGSTKSZ		51
+-#ifndef __ASM_AUXVEC_H
+-#define __ASM_AUXVEC_H
++#ifndef __UAPI_ASM_AUXVEC_H
++#define __UAPI_ASM_AUXVEC_H
  
- #endif /* _UAPI_ASM_RISCV_AUXVEC_H */
+ /* Location of VDSO image. */
+ #define AT_SYSINFO_EHDR		33
+ 
+-#define AT_VECTOR_SIZE_ARCH 1 /* entries in ARCH_DLINFO */
+-
+-#endif /* __ASM_AUXVEC_H */
++#endif /* __UAPI_ASM_AUXVEC_H */
 
 -- 
 2.53.0
