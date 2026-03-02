@@ -1,55 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-17509-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17510-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UN4tFzdmpWmx+wUAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17509-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 11:28:07 +0100
+	id uEvjCZlmpWmx+wUAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17510-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 11:29:45 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF281D6789
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 11:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1B21D6834
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Mar 2026 11:29:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fPZrg2X6mz3bW7;
-	Mon, 02 Mar 2026 21:28:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fPZtY4V7Kz3bW7;
+	Mon, 02 Mar 2026 21:29:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772447283;
-	cv=none; b=SD5mrI8oWY0BNRtLMMio4asMwYyV2taSHcxze4+D/oZs7mOfqa+Ps1HMTVR3BN/J4PorohXP0+L8geBKcO34a33ghWyzKQQF2BD3ch0yZ14EDt27Ke7ses3+CzWmBWGUdV74A5A+VN4ZzHOmyZvTgf5d83iB07nvv7cONCNGDcu/jyAXOVBU6lkkVK8UMIMH6N19n/yOiZyr7wSrPayhk8tSjidCYyULPezZSmpP0dZxi3Ff/JyZhcDXobl2QNvJlp4Eg7JcsDEH8JBHEP/GlYgiz9Ub64372y5dsdLlWrRi22a14AyGX/vVs3iId76ni6EyJCZo+VQ3fOXOyCphEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772447283; c=relaxed/relaxed;
-	bh=SJQ3L9PaI7+gOYTmqM2jgEqeJ1oyRkGI7Y+f7oqufMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c9VIcSQzsKEL0ekjuEBLaglSuUMiccSo/REzurzBYsKCZSF8Ev06O9wex4NjtZevtrubPEX6TLZYmBiHVsEjVhncXX4xYjnPcVYQjo2XFzcfuj3ATpn9+CdipurTkWgMkp4756Pm3skwFxjCPPfLE16rnvzeCB+2LV49SyuS1f6xbfAGBRtw73QkAUEDf63McJht+DpWw2o91u6Sk2FluldBQcVjRoYNHDIhN/F2OHStWuf3bqtGX2afDfGpWUab3BUdOJszCn/HZ3AvDQV1jKGnqaWyjwpmkmI9pqpg6C0FvIZ+enXFnPjmJZdoxxVPRwHtohf9peSqzLyMAg+CaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Krl6+69H; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::72c" arc.chain=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772447381;
+	cv=pass; b=O5N0aoYZLBvbddzfmBorduXI/XrQDgmIt+M9e18XSNMFbqw8MfDwgZz/2dXzCm+jZk9Pxlh6sjhOUfmicvWLphgzA/pqA56fZbEfnM/eR5ZCk5QVsB4Qa193udm114N9NiVFx5ANDaRNsIwemL71/i27L4a7UQFJudzveWivk0m5pjBvxsNLzT5WrBVCVz75gQZoAotbrn0jjm3TON3muGG/jyBM3FBl2qYnBPeGqxSKRFECjIWBJHkF4NEPPKmNKpEvv+uiZgJTaesK78OwMBBR2SlTgs17LfNnOdJYEm8ywxG43EKQjEuL+bP5z2TfMqTUkcLUaEyg7/kcyvzHFQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772447381; c=relaxed/relaxed;
+	bh=h/njpkbtZVt3Kl+KjZ5piSQhFiqZBY8slUODGXpsT5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ERkz+Pkdz7+diRKFDagO6IR2cuegsHR1FoYlP8vOSrgqe7LoGW5txpGBSsXIoKALO5M7JFkhf/h4bP6FrOZw5mpSSm+MRBt/RmzDIURZHJcFB0TxKdTXvgULG3pHMSqn5VL7BHFJKQBy22mTGS60o7l1fqwpoCBdtAxsYS7Jul2vDYc7rqEOZBxz9cOLsHCd89m+yeDmy6hliP57MuT0/hqpKZY8H5N8x5tR1kNduQQTGKg+6OqtP3wrrBtZXzVoJWtRsH1KNxFpD0T3kNdPY9KehS6p1isTG81EVHw4FrDyTMxpy/sm0GY4qcl+equ23DTBvW2zDZ6e9nHcpDpxrw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=epXOdIR4; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::72c; helo=mail-qk1-x72c.google.com; envelope-from=glider@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Krl6+69H;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=epXOdIR4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::72c; helo=mail-qk1-x72c.google.com; envelope-from=glider@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPZrf0295z2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 21:28:01 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68891600AD;
-	Mon,  2 Mar 2026 10:27:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A46C2BC87;
-	Mon,  2 Mar 2026 10:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772447279;
-	bh=8Jbu9H2WLMZ/Y0rr095qrTvIs+zg55Kd2JEbFtyGHmY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Krl6+69HdQKfsIadgvHYi287ier/j1szZ993OZDT7DLhjavvKec7Gmr03hTpHVgXj
-	 X0/0EjLIMbPIDZrCrJh9in109yydXaY5xnii3BGEGQDsH91yBSGTL2rsyr6PES0xNG
-	 KzCTBZZYNcrS+JljktAcnv3r/4+UE5gSO+jilmVPIvLhvKH/uOqaeeaW5ID/ViHWtE
-	 1C/VnCBU/fOpg6j3zXJeKFB9GExjAgAF8c5qVzy1gVHvIfNNS90zmmwWo7JQbWGXi2
-	 hMrX3cYHDYRwL5mIhmHn77RYJyzkHV9dkffdxYZV/gl7j7Y90QzUkwjrqRa3JIEhbO
-	 Sst0s9UkPTtwg==
-Message-ID: <f2f3a8a1-3dbf-4ef9-a89a-a6ec20791d1c@kernel.org>
-Date: Mon, 2 Mar 2026 11:27:40 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fPZtX3yJMz2xGF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 21:29:40 +1100 (AEDT)
+Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-8cb4097794dso419150785a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Mar 2026 02:29:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772447377; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BIvgUH7COWB/lOSKkwP03+gP5Aj0nB2dlWK65RqaXGAx420v5dj6BGp9PcJ69K9/Pw
+         cVZJ4DYxQ8o+oqoDWuSTWL+kWA2RxrIP0gxUm8SKqMqj748HG3zUI6T+QTcPt4jYxus7
+         BByztSGQu6wU/H9e2oAdiE+lnrCK22ay4wRPdDqq149AfQM7veAEozuuT3D/aOkhWquB
+         Igi+zbm4Ul6jR03p/DL4jkHGjNjiRdX05OBYwO+jjHxjiqitfxcwHdGnIqWxmlHvObJE
+         uKMHqWP38I/4SWhuhlJUXO5n0oBQWS+36aDn1hUIfdFKUTTVSYjiR1sorn8ZvGU7Pdre
+         lWyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=h/njpkbtZVt3Kl+KjZ5piSQhFiqZBY8slUODGXpsT5Y=;
+        fh=5I3/vIaUDarYkhpbzBARcXtVjioMttoGTOwQ45f1GdM=;
+        b=B5WRnyKbiBjy4+/mqSAQU9XRCnxtfi26BlVqhcR2poH4712vxwE6rn9WXkx13caIm0
+         KR50ZAt4uMVbPLbKfb5xlomSAg8mxIZYJ1dkV30Iq8Ivr7ruk9Fj3YHwcLI8YbOVN+VR
+         yekeCJlJaD7id2hJ5WBeBELensFh8gelSKVjFVdsOJ1lorvC7vrWAZDTUfgGFJgC3V9v
+         qITWDJWg1KV6Fhl4Aqv7KoAAPpLMaAAGimZ4Iryx4dTKUsr4WqKkHI/jlzbzpgrdUyHt
+         Rp3RqMSx8Q0OG4xtWNR2Fc0cb2eJdTG196Yeobsn7XvyYx8ZPcjHpnbxGAtZnX7SIuX+
+         2BLA==;
+        darn=lists.ozlabs.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772447377; x=1773052177; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h/njpkbtZVt3Kl+KjZ5piSQhFiqZBY8slUODGXpsT5Y=;
+        b=epXOdIR4zGmFzNrH4vMGwzYlwUIFjQ/Zho73x9u3WIf6vue3karEze7VV12g8ot71F
+         Nt4kpDOr0YoaRVQFwjk6WclfKcJzLLbm45nkvHSdvvpjO0Z5tPQIkDk17mdQ34BhTHUL
+         Fgk3JT4RZeQJB5kkT7BpTqD5kFntOGxbW9gaMekCqmWNTms9WIsRTIzeYOQ9Nq/CX5Ly
+         GOf6sdRmwBardr/S7KacqEuv1HNqjLyjMmU6VIDHeR4RiLNdQK9pv4O4lCm6IZKVSoL5
+         oVtbPjxiFqAH1eiLFFy3D4di2p9mSJHYDU2z6bYqsZWUTDSGav5X0eub0Ec7PDen24Bb
+         wOXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772447377; x=1773052177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=h/njpkbtZVt3Kl+KjZ5piSQhFiqZBY8slUODGXpsT5Y=;
+        b=Pf11wNigG7jvyks7jbengggvoU6CY9lVd0G7doOzHEvt71GE3PAUP4mei3Au6vSpCY
+         +uFQ359aJGJlCpSk5wVRcoWGZODgNLKzIpH2YJeJtIRwpNt8Ll5JoiD/71pv34pn5NvT
+         mTpSMvOtjy184d8Ml4MLfUxp05NPSfyFbB+24G7l5vgpZyg9aILBwyjhyZZ/IvPSf8Nl
+         31iIjeiZmZtMaBuny3yEbUDWqb3q63ZzluJFD6YS6z56Xc9Le50ztsoWg7di/jW6u0ra
+         P1EBX5OgYNOxbrscMH7Ew0nPVoJhKT+irCZQGqFeFFB1lTRDJ9Z1BYm/7IfA6DMYhPxl
+         xq8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWwMHOw5B8nU2Yh8bo7prVtqsIyTCCHxu1rH6f785diooL3sLXA6WFhKiBkg7ao8BG018LoO2k0Rh33yg0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxbOt8sCx9wz/nUJIUt5NIWXm+4l87LjhvSuD5TMURa5SKAne6k
+	hftp29/ZQ6LgihwmulPwVsizHUkk2NulMXuWlcdBY+5tH8B1ul1yYLMZrb+uoqjn2/xROZHHWbP
+	7MBtWbUbMuakKT1c8/IbK+p0TJSrtj2oNt7HIMhsU
+X-Gm-Gg: ATEYQzyJbifZBag2iISeTDTtudcWlNJF9GK8yD01QhCWizQJyLf+VmomHOeB2Ox61G3
+	+UqT03rFRiDfVWq7cdW61vzNlCP86vBki308WbUHZHco1sFkjY7y9nXc7+SJDi0Wi7WylEZ3N2t
+	iY5sKTusO2sNWz4y/2R+h10V09WOQ1bUnXJ8rz9qHS8FthF2yHmYZPc5G6nHRE0vkGwJTOLSvvG
+	HVhx+4K30byuVLs+LPVnIO5PI1MKrMdF/rsvfeNbue2gh445i/iTzgCp2FxG0bNNV1jlxae/FmE
+	9sVTZQd0VYgnznyEjAUCl3qqBSYFEeKFDGJHig==
+X-Received: by 2002:a05:620a:450e:b0:8c6:b14e:6569 with SMTP id
+ af79cd13be357-8cbc8e3099bmr1545558085a.79.1772447377161; Mon, 02 Mar 2026
+ 02:29:37 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,193 +105,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from
- zap_page_range_single()
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
- <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-3-david@kernel.org> <aaLh2BxSgC9Jl5iS@google.com>
- <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
- <aaVf5gv4XjV6Ddt-@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aaVf5gv4XjV6Ddt-@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
+In-Reply-To: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Mon, 2 Mar 2026 11:29:00 +0100
+X-Gm-Features: AaiRm53DRbj7sPLIop0CBXc5s2h5N9WBGDepItjpg99dPeJvb65reF4OaqPzMX8
+Message-ID: <CAG_fn=U5weotUtW+TKmX_WRvRSaH+UiqdeDx-4foxVKK_kLNYw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/kasan: Fix double free for kasan pXds
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org, 
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,oracle.com,kernel.org,google.com,suse.com,suse.de,linux.dev,infradead.org,linux.ibm.com,ellerman.id.au,redhat.com,alien8.de,linuxfoundation.org,android.com,mev.co.uk,visionengravers.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,ziepe.ca,hpe.com,arndb.de,iogearbox.net,arm.com,davemloft.net,lists.ozlabs.org,lists.freedesktop.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17509-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17510-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:aliceryhl@google.com,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:rientjes@google.com,m:shakeel.butt@linux.dev,m:willy@infradead.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:jarkko@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:cmllamas@google.com,m:abbotti@mev.co.uk,m:hsweeten@visionengravers.com,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:jgg@ziepe.ca,m:leon@kernel.or
- g,m:dimitri.sivanich@hpe.com,m:arnd@arndb.de,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:edumazet@google.com,m:ncardwell@google.com,m:davem@davemloft.net,m:dsahern@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:ojeda@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sgx@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-rdma@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:netdev@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:kasan-dev@googlegroups.com,m:linux-mm@kvack.org,m:ryabinin.a.a@gmail.com,m:andreyknvl@gmail.com,m:dvyukov@google.com,m:vincenzo.frascino@arm.com,m:linuxppc-dev@lists.ozlabs.org,m:stable@vger.kernel.org,m:venkat88@linux.ibm.com,m:riteshlist@gmail.com,m:ryabininaa@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[glider@google.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	FREEMAIL_CC(0.00)[googlegroups.com,kvack.org,gmail.com,google.com,arm.com,lists.ozlabs.org,vger.kernel.org,linux.ibm.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[73];
+	NEURAL_HAM(-0.00)[-0.987];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FROM_NEQ_ENVFROM(0.00)[glider@google.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 6AF281D6789
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 3B1B21D6834
 X-Rspamd-Action: no action
 
-On 3/2/26 11:01, Alice Ryhl wrote:
-> On Mon, Mar 02, 2026 at 09:18:45AM +0100, David Hildenbrand (Arm) wrote:
->> On 2/28/26 13:38, Alice Ryhl wrote:
->>>
->>>
->>> Please run rustfmt on Rust changes. Here, rustfmt leads to this being
->>> formatted on a single line:
->>
->> Having to run tooling I don't even have installed when removing a single
->> function parameter; did not expect that :)
-> 
-> Well, rustfmt comes with the compiler, and it would be ideal to build
-> test changes before sending them :)
-
-At least on Ubuntu on my notebook where I do most of the coding+patch
-submissions it's a separate package?
-
-I do all my builds on a different (more powerful) machine where the
-whole rust machinery's in place. Further, build bots that run on my
-private branches did not report any issues.
-
-
-> But no worries, I took care of testing it. Thanks for taking the time to
-> update the Rust code as well.
-
-I just did an allyesconfig and it does not report any warnings.
-
-So apparently, rustfmt problems not result in the compiler complaining?
-
-Or something else is off here that rust/kernel/mm/virt.rs won't get
-compiled on my machine, even with allyesconfig. I can definitely see
-some RUSTC stuff happening in the logs, like
-
-	RUSTC L rust/kernel.o
-
-Thanks for the review and for pointing out rustfmt!
-
-> 
-> Documentation/rust/quick-start.rst has details for most distros.
-
-Will read that the next time I feel brave enough to touch rust code.
-
--- 
-Cheers,
-
-David
+On Tue, Feb 24, 2026 at 2:23=E2=80=AFPM Ritesh Harjani (IBM)
+<ritesh.list@gmail.com> wrote:
+>
+> kasan_free_pxd() assumes the page table is always struct page aligned.
+> But that's not always the case for all architectures. E.g. In case of
+> powerpc with 64K pagesize, PUD table (of size 4096) comes from slab
+> cache named pgtable-2^9. Hence instead of page_to_virt(pxd_page()) let's
+> just directly pass the start of the pxd table which is passed as the 1st
+> argument.
+>
+> This fixes the below double free kasan issue seen with PMEM:
+>
+> radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pag=
+es
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
+> Free of addr c0000003c38e0000 by task ndctl/2164
+>
+> CPU: 34 UID: 0 PID: 2164 Comm: ndctl Not tainted 6.19.0-rc1-00048-gea1013=
+c15392 #157 VOLUNTARY
+> Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:I=
+BM,FW1060.00 (NH1060_012) hv:phyp pSeries
+> Call Trace:
+>  dump_stack_lvl+0x88/0xc4 (unreliable)
+>  print_report+0x214/0x63c
+>  kasan_report_invalid_free+0xe4/0x110
+>  check_slab_allocation+0x100/0x150
+>  kmem_cache_free+0x128/0x6e0
+>  kasan_remove_zero_shadow+0x9c4/0xa20
+>  memunmap_pages+0x2b8/0x5c0
+>  devm_action_release+0x54/0x70
+>  release_nodes+0xc8/0x1a0
+>  devres_release_all+0xe0/0x140
+>  device_unbind_cleanup+0x30/0x120
+>  device_release_driver_internal+0x3e4/0x450
+>  unbind_store+0xfc/0x110
+>  drv_attr_store+0x78/0xb0
+>  sysfs_kf_write+0x114/0x140
+>  kernfs_fop_write_iter+0x264/0x3f0
+>  vfs_write+0x3bc/0x7d0
+>  ksys_write+0xa4/0x190
+>  system_call_exception+0x190/0x480
+>  system_call_vectored_common+0x15c/0x2ec
+> ---- interrupt: 3000 at 0x7fff93b3d3f4
+> NIP:  00007fff93b3d3f4 LR: 00007fff93b3d3f4 CTR: 0000000000000000
+> REGS: c0000003f1b07e80 TRAP: 3000   Not tainted  (6.19.0-rc1-00048-gea101=
+3c15392)
+> MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48888208=
+  XER: 00000000
+> <...>
+> NIP [00007fff93b3d3f4] 0x7fff93b3d3f4
+> LR [00007fff93b3d3f4] 0x7fff93b3d3f4
+> ---- interrupt: 3000
+>
+>  The buggy address belongs to the object at c0000003c38e0000
+>   which belongs to the cache pgtable-2^9 of size 4096
+>  The buggy address is located 0 bytes inside of
+>   4096-byte region [c0000003c38e0000, c0000003c38e1000)
+>
+>  The buggy address belongs to the physical page:
+>  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c3=
+8c
+>  head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+>  memcg:c0000003bfd63e01
+>  flags: 0x63ffff800000040(head|node=3D6|zone=3D0|lastcpupid=3D0x7ffff)
+>  page_type: f5(slab)
+>  raw: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
+>  raw: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
+>  head: 063ffff800000040 c000000140058980 5deadbeef0000122 000000000000000=
+0
+>  head: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e0=
+1
+>  head: 063ffff800000002 c00c000000f0e301 00000000ffffffff 00000000fffffff=
+f
+>  head: ffffffffffffffff 0000000000000000 00000000ffffffff 000000000000000=
+4
+>  page dumped because: kasan: bad access detected
+>
+> [  138.953636] [   T2164] Memory state around the buggy address:
+> [  138.953643] [   T2164]  c0000003c38dff00: fc fc fc fc fc fc fc fc fc f=
+c fc fc fc fc fc fc
+> [  138.953652] [   T2164]  c0000003c38dff80: fc fc fc fc fc fc fc fc fc f=
+c fc fc fc fc fc fc
+> [  138.953661] [   T2164] >c0000003c38e0000: fc fc fc fc fc fc fc fc fc f=
+c fc fc fc fc fc fc
+> [  138.953669] [   T2164]                    ^
+> [  138.953675] [   T2164]  c0000003c38e0080: fc fc fc fc fc fc fc fc fc f=
+c fc fc fc fc fc fc
+> [  138.953684] [   T2164]  c0000003c38e0100: fc fc fc fc fc fc fc fc fc f=
+c fc fc fc fc fc fc
+> [  138.953692] [   T2164] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+> [  138.953701] [   T2164] Disabling lock debugging due to kernel taint
+>
+> Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work =
+with KASAN")
+> Cc: stable@vger.kernel.org
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
 
