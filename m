@@ -1,98 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-17633-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17634-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GF8cA19Jp2m8gQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17633-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 21:49:35 +0100
+	id 6KK4ERJLp2n2gQAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17634-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 21:56:50 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7495D1F6F09
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 21:49:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D7D1F707D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 21:56:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQSb94sByz3bf8;
-	Wed, 04 Mar 2026 07:49:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQSld5FwBz3bf8;
+	Wed, 04 Mar 2026 07:56:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::132e" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772570965;
-	cv=pass; b=XaIlhBB+iFqKdt0xgZ0+AZZukzL0cuafVBXkDGK2E4tSQg9j2HuKUc8DwlNKjrtAYf9FYhApu3C41qylD5yrVK5PVf090bI2Uko3jLequSy47KQ0iywNabpZDOYuYjry7rwlnjqh8h/WgW51rxAjdbFCz9PYcpNNrQUrA6NOF+5/Z6XceHHzRxJxzREFwtOEP1YJ3Tn80p6nMA5lDWpt3WRODe9bOIo18S5x4ErbGMiAB+R2HOZgtjW1SMqh80ogTECzH8bZ/8Rm0tz2xceYXKr/lV3Xt7hPZUujydoxJan1VOxDlvMsnLyEQqAnPoeE49lxsYjwda26gmlcp6ubLg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772570965; c=relaxed/relaxed;
-	bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mPrgMskmNkvUz8MJTPyhdi3nMYPvDTs166o+yMcZD3vx0jsa0wjc982/6CnONKlkbrNiEh50GOyH+BrWTUkAWI/TNijVkZt25A4ldh0m62uSaQt+wKa/9UUlcXliiTdGPn+Jc6sP0sPYs8Os6b9PFiGyKC2q90X5QzM7yteLKlMjflLlquaPx7FLT+Gcb1tG4Tmzh5NDfn3ojw/V+M1hDfw/MRu1gmYBkzmmvzEDJep+675F+qifb3P9G80iANLMpkyOIw4NOfzYCGQnyroinkE0EjsKJ7J+bH6M3AWSURYRB0hNPLZwttQqrO9CfbA8eF50f9+o0zIYEcEeqIV1aA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i63FFcTI; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::132e; helo=mail-dy1-x132e.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.145
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772571405;
+	cv=none; b=M6Rmk2T5rv6KitwZx5rHA++y59XnDPd2Ly8i1RVFCl9bqg42DBJiu/wlp3n1J5U32osmMy+OpJBoOVMpt2n4/0ww2KLFTrmF7JYn1KAz+A0K8IyXq+ytociGnDCQkdViKajH6FsLJOM1dkr+jyeEDPeedXk8N/ogmeCXNqeTF9VD/wkIlxpnhvXWVBrqiOopTzqcR/r3w9qWIahwe79Hv1gQth/VP0YDhzZ4clFd44ApYLr5bhvwYCsZdSeHPJuM+StYU2QjuwxLxkCoLDHM0asUGl7j2Kx+eGvOqdKPJR/aiWPwWLEtTILEQVhVNXgKD6r4gZqMsIyGJtBLQJxYhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772571405; c=relaxed/relaxed;
+	bh=W4+9AyMIj1WDxYgl7TvopUa7BgXQ+cJMbbNJ/Z/1ir4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=CA6EJrYL9Ub/LNPBT7AT7V2ed6yziJ01MZ3oFB0VJwxWgTWmzJ03nEChaEV8tzlG+iM+CZo0JMsdzzrQfTZ47bL1fRu7ltxInsCzUZbmuJctAuVaOA4B3XLJTTdPTpY3ow2f+2IXhiEj39b1/afl5wTgXann4MdB4nm+IMjz5idl2FFuUMTbqrJUjwntRJB93NGHjNicSW+Eq1EJD/Gz5uRaAQ/kbl+OORdtFTxppHxJ9ujOOhyxQsRr8x3Xnfue97FwaqzPkM+hEn3RBTOO57VsJ2rDQZCrmyBppPmINEnXaaY1Wjj2uo348znjB5UMfhLWIO7dvn3MKBlrdZMipQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=pLDSmkoG; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=YTVlBjzR; dkim-atps=neutral; spf=pass (client-ip=202.12.124.145; helo=fout-b2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i63FFcTI;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=pLDSmkoG;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=YTVlBjzR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::132e; helo=mail-dy1-x132e.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-dy1-x132e.google.com (mail-dy1-x132e.google.com [IPv6:2607:f8b0:4864:20::132e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.145; helo=fout-b2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 331 seconds by postgrey-1.37 at boromir; Wed, 04 Mar 2026 07:56:41 AEDT
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQSb81Lvsz2xP9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 07:49:23 +1100 (AEDT)
-Received: by mail-dy1-x132e.google.com with SMTP id 5a478bee46e88-2bda3b4318dso570472eec.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2026 12:49:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772570960; cv=none;
-        d=google.com; s=arc-20240605;
-        b=blLaw8oE3N0kEc0cVfdwUpDKM9BPxqUELu12P+PpnTv/faGqcc6XR6cnlRMGw72R2x
-         iaq3NNc1FiZFWEbPhuDH/cT9U2cKYiVkQskjLfkkCkXSt2MGvJA47KgoaiLRHmQBlv1v
-         r1WWp6t0oTXiNAm10f9y0AgRiC2cZBmIzXpHxdZh8PhtuMP1BwCzrr5Y119YC/s8xrbL
-         uDhX7UmbK56cOibdl2am8Ck0p+C+qh1Kmnuq2NgLdi5bOamuCdGYu0cDuDFFDTtx9bJu
-         huYI9x9hjJCVOPZ7AFl1bEuLOfCpZmsgFiOswWKtMLJ7TJXDgxPIYkwvZR3LNyqsKqsG
-         OU2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
-        fh=khQVTGYy2Skv2EAIZaucjSXVED4WjT89tL6FFHgHlX4=;
-        b=EPvI7v5Kj6/1CKWayjmHVYNFcWRY254NPn9Ac49vP5wsyEJ1FT5lSNPUfWFrf6zjLU
-         ObHXtL+y4ks4EVs7dcFDdFg9ExLxk5SbMY2qbFQT2u9djJI0soDRxH3VptccuM301R9k
-         nXNQYL9krBIkDkYao9oKVqAEgYqzCrgRa+1mCUxKtziPdxWV+J3fvbHBv8Q1Pmj9MHEt
-         Xj5mt94S5fqZ6hbifXYdP9IjnpFwl84sxwnsMjGCzFHWQwAbuPaCLtBRzdoNTKDMEeOS
-         9j9563v9DhwkB3QLYZPE+DWA07VlAgHQGDMbxw/Wq2PC1eGDm9mQHs+gXBvNOqjuQjVA
-         u8uQ==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772570960; x=1773175760; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
-        b=i63FFcTIPQs6WSCsglhYhWqaI0XdaHiRx0L6cNSR8HWlQ3UR2js8igt++RCc7PkR0c
-         5VHoHOb+SD3HLU4sAEPBuKSxvKmLTDb6S9chFLhBAOIH8x7k2hMm9VgG5SCaUd3QjYRc
-         ewI30xm+ePIx7/768rXOmrXhHFmxYvSG8Lm3HrGGuXxwjp7zXuK4r0PEzPdpEB80n9W9
-         8D4g9t7UquWMdnw/zFADlFD4hruvwIf//oAIqdAbduL4zuVswi9YdcVNfucVxO/1XeyU
-         ZQcklHIOtJJCMy6/ZcYa1qniK+3JHJWBXPRq10PS0VgfzHzbD1BISA5L0XuAQ18ISQUh
-         KlXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772570960; x=1773175760;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
-        b=GtFeeZk0lHXKBVj1swy7SkQ1vB6si+sI/ygwzi3bUxbCPEsxsW9KqlBYgHeRp4UC1J
-         fEWYbZRRijwYY8nHYGcK0CDwbfoIZT9Qi44Lz8K9Pq2MUYLiyPc34kdyDS0qwMGLmaoI
-         sVJLvSZbXeWumkHSLL0JiFQVpBxDJi+v8Kx319vmN7O49+cL5ib31IqbDXdts50t8MHv
-         H7n+67OyyVssRKxOqcjBq09ZU5CPvPBRqWj6eYo9+qWMOt5Yumwv88arGd3anGgfWUT7
-         nBXPafHq8Kwopbo+FLUvchkVSKA6tIbPvizIeylUOEIlCjmwrHF8NVngG2HIuHa8a1uW
-         Fctg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJLD98gZQSUbYT49TAfVHyBB92QciOkL7LqM7sCyxIqJnFHO0umu0zSzrVRdz3HeyLLhxUfORRID0u4TA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzprNXB0rsL3ecW2nkVBVppLSvasBbd+1xIWxppVRnS/CGuJea/
-	B7W8Sj7B19ihYRpjDck3r0l3qekv58UFRNHP1PVmAvZEV1epi35bjlHIDoxK02u9Tqgp6TC07v5
-	bUavL+4lILvf92Vl79MssGqo4ILcMTjk=
-X-Gm-Gg: ATEYQzzUBVTfjnXet+DHLEo5u5TXXCHw6cCGd+cFvuXDhDs1R7ybypRjGn1yzzpKxbK
-	Htfg17B4//KcDG90CvNVXb7RUdthSCdu8e84uZJa1Ep9Y0xp+isKkyagf31397wQWv2tjFon1E8
-	Sx2P1KkKsaTpxc3c3IAVCOBGFJCNZPVwkmy1HBDtJD1vJ0h/wJm2dir+/jDURVQlBzsOBtULsCs
-	R7lnaKhNLfI0QcTJn14nL+K8Z9CbqLRNgALHLxnAYg5aTYWAa2R9xd7heSwAx0VwruxT+9iznMD
-	vEHycHozTxc2rA9ovwpUq/ISI4p7GceN9Y/u92I5uBkEIZDM2aL3yM3MOzw5PpYdNmIgynDuS5H
-	J3bKLjA+jBCCV0SknwgNHXl+M
-X-Received: by 2002:a05:7300:231e:b0:2b7:103a:7697 with SMTP id
- 5a478bee46e88-2bde1d4bc79mr3350396eec.5.1772570960234; Tue, 03 Mar 2026
- 12:49:20 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQSlY4mWqz2ySS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 07:56:41 +1100 (AEDT)
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4CC3D1D00091;
+	Tue,  3 Mar 2026 15:51:06 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Tue, 03 Mar 2026 15:51:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772571066;
+	 x=1772657466; bh=W4+9AyMIj1WDxYgl7TvopUa7BgXQ+cJMbbNJ/Z/1ir4=; b=
+	pLDSmkoGAjS8lnVtR1khysjif4VTY5cRWo9PIxyDJiT28SEFPnk1yXN58zkVxEMh
+	GFW1phu55AtGZbKUNoh3VcX9JTNkCzW7xIACqKccu9Yi2xgImIbaihihSab3Ybcy
+	ZvzdJ9KnUtHX1L96Lz7VaETXaw0WUeq2GiwLcE6rz6wfW+eI9zJX585FXdCVD7tl
+	X/ZMK3WFoNbmP0JCWCs6+hhgv/UQvUhqfxQhQnXjEDrZ2LaRSAzKVL24K3PzJhIn
+	rqjjxOu2ekH2xWndLoEQtcbD8+ZX+k3wfPuxfVMI3M5Nh4HTdK7tar6AT4OhAaVE
+	NNHUNEpsd4v5NMVnDGl1cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772571066; x=
+	1772657466; bh=W4+9AyMIj1WDxYgl7TvopUa7BgXQ+cJMbbNJ/Z/1ir4=; b=Y
+	TVlBjzRPOIJet/lh3awFNLl+wSE9XarGY7dyctHiw5tGwZ6LRJ3BrauySyy4mzo0
+	b0+dmt15Vi2YI3e9F9TlBU30QCqEG5DY1aVhkCoxyCw1e9CyBFJ1RYuMAgn+NGDb
+	6jVVcHqBihXYHtfSXv2h/C0REEUlC4kpEOGjzIHLx3Pd90Iw46MOeQyLcV/cFl+E
+	5dZqAzFlk60ZLRCJhmu+gRhtmD+V3HzFy3GlHl8IKJ69OzkPyaZFRzxeRWMWHXa3
+	0ck/5T/lVenCbLgUVMTqHhaKndC/nJbyDoy1H5u/Y2BPqio99jPYioYRMJHI3mjS
+	S58LoC5QRY0ZI/dbjZyuQ==
+X-ME-Sender: <xms:t0mnaTNMr7HRS--AuI8r-Sjs0TE5jFMLYGjK3yJPu0GcoqGNF90Dww>
+    <xme:t0mnaYwXrHoghs8YGSaKStp_jMggeks5AVkqXKoty1d9tlJzn8unKKfyiC4rOp_Hx
+    1VCQixKCnYpCwvpJMpvifb4MBADS_tOIRySc2OTiVe2hw8vnsMqbhs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieduiedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehtshgsohhgvg
+    hnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtoheptggrthgrlhhinhdr
+    mhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehvihhntggvnhiiohdrfhhrrg
+    hstghinhhosegrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhig
+    rdhorhhgrdhukhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprh
+    gtphhtthhopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhlhgv
+    rhhohieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhuthhosehkvghrnhgvlhdroh
+    hrgh
+X-ME-Proxy: <xmx:uEmnaTovlr41bMOoG-myb6wYD6yoZjgMxJaD4C1IsznfOvQliSGM7A>
+    <xmx:uEmnaZPe6a9Yagzc6v8dA-19Wn_ba6NmwvRIUy5a__y8EQwCklW78Q>
+    <xmx:uEmnaQNzCnwjn_-woKHF5KKnpyufa8dxgdgTmaQq9JlXYt8CehqaaQ>
+    <xmx:uEmnab2d3NaeSyTEJISJaVuDlDdHY35r82elxjQMDUg6M0f0aHZDjQ>
+    <xmx:ukmnaaN0mkEav7UlHMX3vyXNihfd1xX8twV1ttpCy-ygb33aiA8wnMPB>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E3624700065; Tue,  3 Mar 2026 15:51:03 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,109 +105,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-3-david@kernel.org>
- <aaLh2BxSgC9Jl5iS@google.com> <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
- <aaVf5gv4XjV6Ddt-@google.com> <f2f3a8a1-3dbf-4ef9-a89a-a6ec20791d1c@kernel.org>
- <aaVnifbdxKhBddQp@google.com> <5f8dcb7f-9e4f-4484-b160-3a9ce541d63c@kernel.org>
- <aaWvtn48X8UizaaN@google.com>
-In-Reply-To: <aaWvtn48X8UizaaN@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Mar 2026 21:49:06 +0100
-X-Gm-Features: AaiRm50lUTXkxHRxiLsKpWNGF1HIgeoo2SkrDpQfQSxM22wzlSiellk8rvn7q80
-Message-ID: <CANiq72nK8P1rUYw=y3fMzWZR3f_mW2v0_LSLWR1i0dQTtOqu2w@mail.gmail.com>
-Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from zap_page_range_single()
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: ARwL1vy566MZ
+Date: Tue, 03 Mar 2026 21:50:33 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "H. Peter Anvin" <hpa@zytor.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "Andy Lutomirski" <luto@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <chleroy@kernel.org>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org
+Message-Id: <2b1ac7b9-fcc8-4aa3-a0ad-eb37e4bce030@app.fastmail.com>
+In-Reply-To: <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com>
+References: <20260227-vdso-compat_32bit_time-v1-0-3f0286a7bac3@linutronix.de>
+ <20260227-vdso-compat_32bit_time-v1-1-3f0286a7bac3@linutronix.de>
+ <c29f5e70-bd17-4e1b-a005-5a3282e70075@app.fastmail.com>
+ <03cd1e21-a2f2-46a1-a674-cbaef9712016@app.fastmail.com>
+ <20260227103226-cc3bb32c-0107-4c09-b81a-ca33ea03ad5c@linutronix.de>
+ <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com>
+Subject: Re: [PATCH 1/7] x86/vdso: Respect COMPAT_32BIT_TIME
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 7495D1F6F09
+X-Rspamd-Queue-Id: 48D7D1F707D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+X-Spamd-Result: default: False [-2.20 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm3,messagingengine.com:s=fm1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	XM_UA_NO_VERSION(0.01)[];
+	TAGGED_FROM(0.00)[bounces-17634-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17633-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[miguelojedasandonis@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,kvack.org,linux-foundation.org,oracle.com,google.com,suse.com,suse.de,linux.dev,infradead.org,linux.ibm.com,ellerman.id.au,redhat.com,alien8.de,linuxfoundation.org,android.com,mev.co.uk,visionengravers.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,ziepe.ca,hpe.com,arndb.de,iogearbox.net,arm.com,davemloft.net,lists.ozlabs.org,lists.freedesktop.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:aliceryhl@google.com,m:david@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:rientjes@google.com,m:shakeel.butt@linux.dev,m:willy@infradead.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:jarkko@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:cmllamas@google.com,m:abbotti@mev.co.uk,m:hsweeten@visionengravers.com,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:jgg@ziepe.
- ca,m:leon@kernel.org,m:dimitri.sivanich@hpe.com,m:arnd@arndb.de,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:edumazet@google.com,m:ncardwell@google.com,m:davem@davemloft.net,m:dsahern@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:ojeda@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sgx@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-rdma@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:netdev@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[arnd@arndb.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:hpa@zytor.com,m:thomas.weissschuh@linutronix.de,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:tsbogend@alpha.franken.de,m:vincenzo.frascino@arm.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-mips@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,alien8.de,linux.intel.com,armlinux.org.uk,arm.com,linux.ibm.com,ellerman.id.au,gmail.com,alpha.franken.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[74];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,messagingengine.com:dkim,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 2, 2026 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Tue, Mar 3, 2026, at 19:11, H. Peter Anvin wrote:
+> On 2026-02-27 01:34, Thomas Wei=C3=9Fschuh wrote:
+>>>>
+>>> The thing about gettimeofday() and time() is that they don't have
+>>> a 64-bit version and libc implementations are expected to call
+>>> clock_gettime() instead. The result was that there was never a
+>>> patch to turn the off either.
+>>=20
+>> gettimeofday() is currently the only way to get the timezone of the k=
+ernel.
+>> But I guess this is a legacy thing anyways. If you say we should drop=
+ it,
+>> let's drop it.
+>>=20
 >
-> It's not relevant in this patch, but another thing that may be useful is
-> to add CLIPPY=3D1 to the make invocation when building normally. This
-> causes additional warnings to be checked using a tool called clippy.
+> The time zone in the kernel has never worked anyway, as it would requi=
+re the
+> kernel to contain at least the forward portion of the zoneinfo/tzdata =
+table in
+> order to actually work correctly. The only plausible use of it would b=
+e for
+> local time-based filesystems like FAT, but I don't think we bother.
+>
+> A bigger question is whether or not we should omit these from the vDSO
+> completely (potentially causing link failures) or replace them with st=
+ubs
+> returning -ENOSYS.
 
-Yes, please do use `CLIPPY=3D1` -- the build should be Clippy clean
-modulo exceptional cases that may slip through (and soon linux-next
-will probably start reporting those warnings too).
+I see no harm in keeping gettimeofday() in the vdso when
+COMPAT_32BIT_TIME is turned on, as existing code will call it
+no matter whether it's in the vdso or the syscall.
 
-Thanks!
+Equally, I see no point in having either version of
+gettimeofday() or settimeofday() when COMPAT_32BIT_TIME is
+disabled, as clearly anything calling it would pass incorrect
+data for times past 2038.
 
-Cheers,
-Miguel
+Neither glibc nor musl support actually returning the kernel
+timezone to callers of gettimeofday in modern versions that
+support time64 syscalls.
+
+      Arnd
 
