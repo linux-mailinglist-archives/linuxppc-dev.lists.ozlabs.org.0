@@ -1,59 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-17598-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17599-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDYpGIsGp2k7bgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17598-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:04:27 +0100
+	id uCl4AJYGp2k7bgAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17599-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:04:38 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AEC1F32F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:04:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CDD91F3325
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:04:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQLGC2PZhz3bnr;
-	Wed, 04 Mar 2026 03:04:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQLGV3BtFz3bnr;
+	Wed, 04 Mar 2026 03:04:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772553859;
-	cv=none; b=WidTytx9ZBzaypOZiZER326cbzp954eQGHInRxk7na2o926x4Cobl5Z9JXDQxStDAzARp7oJWh6gRqpSVIzAJT538e/CFWhFq2LMoqDZorMgDovYJ/wFwla0j1MZlR8fSkcmHzk+h1CszMCXYZkszfgTny+QMTCj8a9lMd12ahQFF8bcmPX95lRDN2zwrwz6QEuGGJhjQ20saYgSEATuOtOioWf67GezCxIIilrTq9eSIL1Zjpp8JTjt2Yuyvd1hNx43TmVbD6NVuLzsctHLKW4ClpOyLdeEZkdFlQWwCqE8W5LQqfvqwrIdmJC3KEDa2S/VJy8XVUTI6JDkKjjCTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=213.95.11.211
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772553874;
+	cv=none; b=iB7Qz2K67qgRyuE25U87uUMNRD9LwE66MuohdHNeg3177sW8+VJy7RFPJAIsuvpD4acH6YIReeXCkLeKQX5R8CdwjzoSDLR0rqj/WEmavCSlFJ5ah9OlYzke2hefLnwJSHb5MWfilewlSr3yI4FBlPyRHRpw+ouudMXzHKNKmaPd6hqEcrf6qe5S50ijE7o0q3tvI29S8Qp9preHRQsj0l2gCBQsIdd9ieUIK3yRJyhWtInJvxlAxOKXs6Iwg+vm7udrJqnSEwlb3thvfQ2eNyhq6qdY9Vox6GJU2yskvMRwzs/Lrt4szEsEhHmz8piZfsthWw/mAHrmdJOAWK98Iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772553859; c=relaxed/relaxed;
-	bh=aEzlLPTALngth40v9vmS241fK783wnKu1C7JqgcmEN8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aL5zbZa6p1vKof5rtTmfFS24eOnnMfRfyC1/8EmYsE/ONYmTiTJ7tB6lyxISB28bHmg9IusAwIevkUvZ+9oqUHTkCakPzj83GLEvwbLs1kPXBR9GKdjlY8edVrUF9nsHpac9mtOtMXcvoeMEmSlpbdFX/CYucHpyQGqJne8ULu9H4His9Xe8kW1r0QnnYycVWE1xpc0wJNyZmbWnXAqnI9K0aVhtWWvYXceVbtYXf58dTuxUMEZWqnniZxQDoH7PKGIoBzOA3Ejyyp0GipY8xvvKnyaOBmFnzgIq4fe1IWaldZAoBuaunXbCUtcMv3DBNMw0RYBr4hHxISO2mSJpJA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hauh7GHh; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hauh7GHh;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1772553874; c=relaxed/relaxed;
+	bh=ERL2crkSWjiWFfCd5r7i8dDIcE1qMmW2T7rRhLnWeUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fENzP/gAyVzSGd6goe2bDLv/Swomai/9i4+5BA7Gtk1yXpkHfoewB/UIR5m3s2W6amRbw3d4SMPS0Cl21bh0BNujHmwjHT6SJgG2BnXHulDtDI35UXjA8DzP5BX+sLrqQzLFRzCwYpGGd3sRA9Vd91SwycMOQ9Eqn/Ge/Dl6Ig13e/wYO0UDM57n1hLAlsm/87CU5SIxJPVIWyVWZreDallKSEI03GN4oaGVQQnhTCy6p6lODrayHzS0Be6vsrpuSOG82PdMv5fwHgs6bd9oY80vLSlJLzB34RuklxuI+b7MLbymIC93UbnvYkm1yEGFK6xooZLmfVEDHIfgrLbhTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org) smtp.mailfrom=lst.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lst.de (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQLGB1pxWz2xP9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 03:04:18 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38CA160008;
-	Tue,  3 Mar 2026 16:04:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D4816C2BCAF;
-	Tue,  3 Mar 2026 16:04:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772553855;
-	bh=a7/rRD8QRX/T56zI93E4KvZTeQlDeftjKMb5+MtVtnA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=hauh7GHhHuzKfqsjUARNMGRhoqDc35OrIXWUOSDvsuLMt7LOflnyjb7C8UxVQpXt/
-	 KVLwpolmvwjIVu+3IH+QuBt4yRMdARFr3WRAn80dSBZKBrNXt7uaPXMhgzn9OePoyO
-	 0TbKSDcHM6MjFEZylr46zwcCN7rCzmM5b/k0iUKDuejJTK+AyGbMtS4FkvqTTFP4Kn
-	 pdYo3yg4LM9ytUAkmDysPjK/erRX1MItjzmXjx9CmH9R3xquo0wljg0duGisjqOgI/
-	 xfrjyqzvFv/ix/jg3la5PJ8qExjfykH0ohU9uAHeu6WYEeJG2p15twvZOa0kl91Wy+
-	 HYGWzzp+H2Few==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFF61EDA693;
-	Tue,  3 Mar 2026 16:04:15 +0000 (UTC)
-From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Tue, 03 Mar 2026 17:04:08 +0100
-Subject: [PATCH RESEND v5] dt-bindings: powerpc: Add Freescale/NXP MPC83xx
- SoCs
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQLGT2gX2z2xP9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 03:04:33 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 2F91868BEB; Tue,  3 Mar 2026 17:04:29 +0100 (CET)
+Date: Tue, 3 Mar 2026 17:04:28 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dan Williams <dan.j.williams@intel.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+	Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-raid@vger.kernel.org
+Subject: Re: [PATCH 16/25] sparc: move the XOR code to lib/raid/
+Message-ID: <20260303160428.GE7021@lst.de>
+References: <20260226151106.144735-1-hch@lst.de> <20260226151106.144735-17-hch@lst.de> <20260228054716.GF65277@quark>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,217 +90,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260303-ppcyaml-soc-v5-1-2982d5a857bc@posteo.net>
-To: Scott Wood <oss@buserror.net>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- Christophe Leroy <chleroy@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772553855; l=4183;
- i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=536L63cvPpKbvFHHC4dH21r7FgAfuo5+xdMh/4DunPY=;
- b=/GGIoV2BYbJfWNeB7iMXQvs3m30g1HLFdwyLBRvTCjEAxDYYcIhsK/23tNmmoenhXWkfsxuY+
- DcKC/fwlklMDNs93mkWksuznsSlEc3TMoqPZEG/i6/qsiU5/i3vxINv
-X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
- pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
-X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
- auth_id=156
-X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-Reply-To: j.ne@posteo.net
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228054716.GF65277@quark>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: B6AEC1F32F2
+X-Rspamd-Queue-Id: 0CDD91F3325
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.41 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17598-lists,linuxppc-dev=lfdr.de,j.ne.posteo.net];
-	FREEMAIL_TO(0.00)[buserror.net,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:oss@buserror.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:chleroy@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:j.ne@posteo.net,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[devnull@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[e0000000:query timed out,csgroup.eu:query timed out,posteo.net:query timed out,devicetree.org:query timed out];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	HAS_REPLYTO(0.00)[j.ne@posteo.net];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17599-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[lst.de,linux-foundation.org,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,xen0n.name,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,ghiti.fr,davemloft.net,gaisler.com,nod.at,cambridgegreys.com,sipsolutions.net,redhat.com,alien8.de,linux.intel.com,zytor.com,gondor.apana.org.au,intel.com,fb.com,suse.com,arndb.de,fnnas.com,huawei.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:ebiggers@kernel.org,m:hch@lst.de,m:akpm@linux-foundation.org,m:richard.henderson@linaro.org,m:mattst88@gmail.com,m:linmag7@gmail.com,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:davem@davemloft.net,m:andreas@gaisler.com,m:richard@nod.at,m:anton.ivanov@cambridgegreys.com,m:johannes@sipsolutions.net,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:herbert@gondor.apana.org.au,m:dan.j.williams@intel.com,m:clm@fb.com,m:dsterba@suse.com,m:arnd@arndb.de,m:song@kernel.org,m:yukuai@fnnas.com,m:linan122@huawei.com,m:linux-alpha@vger.kernel.org,m:linux-kernel@vg
+ er.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-crypto@vger.kernel.org,m:linux-btrfs@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-raid@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[hch@lst.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[posteo.net:replyto,posteo.net:email,posteo.net:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo,devicetree.org:url,csgroup.eu:email]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_GT_50(0.00)[56];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	NEURAL_HAM(-0.00)[-0.999];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-From: "J. Neuschäfer" <j.ne@posteo.net>
+On Fri, Feb 27, 2026 at 09:47:16PM -0800, Eric Biggers wrote:
+> On Thu, Feb 26, 2026 at 07:10:28AM -0800, Christoph Hellwig wrote:
+> > diff --git a/arch/sparc/lib/xor.S b/lib/raid/xor/sparc/xor-niagara.S
+> > similarity index 53%
+> > rename from arch/sparc/lib/xor.S
+> > rename to lib/raid/xor/sparc/xor-niagara.S
+> > index 35461e3b2a9b..f8749a212eb3 100644
+> > --- a/arch/sparc/lib/xor.S
+> > +++ b/lib/raid/xor/sparc/xor-niagara.S
+> > @@ -1,11 +1,8 @@
+> >  /* SPDX-License-Identifier: GPL-2.0 */
+> >  /*
+> > - * arch/sparc64/lib/xor.S
+> > - *
+> >   * High speed xor_block operation for RAID4/5 utilizing the
+> > - * UltraSparc Visual Instruction Set and Niagara store-init/twin-load.
+> > + * Niagara store-init/twin-load.
+> >   *
+> > - * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)
+> >   * Copyright (C) 2006 David S. Miller <davem@davemloft.net>
+> >   */
+> >  
+> > @@ -16,343 +13,6 @@
+> >  #include <asm/dcu.h>
+> >  #include <asm/spitfire.h>
+> >  
+> 
+> <linux/export.h> can be removed from the two assembly files, since all
+> the invocations of EXPORT_SYMBOL() in them were removed.
+> 
+> Also, xor-niagara.S ended up without a .text directive at the beginning.
+> Probably it was unnecessary anyway.  However, this seems unintentional,
+> given that xor-vis.S still has it.
 
-Add a new binding for MPC83xx platforms, describing the board compatible
-strings used in currently existing device trees.
-
-Note that the SoC bus is called immr@... in many existing devicetrees,
-but this contradicts the simple-bus binding.
-
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
----
-Changes in v5:
-- Add Christophe Leroy's R-b tag
-- Link to v4: https://lore.kernel.org/r/20250412-ppcyaml-soc-v4-1-bd34f4613d31@posteo.net
-
-Changes in v4:
-- Rebase on v6.15-rc1
-- Try to list all existing compatible strings for MPC83xx boards
-- Link to v3: https://lore.kernel.org/r/20250220-ppcyaml-soc-v3-1-b8c98a61bc1a@posteo.net
-
-V3:
-- split out as a single patch
-- otherwise no changes
-
-V2:
-- part of series [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT bindings
-  Link: https://lore.kernel.org/lkml/20250207-ppcyaml-v2-1-8137b0c42526@posteo.net/
-- trim subject line
-- fix property order to comply with dts coding style
-- add Rob Herrings's R-b tag
----
- .../bindings/powerpc/fsl/fsl,mpc83xx.yaml          | 93 ++++++++++++++++++++++
- 1 file changed, 93 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/powerpc/fsl/fsl,mpc83xx.yaml b/Documentation/devicetree/bindings/powerpc/fsl/fsl,mpc83xx.yaml
-new file mode 100644
-index 00000000000000..9e37d155c5829a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/powerpc/fsl/fsl,mpc83xx.yaml
-@@ -0,0 +1,93 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/powerpc/fsl/fsl,mpc83xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale PowerQUICC II Pro (MPC83xx) platforms
-+
-+maintainers:
-+  - J. Neuschäfer <j.ne@posteo.net>
-+
-+properties:
-+  $nodename:
-+    const: '/'
-+  compatible:
-+    oneOf:
-+      - description: MPC83xx Reference Design Boards
-+        items:
-+          - enum:
-+              - fsl,mpc8308rdb
-+              - fsl,mpc8315erdb
-+              - fsl,mpc8360rdk
-+              - fsl,mpc8377rdb
-+              - fsl,mpc8377wlan
-+              - fsl,mpc8378rdb
-+              - fsl,mpc8379rdb
-+
-+      - description: MPC8313E Reference Design Board
-+        items:
-+          - const: MPC8313ERDB
-+          - const: MPC831xRDB
-+          - const: MPC83xxRDB
-+
-+      - description: MPC8323E Reference Design Board
-+        items:
-+          - const: MPC8323ERDB
-+          - const: MPC832xRDB
-+          - const: MPC83xxRDB
-+
-+      - description: MPC8349E-mITX(-GP) Reference Design Platform
-+        items:
-+          - enum:
-+              - MPC8349EMITX
-+              - MPC8349EMITXGP
-+          - const: MPC834xMITX
-+          - const: MPC83xxMITX
-+
-+      - description: Keymile KMETER1 board
-+        const: keymile,KMETER1
-+
-+      - description: MPC8308 P1M board
-+        const: denx,mpc8308_p1m
-+
-+patternProperties:
-+  "^soc@.*$":
-+    type: object
-+    properties:
-+      compatible:
-+        oneOf:
-+          - items:
-+              - enum:
-+                  - fsl,mpc8315-immr
-+                  - fsl,mpc8308-immr
-+              - const: simple-bus
-+          - items:
-+              - const: fsl,mpc8360-immr
-+              - const: fsl,immr
-+              - const: fsl,soc
-+              - const: simple-bus
-+          - const: simple-bus
-+
-+additionalProperties: true
-+
-+examples:
-+  - |
-+    / {
-+        compatible = "fsl,mpc8315erdb";
-+        model = "MPC8315E-RDB";
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+
-+        soc@e0000000 {
-+            compatible = "fsl,mpc8315-immr", "simple-bus";
-+            reg = <0xe0000000 0x00000200>;
-+            #address-cells = <1>;
-+            #size-cells = <1>;
-+            device_type = "soc";
-+            ranges = <0 0xe0000000 0x00100000>;
-+            bus-frequency = <0>;
-+        };
-+    };
-+
-+...
-
----
-base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
-change-id: 20250220-ppcyaml-soc-cae1f14cf389
-
-Best regards,
--- 
-J. Neuschäfer <j.ne@posteo.net>
-
+I'll probably undo the split and just do the mechanical move for the
+next version.  This was a bit too much change even if a split would be
+my preferred outcome.
 
 
