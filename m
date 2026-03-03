@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-17564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IfCJvnbpmnRXwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 14:02:49 +0100
+	id MAo3IAncpmnRXwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 14:03:05 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9521EFCEF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 14:02:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED551EFD22
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 14:03:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQGDY4Yvnz3c4d;
-	Wed, 04 Mar 2026 00:02:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQGDc1tgTz3cBx;
+	Wed, 04 Mar 2026 00:02:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772542957;
-	cv=none; b=m66+CGjIuARanqNRjQythBWB83Esr1nxR7MlvS9pSDDaqCl/2NTaUwvExNgW5qoMoNuQ3FXEkxBHdBcyoUs9DUsrhKQG0AjBeZEIsTqd4/w0z5LKD8Etozvwrq1GAjUX/Qsc5VCsroebKk1U9uhleCkJC60u5K1h7vPcB5OoIIO0H32H3H7uDQwlYgYQvJbVA1M1qNrWESOrQjENQPEJgTN91zKN2vIQdWCTiJvVet7cZHp8gkRXYjII1FTmSVsRKndANWwdLtG7fBNR9btZmY4CHCrxbUelumdxFUJ/bxddmof6fjkJmBBeEoIXjjJAZPfDY92YVKe/t7n3Am4i0w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772542960;
+	cv=none; b=Vpqrm/Nawl0OlgwNowR44fr0632W2ztv50C8BmYq9B5iJGNliBFop8xKbYzCktBs9y6w6lxVTwPHEWIK7BZMhrQWFlF5US398fxuF9QFR/uiE4/0JBO4TZBPw54lX6dVa0bXH3JlbrFVW6Q1A4XWRa/M+5VWZJ1dzrs+ESTbrNSKilbgc8tNyEEDFC/Zp3OlJ0OSYIyA5jSk2ZLB2yhGqm94Aln7Ta4mzr2lqOc8r64sYXBPiu28zos493GWW4aREsi0D6BwLIPDm1bo/GX7PS8UaTH0Y3n6Xia7juicazv8u5v6IOw1HUsE2tSDDl1vik9a+N4nFbkfleL3sjvPIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772542957; c=relaxed/relaxed;
-	bh=dh+vb6Mxxjxnpt48S/cIVDnUNMgHHcP7USQv6bS5opM=;
+	t=1772542960; c=relaxed/relaxed;
+	bh=0bxxZjB1UqCr2g9aJH+ztRBNkUytRzzKe0CEwvLgaT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5IqSasn+RlwJpZFlGY+Q+DpvNIUGyP8Ct6Q624ISfbYTCy9twwlmHFNOSJO0wZGoLZkXMA+sXavb42+wkqP4sUloPLIz41PVzUi7aFgll8xxC+s5qgPYqx9VTfTbahnJaYFmjyYGO/4GEI3pvru2TSCvYHEVGH95Pm/e7oAebnuv7yF3vyufm69dgBd2tBn71iyG+e+loy5yjX1P4XHtDspkkKBYEcUsmBFzbok5hfPxanUACorUMR98UJgcsyg7ziyxhzRcQwuju0M+C6sN5MDVtQIpeo8gsZ8tlrOTC6lRDwsqdt5zDRg60Zg8OuhgAbFwWTYIrf671lW8MVU/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oYqYC0/G; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=jJpKRHWjyFZBl/h4LLuWNrKAyP9Cu5nTIhGms7zlkIFWZ5MJ89bMb8tXeCYafw1mBkgzR7TZPgWj1fOS1c+ryZ7FRaMlP9vIgoZ7KOdnJG7ByzcUwboVNunElhFE4fQ/AWbCG589Gnn45guKH49I4I3K27bZBSA8NE5q8OlyIvZ4XGXNdPBJYSZkwHYcrgnK+vQ8vgbfjhgkJVH65Oi+s4SbrrI64lGHw9SkO1ojdqJp0eX7LDKYBa7LQKij3CotPNhfyH1tEMQ/P/LkCE0ONoQi6d7t+ME11829VUi+hijWJnvEsDpRPnffDhM3JBnv2vbQjlNzW2ownfLb2tSFxg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z6h9/qEa; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oYqYC0/G;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z6h9/qEa;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQGDX00Zgz3bp0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 00:02:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQGDb2GZpz3cBT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 00:02:39 +1100 (AEDT)
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6233xQhh1938926;
-	Tue, 3 Mar 2026 13:02:19 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6234Wdci2084496;
+	Tue, 3 Mar 2026 13:02:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=dh+vb6Mxxjxnpt48S
-	/cIVDnUNMgHHcP7USQv6bS5opM=; b=oYqYC0/GTbuKjzI4QOcKBKl5Zx+kW295F
-	KcrZYPl8tAdlrq9NKTOXWqAOBVO1dcihIlRJgOVDkuswpFNWRauev/jKWVaRm5gL
-	gD4hPGvxBm/a7JHWqdlJqcDxliqyvZ/aRlyuvq2RtIskzLvFO7NlLHwXMXwy538g
-	72QebrN5R4fD4IA54x+g9SpOm0MHbPd7dHVwW75XAk09qCC+QllahvoY6XOl+/wr
-	iJaVrls7yljqJaNLPoP0FQinHHtEjEwn3Ay3oglZu0vVaiVOY+hppEBUJ5PMFQ1M
-	lkze/CA/tcNrUr5Qo35ZTHryZ+mJVDaJOWlZ+pvduuiQoG0KA0ikQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksrj30bk-1
+	:mime-version:references:subject:to; s=pp1; bh=0bxxZjB1UqCr2g9aJ
+	H+ztRBNkUytRzzKe0CEwvLgaT4=; b=Z6h9/qEaWEOjmLmiSHw8SFXsstLpViMfu
+	fGeyFznGGekuhvNRGkP+urabGVPIxmUlimEeo26C9fiOb/IX7lTIWJPGI91Bf3/0
+	7q3KfCSKWsj0RHAU2bpE56Ij49RSOkxYs7pZuOW1+qtNrpZPtH0qQWEqxNzNdH3c
+	0udN3W/9K1je2ugqoT0TE1PTOnJ9A5+JKlO2BB4wyE5HlOfJxsoeFu29ngeuUGfV
+	WMF+imQ4MuE/Qoj/C15Z8CzRST42B+gYVhsUoDB3CXEayb4gFb38Se1fRwoFCG78
+	nfV07IceM3eXiyEP0tALfuk+U9e9TDO0dt8UlFJP3sVKdmcmSr/+A==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksrj30bq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 13:02:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 623979pB003266;
-	Tue, 3 Mar 2026 13:02:17 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmb2y2cj9-1
+	Tue, 03 Mar 2026 13:02:20 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 623BPUim027658;
+	Tue, 3 Mar 2026 13:02:19 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmcwja07f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 13:02:17 +0000
+	Tue, 03 Mar 2026 13:02:19 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623D2Due31785468
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623D2Fw961211128
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Mar 2026 13:02:13 GMT
+	Tue, 3 Mar 2026 13:02:16 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 905D92004D;
-	Tue,  3 Mar 2026 13:02:13 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D869A2004D;
+	Tue,  3 Mar 2026 13:02:15 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8439F20043;
-	Tue,  3 Mar 2026 13:02:11 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 00AA720043;
+	Tue,  3 Mar 2026 13:02:14 +0000 (GMT)
 Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.78.106.17])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Mar 2026 13:02:11 +0000 (GMT)
+	Tue,  3 Mar 2026 13:02:13 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Cc: bpf@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -78,9 +78,9 @@ Cc: bpf@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
         Saket Kumar Bhaskar <skb99@linux.ibm.com>,
         Abhishek Dubey <adubey@linux.ibm.com>,
         Venkat Rao Bagalkote <venkat88@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v3 1/6] powerpc64/bpf: do not increment tailcall count when prog is NULL
-Date: Tue,  3 Mar 2026 18:32:03 +0530
-Message-ID: <20260303130208.325249-2-hbathini@linux.ibm.com>
+Subject: [PATCH v3 2/6] powerpc64/bpf: fix the address returned by bpf_get_func_ip
+Date: Tue,  3 Mar 2026 18:32:04 +0530
+Message-ID: <20260303130208.325249-3-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260303130208.325249-1-hbathini@linux.ibm.com>
 References: <20260303130208.325249-1-hbathini@linux.ibm.com>
@@ -99,21 +99,21 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Rp/I7SmK c=1 sm=1 tr=0 ts=69a6dbda cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=Rp/I7SmK c=1 sm=1 tr=0 ts=69a6dbdc cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Soa85jDk8zDDq4EPMLkA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA5OSBTYWx0ZWRfX2KfiV8FFZDFB
- RWI7HsZ1pF9qNe1ntBX4xLY1V2bC7va2orKLiWbWQsSHH33FmSUvAt5WwbLaW+8Ox9E5P+JCwFy
- 4rYs4NPL0LH++MjMBCk0Tq3CmTS4QUb7SW3tSHJSSS4KDq6e/K85r3hC4Sy1FCwBZ1gSI35o3oQ
- xIEsKmA1sqBjJdu9+0R4Czru6cEGsJu849j0qyjaJpLVXuu/6CUH/WWwPJN5Xx7iDqLR2li7UjA
- bp4P6iltxpYv9peMEO5l4FFtt8xY095/avltdhKD/2jXDXmEs0btfCivUgCS5knZOZYGB9Tnjqw
- ZEkW2M5lb9+H9hAzQYPLSoAClCMQteiD6KgZEjeEaXI94XFeoKP6wwHgeDKHSPa9hyZVhYJ0hZY
- /eGWXaYg8zCyFEUxZpzFB5z9pE40/K+PNPFN4k7tKd9FkkhCYfcuB6+1R79kCJytSXT5aj8x7wu
- RN67JUwV/H9gTQSCChQ==
-X-Proofpoint-GUID: NCGe2Ymsuz-r8PXr2WvRNTLIfHiXvMpS
-X-Proofpoint-ORIG-GUID: NCGe2Ymsuz-r8PXr2WvRNTLIfHiXvMpS
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=dqEaXb2bD6BGsTbsOCIA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA5OSBTYWx0ZWRfXzQ0HgbPMS3Bd
+ IF2O8y8Ub2NlMB09ILnxHpvz8GgLz6+Y3pPLavnmgiT3JtX+EMD9HjgIT2IZUa/LdlR6D4GlkEQ
+ nIWLjYMcLv07JM5emQXlpUiJrpNCnX9+0g5eIGrsOCJmNfNH+Fqh8QHV+Ia2mubGJhiOmzFKYX/
+ GHnQbKgL1WHL0um2mfRdjWHDbz0TvH56DLNIX30ulajPKyuOFBJRBGsSmkpFB3+g/PcugJoooeq
+ Ip5YSQKEjHOFMKL73yVXvZNh34fWpDcOVgo9cWnCSU3VXA9Wgb+42jMSj2LFrepoFslws16vbud
+ 7VBCcBmVFI4R68uxFh30lXnU8aDzBcwDJTKd7AVsuGd6NVl8KCzxqX60YBjn3K6FEbyejTw0+oT
+ b7eIuAOm9Rk/cEgb700292wSDb36GOzLVrYtIc1Kywrl+TqiGtXwLISHa+2UUDH+lQFWVCnj2lo
+ PuRj/rSexBNIpYrz8WQ==
+X-Proofpoint-GUID: CD7lMV2oBEySEjsefZ82Lb3wqUe62Low
+X-Proofpoint-ORIG-GUID: CD7lMV2oBEySEjsefZ82Lb3wqUe62Low
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
@@ -126,14 +126,14 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: AB9521EFCEF
+X-Rspamd-Queue-Id: CED551EFD22
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -142,24 +142,29 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[ibm.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17564-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17566-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,linux.ibm.com:mid]
 X-Rspamd-Action: no action
 
-Do not increment tailcall count, if tailcall did not succeed due to
-missing BPF program.
+bpf_get_func_ip() helper function returns the address of the traced
+function. It relies on the IP address stored at ctx - 16 by the bpf
+trampoline. On 64-bit powerpc, this address is recovered from LR
+accounting for OOL trampoline. But the address stored here was off
+by 4-bytes. Ensure the address is the actual start of the traced
+function.
 
-Fixes: ce0761419fae ("powerpc/bpf: Implement support for tail calls")
+Reported-by: Abhishek Dubey <adubey@linux.ibm.com>
+Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
 Cc: stable@vger.kernel.org
 Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
@@ -167,71 +172,78 @@ Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 
 Changes in v3:
 - Added Tested-by tag from Venkat.
+- Updated comments based on suggestions from Abhishek.
 
 
- arch/powerpc/net/bpf_jit_comp64.c | 39 +++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ arch/powerpc/net/bpf_jit_comp.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index b1a3945ccc9f..44ce8a8783f9 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -522,9 +522,30 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
+diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+index 52162e4a7f84..95f208229b09 100644
+--- a/arch/powerpc/net/bpf_jit_comp.c
++++ b/arch/powerpc/net/bpf_jit_comp.c
+@@ -785,9 +785,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 	 *       retval_off             [ return value      ]
+ 	 *                              [ reg argN          ]
+ 	 *                              [ ...               ]
+-	 *       regs_off               [ reg_arg1          ] prog ctx context
+-	 *       nregs_off              [ args count        ]
+-	 *       ip_off                 [ traced function   ]
++	 *       regs_off               [ reg_arg1          ] prog_ctx
++	 *       nregs_off              [ args count        ] ((u64 *)prog_ctx)[-1]
++	 *       ip_off                 [ traced function   ] ((u64 *)prog_ctx)[-2]
+ 	 *                              [ ...               ]
+ 	 *       run_ctx_off            [ bpf_tramp_run_ctx ]
+ 	 *                              [ reg argN          ]
+@@ -895,7 +895,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 
+ 	bpf_trampoline_save_args(image, ctx, func_frame_offset, nr_regs, regs_off);
+ 
+-	/* Save our return address */
++	/* Save our LR/return address */
+ 	EMIT(PPC_RAW_MFLR(_R3));
+ 	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
+ 		EMIT(PPC_RAW_STL(_R3, _R1, alt_lr_off));
+@@ -903,24 +903,34 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 		EMIT(PPC_RAW_STL(_R3, _R1, bpf_frame_size + PPC_LR_STKOFF));
  
  	/*
- 	 * tail_call_info++; <- Actual value of tcc here
-+	 * Writeback this updated value only if tailcall succeeds.
+-	 * Save ip address of the traced function.
+-	 * We could recover this from LR, but we will need to address for OOL trampoline,
+-	 * and optional GEP area.
++	 * Derive IP address of the traced function.
++	 * In case of CONFIG_PPC_FTRACE_OUT_OF_LINE or BPF program, LR points to the instruction
++	 * after the 'bl' instruction in the OOL stub. Refer to ftrace_init_ool_stub() and
++	 * bpf_arch_text_poke() for OOL stub of kernel functions and bpf programs respectively.
++	 * Relevant stub sequence:
++	 *
++	 *               bl <tramp>
++	 *   LR (R3) =>  mtlr r0
++	 *               b <func_addr+4>
++	 *
++	 * Recover kernel function/bpf program address from the unconditional
++	 * branch instruction at the end of OOL stub.
  	 */
- 	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), 1));
+ 	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) || flags & BPF_TRAMP_F_IP_ARG) {
+ 		EMIT(PPC_RAW_LWZ(_R4, _R3, 4));
+ 		EMIT(PPC_RAW_SLWI(_R4, _R4, 6));
+ 		EMIT(PPC_RAW_SRAWI(_R4, _R4, 6));
+ 		EMIT(PPC_RAW_ADD(_R3, _R3, _R4));
+-		EMIT(PPC_RAW_ADDI(_R3, _R3, 4));
+ 	}
  
-+	/* prog = array->ptrs[index]; */
-+	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_2), b2p_index, 8));
-+	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2), b2p_bpf_array));
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_array, ptrs)));
-+
-+	/*
-+	 * if (prog == NULL)
-+	 *   goto out;
-+	 */
-+	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_2), 0));
-+	PPC_BCC_SHORT(COND_EQ, out);
-+
-+	/* goto *(prog->bpf_func + prologue_size); */
-+	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			offsetof(struct bpf_prog, bpf_func)));
-+	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_2), bpf_to_ppc(TMP_REG_2),
-+			  FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
-+	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_2)));
-+
- 	/*
- 	 * Before writing updated tail_call_info, distinguish if current frame
- 	 * is storing a reference to tail_call_info or actual tcc value in
-@@ -539,24 +560,6 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- 	/* Writeback updated value to tail_call_info */
- 	EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_2), 0));
+ 	if (flags & BPF_TRAMP_F_IP_ARG)
+ 		EMIT(PPC_RAW_STL(_R3, _R1, ip_off));
  
--	/* prog = array->ptrs[index]; */
--	EMIT(PPC_RAW_MULI(bpf_to_ppc(TMP_REG_1), b2p_index, 8));
--	EMIT(PPC_RAW_ADD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), b2p_bpf_array));
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_array, ptrs)));
--
--	/*
--	 * if (prog == NULL)
--	 *   goto out;
--	 */
--	EMIT(PPC_RAW_CMPLDI(bpf_to_ppc(TMP_REG_1), 0));
--	PPC_BCC_SHORT(COND_EQ, out);
--
--	/* goto *(prog->bpf_func + prologue_size); */
--	EMIT(PPC_RAW_LD(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1), offsetof(struct bpf_prog, bpf_func)));
--	EMIT(PPC_RAW_ADDI(bpf_to_ppc(TMP_REG_1), bpf_to_ppc(TMP_REG_1),
--			FUNCTION_DESCR_SIZE + bpf_tailcall_prologue_size));
--	EMIT(PPC_RAW_MTCTR(bpf_to_ppc(TMP_REG_1)));
--
- 	/* tear down stack, restore NVRs, ... */
- 	bpf_jit_emit_common_epilogue(image, ctx);
+-	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
++	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
+ 		/* Fake our LR for unwind */
++		EMIT(PPC_RAW_ADDI(_R3, _R3, 4));
+ 		EMIT(PPC_RAW_STL(_R3, _R1, bpf_frame_size + PPC_LR_STKOFF));
++	}
  
+ 	/* Save function arg count -- see bpf_get_func_arg_cnt() */
+ 	EMIT(PPC_RAW_LI(_R3, nr_regs));
 -- 
 2.53.0
 
