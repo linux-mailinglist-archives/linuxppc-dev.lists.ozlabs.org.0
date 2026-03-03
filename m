@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-17587-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17590-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLSvDnEDp2k7bgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17587-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 16:51:13 +0100
+	id uJqcJH8Dp2k7bgAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17590-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 16:51:27 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1517F1F2F27
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 16:51:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCEF1F2F6E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 16:51:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQKyy5dH7z3bt7;
-	Wed, 04 Mar 2026 02:51:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQKz12Gv3z3c9y;
+	Wed, 04 Mar 2026 02:51:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772553066;
-	cv=none; b=B5yHZM/gTdrL+hiulJXEWe2+POL83l2bBawwu2J4i21mRnk/2fkBgomzfefW6gALvRMI30QQj/wTSxNB2Fz52zIUBAb9vyVfVwjlLCXSAVhZb1SUNH0k8SlCOVrIf6C92ewdtBJyNR/G6RLicWCyMvRFNXVnxsGCCYxPMKRm3wUbUmBZPaOVD7O6SUbDnaT7BnO6raEp9mmMtsDjgsnSDR7wZkvswN2Y2T0qUT8gnJVk/QSfdtNDpGgvyTGvV9OA+SHgg59nMADSduZvblmWMJSjPE8yvrMxG9P6+QVyBebe3D4D/wkgIJavhGKO/QgpEEwAraQYXWnyBAlVE/rgug==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772553068;
+	cv=none; b=EfxMzmSA8V8NSS8YXq180quiDCKtW2REMVaa1xSLCUCea2cI4a1QtlPhiMltsctlFmSSTEoxtojP9c5BgzrLQC18ZHR5QzAkg4TCvXF6HKB1/79AaQI5iFWpz8NonpP6aBa1puBbU0rGa56z3jJY43KwkUyH0mi7mwyLx377iD5qjLWlpuBJUYDvXUzq1xhOSIprHfvIoelYfXVjg7nWfOC6w/zadk+/1UFcWVCPCKpQSPjlp8uWeeK3O54kOSr4St/kGNBuHlwgYff7Kh82xqJMwbr7YFz9JZFRVzZrWKP3BJ8Dj2xBEH6eT58BUnc2VqMIuMjrSoMR0DQ7cAgMzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772553066; c=relaxed/relaxed;
-	bh=gs1QJX5+j7PccXzeuyqD2rhoZ/2YN8mtRQIc6xDf1YA=;
+	t=1772553068; c=relaxed/relaxed;
+	bh=mSecvzXgXhb3FzfToJUcHowd+qYFOFssxKdrzOYbfGc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fGF2Uqj+AN8Yt1YQaxxJy63bTSyjgf4uPKT4lm2Rt/gPxlxwLhmO12t8q2wVZ0/rnRVPORFxhHaIt/wygAhZ68dXibi85DH+ZuOktXVPNV5WxbZMm1BwcvfKUzYqk3g01B4PALcy5XMhd7KYUKL0/8MWzuyAGg/93570D4giirKs9kEs92W6jc5fPwIY3rGkBCQKo08F5atkdHPVjrwZTfFND8jQ60xcNW2aX/ln3JxBSFxkgmMyJ6SxCZz9lixKgC0Xo75espjp6FhA0mzg2dP+c0WoFLywEInD2b6tDPKZs5Z+Sv4xYKuuSGxe/xGWXowx3sR1QQdxHMzQv99oyQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fwdc1BOY; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=dteGXyo9GmEQhSfJJ1IBHwWbnth6hqoW+2svL84CkFLyqDWiXiggHJRQMPe2YG49TMrXmJLEAq3plcpY9SnMDTAF+iKK0aqdSfxnYJ6E7XkGtkEHvoGra+/cq5XMNpVIpKfg2NUXCQHMw6xSVnaMxLQm6qItpMlUrCH8fve6jWlgbFG+F5rrUDkfkO8/j1LwvivR23eDwj77XSvEqben0Fp+TtTMlSUP6nEbcRbwldwNETR8fMi1LzPcgQ8OP6YpVdZL5NsZbfYy/BY7Jr1o0WHwFcH5ECnamVYxEHT/fnJ6xRaGcfHAPO+mooztmF4vAS45UUUL71Daf2LpxXApZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kp/TyFy3; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fwdc1BOY;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kp/TyFy3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQKyx2kFMz3bnr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 02:51:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQKyx2nSWz3bnv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 02:51:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C5226012A;
-	Tue,  3 Mar 2026 15:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 88F45C2BCB0;
+	by sea.source.kernel.org (Postfix) with ESMTP id E4E2844561;
+	Tue,  3 Mar 2026 15:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9C3DBC2BCB3;
 	Tue,  3 Mar 2026 15:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772553062;
-	bh=b6pLrsI/UwhsykmnJymez4U5jn32qFK8+QM/sJu1Q/I=;
+	bh=53CsSpZsyc7xs+AdaMCHhS93fwYu+PSSE3vaZp2mGiU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Fwdc1BOYt/o3bKMa7OsSopJF/mj7IXBQVHsfXtbJSDV60pTTk9v0Bj6TxYgwOofHI
-	 iPMUuvh7EnzI5V8Zavpvw+c0i89AXk42Pmk/6U0H2/R5RaivRQHFp1VjPxaBbawp1D
-	 nNtwxvyRIJgy7LhlNk1BaA3MRsmvpxugGLgEgUau2U7AAPjBZ4aNhm1l8W5lNEt1Uh
-	 7UhRjKPkUrdZem4w3iWj9MsaW+AyIXSLdIHYNIEAnG6kRLpBGfd4qNfVHVZdeKGkzB
-	 rLSLUabulF0/Z32RrxDePCQPS4xvk41fWIfIq0Ix9TREvDol1t6PvOu2KIsOuvA4VI
-	 1Lh9Zlyy8wApA==
+	b=kp/TyFy3g0TYycraCeUU/AJDhJ3DfytSRQlkjvU3n0vQNBeTo1Y4RWwMbKDRTJIm6
+	 1RnDjQQNTmTGjYuInSU/65K86yuGsq1+V/ACY0AWEl12yKmiHKCiaiM9zKLBUEqkQO
+	 0n058+g1zi+2ka1SQF+RQOwe2ziynmkqCzjwKulryu5bp3RoqzvRwzOwfOHlypxZ5f
+	 KXhZFxlp2E2t2raFpse2zMuJ0qM1ZsYnugIK0LkAvaQX2acPngV+LKulcFS2dV9SmB
+	 uMWx2aqKPKelYBWwS8U9Zty4440Jg4KKA34q3c4V+PvPGrMtK4fsTM618Pzu24oJg4
+	 OINqtPOTLS+Lg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E2DCEDA693;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FA5FEDA68F;
 	Tue,  3 Mar 2026 15:51:02 +0000 (UTC)
 From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Tue, 03 Mar 2026 16:50:54 +0100
-Subject: [PATCH RESEND v2 4/5] powerpc: dts: mpc8315erdb: Add missing
- #cells properties to SPI bus
+Date: Tue, 03 Mar 2026 16:50:55 +0100
+Subject: [PATCH RESEND v2 5/5] powerpc: dts: mpc83xx: Add unit addresses to
+ /memory
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,7 +70,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260303-mpc83xx-cleanup-v2-4-187d3a13effa@posteo.net>
+Message-Id: <20260303-mpc83xx-cleanup-v2-5-187d3a13effa@posteo.net>
 References: <20260303-mpc83xx-cleanup-v2-0-187d3a13effa@posteo.net>
 In-Reply-To: <20260303-mpc83xx-cleanup-v2-0-187d3a13effa@posteo.net>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -82,11 +82,11 @@ Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org, 
  =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772553061; l=659;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772553061; l=5576;
  i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=SOxgRreTN2XiGdnaxGDo2anyzlxFEzi5vS5RNGSUBZ4=;
- b=SbvTOFBQIiEEOK3Liq+DbgTTPwaqpVcfRqTZuQXMGu58Yh/5zPCDScKyYFuJ6tOkBc2eIQSa4
- spsvqCyirWsBlpMaIsVmS9MTS6a7JnHciDa4bR5nRXp26DqwCqkHaPJ
+ bh=t9Y71lb+NmFSZt3uA171w86/UdO38JD0i35P7z+18Q0=;
+ b=IxOaMiqBi12tObxf7a9xs73qThqTLmT65EEm24vxL3OWI1bfEnegliAO5JGLldmAxqfgHogTq
+ CFctZjYT3I5BFD64hm1bwMZgXBESpXGpeVxSZoJ+cLzAb9ggPc8NUv/
 X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
  pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
 X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
@@ -97,19 +97,19 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 1517F1F2F27
+X-Rspamd-Queue-Id: CCCEF1F2F6E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-17590-lists,linuxppc-dev=lfdr.de,j.ne.posteo.net];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17587-lists,linuxppc-dev=lfdr.de,j.ne.posteo.net];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[kernel.org,linux.ibm.com,ellerman.id.au,gmail.com];
 	FORGED_SENDER(0.00)[devnull@kernel.org,linuxppc-dev@lists.ozlabs.org];
@@ -119,45 +119,201 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_PROHIBIT(0.00)[0.0.27.88:email];
+	HAS_REPLYTO(0.00)[j.ne@posteo.net];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	HAS_REPLYTO(0.00)[j.ne@posteo.net];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[posteo.net:replyto,posteo.net:email,posteo.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo,posteo.net:replyto,posteo.net:email,posteo.net:mid]
 X-Rspamd-Action: no action
 
 From: "J. Neuschäfer" <j.ne@posteo.net>
 
-These properties are required by the spi-controller binding.
+This fixes dtschema warnings such as the following:
+
+  arch/powerpc/boot/dts/mpc8315erdb.dtb: /: memory: False schema
+  does not allow {'device_type': ['memory'], 'reg': [[0, 134217728]]}
 
 Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
- arch/powerpc/boot/dts/mpc8315erdb.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/boot/dts/asp834x-redboot.dts | 2 +-
+ arch/powerpc/boot/dts/mpc8308_p1m.dts     | 2 +-
+ arch/powerpc/boot/dts/mpc8308rdb.dts      | 2 +-
+ arch/powerpc/boot/dts/mpc8313erdb.dts     | 2 +-
+ arch/powerpc/boot/dts/mpc8315erdb.dts     | 2 +-
+ arch/powerpc/boot/dts/mpc832x_rdb.dts     | 2 +-
+ arch/powerpc/boot/dts/mpc8349emitx.dts    | 2 +-
+ arch/powerpc/boot/dts/mpc8349emitxgp.dts  | 2 +-
+ arch/powerpc/boot/dts/mpc8377_rdb.dts     | 2 +-
+ arch/powerpc/boot/dts/mpc8377_wlan.dts    | 2 +-
+ arch/powerpc/boot/dts/mpc8378_rdb.dts     | 2 +-
+ arch/powerpc/boot/dts/mpc8379_rdb.dts     | 2 +-
+ 12 files changed, 12 insertions(+), 12 deletions(-)
 
+diff --git a/arch/powerpc/boot/dts/asp834x-redboot.dts b/arch/powerpc/boot/dts/asp834x-redboot.dts
+index 33ddb17d18760d..c541bd3679831f 100644
+--- a/arch/powerpc/boot/dts/asp834x-redboot.dts
++++ b/arch/powerpc/boot/dts/asp834x-redboot.dts
+@@ -37,7 +37,7 @@ PowerPC,8347@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x8000000>;	// 128MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8308_p1m.dts b/arch/powerpc/boot/dts/mpc8308_p1m.dts
+index 2638555afcc454..41f917f97dab8d 100644
+--- a/arch/powerpc/boot/dts/mpc8308_p1m.dts
++++ b/arch/powerpc/boot/dts/mpc8308_p1m.dts
+@@ -37,7 +37,7 @@ PowerPC,8308@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x08000000>;	// 128MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8308rdb.dts b/arch/powerpc/boot/dts/mpc8308rdb.dts
+index af2ed8380a867c..39ed26fba41093 100644
+--- a/arch/powerpc/boot/dts/mpc8308rdb.dts
++++ b/arch/powerpc/boot/dts/mpc8308rdb.dts
+@@ -38,7 +38,7 @@ PowerPC,8308@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x08000000>;	// 128MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8313erdb.dts b/arch/powerpc/boot/dts/mpc8313erdb.dts
+index 137217d377e91b..c9fe4dabc80a78 100644
+--- a/arch/powerpc/boot/dts/mpc8313erdb.dts
++++ b/arch/powerpc/boot/dts/mpc8313erdb.dts
+@@ -39,7 +39,7 @@ PowerPC,8313@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x08000000>;	// 128MB at 0
+ 	};
 diff --git a/arch/powerpc/boot/dts/mpc8315erdb.dts b/arch/powerpc/boot/dts/mpc8315erdb.dts
-index f4938a7292b9c8..0b087180e1815f 100644
+index 0b087180e1815f..7ba1159f880311 100644
 --- a/arch/powerpc/boot/dts/mpc8315erdb.dts
 +++ b/arch/powerpc/boot/dts/mpc8315erdb.dts
-@@ -135,6 +135,8 @@ spi@7000 {
- 			reg = <0x7000 0x1000>;
- 			interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
- 			interrupt-parent = <&ipic>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 			mode = "cpu";
+@@ -40,7 +40,7 @@ PowerPC,8315@0 {
  		};
+ 	};
  
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x08000000>;	// 128MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc832x_rdb.dts b/arch/powerpc/boot/dts/mpc832x_rdb.dts
+index ba7caaf98fd58f..06f134490d9574 100644
+--- a/arch/powerpc/boot/dts/mpc832x_rdb.dts
++++ b/arch/powerpc/boot/dts/mpc832x_rdb.dts
+@@ -38,7 +38,7 @@ PowerPC,8323@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x04000000>;
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8349emitx.dts b/arch/powerpc/boot/dts/mpc8349emitx.dts
+index 13f17232ba83d5..12d33cb55b72a9 100644
+--- a/arch/powerpc/boot/dts/mpc8349emitx.dts
++++ b/arch/powerpc/boot/dts/mpc8349emitx.dts
+@@ -39,7 +39,7 @@ PowerPC,8349@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x10000000>;
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8349emitxgp.dts b/arch/powerpc/boot/dts/mpc8349emitxgp.dts
+index eae0afd5abbc39..2998a233a790be 100644
+--- a/arch/powerpc/boot/dts/mpc8349emitxgp.dts
++++ b/arch/powerpc/boot/dts/mpc8349emitxgp.dts
+@@ -37,7 +37,7 @@ PowerPC,8349@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x10000000>;
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8377_rdb.dts b/arch/powerpc/boot/dts/mpc8377_rdb.dts
+index f137ccb8cfdedf..fb311a7eb9f2cb 100644
+--- a/arch/powerpc/boot/dts/mpc8377_rdb.dts
++++ b/arch/powerpc/boot/dts/mpc8377_rdb.dts
+@@ -39,7 +39,7 @@ PowerPC,8377@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x10000000>;	// 256MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8377_wlan.dts b/arch/powerpc/boot/dts/mpc8377_wlan.dts
+index ce254dd74dd06b..f736a15cceffad 100644
+--- a/arch/powerpc/boot/dts/mpc8377_wlan.dts
++++ b/arch/powerpc/boot/dts/mpc8377_wlan.dts
+@@ -40,7 +40,7 @@ PowerPC,8377@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x20000000>;	// 512MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8378_rdb.dts b/arch/powerpc/boot/dts/mpc8378_rdb.dts
+index 19e5473d4161b5..32c49622b40402 100644
+--- a/arch/powerpc/boot/dts/mpc8378_rdb.dts
++++ b/arch/powerpc/boot/dts/mpc8378_rdb.dts
+@@ -39,7 +39,7 @@ PowerPC,8378@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x10000000>;	// 256MB at 0
+ 	};
+diff --git a/arch/powerpc/boot/dts/mpc8379_rdb.dts b/arch/powerpc/boot/dts/mpc8379_rdb.dts
+index 61519acca22804..07deb89c5a9bdc 100644
+--- a/arch/powerpc/boot/dts/mpc8379_rdb.dts
++++ b/arch/powerpc/boot/dts/mpc8379_rdb.dts
+@@ -37,7 +37,7 @@ PowerPC,8379@0 {
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x10000000>;	// 256MB at 0
+ 	};
 
 -- 
 2.51.0
