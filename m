@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-17555-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JeFnE8JjpmnePAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17555-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 05:29:54 +0100
+	id eK55HultpmkaPwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 06:13:13 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99ED1E8D6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 05:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6311E9239
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 06:13:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQ2rr3j8Vz30Lw;
-	Tue, 03 Mar 2026 15:29:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQ3pr1D3qz30Lw;
+	Tue, 03 Mar 2026 16:13:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772512188;
-	cv=none; b=fGFA8f9qQ3naMlOWIB0G1Dv3ZmnVS5F5Q5h8LgCjPYLnUR0noBlLydjtvSo0avUBsBCB0IsP7yEEx9zpswI5Uos5i+rIcYF9Aydz66D6fohb5+ed69mOvgi4/jqu9b8zjq+VNhYoSJYmE5HldfWHUCmIkI+eebl2k93R1BbCQS+IAKeACAu+Vxv1q/GLMmgdSOlrTzulXx8539DLdbvqW4mbJNWsjQkkwoDug39r/CNyfRDGfywHqIp3vKXQABq9PhZRXAsZxHwHH43fqwmSEgZpMlQ0wzzIotQ8ZzAkdFLOUxjELSVn5WiyF7t3gDIFj9Zd/CSPFY69o0NnwCMVDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772514788;
+	cv=none; b=ikOv1aI48qLmiAVQAjCOetQP6w5auE3hO7s9rXqJF6eUZJP4rFVrlRPueVsAdPP6pqUVfJqW4WpzOXBrw/v5fwJ9N6BOHZkD/9+3Pf4g2dPRbI5HmVpeu+c5A7yeMsipIaUGe1V7QJO9gJhjTV/NG8WvId67rVUobG+Iyqf7qAU0qZ2i5mAkIeHDikPr9aLmQ95WLnLydH4kCf3956Xl8jqQB2XkNE29g3ub7LoDMgCHelulkQJI1KkiQVrXp/NIihxirk5glD2jfV/WxZHx2b6c56/WCjTLA0dmMMqGZRJrJ8cuy/WWT4RqRi+XIbHdihuANbCEqRcOUGKPCNss7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772512188; c=relaxed/relaxed;
-	bh=M3CwlsWTyYhG0plLvfrcHn2FEQPK3YKqObldwrfMvdY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vp1oWveFz8rkux5EVMIUKMYe/4awV34EbjGsoUsu+vjLzl1fEqJ4nG6LABT9pSoDF8QxonydQAj4wGST8xYfVoJhpF1gNdHQtftKJOOY3N0gXSEqTmv+FEirQHu04vx0kvJ4WErxykMN58qMEkRq7yIYwi3E+Q5HFQXWMQKJJ3VClZRpdRewaY6duI9OThnsEQqlKLYhdj/JWJXSMYujtRJ2o9PZAkRqw3sl/NULEkwfWX4QbsHhY0l6bNbEjM8nBLcS46ZR/jQ1w/hIrQJUEGRECxK4JFRodpMYo0OOg5r9zZU4Rrn3URQbZvi5cnrEXfDWkcpJ9J+blTOrRvIW2A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JZZTJhuf; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1772514788; c=relaxed/relaxed;
+	bh=UKjz2sZuAPt8Ct2OqzfG8dM5JV8WxLLFGUO1trZhkIY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Vd89oZytaWS8QRSw5WAbEVKz0UddabT8xQjjFBwOCc5THdccaPNHGYd21xDDc/cA0jcIEQs1bW4w7dG9sE4mzanTm38rDv8MjwzJpi8p0bv2fdQq8swzx/GY3eA+erSEUBbvr6sa1LQwjWWVq+srUIkG5GX0ggTW1JMIZQGKGl7nCLYiKABMeXrf0wMvA3douIqgK+JGpOe354O3Zp+HWlD+HGZF/Hv0e19KwEhoPfuu8COalAADa5fj2qYtz9OwAyHjR7N/bEVe1syubZUNkCUlXKUcu48vGib1oAc8QzEldGDNKd0ElLs+uB/ck4pF8EZgxLCukMM6c6C2uW039A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L7XfrGs2; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JZZTJhuf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L7XfrGs2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQ2rq0w3Bz2xpk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2026 15:29:46 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622E9tfl2134009;
-	Tue, 3 Mar 2026 04:29:26 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQ3pp668Zz2xpk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2026 16:13:06 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622JOjAG573073;
+	Tue, 3 Mar 2026 05:12:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=M3Cwls
-	WTyYhG0plLvfrcHn2FEQPK3YKqObldwrfMvdY=; b=JZZTJhufZNC+EJXpX7W9ps
-	zEhBbepbwXrOvsptJqyjnbrgInQj/LMaT88pq4TTN+Ew2BhrFaWWNrWC2a577dkA
-	4ZTQmAsnP06/DvR4p/uNZqZ+GXLrOxTDmPwb7ROKUtA6wgOBfu3+Sy05jOj2x4l/
-	sLjtHs9EXT3fx7baWRKnoR2ajFXci8mLExnIHvFrLVU1kpQ1HlR+BUEiU371LMOe
-	wH7sB9qv45yjwPEjYZmasVWQauXCqkkMiIC8GIX+Ux2iVpcid1k8Kof+KgjlMrCM
-	5kZO8bCu+39jQWSyyxrpCwm00Bce0aPqUpNtVDv1JhEEok8zptR8/VjwbWKQDhmQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UKjz2s
+	ZuAPt8Ct2OqzfG8dM5JV8WxLLFGUO1trZhkIY=; b=L7XfrGs2NfbBGbyv2tQ1LZ
+	q4X6guHTAt+jtH66huqTSwC+MLLB7+DSq8qOni8XBy3jC7c+wjvS5T9vEtyRSQN4
+	LQGWC4AhtTOd1Is4jZkJHv2O7tR0QVUNxvj44WGD9NTZVIj11v2o58Zmf+YA2hrW
+	a0Il1ckd2/HlinuNakWUI/05R+D9QMCfb3g6rmKX0jScLH0JSG9PrSq8A7j/tFoH
+	zoS1bFs0RFD1V5mtadt8QhwAhBdJTAhFZ4WPu1B9V3w+1hkod7K0HooUxus9pnGJ
+	Qywr3d5/IrsMAXBNXNosL92znhQ8NCuWaoiej7a67H0pagjJmkdQIF8YpJ/XXkSA
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckskbs7ru-1
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksjd9mpc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 04:29:26 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6231A8fr008769;
-	Tue, 3 Mar 2026 04:29:25 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmdd18h0d-1
+	Tue, 03 Mar 2026 05:12:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6230nuOb027710;
+	Tue, 3 Mar 2026 05:12:49 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmcwj8p10-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 04:29:25 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6234TNK762980430
+	Tue, 03 Mar 2026 05:12:49 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6235Cm2M21037778
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Mar 2026 04:29:23 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 422B158106;
-	Tue,  3 Mar 2026 04:29:23 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA57658107;
-	Tue,  3 Mar 2026 04:29:17 +0000 (GMT)
-Received: from [9.43.101.186] (unknown [9.43.101.186])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Mar 2026 04:29:17 +0000 (GMT)
-Message-ID: <d8440351-7394-4444-9891-b9af1982bd06@linux.ibm.com>
-Date: Tue, 3 Mar 2026 09:59:15 +0530
+	Tue, 3 Mar 2026 05:12:48 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3DB7558063;
+	Tue,  3 Mar 2026 05:12:48 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 748AA58043;
+	Tue,  3 Mar 2026 05:12:44 +0000 (GMT)
+Received: from [9.61.244.206] (unknown [9.61.244.206])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Mar 2026 05:12:44 +0000 (GMT)
+Message-ID: <879f600f-7c1e-4b54-a317-535412192371@linux.ibm.com>
+Date: Tue, 3 Mar 2026 10:42:42 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,137 +86,232 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 0/2] pci: fix msi_addr_mask on powerpc and sparc systems
-To: Bjorn Helgaas <helgaas@kernel.org>, Nilay Shroff <nilay@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-        sparclinux@vger.kernel.org, wangruikang@iscas.ac.cn, tglx@kernel.org,
-        npiggin@gmail.com, chleroy@kernel.org, gjoyce@ibm.com
-References: <20260227164427.GA3897611@bhelgaas>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20260227164427.GA3897611@bhelgaas>
+Subject: Re: [PATCH v2 0/4] powerpc64/bpf: Add support for instruction array
+ and indirect jump
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+To: adubey@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, hbathini@linux.ibm.com,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        maddy@linux.ibm.com
+References: <20260227014315.39980-1-adubey@linux.ibm.com>
+ <72C902E6-BE4E-4C47-9F4A-D8095E7BEDE2@linux.ibm.com>
+In-Reply-To: <72C902E6-BE4E-4C47-9F4A-D8095E7BEDE2@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: _tK77ANu3W9z-VeG8u6qfS6ArfhENUaw
-X-Authority-Analysis: v=2.4 cv=b66/I9Gx c=1 sm=1 tr=0 ts=69a663a6 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Authority-Analysis: v=2.4 cv=M9BA6iws c=1 sm=1 tr=0 ts=69a66dd2 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=ox5LE5JcwimiERT94YoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDAyNCBTYWx0ZWRfX7rR2nR3sm76t
- /zBOvAMjTcOezRq7OelIqm9/uihaMyXQN4Jxhx/w+h/63hxsprLvpJUewJyFdtlsRbEKmGl42Cu
- FiWotNMNf+sEox5YlLLujbX3F8RIF4OIy3ujbLClTXA+/CczXTT4GTYPu+RvQkhZfHL5CONNONN
- viQabmw2MdWC8ywmo6LgATVVF8VwIUzM9H3V+M4T/7Gj6QOIzdDXTI5w8/0YIv2I9J9ZLfUtveE
- UuhqH2w6Y7zbrXI4EJb1rx9RI3wsnifhTY/J7ugZ9MyAEcnymD+89+S/3Z35g5SIDWruLN2oZPq
- /KE3jhSMbop1+QB+JA9QHpQjgf88wNrcCDBmcE0KB3bYGUYXIZwrJSQ1hM7jRpMTP+KtnDgUx4N
- PBCEJboKFl+38Qm7OuM3ko0IZ7W7n4ZE22o5FHAcMWHQ2VajYKK49Q2SDrnHYUd4ZX7bJ6ec1jl
- NbX+nnObHz5f82TFmZQ==
-X-Proofpoint-GUID: jL6n6PvEWuopqzjVdHNyhffD38DaAC80
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=zdu5mjj0_Ug8kxfXQYwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ezhZlunt8Sw3LniPf81er-MOWZqVTsSP
+X-Proofpoint-GUID: ezhZlunt8Sw3LniPf81er-MOWZqVTsSP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDAzMyBTYWx0ZWRfXxDmKrDNQMlLP
+ 6+lT9Gn6SxeMum4c5etX3ZVAQaMWpOgAilPyXHIsVgTp07F0QLhr74rGq2g7CyeFxM80UlXcmr7
+ rABiuA7JoRh/m/EAO/HOliaOEHxwERJ/y55xqLGA6cIbQdyYIXkT0xfHMuI6lvWVsgQK2zUni3F
+ TP0vkX3YcLxNaouLK3d2pZukEf3r47fa/uihbSVjq7yp+Q1vZio9j68HQhQZE/GQZWiJh3fBV21
+ hm+Za779gKuaVoHBobXjJtinGUwLESTP0997BCMrkk1ivS9XUy/IpSecjCC2twG15osUox4rBi0
+ p1QHcfnNdSAZHaQK118ypkDsP2v/qmhh+U1hkrLiIOjErSXotprNtbVNjYILzxxtK7f5+SNVEy4
+ XpwrwTsc+NEqeQKTTpAkAJjCvVEofVTdlnuESreHeK9uMeduwHAoKC4DJGH71EfVWpc/p6m3HKl
+ g1STPt5TUpghHvapVaA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1011 adultscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030024
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030033
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: C99ED1E8D6E
+X-Rspamd-Queue-Id: 8F6311E9239
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17555-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:nilay@linux.ibm.com,m:mpe@ellerman.id.au,m:davem@davemloft.net,m:andreas@gaisler.com,m:glaubitz@physik.fu-berlin.de,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:sparclinux@vger.kernel.org,m:wangruikang@iscas.ac.cn,m:tglx@kernel.org,m:npiggin@gmail.com,m:chleroy@kernel.org,m:gjoyce@ibm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[maddy@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,iscas.ac.cn,kernel.org,gmail.com,ibm.com];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,linux.ibm.com:mid];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[maddy@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:bpf@vger.kernel.org,m:hbathini@linux.ibm.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:maddy@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17556-lists,linuxppc-dev=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
 
-On 2/27/26 10:14 PM, Bjorn Helgaas wrote:
-> [cc->to powerpc, sparc maintainers for ack]
+On 27/02/26 8:58 pm, Venkat wrote:
 >
-> On Fri, Feb 20, 2026 at 12:32:26PM +0530, Nilay Shroff wrote:
->> Hi,
+>> On 27 Feb 2026, at 7:13 AM, adubey@linux.ibm.com wrote:
 >>
->> Recent changes [1] which replaced pci_dev::no_64bit_msi with pci_dev::
->> msi_addr_mask inadvertently missed to initialize the pci_dev::msi_addr_mask
->> to the DMA_BIT_MASK(64) on powerpc platform. Due to this, later the
->> validation the programmed MSI address against the msi_addr_mask fails.
->> This causes pci device probe method failures on powerpc platform. We also
->> realized that similar issue could potentially happen on sparc system as
->> well. So this series initializes pci_dev::msi_addr_mask to DMA_BIT_MASK(64)
->> when pci_dev is instantiated for both powerpc and sparc platforms.
+>> From: Abhishek Dubey <adubey@linux.ibm.com>
 >>
->> The first patch in the series fixes this on powerpc platform. The second
->> patch fixes this issue on sparc platform. Please note that as I don't have
->> access to the sparc platform, this patch was only compile tested on the
->> sparc system. Anyone from the community is welcome to test it who has
->> access to the sparc machine.
+>> The first 2 patch enable support for instruction array. Now, the
+>> instruction offset map maintain the mapping:
+>> original inst -> xlated inst -> jited inst
 >>
->> [1] https://lore.kernel.org/all/20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn/
+>> The last two patch enable support for indirect jump. Any eligile
+>> register can store jump target address for control flow to jump.
 >>
->> Changes since v1:
->>    - Initialize the pci_dev:msi_addr_mask on sparc platform (Vivian Wang)
->>    - Some minor cosmetic fixes (Bjorn Helgaas)
+>> The features will be enabled on ppc32 in a separate series.
 >>
->> Nilay Shroff (2):
->>    powerpc/pci: Initialize msi_addr_mask for OF-created PCI devices
->>    sparc/pci: Initialize msi_addr_mask for OF-created PCI devices
+>> The patch series is rebased over:
+>> https://lore.kernel.org/bpf/20260226031324.17352-1-adubey@linux.ibm.com
 >>
->>   arch/powerpc/kernel/pci_of_scan.c | 7 +++++++
->>   arch/sparc/kernel/pci.c           | 7 +++++++
->>   2 files changed, 14 insertions(+)
-> These fix regressions on powerpc and sparc caused by 386ced19e9a3
-> ("PCI/MSI: Convert the boolean no_64bit_msi flag to a DMA address
-> mask").
->
-> These fixes have been tested by Han Gao (SPARC Enterprise T5220),
-> Nathaniel Roach (SPARC T5-2), and Venkat Rao Bagalkote (IBM Power
-> System LPAR (pseries)).
->
-> It'd be great to have acks from the powerpc and sparc folks so they
-Sorry for the delayed response, yes we tested this from our end.
-Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> All selftest related to instruction array and indirect jump
+>> are passing.
+>>
+>> ./test_progs-cpuv4 -n 20
+>> #21/1Â Â Â  bpf_insn_array/one2one:OK
+>> #21/2Â Â Â  bpf_insn_array/simple:OK
+>> #21/3Â Â Â  bpf_insn_array/deletions:OK
+>> #21/4Â Â Â  bpf_insn_array/deletions-with-functions:OK
+>> #21/5Â Â Â  bpf_insn_array/blindness:OK
+>> #21/6Â Â Â  bpf_insn_array/incorrect-index:OK
+>> #21/7Â Â Â  bpf_insn_array/load-unfrozen-map:OK
+>> #21/8Â Â Â  bpf_insn_array/no-map-reuse:OK
+>> #21/9Â Â Â  bpf_insn_array/bpf-side-ops:OK
+>> #21Â Â Â Â Â  bpf_insn_array:OK
+>> Summary: 1/9 PASSED, 0 SKIPPED, 0 FAILED
+>>
+>> ./test_progs-cpuv4 -n 21
+>> #20/1Â Â Â  bpf_gotox/one-switch:OK
+>> #20/2Â Â Â  bpf_gotox/one-switch-non-zero-sec-offset:OK
+>> #20/3Â Â Â  bpf_gotox/two-switches:OK
+>> #20/4Â Â Â  bpf_gotox/big-jump-table:OK
+>> #20/5Â Â Â  bpf_gotox/static-global:OK
+>> #20/6Â Â Â  bpf_gotox/nonstatic-global:OK
+>> #20/7Â Â Â  bpf_gotox/other-sec:OK
+>> #20/8Â Â Â  bpf_gotox/static-global-other-sec:OK
+>> #20/9Â Â Â  bpf_gotox/nonstatic-global-other-sec:OK
+>> #20/10Â Â  bpf_gotox/one-jump-two-maps:OK
+>> #20/11Â Â  bpf_gotox/one-map-two-jumps:OK
+>> #20Â Â Â Â Â  bpf_gotox:OK
+>> Summary: 1/11 PASSED, 0 SKIPPED, 0 FAILED
+>>
+>> v1->v2:
+>> Handle image offset for ABIv1
+>>
+>> [v1]: https://lore.kernel.org/bpf/20260225010950.20218-1-adubey@linux.ibm.com
+>>
+>> Abhishek Dubey (4):
+>> powerpc64/bpf: Add support for instruction array
+>> selftest/bpf: Enable instruction array test for powerpc64
+>> powerpc64/bpf: Add support for indirect jump
+>> selftest/bpf: Enable gotox tests for powerpc64
+>>
+>> arch/powerpc/net/bpf_jit_comp.c                        | 10 ++++++++++
+>> arch/powerpc/net/bpf_jit_comp64.c                      |  8 ++++++++
+>> .../testing/selftests/bpf/prog_tests/bpf_insn_array.c  |  2 +-
+>> tools/testing/selftests/bpf/progs/verifier_gotox.c     |  4 ++--
+>> 4 files changed, 21 insertions(+), 3 deletions(-)
+>>
+>> -- 
+>> 2.52.0
 
 
-> could be merged either by Thomas (who merged 386ced19e9a3) or me (via
-> PCI tree).
+Please ignore my last results. Refer the below.
+
+
+# ./test_progs-cpuv4 -n 21
+#21/1    bpf_insn_array/one2one:OK
+#21/2    bpf_insn_array/simple:OK
+#21/3    bpf_insn_array/deletions:OK
+#21/4    bpf_insn_array/deletions-with-functions:OK
+#21/5    bpf_insn_array/blindness:OK
+#21/6    bpf_insn_array/incorrect-index:OK
+#21/7    bpf_insn_array/load-unfrozen-map:OK
+#21/8    bpf_insn_array/no-map-reuse:OK
+#21/9    bpf_insn_array/bpf-side-ops:OK
+#21      bpf_insn_array:OK
+Summary: 1/9 PASSED, 0 SKIPPED, 0 FAILED
+
+
+# ./test_progs-cpuv4 -n 20
+#20/1    bpf_gotox/one-switch:OK
+#20/2    bpf_gotox/one-switch-non-zero-sec-offset:OK
+#20/3    bpf_gotox/two-switches:OK
+#20/4    bpf_gotox/big-jump-table:OK
+#20/5    bpf_gotox/static-global:OK
+#20/6    bpf_gotox/nonstatic-global:OK
+#20/7    bpf_gotox/other-sec:OK
+#20/8    bpf_gotox/static-global-other-sec:OK
+#20/9    bpf_gotox/nonstatic-global-other-sec:OK
+#20/10   bpf_gotox/one-jump-two-maps:OK
+#20/11   bpf_gotox/one-map-two-jumps:OK
+#20/12   bpf_gotox/check-ldimm64-off:OK
+#20/13   bpf_gotox/check-ldimm64-off-gotox:OK
+#20      bpf_gotox:OK
+Summary: 1/13 PASSED, 0 SKIPPED, 0 FAILED
+
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
+
+
+> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 >
-> Bjorn
+> Tested this series and below are the results.
+>
+> ./test_progs-cpuv4 -n 21
+> #21/1    bpf_insn_array/one2one:OK
+> #21/2    bpf_insn_array/simple:OK
+> #21/3    bpf_insn_array/deletions:OK
+> #21/4    bpf_insn_array/deletions-with-functions:OK
+> #21/5    bpf_insn_array/blindness:OK
+> #21/6    bpf_insn_array/incorrect-index:OK
+> #21/7    bpf_insn_array/load-unfrozen-map:OK
+> #21/8    bpf_insn_array/no-map-reuse:OK
+> #21/9    bpf_insn_array/bpf-side-ops:OK
+> #21      bpf_insn_array:OK
+> Summary: 1/9 PASSED, 0 SKIPPED, 0 FAILED
+>
+>
+> ./test_progs-cpuv4 -n 20
+> #20/1    bpf_gotox/one-switch:SKIP
+> #20/2    bpf_gotox/one-switch-non-zero-sec-offset:SKIP
+> #20/3    bpf_gotox/two-switches:SKIP
+> #20/4    bpf_gotox/big-jump-table:SKIP
+> #20/5    bpf_gotox/static-global:SKIP
+> #20/6    bpf_gotox/nonstatic-global:SKIP
+> #20/7    bpf_gotox/other-sec:SKIP
+> #20/8    bpf_gotox/static-global-other-sec:SKIP
+> #20/9    bpf_gotox/nonstatic-global-other-sec:SKIP
+> #20/10   bpf_gotox/one-jump-two-maps:SKIP
+> #20/11   bpf_gotox/one-map-two-jumps:SKIP
+> #20/12   bpf_gotox/check-ldimm64-off:SKIP
+> #20/13   bpf_gotox/check-ldimm64-off-gotox:SKIP
+> #20      bpf_gotox:SKIP
+> Summary: 1/0 PASSED, 13 SKIPPED, 0 FAILED
+>
+> Regards,
+> Venkat.
+>
 >
 
