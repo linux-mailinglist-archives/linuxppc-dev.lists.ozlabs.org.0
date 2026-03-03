@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17608-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17609-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKX9ODoNp2k0cwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17608-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:32:58 +0100
+	id MJX+NiYPp2k0cwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17609-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:41:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F8D1F3DAC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056C01F3F81
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Mar 2026 17:41:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQLvC49KDz3bf8;
-	Wed, 04 Mar 2026 03:32:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQM4g2Lprz3bf8;
+	Wed, 04 Mar 2026 03:41:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772555575;
-	cv=none; b=JtKoflDvPh5NALuuiORhPHjpU9ENPW+25KKWflwkuJkDk2biWolw8d7pG8j38KzEBKu3jBhp9LPHU5H9IsKkkyvmRlwAKcWiCE5BZBoFwrzw4tYQNiHFnUzF7TXAPNpKW3UtJStZ/O5T8+GffGI5bEfOoKuo6XCXne8iQswyXOsVXx4/OCboqweENTnBQ/cFiMKe/oHQb2b4nakKGDqskjDxWLTmbE1Y4tPfpLGv7UdlEks++5UrP9lXIIT7OopbkVkVXdrLiNd19CzJ6sPBf3RHNBGio28LR7W8PnwZHPCzBSnJkZ7oK1VsH/pz/ok0oMl2cuXd78ZAULAFQlHoNg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772556067;
+	cv=none; b=H02OVexlFXYgekW46M3xrhuUWP1LgMAigweBV/K9wTH7AjgRE737e2xs4Ne3KsrH7/OxKJ35F/YYFzRIFKv94tiJvy5ZEtC9NxsM1sbjSSqR0PF7Qitfql9BtD1rbPsGYoYmJ4nf2303Rk4hUQYS6xj9+065dG9DaR+/N3kDiYadjnkEzOTzeKFS6vrQ4gVfj8tNgpFx/iMl0H4WJHGDtF29Pjwt09qOTdqjk4RHi/X0OCgXcfaKF86H51t/cJW4PzX8lgQqRgdwS8GvhSg0UIXWdZsFy7236wW5BecCb6XIXsmSdiTbPOYKEBGlcryIvUlsGGOaPOrVzLbBBu9FRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772555575; c=relaxed/relaxed;
-	bh=FEL/TtVbe5ASgkwZnfcfemXJ7VYjUN4DKcL0dOBph1o=;
+	t=1772556067; c=relaxed/relaxed;
+	bh=qCSHDHc/8ypToeqPN8PoWJeRLF0T6o3MKkWY9OPr7/4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZrI9YxFvl4qP6eTx0ovFN92FHti3Qy8Pbw31zLjzDwRmmyi1WN2xXdE7rgh4Ue+JdJ8R6En5+hwD0E1ILe+x+mJodxIGng3B42DiVYZmusNjvfj5V/UI8mtGsY5Tl2ccGEtQ29gbdXQX0NpCFcxp+/+scFJp/cGLaTzr2w6HLfYCx7nL9XwCkBMWzSaKfS15iM0/HXezt2gZgZ61QuqY/6BksmG6Phdw1ekUrmURfVwsOvhzqQvOfJtEJi9wNVBi+i9QEoQaaUOh5jeUFZ+Yn8Z1P2K+ddDy/eMJ9J3SsNWPCW84LrpEIrKZbeKt4+bhNz01ihCrRItPSD/na9AFbQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nDNY2kBm; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=PhYYxm/dRi8IVq2v2Md7AAJ9x7fMp0yXkpW0+iHuZDP9nlVrtDY+GO9xpdgJ8mqlrkaUncqfEfS37sc+8IKKcHpnreVLHEHx6Eeh5DBPAJnAEYEt9QibvbS5tJJS8a9W9Q7X4gCEYHbYCqSVIHZ+5qn3Pl3GFcmehpdtWL15aog42AWpLYWsZuiKJt14h6ky93MqbyMQCrvG86qP45cz54SE19V5txvuyFx7YNlrpU4ojQVKnGezc9yknOVD5vbFsbpnFF6mxdrTiQHjNo8/rUi6dj1CyzSVHD88qWxB2XgGm0t4EnQDT2kND40ph7Qwk3+OJUddS4gjgrrTbCc1Ug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hqoRkAxf; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nDNY2kBm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hqoRkAxf;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQLvB5M62z2xP9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 03:32:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQM4f3QvQz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 03:41:06 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3449A43F0E;
-	Tue,  3 Mar 2026 16:32:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008A2C116C6;
-	Tue,  3 Mar 2026 16:32:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B5D9E4349C;
+	Tue,  3 Mar 2026 16:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BD9C116C6;
+	Tue,  3 Mar 2026 16:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772555573;
-	bh=2Sl7aDOLhWSrJiQTk8Mgcff8zbQx95VCCn1PoV2FpZY=;
+	s=k20201202; t=1772556064;
+	bh=0LFa7vXZyD9LMEFVvzGin3tMycV+fpDYSnfRCbWLcEE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nDNY2kBmYN+NuwFo3thQ/sWHyhRgfQeHTyWHfBniHNjPL0oQI7rwVP4BAGGka2BVO
-	 X2eonOQTORKw4QyAvBe8SHzxKvYYXyRcQkhx11QEY4iezHoyT64BtvBlX/zrslkt8o
-	 TmzoL3Y7w1lww4tC8ombT9QBKmAzjT4qFDkONDvfp2oR2t+yNFM1oHn2WfDjnZrf73
-	 BuRfV7dQttvocIgye8lvZLJHANLxlbrfIiIalPMQ6tZuJeSyCAHEsrZwI4tw/4bZbD
-	 QmvrR7XLBlf8skl2ht4g6ytJIQCVDZVIfR9GCQISCD5amk7k+O3aibTOEoIWlXUS4c
-	 s5pzS6NssRWLA==
-Message-ID: <c5584cf8-1389-4df4-9fb7-19d9ee26ab9c@kernel.org>
-Date: Tue, 3 Mar 2026 17:32:43 +0100
+	b=hqoRkAxfE5twbIJWM8Ud9CZqn2sf98qKjlHpYvR8ECBXvt8ol3xRSaeN3+irT6sZB
+	 /1GDoD4Y1P7qEsKPh92/JptcJVXV3grvE8FdpeQCTzoMK1VNA9NwLI/ddd3FOhN32B
+	 LAw9wRjM5pfLAUnQ/rFdLuhbIoBlD58yH08Q9Oa4Y9wZkmM4k4+jm9wUOFPWEJR0bB
+	 x7Rq7FGb3nH9RSRPkzdn9r7PUUIWIqAF4sA97GNw6Ewd3//K4RjHZWizQuO5U21W1S
+	 so3AlHzhXfaFGCsaJRJV83dn1sbvi62l2YHvxlUrwvYq0oMSKtiZyBjdhsMSS9T2Z8
+	 B9cHur4uyhIbg==
+Message-ID: <139c7644-99e8-4d5a-a88e-74bf2b14f2cc@kernel.org>
+Date: Tue, 3 Mar 2026 17:40:55 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,8 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/13] mm/migrate_device: Introduce
- migrate_pfn_from_page() helper
+Subject: Re: [PATCH v6 02/13] drm/amdkfd: Use migrate pfns internally
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -77,11 +76,7 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
  ying.huang@linux.alibaba.com
 References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-2-jniethe@nvidia.com>
- <9ee22635-a219-47bb-a397-bc4e141b408d@kernel.org>
- <cf547dbb-af45-49d0-87a0-5267dedf0470@nvidia.com>
- <5182bb7d-f7cf-4b8e-8320-996c52fe24d8@kernel.org>
- <faaa84fd-095e-440b-9922-b4037a67416d@nvidia.com>
+ <20260202113642.59295-3-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,14 +123,14 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <faaa84fd-095e-440b-9922-b4037a67416d@nvidia.com>
+In-Reply-To: <20260202113642.59295-3-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: F0F8D1F3DAC
+X-Rspamd-Queue-Id: 056C01F3F81
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
@@ -146,7 +141,7 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17608-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17609-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,oracle.com,redhat.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au,linux.alibaba.com];
@@ -168,75 +163,59 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo,nvidia.com:email]
 X-Rspamd-Action: no action
 
-On 3/3/26 06:52, Jordan Niethe wrote:
-> Hi
+On 2/2/26 12:36, Jordan Niethe wrote:
+> A future change will remove device private pages from the physical
+> address space. This will mean that device private pages no longer have a
+> pfn.
 > 
-> On 2/3/26 20:22, David Hildenbrand (Arm) wrote:
->> On 3/2/26 00:38, Jordan Niethe wrote:
->>> Hi,
->>>
->>
->> I'll go through he remainder of the patchset this week.
+> A MIGRATE_PFN flag will be introduced that distinguishes between mpfns
+> that contain a pfn vs an offset into device private memory.
 > 
-> Much appreciated.
+> Replace usages of pfns and page_to_pfn() with mpfns and
+> migrate_pfn_to_page() to prepare for handling this distinction. This
+> will assist in continuing to use the same code paths for both
+> MEMORY_DEVICE_PRIVATE and MEMORY_DEVICE_COHERENT devices.
 > 
->>
->> While skimming over patch #2, I was wondering whether
->> "page_to_migration_pfn()" would better fit "migration_pfn_to_page".
+> Acked-by: Balbir Singh <balbirs@nvidia.com>
+> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> ---
+> v2:
+>   - New to series
+> v3:
+>   - No change
+> v4:
+>   - No change
+> ---
+>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 15 +++++++--------
+>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.h |  2 +-
+>  2 files changed, 8 insertions(+), 9 deletions(-)
 > 
-> I guess you were thinking about migration_pfn_/from/_page() rather than
-> "migration_pfn_to_page()"? Renaming it to page_to_migration_pfn() would
-> be fine.
+> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> index 297fa108ccf9..b6075a2808c2 100644
+> --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> @@ -210,17 +210,17 @@ svm_migrate_copy_done(struct amdgpu_device *adev, struct dma_fence *mfence)
+>  }
+>  
+>  unsigned long
+> -svm_migrate_addr_to_pfn(struct amdgpu_device *adev, unsigned long addr)
+> +svm_migrate_addr_to_mpfn(struct amdgpu_device *adev, unsigned long addr)
+>  {
+> -	return (addr + adev->kfd.pgmap.range.start) >> PAGE_SHIFT;
+> +	return migrate_pfn((addr + adev->kfd.pgmap.range.start) >> PAGE_SHIFT);
+>  }
 
-Yes. :)
+To make it clearer that the result is a "migrate pfn" I'd call this.
 
-page_to_migration_pfn() and migration_pfn_to_page()
+svm_addr_to_migrate_pfn()
 
-But really, we should only be dealing with folio migration longterm ...
+Not sure if maintainers have any other preference.
 
-> 
->>
->> ... and I was wondering why that code deals with pages instead of folios.
-> 
->>
->> E.g.,
->>
->>     page = folio_page(folio, 0);
->>     mpfn[i] = migrate_pfn_from_page(page);
->>
->> Should just be
->>
->>     mpfn[i] = folio_to_migration_pfn(folio);
->>
->> Right?
-> 
-> This patch is quite limited, essentially just converts usages of
-> migrate_pfn(page_to_pfn()) to migration_pfn_from_page().  However, I
-> agree, there could be scope for moving some of those usages to folios.
-> 
-> Was that example from drm_pagemap_migrate_populate_ram_pfn()?  There
-> 'page' goes on to be used elsewhere in the function so we'd need some
-> further refactoring to fully benefit.
-> 
-> I see migrate_vma_collect_huge_pmd() as a candidate for a
-> folio_to_migration_pfn() function too.
-
-All that code should be converted to folios (unless I am missing
-something important). We only support migration of folios, and all
-ZONE_DEVICE pages correspond to folios.
-
-E.g., in migrate_vma_setup() we're implicitly converting from page to
-folio multiple times, which is rather wasteful.
-
-Now, I don't think the conversion is your responsibility :)
-
-But you'd provide the folio helpers and use them where we can already.
-
-I'm fine with leaving the code the still operates purely on page to be
-converted later.
+Apart from that LGTM (someone should convert this code to use folios ;) ).
 
 -- 
 Cheers,
