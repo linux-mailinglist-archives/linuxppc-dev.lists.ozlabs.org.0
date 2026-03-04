@@ -1,80 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-17666-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17667-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AaUEuXgp2mrlAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17666-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:36:05 +0100
+	id iOxsIwLkp2mrlAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17667-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:49:22 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56921FBAA4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4A21FBD40
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:49:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQkxF0J05z3bp0;
-	Wed, 04 Mar 2026 18:36:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQlDV66yWz3btf;
+	Wed, 04 Mar 2026 18:49:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772609760;
-	cv=none; b=VQdrVGjS/nYTumt92l3XSDpdCUZ8tV/1p9VEXPE957idrFMmbgbAND+/3IgxPwzE20UUty+Ra70sy0U9cCCpLnu5ZXL7oDNwv7gGxXgbHNNPjcRaVUCl82DABNF/KuQ+wwCxaDBKn4kj+VcUd35Lx3qKJDT9L2JYVkpGl/fUdHji9MrZF5gR7saDqGOXcAn8O1oBGx7sppLn+cWroMB9T2hWhPfH8mclMne1CYfTJOznDRiK3e4Gl0zczBelK/DxlRQItOOtyLyPsT6zyJ+UwzDWDkD2cykF/ZDc0U/LUta4W4ZK7NjqX1Wrt7mKkGsSVZyvkauGGzzlNF+wr5huIQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772610554;
+	cv=none; b=Wdjl9ykrp65bMyS5UgEoy+x2X/FZ8mxhBMUEJBAYfnJrrHl49NY3SQts9aWniVZ44/P1f0F/kj1B2YOxW026N8+JRxqnAOXhli2go+gxHEf1bn/ASBiGPmSi/TyjiAguh6g9XuibvAbTlZfBzaYtrBPvVRc6bsQbqmFn1MxVe2y9tpg4UZgDkhSC2yUvN3O7pzsEwWY66o8P+Aq+oEfN1ysHiWi9WnCRGeGNCrEReBAC8EZ2C0qPIaESulCC7Zpf9jG20tqN9v2Dp+rs7rh0OOewROtGqhyROuStuVWJNygFh3pitDRXen98VnOR/OmhXF6qDq4qbhoBBbZly1Ykjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772609760; c=relaxed/relaxed;
-	bh=2nS0P0VdyIdVGVKOpPjEYkaSE/WndtzqXP/uXSM1srU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y/PKBTTeXWZkxvm9Fsk9+dIbffDqb3ole117VZGrSSzZmi+dml7UycqobZoqzHXxXLKhcwgLh25/Edkm8jnPibetM2g/0CYy9mRbUgL/itYsbk/GGTMKcHRcU2uu78JVdqKwyK8qz6QF7BF9swf9uZwwPmm5SMAc0rdPPnj36lBS/fbRmiUwpQW6ztBRidbbFN4o9iyTL1kVfnS5vREg5HF/rKaACFFt+Hu33Ja2hOmNEkfY6rNzrCwFj4cR7Qie0JCR+lRhs94+5aaI2TVC649Db0Jx6+O7hIwu/ux3F4alX+ZKROOWQeHeQrMWYEm/q/9tPgyVkhEFxUjBBre7WQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KgHt8zIL; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=FeUnLDHc; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	t=1772610554; c=relaxed/relaxed;
+	bh=tExRo9EdJB/0iC9aVc7h/nmkEcGApprYnjO2Gut37XU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NvdtFH+ElNajAhCaHryaVuXdaodAKc3Urj4B3CLXYUrv4q5DvOo6ddqYuSDsR6mY+eeuOyaHK/pcHpIdxVNTviOsrjvxpQxPyn+bLsmDS/9snFoZ48EArFCUfGwUQayuunMp/FO3IqRF7HjzYmwPIB0yVCGgNhf4azz4i+l5MzDm8FqoabYQl/D8JxJAsDz5uDNmdWCKTT3nv+gJwRC9THlD32jQSMESMyDRb5GYQFZ8aS4gUEQl1e/1l5PZ6ReezEzL5NFFje9waLWOfuRRfp3QDNBdwPB6oZOierrCAX2k0cgREvFKf5LTgVKvwO36NPGrqyvgnQEaD5bGnxk3Vw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=o3VFk9ts; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=CQlRXt4X; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KgHt8zIL;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=FeUnLDHc;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=o3VFk9ts;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=CQlRXt4X;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQkxC3hm8z2yFY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 18:35:59 +1100 (AEDT)
-Date: Wed, 4 Mar 2026 08:35:52 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQlDT6mrzz2yFY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 18:49:13 +1100 (AEDT)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772609753;
+	s=2020; t=1772610551;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2nS0P0VdyIdVGVKOpPjEYkaSE/WndtzqXP/uXSM1srU=;
-	b=KgHt8zILvTsVGSQwSsns57pHb2TloH3vD3uJPBjZl2obifyWkKUMup+CbS9Un0sr5Js9cn
-	loqMUEKO3VL7C5ZoAaV8p9F/s5rmENwDQMVMMJZ1e/xbJU9lb6NBOgib9IOkHN04LBeCYK
-	1btTqKkyq2KlPA6NLmuP25Gtx9M091s4DpATEeJd9Z6tZyZzFVQmvP4CYEx063m5Pe3DnJ
-	SCNABHQOqRKWwnQnn2LPqTZbhyjRMbg0HCABUFv/8PdA3Bc8BQBz2jTv/scLxIXHgmwCw8
-	Av89DsQgAibY7sITO5jpPlm/fukn3h3EnTBNkTaDvPbcGzrTyAjs6viGrE2/CA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tExRo9EdJB/0iC9aVc7h/nmkEcGApprYnjO2Gut37XU=;
+	b=o3VFk9tsY0/aMCaIuc4w5j5fckonqI0NeQ2OaPUEVz0wvbxECNWJTR+TvcZsXkl2ziILaC
+	opdicwcpYJwtXvsHtTpwtl10xe1cTgjgWhY3aouzwPCfBcCcQSG9m9/M5bZGxJ0g+FiRBO
+	vvzhiQoENAdN1v2fUx/jBTRx7NVQtmsSSzlUkB4jQTymS+h0mbZldRQa/TwOHh61pveuyw
+	yM6wBLtDIuxr8bIzOHARGazYC5nGirsbll4LCewJ6F1CtkvfjFR45nuY5VScT9XxMXXNpe
+	NKbKIw5xrbkDWOi5m3xZoM91SwOhUmIXRMj7ukrYTKOPDqVTYDWrfkeBxhiiTw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772609753;
+	s=2020e; t=1772610551;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2nS0P0VdyIdVGVKOpPjEYkaSE/WndtzqXP/uXSM1srU=;
-	b=FeUnLDHcbU/dyPEQom2WG/MpgJXSq3BKlAV0VeTApGMVedxpYe1ZsGp9BuW+Xo+X9+23M5
-	4zr2HrH69nZzcHCg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org
-Subject: Re: [PATCH 1/7] x86/vdso: Respect COMPAT_32BIT_TIME
-Message-ID: <20260304081505-a2a3a376-20c9-46cb-8dc9-2c4deec1a55e@linutronix.de>
-References: <20260227-vdso-compat_32bit_time-v1-0-3f0286a7bac3@linutronix.de>
- <20260227-vdso-compat_32bit_time-v1-1-3f0286a7bac3@linutronix.de>
- <c29f5e70-bd17-4e1b-a005-5a3282e70075@app.fastmail.com>
- <03cd1e21-a2f2-46a1-a674-cbaef9712016@app.fastmail.com>
- <20260227103226-cc3bb32c-0107-4c09-b81a-ca33ea03ad5c@linutronix.de>
- <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tExRo9EdJB/0iC9aVc7h/nmkEcGApprYnjO2Gut37XU=;
+	b=CQlRXt4Xe4r+u9aUimg3wpTf8//0PYh/7nJ3eh1e5EH3GDK90hhYh1Wq7szQXn2HMf4Z3y
+	zF1suGnKTfLvjqCA==
+Subject: [PATCH v6 00/14] sparc64: vdso: Switch to the generic vDSO library
+Date: Wed, 04 Mar 2026 08:48:57 +0100
+Message-Id: <20260304-vdso-sparc64-generic-2-v6-0-d8eb3b0e1410@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,32 +69,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XPTW7DIBAF4KtErEsFw6+z6j2iLgwMCVJlR5CiR
+ JHvXhyp9aJm+UZ63+g9ScGcsJDj4Uky1lTSPLWg3w7EX8bpjDSFlgkwUMwA0BrKTMt1zF5Lesa
+ p1T0FCioCMmVxAE9a+ZoxpvsLPn22fEnlNufH60/l6/WXlD2ycsooCqNH4QLIwD++0vR9y/OU7
+ u8BycpW2CjLVZeCRjkVo2XagJBmjxIbNXDTpUSjhDaD485bRLtHyT+KM94fKNeBTDPjohwCjnu
+ U2ijOdJdSjRpMjOC0khD/DVyW5QeQOxuZ7AEAAA==
+X-Change-ID: 20250722-vdso-sparc64-generic-2-25f2e058e92c
+To: Andy Lutomirski <luto@kernel.org>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Shannon Nelson <sln@onemain.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>
+Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+ linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ Arnd Bergmann <arnd@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772610551; l=5091;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=coa1rVPXvvfSKVXCp1hWICCYNOIY9jhKAe9k08Z13m4=;
+ b=1H28xfAD2yOev2Vntn45b+s1SK9oRczk3lLIF8UfBKz5V9GWLALD82hoRyRbTygmoK8fcOwwj
+ u+6aLBOPdaYBTLMN8AdpKgc/jYxHLZZSuJ8YVqDQNA3yoqv/LM3Gquk
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: D56921FBAA4
+X-Rspamd-Queue-Id: 7D4A21FBD40
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[arndb.de,kernel.org,redhat.com,alien8.de,linux.intel.com,armlinux.org.uk,arm.com,linux.ibm.com,ellerman.id.au,gmail.com,alpha.franken.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17666-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17667-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:arnd@arndb.de,m:davem@davemloft.net,m:andreas@gaisler.com,m:nick.alcock@oracle.com,m:jstultz@google.com,m:sboyd@kernel.org,m:glaubitz@physik.fu-berlin.de,m:shuah@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:tytso@mit.edu,m:Jason@zx2c4.com,m:linux@armlinux.org.uk,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:tsbogend@alpha.franken.de,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:sln@onemain.com,m:tglx@kernel.org,m:chleroy@kernel.org,m:linux-kernel@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:linux-mips@vger.kernel.org,m:linux-s390@vger.kernel.org,m:thomas.weissschuh@linutronix.de,m:arnd@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS(0.00)[m:hpa@zytor.com,m:arnd@arndb.de,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:tsbogend@alpha.franken.de,m:vincenzo.frascino@arm.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-mips@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[40];
+	FREEMAIL_TO(0.00)[kernel.org,arm.com,arndb.de,davemloft.net,gaisler.com,oracle.com,google.com,physik.fu-berlin.de,mit.edu,zx2c4.com,armlinux.org.uk,linux.ibm.com,ellerman.id.au,gmail.com,xen0n.name,alpha.franken.de,onemain.com];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[linutronix.de:+];
@@ -129,45 +146,121 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:email,linutronix.de:mid]
 X-Rspamd-Action: no action
 
-On Tue, Mar 03, 2026 at 10:11:52AM -0800, H. Peter Anvin wrote:
-> On 2026-02-27 01:34, Thomas Wei�schuh wrote:
-> >>>
-> >> The thing about gettimeofday() and time() is that they don't have
-> >> a 64-bit version and libc implementations are expected to call
-> >> clock_gettime() instead. The result was that there was never a
-> >> patch to turn the off either.
-> > 
-> > gettimeofday() is currently the only way to get the timezone of the kernel.
-> > But I guess this is a legacy thing anyways. If you say we should drop it,
-> > let's drop it.
-> > 
-> 
-> The time zone in the kernel has never worked anyway, as it would require the
-> kernel to contain at least the forward portion of the zoneinfo/tzdata table in
-> order to actually work correctly. The only plausible use of it would be for
-> local time-based filesystems like FAT, but I don't think we bother.
+The generic vDSO provides a lot common functionality shared between
+different architectures. SPARC is the last architecture not using it,
+preventing some necessary code cleanup.
 
-sys_tz is currently used by a bunch of drivers and filesystems (including FAT).
-It is also used when writing to the RTC.
+Make use of the generic infrastructure.
 
-> A bigger question is whether or not we should omit these from the vDSO
-> completely (potentially causing link failures) or replace them with stubs
-> returning -ENOSYS.
+Follow-up to and replacement for Arnd's SPARC vDSO removal patches:
+https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org/
 
-I am a bit confused here. You mention 'link failures' and in another mail
-'weak references as fallback'. Both are things that happen during linking
-('link failures' could also be interpreted as failures during loading).
-Somewhere else someone also mentioned the vDSO to be 'linkable'.
-But as far as I understand, only libc interprets the vDSO, it completely
-bypasses both the linker and the loader. And libc already does graceful
-fallbacks to the regular systemcalls if the vDSO is missing completely or
-lacks one of the functions, as both cases may happen on normal systems.
+SPARC64 can not map .bss into userspace, so the vDSO datapages are
+switched over to be allocated dynamically.
 
-What am I missing?
+Tested on a Niagara T4 and QEMU.
 
+This has emantic conflicts with
+* "vdso: Reject absolute relocations during build" [0]
+* "vDSO: Respect COMPAT_32BIT_TIME" [1]
 
-Thomas
+But I expect both other serieses to need more discussions.
+
+[0] https://lore.kernel.org/lkml/20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de/
+[1] https://lore.kernel.org/lkml/20260227-vdso-compat_32bit_time-v1-0-3f0286a7bac3@linutronix.de/
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Changes in v6:
+- Provide statically allocated during early boot to avoid canges to the rng core
+- Use non-compound data pages
+- Reword commit messages
+- Rebase on v7.0-rc1
+- Link to v5: https://lore.kernel.org/r/20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de
+
+Changes in v5:
+- Merge the patches for 'struct page' mapping and dynamic allocation
+- Zero out newly-allocated data pages
+- Pick up review tags
+- Link to v4: https://lore.kernel.org/r/20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de
+
+Changes in v4:
+- Rebase on v6.18-rc1.
+- Keep inclusion of asm/clocksource.h from linux/clocksource.h
+- Reword description of "s390/time: Set up vDSO datapage later"
+- Link to v3: https://lore.kernel.org/r/20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de
+
+Changes in v3:
+- Allocate vDSO data pages dynamically (and lots of preparations for that)
+- Drop clock_getres()
+- Fix 32bit clock_gettime() syscall fallback
+- Link to v2: https://lore.kernel.org/r/20250815-vdso-sparc64-generic-2-v2-0-b5ff80672347@linutronix.de
+
+Changes in v2:
+- Rebase on v6.17-rc1
+- Drop RFC state
+- Fix typo in commit message
+- Drop duplicate 'select GENERIC_TIME_VSYSCALL'
+- Merge "sparc64: time: Remove architecture-specific clocksource data" into the
+  main conversion patch. It violated the check in __clocksource_register_scale()
+- Link to v1: https://lore.kernel.org/r/20250724-vdso-sparc64-generic-2-v1-0-e376a3bd24d1@linutronix.de
+
+---
+Arnd Bergmann (1):
+      clocksource: remove ARCH_CLOCKSOURCE_DATA
+
+Thomas Weißschuh (13):
+      vdso/datastore: Reduce scope of some variables in vvar_fault()
+      vdso/datastore: Drop inclusion of linux/mmap_lock.h
+      vdso/datastore: Allocate data pages dynamically
+      sparc64: vdso: Link with -z noexecstack
+      sparc64: vdso: Remove obsolete "fake section table" reservation
+      sparc64: vdso: Replace code patching with runtime conditional
+      sparc64: vdso: Move hardware counter read into header
+      sparc64: vdso: Move syscall fallbacks into header
+      sparc64: vdso: Introduce vdso/processor.h
+      sparc64: vdso: Switch to the generic vDSO library
+      sparc64: vdso2c: Drop sym_vvar_start handling
+      sparc64: vdso2c: Remove symbol handling
+      sparc64: vdso: Implement clock_gettime64()
+
+ arch/sparc/Kconfig                         |   3 +-
+ arch/sparc/include/asm/clocksource.h       |   9 -
+ arch/sparc/include/asm/processor.h         |   3 +
+ arch/sparc/include/asm/processor_32.h      |   2 -
+ arch/sparc/include/asm/processor_64.h      |  25 --
+ arch/sparc/include/asm/vdso.h              |   2 -
+ arch/sparc/include/asm/vdso/clocksource.h  |  10 +
+ arch/sparc/include/asm/vdso/gettimeofday.h | 184 ++++++++++++++
+ arch/sparc/include/asm/vdso/processor.h    |  41 ++++
+ arch/sparc/include/asm/vdso/vsyscall.h     |  10 +
+ arch/sparc/include/asm/vvar.h              |  75 ------
+ arch/sparc/kernel/Makefile                 |   1 -
+ arch/sparc/kernel/time_64.c                |   6 +-
+ arch/sparc/kernel/vdso.c                   |  69 ------
+ arch/sparc/vdso/Makefile                   |   8 +-
+ arch/sparc/vdso/vclock_gettime.c           | 380 ++---------------------------
+ arch/sparc/vdso/vdso-layout.lds.S          |  26 +-
+ arch/sparc/vdso/vdso.lds.S                 |   2 -
+ arch/sparc/vdso/vdso2c.c                   |  24 --
+ arch/sparc/vdso/vdso2c.h                   |  45 +---
+ arch/sparc/vdso/vdso32/vdso32.lds.S        |   4 +-
+ arch/sparc/vdso/vma.c                      | 274 ++-------------------
+ include/linux/clocksource.h                |   6 +-
+ include/linux/vdso_datastore.h             |   6 +
+ init/main.c                                |   2 +
+ kernel/time/Kconfig                        |   4 -
+ lib/vdso/datastore.c                       |  97 +++++---
+ 27 files changed, 375 insertions(+), 943 deletions(-)
+---
+base-commit: f02e02079ac56b44ff89d4c2189cf7185ab794f3
+change-id: 20250722-vdso-sparc64-generic-2-25f2e058e92c
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
