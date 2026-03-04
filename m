@@ -1,63 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-17670-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17671-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLxVGBHkp2nqlQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17670-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:49:37 +0100
+	id cK6hHBXkp2mrlAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17671-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:49:41 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4071FBD9D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:49:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 914F61FBDAF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:49:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQlDX3GTjz3cBW;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQlDX5WGjz3cCh;
 	Wed, 04 Mar 2026 18:49:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772610556;
-	cv=none; b=LAwLY7Pgij6bZc19FJnZPpJUGRANOZNq8/fN3Z601GRoUg8K6BXA7IJs4x6MEfM3xhyUKi3PWMd5B9pWxSUP6/+PtgItYp2uJeDkyvkmdnnxubNVYmhzPsvsCnBzimRt+q02jyqZyvgkV0d+lPW47TRDal8qnPevZgcO3NqUYrxC1ii1l1ON8oVKm4gkdfCVrxBbnLXRZ3jz2wt3gn4plfE7bBPvHiHNPKvqLrwj/cEMv+8OiKyTqD9ROHuUdA+4rTA8UKsswmlEIUVth8MrZiVo3EyiKjnZE9a+J7Xa/4l16Dz1fuchc/2EUiZ5vNrxHe3EmOmN/IXh0VkmE5gKQw==
+	cv=none; b=MQMV7ysI9gUtoCkK19ZIABeOFaLThFwlw6YFm/62uFnAO/A85vpMrdtqjBW/bC2AXD+G4+93K6L2ZC/7SGsABPLkQ8BnjRr4/PKS84zUZ5mvMLWZm3eLUpxr+JMeUoM3cGJQAzvPXZ9TVTTygAc2107VBc+qpN2C2LycimiG0WrrqQSKQsh5yM6sXCC9NenYwih9FqVMMeWKYJ6Pd0HtiVYgRQk1w41h0m0mkinmvBQrysOmk3y60d4o12tSvNvLNu/VUcU+srWsSbzN270Q98FQV8MjEHI389DLWLvJaD0pTvYyKzH9aU1ILydER+xVXQGcVkb/gOpDbEvxSfk0/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1772610556; c=relaxed/relaxed;
-	bh=/rWvsehRIXce29TNjJEvdZ8YRusQeoqcAoiBdT6kTl0=;
+	bh=3hLl3UJUe0JlUFYLj4nzIajK0L1mkr7Nq97mAHeU6ig=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T5NOiQZSXA83KF6GDvyk4jHErYo2TEMsT2mArHCRUrdZsgYnbBXCAS0knPKmSa/Y4XPPhohr625yvGTwgRH8tXthLFomlyWDy/bONNxGZZlf487zhEZpM7VInYLhv2JJzkaGfNg6p4owQkWGHvC5K5BVpQElhb9ycYXWIeJ292abfY3+zdIms2EWnR8aAr3IKhAU0Uhjjm4M18KgA6P2vxTct6O5MWPBaxvF1lgRHWMyaTv9n0lxXvSh7T3xAbdjA118Eps81BEQkMSLa4SE1Vr11Zf5oJRHFr0y0eysOuAuUCSLZNWWaNkkCZrVBCM/xlB7D9f9L/gBk2lEdzU3bg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=oZeWtxJH; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AxuBqqoL; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=CUiwQi/lF1CA2CLnxK6TfxcsSZr0PPyNJZBfg8Yj7FbZApk4+ZTv+6os6sCdpmVuAkVIBSC0fwl8tnwtjdL/HYIqYWVM+ESrj4zy+jgYw+y7R7iczmzw+kF1ACcZmdoIoLBaYmh9gjkRKaxL9ppAxVRhpwK/05hz3ihEZ3gx91AC5l6v7HuCSq4w3XERlEHsIdbxPD/texAThC+dCcc0PhAPlqPVMDMBKj6eYYvBTkVqnYeZdYdaKFK4kxMabR8qynFHoL1ZODRcTctL/bteCE819U2O9smoM9pfCG8xinfKTJ+OYwmWTzJT7OnTmS4Vt67Zp6X+oEpp1e6iAy6QAg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=L4y8/yF5; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Od0cLbs5; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=oZeWtxJH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AxuBqqoL;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=L4y8/yF5;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Od0cLbs5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQlDW2Kfjz3c55
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQlDW5WCgz3c97
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 18:49:15 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772610552;
+	s=2020; t=1772610553;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/rWvsehRIXce29TNjJEvdZ8YRusQeoqcAoiBdT6kTl0=;
-	b=oZeWtxJHThpkfwfYGkghkvEnTVdlsM0XCEb/Wym4bJzKupBywzgbUBCZVDKNYBet0cCb2Q
-	2iI0P+Ioy1GijdWbe3D5hzpP/gEseijQBkv3oOvrEl0oOLM4WuCvSGeRc+0ANNn9O2LwV9
-	UhAfJje2YCILTSapL1CH/QXQ1nvOKsnZIJAsLQhVAupvI4V3S0YvSj/rQ4WE+rIXnfHnt3
-	2Q296THcr8DxeBTb1UWL5xXUVXdrIsJCrpLVKj7xr8RmK+03rble3I0Hu9KMDP2mTD54SK
-	Ga8uRjXMjVNoBUiypieRIra7M8a9FNqGilIplR3Gj6YAV0lmgctA7Dgrl/kkzA==
+	bh=3hLl3UJUe0JlUFYLj4nzIajK0L1mkr7Nq97mAHeU6ig=;
+	b=L4y8/yF5PnoYaWH20duPNlNUuPV25olJfyTZyvoQzM2Pkrdt/kV7nwLSquubjcgOiGMBe/
+	6HYQdEfBDaHsoloAnaw7WCB+s+OiSv8fmyz4PJ3xgg3Ehkis0nJ2UAlG8x8dCvCxHJiy0Y
+	EF1M9cRfXPaUonbTkq5EJwU0WI3u2Jvp5B7LuE+ZYy935lepISZ1y4n/YPeNro8aNi+9sK
+	RumpVlSaCC8eGmseya6Xt4aT6ZhS7GUueRvoH16kSFW5/Qp1M7j5l6mKMLOk5e2WLN2poi
+	yrrz6PsyDoAvmLVLxEmJ7e8fSimE8NI4WgWWpzHCnvj5XpjI++AmGGHwtkpC0A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772610552;
+	s=2020e; t=1772610553;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/rWvsehRIXce29TNjJEvdZ8YRusQeoqcAoiBdT6kTl0=;
-	b=AxuBqqoLpzq5QYZpWIVef0M3XFzmxsqHVppF2Mb0X4xgxSEFKdKhy7MNKJgUaYzIj+nBxt
-	umlJJH43PIE6jLCw==
-Date: Wed, 04 Mar 2026 08:49:00 +0100
-Subject: [PATCH v6 03/14] vdso/datastore: Allocate data pages dynamically
+	bh=3hLl3UJUe0JlUFYLj4nzIajK0L1mkr7Nq97mAHeU6ig=;
+	b=Od0cLbs5ssx+x/GYzlkjDjWqNrc5QP65d9w7Sue9ZGGb/uWIVjksTQPxw4BV9+66XRUG+y
+	FRojMnubw0bmXJCA==
+Date: Wed, 04 Mar 2026 08:49:01 +0100
+Subject: [PATCH v6 04/14] sparc64: vdso: Link with -z noexecstack
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,7 +73,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260304-vdso-sparc64-generic-2-v6-3-d8eb3b0e1410@linutronix.de>
+Message-Id: <20260304-vdso-sparc64-generic-2-v6-4-d8eb3b0e1410@linutronix.de>
 References: <20260304-vdso-sparc64-generic-2-v6-0-d8eb3b0e1410@linutronix.de>
 In-Reply-To: <20260304-vdso-sparc64-generic-2-v6-0-d8eb3b0e1410@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, 
@@ -99,35 +99,36 @@ Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772610551; l=8287;
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ Arnd Bergmann <arnd@kernel.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772610551; l=1503;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=/aUGAE0lOrUJa+MXOBug0Q/ajvSLIPP+DTvucfYYpX4=;
- b=++/j/b9aseUswi3C0/Jm0BXKf1bh4QB7BYWWTiGutU9uVbCtmQb3CosWeSTyVUjxTjIQBFh+n
- eG4Bl4a9vbsBCAaBj2RP6oXcHjceuh4VXShS9rA5fvNNiRzUvtPpCYz
+ bh=DbfqOziOrnW4MmYfhJif0AzTAR/TSeBQ63MMUE7Tk9k=;
+ b=+70M4kqx+cEzvYJptNErQU/f7vOQKI/r3/zFKWQsNHKYEjPQcbVICMvMGCiqgVJfQ48XGAAC0
+ Hr84p2bSVbQAfLf6ad70SVOi+sqV/4jj6fn2wY+ADyRA9XRnf0JNVER
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-	T_PHOTO_EDITING_DIRECT autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 6D4071FBD9D
+X-Rspamd-Queue-Id: 914F61FBDAF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17670-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17671-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:arnd@arndb.de,m:davem@davemloft.net,m:andreas@gaisler.com,m:nick.alcock@oracle.com,m:jstultz@google.com,m:sboyd@kernel.org,m:glaubitz@physik.fu-berlin.de,m:shuah@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:tytso@mit.edu,m:Jason@zx2c4.com,m:linux@armlinux.org.uk,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:tsbogend@alpha.franken.de,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:sln@onemain.com,m:tglx@kernel.org,m:chleroy@kernel.org,m:linux-kernel@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:linux-mips@vger.kernel.org,m:linux-s390@vger.kernel.org,m:thomas.weissschuh@linutronix.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:arnd@arndb.de,m:davem@davemloft.net,m:andreas@gaisler.com,m:nick.alcock@oracle.com,m:jstultz@google.com,m:sboyd@kernel.org,m:glaubitz@physik.fu-berlin.de,m:shuah@kernel.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:tytso@mit.edu,m:Jason@zx2c4.com,m:linux@armlinux.org.uk,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:tsbogend@alpha.franken.de,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:sln@onemain.com,m:tglx@kernel.org,m:chleroy@kernel.org,m:linux-kernel@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:loongarch@lists.linux.dev,m:linux-mips@vger.kernel.org,m:linux-s390@vger.kernel.org,m:thomas.weissschuh@linutronix.de,m:arnd@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[38];
+	RCPT_COUNT_TWELVE(0.00)[39];
 	FREEMAIL_TO(0.00)[kernel.org,arm.com,arndb.de,davemloft.net,gaisler.com,oracle.com,google.com,physik.fu-berlin.de,mit.edu,zx2c4.com,armlinux.org.uk,linux.ibm.com,ellerman.id.au,gmail.com,xen0n.name,alpha.franken.de,onemain.com];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -142,241 +143,40 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:email,linutronix.de:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:email,linutronix.de:mid,gaisler.com:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-Allocating the data pages as part of the kernel image does not work on
-SPARC. The MMU will through a fault when userspace tries to access them.
+The vDSO stack does not need to be executable. Prevent the linker from
+creating executable. For more background see commit ffcf9c5700e4 ("x86:
+link vdso and boot with -z noexecstack --no-warn-rwx-segments").
 
-Allocate the data pages through the page allocator instead.
-Unused pages in the vDSO VMA are still allocated to keep the virtual
-addresses aligned. Switch the mapping from PFNs to 'struct page' as that
-is required for dynamically allocated pages.
-This also aligns the allocation of the datapages with the code
-pages and is a prerequisite for mlockall() support.
+Also prevent the following warning from the linker:
+sparc64-linux-ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
+sparc64-linux-ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
 
-VM_MIXEDMAP is necessary for the call to vmf_insert_page() in the timens
-prefault path to work.
-
-The data pages need to be order-0, non-compound pages so that the
-mapping to userspace and the different orderings work.
-
-These pages are also used by the timekeeping, random pool and
-architecture initialization code. Some of these are running before the
-page allocator is available. To keep these subsytems working without
-changes, introduce early, statically data storage which will then
-replaced by the real one as soon as that is available.
-
+Suggested-by: Arnd Bergmann <arnd@kernel.org>
+Link: https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org/
+Fixes: 9a08862a5d2e ("vDSO for sparc")
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Tested-by: Andreas Larsson <andreas@gaisler.com>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
 ---
- include/linux/vdso_datastore.h |  6 +++
- init/main.c                    |  2 +
- lib/vdso/datastore.c           | 92 +++++++++++++++++++++++++++---------------
- 3 files changed, 68 insertions(+), 32 deletions(-)
+ arch/sparc/vdso/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/vdso_datastore.h b/include/linux/vdso_datastore.h
-index a91fa24b06e0..0b530428db71 100644
---- a/include/linux/vdso_datastore.h
-+++ b/include/linux/vdso_datastore.h
-@@ -2,9 +2,15 @@
- #ifndef _LINUX_VDSO_DATASTORE_H
- #define _LINUX_VDSO_DATASTORE_H
+diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
+index 1a4e585c91d7..2e911ccc9db7 100644
+--- a/arch/sparc/vdso/Makefile
++++ b/arch/sparc/vdso/Makefile
+@@ -107,4 +107,4 @@ quiet_cmd_vdso = VDSO    $@
+ 		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$(filter %.lds,$(^F))) \
+ 		       -T $(filter %.lds,$^) $(filter %.o,$^)
  
-+#ifdef CONFIG_HAVE_GENERIC_VDSO
- #include <linux/mm_types.h>
- 
- extern const struct vm_special_mapping vdso_vvar_mapping;
- struct vm_area_struct *vdso_install_vvar_mapping(struct mm_struct *mm, unsigned long addr);
- 
-+void __init vdso_setup_data_pages(void);
-+#else /* !CONFIG_HAVE_GENERIC_VDSO */
-+static inline void vdso_setup_data_pages(void) { }
-+#endif /* CONFIG_HAVE_GENERIC_VDSO */
-+
- #endif /* _LINUX_VDSO_DATASTORE_H */
-diff --git a/init/main.c b/init/main.c
-index 1cb395dd94e4..de867b2693d2 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -105,6 +105,7 @@
- #include <linux/ptdump.h>
- #include <linux/time_namespace.h>
- #include <linux/unaligned.h>
-+#include <linux/vdso_datastore.h>
- #include <net/net_namespace.h>
- 
- #include <asm/io.h>
-@@ -1119,6 +1120,7 @@ void start_kernel(void)
- 	srcu_init();
- 	hrtimers_init();
- 	softirq_init();
-+	vdso_setup_data_pages();
- 	timekeeping_init();
- 	time_init();
- 
-diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-index 7377fcb6e1df..faebf5b7cd6e 100644
---- a/lib/vdso/datastore.c
-+++ b/lib/vdso/datastore.c
-@@ -1,52 +1,79 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
--#include <linux/linkage.h>
-+#include <linux/gfp.h>
-+#include <linux/init.h>
- #include <linux/mm.h>
- #include <linux/time_namespace.h>
- #include <linux/types.h>
- #include <linux/vdso_datastore.h>
- #include <vdso/datapage.h>
- 
--/*
-- * The vDSO data page.
-- */
-+static u8 vdso_initdata[VDSO_NR_PAGES * PAGE_SIZE] __aligned(PAGE_SIZE) __initdata = {};
-+
- #ifdef CONFIG_GENERIC_GETTIMEOFDAY
--static union {
--	struct vdso_time_data	data;
--	u8			page[PAGE_SIZE];
--} vdso_time_data_store __page_aligned_data;
--struct vdso_time_data *vdso_k_time_data = &vdso_time_data_store.data;
--static_assert(sizeof(vdso_time_data_store) == PAGE_SIZE);
-+struct vdso_time_data *vdso_k_time_data __refdata =
-+	(void *)&vdso_initdata[VDSO_TIME_PAGE_OFFSET * PAGE_SIZE];
-+
-+static_assert(sizeof(struct vdso_time_data) <= PAGE_SIZE);
- #endif /* CONFIG_GENERIC_GETTIMEOFDAY */
- 
- #ifdef CONFIG_VDSO_GETRANDOM
--static union {
--	struct vdso_rng_data	data;
--	u8			page[PAGE_SIZE];
--} vdso_rng_data_store __page_aligned_data;
--struct vdso_rng_data *vdso_k_rng_data = &vdso_rng_data_store.data;
--static_assert(sizeof(vdso_rng_data_store) == PAGE_SIZE);
-+struct vdso_rng_data *vdso_k_rng_data __refdata =
-+	(void *)&vdso_initdata[VDSO_RNG_PAGE_OFFSET * PAGE_SIZE];
-+
-+static_assert(sizeof(struct vdso_rng_data) <= PAGE_SIZE);
- #endif /* CONFIG_VDSO_GETRANDOM */
- 
- #ifdef CONFIG_ARCH_HAS_VDSO_ARCH_DATA
--static union {
--	struct vdso_arch_data	data;
--	u8			page[VDSO_ARCH_DATA_SIZE];
--} vdso_arch_data_store __page_aligned_data;
--struct vdso_arch_data *vdso_k_arch_data = &vdso_arch_data_store.data;
-+struct vdso_arch_data *vdso_k_arch_data __refdata =
-+	(void *)&vdso_initdata[VDSO_ARCH_PAGES_START * PAGE_SIZE];
- #endif /* CONFIG_ARCH_HAS_VDSO_ARCH_DATA */
- 
-+void __init vdso_setup_data_pages(void)
-+{
-+	unsigned int order = get_order(VDSO_NR_PAGES * PAGE_SIZE);
-+	struct page *pages;
-+
-+	/*
-+	 * Allocate the data pages dynamically. SPARC does not support mapping
-+	 * static pages to be mapped into userspace.
-+	 * It is also a requirement for mlockall() support.
-+	 *
-+	 * Do not use folios. In time namespaces the pages are mapped in a different order
-+	 * to userspace, which is not handled by the folio optimizations in finish_fault().
-+	 */
-+	pages = alloc_pages(GFP_KERNEL, order);
-+	if (!pages)
-+		panic("Unable to allocate VDSO storage pages");
-+
-+	/* The pages are mapped one-by-one into userspace and each one needs to be refcounted. */
-+	split_page(pages, order);
-+
-+	/* Move the data already written by other subsystems to the new pages */
-+	memcpy(page_address(pages), vdso_initdata, VDSO_NR_PAGES * PAGE_SIZE);
-+
-+	if (IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
-+		vdso_k_time_data = page_address(pages + VDSO_TIME_PAGE_OFFSET);
-+
-+	if (IS_ENABLED(CONFIG_VDSO_GETRANDOM))
-+		vdso_k_rng_data = page_address(pages + VDSO_RNG_PAGE_OFFSET);
-+
-+	if (IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
-+		vdso_k_arch_data = page_address(pages + VDSO_ARCH_PAGES_START);
-+}
-+
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 			     struct vm_area_struct *vma, struct vm_fault *vmf)
- {
--	struct page *timens_page = find_timens_vvar_page(vma);
--	unsigned long pfn;
-+	struct page *page, *timens_page;
-+
-+	timens_page = find_timens_vvar_page(vma);
- 
- 	switch (vmf->pgoff) {
- 	case VDSO_TIME_PAGE_OFFSET:
- 		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
- 			return VM_FAULT_SIGBUS;
--		pfn = __phys_to_pfn(__pa_symbol(vdso_k_time_data));
-+		page = virt_to_page(vdso_k_time_data);
- 		if (timens_page) {
- 			/*
- 			 * Fault in VVAR page too, since it will be accessed
-@@ -56,10 +83,10 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 			vm_fault_t err;
- 
- 			addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
--			err = vmf_insert_pfn(vma, addr, pfn);
-+			err = vmf_insert_page(vma, addr, page);
- 			if (unlikely(err & VM_FAULT_ERROR))
- 				return err;
--			pfn = page_to_pfn(timens_page);
-+			page = timens_page;
- 		}
- 		break;
- 	case VDSO_TIMENS_PAGE_OFFSET:
-@@ -72,24 +99,25 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 		 */
- 		if (!IS_ENABLED(CONFIG_TIME_NS) || !timens_page)
- 			return VM_FAULT_SIGBUS;
--		pfn = __phys_to_pfn(__pa_symbol(vdso_k_time_data));
-+		page = virt_to_page(vdso_k_time_data);
- 		break;
- 	case VDSO_RNG_PAGE_OFFSET:
- 		if (!IS_ENABLED(CONFIG_VDSO_GETRANDOM))
- 			return VM_FAULT_SIGBUS;
--		pfn = __phys_to_pfn(__pa_symbol(vdso_k_rng_data));
-+		page = virt_to_page(vdso_k_rng_data);
- 		break;
- 	case VDSO_ARCH_PAGES_START ... VDSO_ARCH_PAGES_END:
- 		if (!IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
- 			return VM_FAULT_SIGBUS;
--		pfn = __phys_to_pfn(__pa_symbol(vdso_k_arch_data)) +
--			vmf->pgoff - VDSO_ARCH_PAGES_START;
-+		page = virt_to_page(vdso_k_arch_data) + vmf->pgoff - VDSO_ARCH_PAGES_START;
- 		break;
- 	default:
- 		return VM_FAULT_SIGBUS;
- 	}
- 
--	return vmf_insert_pfn(vma, vmf->address, pfn);
-+	get_page(page);
-+	vmf->page = page;
-+	return 0;
- }
- 
- const struct vm_special_mapping vdso_vvar_mapping = {
-@@ -101,7 +129,7 @@ struct vm_area_struct *vdso_install_vvar_mapping(struct mm_struct *mm, unsigned
- {
- 	return _install_special_mapping(mm, addr, VDSO_NR_PAGES * PAGE_SIZE,
- 					VM_READ | VM_MAYREAD | VM_IO | VM_DONTDUMP |
--					VM_PFNMAP | VM_SEALED_SYSMAP,
-+					VM_MIXEDMAP | VM_SEALED_SYSMAP,
- 					&vdso_vvar_mapping);
- }
- 
+-VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined
++VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined -z noexecstack
 
 -- 
 2.53.0
