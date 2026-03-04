@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGC2G/3yp2mtmwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 09:53:17 +0100
+	id ELX/F1Tzp2nImwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 09:54:44 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6CA1FCF75
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 09:53:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2811FCFC3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 09:54:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQmfJ3JGkz3bp0;
-	Wed, 04 Mar 2026 19:53:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQmh10LbPz3bp0;
+	Wed, 04 Mar 2026 19:54:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772614392;
-	cv=none; b=gYNJqcisENN4Km2UZa+2dN2MLnIRKYNhHDMys+Qfnty3ZZhyybL2nudOH/MweWvxAK35004T/4irlkYd5YBYneKEWgPyEFNZaIcP3tySf+isI8MIcRF1hzQNE5m/SV72ydBid6M0lkiVRxQT1Rxr/a531RsZFv5/WVuP77yleMEAMa7+FYW2OFBYd+kMAMvxYf3Nf6Qh2WebPOGqSDAXltL4amkAydeRg/bbowINQbLZpLL82pTvgcCnZ02WHIah/x71We/UmCydZc6XouvPhKsQ6A+dJ59vJ+Sqv78yiJPBgiauc1u5WY+kbyRMUOY97p7tbvqsArkz/KqK4uk19Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772614480;
+	cv=none; b=E8Y5ORaCycBqYvtlZi7esCHPHRw1tZophcJrb1NYDhkaJnn/iRT14mb9JkM48CuEW4PHPSjBe9UIQKfF3Mo57sMLEM8uHkb1tvIzp5EirVwsj8prwtDZmX0XesXvRtHDjotFmwstLLbtjWW/3/EHVWbFVIEpxEg99cIysTgXR8tR7j+P+5/wNIGNy1VNoUYPCMNsIyJPwaq4Fd4hszx8+k4oe4NSSfTamUnU6zKCB7URh7IEgmMFgbbw0p2d1tLpnTd+Oy+5iQU4YRKzjylTXcN6w+XGra8gKhpK6kfuFiB8FDWastqyg6gNfh8ICKQMPRFG2RWtGwkmVuFSE/x93Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772614392; c=relaxed/relaxed;
-	bh=B+66wSXz/9KLmuQpespPML/K60CzBNJY07z8y0t/IFE=;
+	t=1772614480; c=relaxed/relaxed;
+	bh=bARe5vahzlBecaWQ8CByabip2fvZsODg61fvn/CTpxY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FiaSG5K2WNf2rW1LtwXMfikjM80qqZ71W7ENZxmw0Iks1UfyipD+39eRsNeR6ge58mUnyP4YwocWRUlD3bo0MM1uLAKNcxB2GLZQABR0Fz7DMakf0j6WX4F+pkOVOl+R1DfU6nl4aOHhkwPRzIQfH5Nop/6KYq3raaqLWkT25UBiApOqQ9UcSNvHoXEM5QrN4B0zy0OjpPPs+7Ya2UZYV83fp3ne53g2XuLTfo5cZGQBDfEo2jWzWbavc6GHZEScXEY+2ruuRmpl+yam4u9Lg7aeBlWZYazO3LAFFtRiihIZhyutFT2IrUw8dTKRujiw0CIuk5aDaWy7bc6U0QOksQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q+bToVKt; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=foFzsBB1zm4khAx5xFygvyi7Ji72k0yPtFpGXhmTAHlO/IWZ7e2iGoMHVQheyYSZJKnLLQ9Wh+ANiUt8ukiqXzWXA9P+GuwrpVwTu2ih5O5JQy2W2HmyMC+qwErIW0ieBgMNv2DEBU70k5sG+SR3T/waoccu+Z/XgAniTDB5c5ihE12LYKwk0ufYJdiy9lT4cPQ5b5ApOIBxKEeC237wZT1Zq2PDXkJm5zuzoU67YegbEntQGo1FRl71m3q+p+ICSlzK4P2w7yPhRCZEL6tJDyNNsZMM+PWZRAdXEz/6UwvmfhUGUvNtMpDlDLorNnXHGaa8Q3yhTtwftXwqZOhjyQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kN8+2zA1; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q+bToVKt;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kN8+2zA1;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQmfH2rtyz2yFY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 19:53:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQmh01DdLz2yFY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 19:54:40 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72C3060097;
-	Wed,  4 Mar 2026 08:53:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6172BC19423;
-	Wed,  4 Mar 2026 08:53:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B6F060097;
+	Wed,  4 Mar 2026 08:54:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B57C19423;
+	Wed,  4 Mar 2026 08:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772614389;
-	bh=StrbMlm959BwZ1b5TDceBEL1IlRGm/TfDepBkeRT8uw=;
+	s=k20201202; t=1772614477;
+	bh=0bD5+ytOm5kpMEcwWBYleyhFBrc8X6uiBo5uYxm/1EQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q+bToVKtQ2sUUyFzW+MxYpCg3+2ivPfzpfkh6tCpuQA+fUBho85lQp0PgSq+teUTe
-	 i6/A2APPoeK4WgG9y2lhic2AZf/QYU9E/fSvBfDYkJkupYpNAQ94SZaseL4R9ERdwR
-	 QWaS0H0aC2vCR3BZgQUr1CYr+YAS1AFuunQDCS2Fn+Q0xH2/aNXHPHNJe1KZC/+NPd
-	 SRhNFHFqR03qBPTUGX2WeGOEBvRcFYiPr5D5g0T8nyvuXHcS13XrdMcEfRludkG2/5
-	 K5QzQDQSzbRfjjZvn4dX9Syj8KgM0K8XoaBy5m8qI3pCG4ulaLW4+dSXxfQsh49VoT
-	 VNL8NpDdK7fug==
-Message-ID: <e10b3f59-603b-4d7f-a4bf-91f4e9f51ae7@kernel.org>
-Date: Wed, 4 Mar 2026 09:53:05 +0100
+	b=kN8+2zA1E6Ozz23iEINk4XkaIUU9MBTbgeDZPYooipd4PtNDfmE4BAF0rYq+/UfNY
+	 NGadN4jE3eKkfm5kKgUtX9qKP6006J987V5HFaW+PF224G+z6mCOvYmASJIz9bygCi
+	 7MkIO2hT8xBxlW0eD/MC8K0BSVwjhvNMpM8Z40SX2DYwRQNG/OxE9skSOBh7yWob7l
+	 j+DiwTsiD9NH0Mig2jhEwuuKuIK1m/SgTjDKvyxtNpD3pbpXMxjUmpzijsY0PiPPpw
+	 TWuz4+azrBUQEhzVAMbB8s3R2shHAxLHXLDieWd0gJBwgT4CqZr5ptXV7GvqzWmU51
+	 d4QvbgLXqubAA==
+Message-ID: <8112d5f0-8d4d-4c48-98f9-231c786e59d8@kernel.org>
+Date: Wed, 4 Mar 2026 09:54:33 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,8 +64,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 01/10] powerpc/pgtable-frag: Fix bad page state in
- pte_frag_destroy
+Subject: Re: [RFC v1 02/10] powerpc: book3s64: Fix unmap race with PMD THP
+ migration entry
 To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
@@ -73,36 +73,37 @@ Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
- <62dfff55a7f4f465ac1f8077cee93e6e87ebddd0.1772013273.git.ritesh.list@gmail.com>
+ <6a1d3d5992307e181082b35ba238d7e09acc77a6.1772013273.git.ritesh.list@gmail.com>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <62dfff55a7f4f465ac1f8077cee93e6e87ebddd0.1772013273.git.ritesh.list@gmail.com>
+In-Reply-To: <6a1d3d5992307e181082b35ba238d7e09acc77a6.1772013273.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 8E6CA1FCF75
+X-Rspamd-Queue-Id: 6E2811FCFC3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17686-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17687-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-mm@kvack.org,m:hughd@google.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:aneesh.kumar@kernel.org,m:venkat88@linux.ibm.com,m:pavrampu@linux.vnet.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-mm@kvack.org,m:hughd@google.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:aneesh.kumar@kernel.org,m:venkat88@linux.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com,lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kvack.org,google.com,linux-foundation.org,linux.ibm.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[kvack.org,google.com,linux-foundation.org,linux.ibm.com,gmail.com,kernel.org,linux.vnet.ibm.com];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -116,8 +117,8 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
@@ -126,80 +127,112 @@ X-Rspamd-Action: no action
 
 
 Le 25/02/2026 à 12:04, Ritesh Harjani (IBM) a écrit :
-> powerpc uses pt_frag_refcount as a reference counter for tracking it's
-> pte and pmd page table fragments. For PTE table, in case of Hash with
-> 64K pagesize, we have 16 fragments of 4K size in one 64K page.
+> The following race is possible with migration swap entries or
+> device-private THP entries. e.g. when move_pages is called on a PMD THP
+> page, then there maybe an intermediate state, where PMD entry acts as
+> a migration swap entry (pmd_present() is true). Then if an munmap
+> happens at the same time, then this VM_BUG_ON() can happen in
+> pmdp_huge_get_and_clear_full().
 > 
-> Patch series [1] "mm: free retracted page table by RCU"
-> added pte_free_defer() to defer the freeing of PTE tables when
-> retract_page_tables() is called for madvise MADV_COLLAPSE on shmem
-> range.
-> [1]: https://lore.kernel.org/all/7cd843a9-aa80-14f-5eb2-33427363c20@google.com/
+> This patch fixes that.
 > 
-> pte_free_defer() sets the active flag on the corresponding fragment's
-> folio & calls pte_fragment_free(), which reduces the pt_frag_refcount.
-> When pt_frag_refcount reaches 0 (no active fragment using the folio), it
-> checks if the folio active flag is set, if set, it calls call_rcu to
-> free the folio, it the active flag is unset then it calls pte_free_now().
+> Thread A: move_pages() syscall
+>    add_folio_for_migration()
+>      mmap_read_lock(mm)
+>      folio_isolate_lru(folio)
+>      mmap_read_unlock(mm)
 > 
-> Now, this can lead to following problem in a corner case...
+>    do_move_pages_to_node()
+>      migrate_pages()
+>        try_to_migrate_one()
+>          spin_lock(ptl)
+>          set_pmd_migration_entry()
+>            pmdp_invalidate()     # PMD: _PAGE_INVALID | _PAGE_PTE | pfn
+>            set_pmd_at()          # PMD: migration swap entry (pmd_present=0)
+>          spin_unlock(ptl)
+>          [page copy phase]       # <--- RACE WINDOW -->
 > 
-> [  265.351553][  T183] BUG: Bad page state in process a.out  pfn:20d62
-> [  265.353555][  T183] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x20d62
-> [  265.355457][  T183] flags: 0x3ffff800000100(active|node=0|zone=0|lastcpupid=0x7ffff)
-> [  265.358719][  T183] raw: 003ffff800000100 0000000000000000 5deadbeef0000122 0000000000000000
-> [  265.360177][  T183] raw: 0000000000000000 c0000000119caf58 00000000ffffffff 0000000000000000
-> [  265.361438][  T183] page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-> [  265.362572][  T183] Modules linked in:
-> [  265.364622][  T183] CPU: 0 UID: 0 PID: 183 Comm: a.out Not tainted 6.18.0-rc3-00141-g1ddeaaace7ff-dirty #53 VOLUNTARY
-> [  265.364785][  T183] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
-> [  265.364908][  T183] Call Trace:
-> [  265.364955][  T183] [c000000011e6f7c0] [c000000001cfaa18] dump_stack_lvl+0x130/0x148 (unreliable)
-> [  265.365202][  T183] [c000000011e6f7f0] [c000000000794758] bad_page+0xb4/0x1c8
-> [  265.365384][  T183] [c000000011e6f890] [c00000000079c020] __free_frozen_pages+0x838/0xd08
-> [  265.365554][  T183] [c000000011e6f980] [c0000000000a70ac] pte_frag_destroy+0x298/0x310
-> [  265.365729][  T183] [c000000011e6fa30] [c0000000000aa764] arch_exit_mmap+0x34/0x218
-> [  265.365912][  T183] [c000000011e6fa80] [c000000000751698] exit_mmap+0xb8/0x820
-> [  265.366080][  T183] [c000000011e6fc30] [c0000000001b1258] __mmput+0x98/0x300
-> [  265.366244][  T183] [c000000011e6fc80] [c0000000001c81f8] do_exit+0x470/0x1508
-> [  265.366421][  T183] [c000000011e6fd70] [c0000000001c95e4] do_group_exit+0x88/0x148
-> [  265.366602][  T183] [c000000011e6fdc0] [c0000000001c96ec] pid_child_should_wake+0x0/0x178
-> [  265.366780][  T183] [c000000011e6fdf0] [c00000000003a270] system_call_exception+0x1b0/0x4e0
-> [  265.366958][  T183] [c000000011e6fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> Thread B: munmap()
+>    mmap_write_downgrade(mm)
+>    unmap_vmas() -> zap_pmd_range()
+>      zap_huge_pmd()
+>        __pmd_trans_huge_lock()
+>          pmd_is_huge():          # !pmd_present && !pmd_none -> TRUE (swap entry)
+>          pmd_lock() -> 		# spin_lock(ptl), waits for Thread A to release ptl
+>        pmdp_huge_get_and_clear_full()
+>          VM_BUG_ON(!pmd_present(*pmdp))  # HITS!
 > 
-> The bad page state error occurs when such a folio gets freed (with
-> active flag set), from do_exit() path in parallel.
+> [  287.738700][ T1867] ------------[ cut here ]------------
+> [  287.743843][ T1867] kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:187!
+> cpu 0x0: Vector: 700 (Program Check) at [c00000044037f4f0]
+>      pc: c000000000094ca4: pmdp_huge_get_and_clear_full+0x6c/0x23c
+>      lr: c000000000645dec: zap_huge_pmd+0xb0/0x868
+>      sp: c00000044037f790
+>     msr: 800000000282b033
+>    current = 0xc0000004032c1a00
+>    paca    = 0xc000000004fe0000   irqmask: 0x03   irq_happened: 0x09
+>      pid   = 1867, comm = a.out
+> kernel BUG at :187!
+> Linux version 6.19.0-12136-g14360d4f917c-dirty (powerpc64le-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #27 SMP PREEMPT Sun Feb 22 10:38:56 IST 2026
+> enter ? for help
+> [link register   ] c000000000645dec zap_huge_pmd+0xb0/0x868
+> [c00000044037f790] c00000044037f7d0 (unreliable)
+> [c00000044037f7d0] c000000000645dcc zap_huge_pmd+0x90/0x868
+> [c00000044037f840] c0000000005724cc unmap_page_range+0x176c/0x1f40
+> [c00000044037fa00] c000000000572ea0 unmap_vmas+0xb0/0x1d8
+> [c00000044037fa90] c0000000005af254 unmap_region+0xb4/0x128
+> [c00000044037fb50] c0000000005af400 vms_complete_munmap_vmas+0x138/0x310
+> [c00000044037fbe0] c0000000005b0f1c do_vmi_align_munmap+0x1ec/0x238
+> [c00000044037fd30] c0000000005b3688 __vm_munmap+0x170/0x1f8
+> [c00000044037fdf0] c000000000587f74 sys_munmap+0x2c/0x40
+> [c00000044037fe10] c000000000032668 system_call_exception+0x128/0x350
+> [c00000044037fe50] c00000000000d05c system_call_vectored_common+0x15c/0x2ec
+> ---- Exception: 3000 (System Call Vectored) at 0000000010064a2c
+> SP (7fff9b1ee9c0) is in userspace
+> 0:mon> zh
 > 
-> ... this can happen when the pte fragment was allocated from this folio,
-> but when all the fragments get freed, the pte_frag_refcount still had some
-> unused fragments. Now, if this process exits, with such folio as it's cached
-> pte_frag in mm->context, then during pte_frag_destroy(), we simply call
-> pagetable_dtor() and pagetable_free(), meaning it doesn't clear the
-> active flag. This, can lead to the above bug. Since we are anyway in
-> do_exit() path, then if the refcount is 0, then I guess it should be
-> ok to simply clear the folio active flag before calling pagetable_dtor()
-> & pagetable_free().
-> 
-> Fixes: 32cc0b7c9d50 ("powerpc: add pte_free_defer() for pgtables sharing page")
+> Fixes: 75358ea359e7c ("powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel page fault race")
+> Reported-by: Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
 > Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
 Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
 > ---
->   arch/powerpc/mm/pgtable-frag.c | 1 +
->   1 file changed, 1 insertion(+)
+>   arch/powerpc/mm/book3s64/pgtable.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-> index 77e55eac16e4..ae742564a3d5 100644
-> --- a/arch/powerpc/mm/pgtable-frag.c
-> +++ b/arch/powerpc/mm/pgtable-frag.c
-> @@ -25,6 +25,7 @@ void pte_frag_destroy(void *pte_frag)
->   	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
->   	/* We allow PTE_FRAG_NR fragments from a PTE page */
->   	if (atomic_sub_and_test(PTE_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
-> +		folio_clear_active(ptdesc_folio(ptdesc));
->   		pagetable_dtor(ptdesc);
->   		pagetable_free(ptdesc);
->   	}
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index 4b09c04654a8..359092001670 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -210,8 +210,23 @@ pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
+>   {
+>   	pmd_t pmd;
+>   	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
+> -	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)) ||
+> -		   !pmd_present(*pmdp));
+> +	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)));
+> +
+> +	if (!pmd_present(*pmdp)) {
+> +		/*
+> +		 * Non-present PMDs can be migration entries or device-private
+> +		 * THP entries. Since these are non-present, so there is no TLB
+> +		 * backing. This happens when the address space is being
+> +		 * unmapped zap_huge_pmd(), and we encounter non-present pmds.
+> +		 * So it is safe to just clear the PMDs here. zap_huge_pmd(),
+> +		 * will take care of withdraw of the deposited table.
+> +		 */
+> +		pmd = pmdp_get(pmdp);
+> +		pmd_clear(pmdp);
+> +		page_table_check_pmd_clear(vma->vm_mm, addr, pmd);
+> +		return pmd;
+> +	}
+> +
+>   	pmd = pmdp_huge_get_and_clear(vma->vm_mm, addr, pmdp);
+>   	/*
+>   	 * if it not a fullmm flush, then we can possibly end up converting
+> --
+> 2.53.0
+> 
 
 
