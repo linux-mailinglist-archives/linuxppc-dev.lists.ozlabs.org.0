@@ -1,73 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-17733-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17734-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KYtLzh+qGmYvAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17733-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 19:47:20 +0100
+	id SFfIEH2BqGmYvAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17734-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 20:01:17 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C831D2069C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 19:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5334D206C5C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 20:01:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fR1ql2hGcz3c2k;
-	Thu, 05 Mar 2026 05:47:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fR27s42jxz3c2R;
+	Thu, 05 Mar 2026 06:01:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=82.65.109.163
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772650035;
-	cv=none; b=LUUloLHOB/9IkSV+HRgIP2h6LULe6nd1U5vKf/b7SQ2PQC5KvstxKhGBnq9brXqZfV+Eh9wt5MFtaB616Mwbja4Oh5qqEyqs0d9mYjzd4Z+fG5eE058cu0iHiHqL2Lspsi95KNbkin0e6xB7/m2ijw3f+MdEym/OnmSw0iQzWhbGbjDgRFv5bPwU196ya1TPwJYYcVW4DlWg9qbNWmrFu9jO5DfGRDq7fdSbwIsq2WVz2uUYK3s52D7+p3Xbmmj1iKnxo+8/bkf6cZBwOXXrTZuXbuA9xS0COrPQm0W9USfUEXjQiCiWMNdVOUrwz0lbhSGWbZsdIEw2zfxcHiu08Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772650873;
+	cv=none; b=luC4MI4cxVTS0VRya63fVjsDxpYjqSI0KsXZ+hvVcYdy3fgMpk/+YXxRviQsr1M4dcGW3trDlBXtQv3bhSjgRCPZtsEbV+QDTzssefW68BXo2OCSBxfGOK+LU4WGKWt3r5K4y/oVjHPcxrZfRJablMzuHUQgqFVCHQ2PT0hE6gxGzLKZeIdZCI/IC5hD7j5uOSMs2KGRhKdc035haLT7KZ8IrV8Q8KqImq76NXCeU1DKhI1FrPaH7A1SghicAm6/DwxEFexHv0yXCVOT7BxLS/dirCugGeA5LAw3LpZb8FQl4stLJqDQbMYB6IolBe+B24t71dLVOZddnhH+Ky5V/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772650035; c=relaxed/relaxed;
-	bh=dzCHBWMrd9w+GUDKyr3YgtkjLsg3arxs4nOnEeh92lw=;
+	t=1772650873; c=relaxed/relaxed;
+	bh=Wh9qbG+FlyiO8UJnUIqCRxZKnSQBC+n2Ht087H8Gkjc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xc3iICRAD3i+cTJfDfHuR2IAKPyM0wSMhCiuxSE8LCnFArybnCPJsYO3MAUbXgVqs38pbuiLo6MYX36Gr5NOSZLkhi4oxO/Mr8n1AiknbddtZHIVvrqiWoS3k3V8hf20/3aSEz1i6GgweCxcYWmw57AWIdLIWmy9qwqPHVqGZpWp0JAwn2vyAQUhBmRoobDOqoOKK8IxA2KiPi20R2JKoDVvgB9DxUvM7LTqZGbHVCnNBDk1TN3xk6eyZ0uqlD10ZUdl2SkNHuYnJRt8rtmrPHUqkck2Kzt/RxDSx3mdgqKpwrwLSGX4a4OFrepHPOjV+nwjXmgOXe9XLkoGWO/DwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass (client-ip=82.65.109.163; helo=luna.linkmauve.fr; envelope-from=linkmauve@linkmauve.fr; receiver=lists.ozlabs.org) smtp.mailfrom=linkmauve.fr
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linkmauve.fr (client-ip=82.65.109.163; helo=luna.linkmauve.fr; envelope-from=linkmauve@linkmauve.fr; receiver=lists.ozlabs.org)
-Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+	 Content-Type:Content-Disposition:In-Reply-To; b=HPpU+/YgLr9BbeZjqtUCJbwqllJ22e2jUSNUOyi/J7VLxrSOnXw1mbU5bd0mmJVzTvYRCun61uXDKVTOJJo1Lhm4jzMcnJxcpsjXX5DWi8klrTYsv2m+4RqgYZU3O+H/gY4GzyAIGKGHRvu6T1lTV1bYpUcyqCATe4VnlziKwlLvoeA7u3BdNBoU9FiQPF3Zh8T5jUt9czx8CN1g6oGcWd/Q7tXnCqNDDTfr/bfSOSLSqJfI/NJrGhCJMjm51fvWB7gp8eZlJIcGhx5Hm9CCc6u/fbtEIwbV33llIJpceNhTGObURVNEnapjz7dq6mzJejsJPJKkVecoQ2aXgp7rWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Ux/svElR; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Ux/svElR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fR1qj6FX0z3c1J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 05:47:12 +1100 (AEDT)
-Received: by luna.linkmauve.fr (Postfix, from userid 1000)
-	id C5E68F4392B; Wed, 04 Mar 2026 19:46:59 +0100 (CET)
-Date: Wed, 4 Mar 2026 19:46:59 +0100
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: rust-for-linux@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fR27q2XKcz3c1J
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 06:01:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Wh9qbG+FlyiO8UJnUIqCRxZKnSQBC+n2Ht087H8Gkjc=; b=Ux/svElRXHueLOyBqfF1CjH034
+	pVIaaWu+XZ2IzFCkCimQhpcWBz9HZWxXo3fVhBUVfsKzd83PTHdpBmtxIBz/2mEOeJwJMgHCUTHYY
+	zPBWTxPIV4MAJw9I8nQsZAl2i/EIG2gVB/J7B7ks4SVOi2uD4WQdtxAPSGwNJpKbiEYLofE5P1cNw
+	dG5JNemsOusR9NtxvbnEYiu3NLsng+pstSqqwC//Jq1omGSBxGMvOZNQi1if8OH7Awpt9YFIxf5u8
+	gl/KAQsccjpTpyVG559RaXJAx58uOAdor3zwhjmi1zoJUGXCJCAxO1aPyYGmZS/S754Y4GFoZ8vQz
+	cSkTSC1A==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vxrSh-0000000Dl6K-15gd;
+	Wed, 04 Mar 2026 19:00:47 +0000
+Date: Wed, 4 Mar 2026 19:00:47 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	officialTechflashYT@gmail.com, Ash Logan <ash@heyquark.com>,
-	Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
-	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>
-Subject: Re: [PATCH v2 3/4] nvmem: Replace the Wii and Wii U OTP driver with
- a Rust one
-Message-ID: <aah-I7qxeI0Va3Qy@luna>
-References: <20260204040505.8447-1-linkmauve@linkmauve.fr>
- <20260204040505.8447-4-linkmauve@linkmauve.fr>
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	vbabka@suse.cz, jannh@google.com, rppt@kernel.org, mhocko@suse.com,
+	pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+	agordeev@linux.ibm.com, svens@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with
+ vma_start_write_killable()
+Message-ID: <aaiBX5Mm36Kg0wq1@casper.infradead.org>
+References: <20260226070609.3072570-1-surenb@google.com>
+ <20260226070609.3072570-3-surenb@google.com>
+ <74bffc7a-2b8c-40ae-ab02-cd0ced082e18@lucifer.local>
+ <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
+ <aadeHiMqhHF0EQkt@casper.infradead.org>
+ <CAJuCfpFB1ON8=rkqu3MkrbD2mVBeHLK4122nm9RH31fH3hT2Hw@mail.gmail.com>
+ <aael1XWaOJN134la@casper.infradead.org>
+ <76aff8f9-1c08-449a-a034-f3b93440d1a8@lucifer.local>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,90 +91,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260204040505.8447-4-linkmauve@linkmauve.fr>
-Jabber-ID: linkmauve@linkmauve.fr
-X-Spam-Status: No, score=0.4 required=3.0 tests=RDNS_DYNAMIC,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <76aff8f9-1c08-449a-a034-f3b93440d1a8@lucifer.local>
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: C831D2069C8
+X-Rspamd-Queue-Id: 5334D206C5C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.49 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[linkmauve.fr];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17734-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:surenb@google.com,m:lorenzo.stoakes@oracle.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:vbabka@suse.cz,m:jannh@google.com,m:rppt@kernel.org,m:mhocko@suse.com,m:pfalcato@suse.de,m:kees@kernel.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-s390@vger.kerne
+ l.org,m:ritesh.list@gmail.com,m:joshuahahnjy@gmail.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[willy@infradead.org,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[44];
 	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[linkmauve@linkmauve.fr,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17733-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FORGED_RECIPIENTS(0.00)[m:linkmauve@linkmauve.fr,m:rust-for-linux@vger.kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:srini@kernel.org,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:daniel.almeida@collabora.com,m:ardb@kernel.org,m:martin.petersen@oracle.com,m:ebiggers@google.com,m:gregkh@linuxfoundation.org,m:lyude@redhat.com,m:lina+kernel@asahilina.net,m:viresh.kumar@linaro.org,m:lorenzo.stoakes@oracle.com,m:tamird@kernel.org,m:fujita.tomonori@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:officialTechflashYT@gmail.com,m:ash@heyquark.com,m:rw-r-r-0644@protonmail.com,m:j.neuschaefer@gmx.net,m:lina@asahilina.net,m:fujitatomonori@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,kernel.org,nvidia.com,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,redhat.com,arm.com,linux.dev,suse.cz,suse.com,suse.de,linux.ibm.com,ellerman.id.au,kvack.org,lists.ozlabs.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.988];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkmauve@linkmauve.fr,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,collabora.com,oracle.com,linuxfoundation.org,redhat.com,asahilina.net,linaro.org,lists.ozlabs.org,heyquark.com,gmx.net];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,kernel];
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,linkmauve.fr:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,casper.infradead.org:mid,infradead.org:dkim]
 X-Rspamd-Action: no action
 
-Hi,
-
-I’m working on a v3 of this series atm.
-
-On Wed, Feb 04, 2026 at 05:05:00AM +0100, Link Mauve wrote:
-> I wrote this driver long ago, and wanted to try seeing how hard it would
-> be to convert it to Rust.
+On Wed, Mar 04, 2026 at 04:53:27PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Wed, Mar 04, 2026 at 03:24:05AM +0000, Matthew Wilcox wrote:
+> > We could literally return any error code -- it never makes it to
+> > userspace.  I forget where it is, but if you follow the syscall
+> > return to user path, a dying task never makes it to running a single
+> > instruction.
 > 
-> It is a very simple driver, we write the address we want to read in one
-> memory address, and read the data from a second memory address.  A third
-> memory address can be used to disable all reads in a range until the
-> system has been rebooted, but I didn’t find any reason to expose that
-> feature.
+> Thanks for that Matthew, that makes life easier then.
 > 
-> I made sure to use no unsafe in this driver, to make sure the API
-> exposed in the previous commit is usable.
-> 
-> Ideally we wouldn’t have to impl the write() function in
-> NintendoOtpProvider, but currently the vtable requires both.
-> 
-> I have tested this driver only on a Wii so far, but I assume it will
-> work the same on a Wii U, just exposing more memory banks.
-> 
-> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
-> ---
->  drivers/nvmem/Kconfig         |   1 +
->  drivers/nvmem/Makefile        |   2 +-
->  drivers/nvmem/nintendo-otp.c  | 122 --------------------------------
->  drivers/nvmem/nintendo_otp.rs | 127 ++++++++++++++++++++++++++++++++++
->  4 files changed, 129 insertions(+), 123 deletions(-)
->  delete mode 100644 drivers/nvmem/nintendo-otp.c
->  create mode 100644 drivers/nvmem/nintendo_otp.rs
+> We can probably replace some of the more horrid if (err == -EINTR) stuff with
+> fatal_signal_pending(current) to be clearer as a result.
 
-Should I make it a Rust reference driver[1] and keep the C version, or
-is replacing the C driver like I’m doing here okay?  Ideally I would
-only maintain the Rust version in the end, but I’m fine with maintaining
-both for the time being, until we have everything sorted out.
-
-[1] https://rust-for-linux.com/rust-reference-drivers
-
--- 
-Link Mauve
+Umm.  Be careful?  fatal_signal_pending() may become true at a later
+point, so you may have acquired the lock _and_ fatal_signal_pending()
+can be true.  I'd need to audit a patch to be sure that it's a
+reasonable replacement.
 
