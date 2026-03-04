@@ -1,95 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-17715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17718-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDxcFEYWqGlTnwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 12:23:50 +0100
+	id UCLtGPAlqGlhowAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17718-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 13:30:40 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88ED1FEE9E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 12:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 034DE1FFB38
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 13:30:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQr016s6Jz3bp0;
-	Wed, 04 Mar 2026 22:23:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQsT805QDz3btw;
+	Wed, 04 Mar 2026 23:30:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772623425;
-	cv=none; b=DJsbXzVJ0oKnHsb8BAaH8EHm1xfAfPZwEL1IGLHh/Yruv/Zut5xNA3CtpzGz9I3XTLKc9jfRjEBoJu/vmUXuz0XQyL67aqZ8bO04iQuUFVcb7MG3RJ+eM3ripDDTSO21lrW7BLsPEU2IAXkgmSxPSIJRtBIWR7MNTIeq/nXxVzAF6PnnM7Xz8edpyVZ5y4DtPPURyQ7fT2uZnlpvlc6eWa9ZAj6orF7jrjsX2FmY1Z7Y+84nXAfZONJ3fHzH9xN/J4opFQccUlMgcnMc76T7EfKHq8+63BhGe53yNJPAbCFL4+ORUmjPcoJz3Ye5oN7sb6Odj6Su7Xepv6C0LGs5GA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772625394;
+	cv=none; b=HEMIwMXqrfHl1MyJ+K3GuMvqzg9FdVPG84w5P4TR883zN74/Dh+nLtQVDPGPQQeTvf8A/f+EjMjEjfMZYHrIGflsBLbeIC1nmmhsClqoGNLZh9QQOxF/aOsj/i8IfAWECUZe87shJkYGXnmzzEXTFMk3xRM3DXwiRfTpcSgOeozjiLiqR7+rFgMCiOr7vpEGK8WX3O58V7wfa/SO2X1AHNi5UY8cpomgHFn9ShIz/9wV6kX/Am6t2fSCMYI8hDUuigP/O8cw5PVBTdmqr43/q7wJa+YX9zAgqvuL5CPR+S0e6xTxCYzmGvNS9KUNK6KvHG3AR9IyGe379ee/Wo7C4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772623425; c=relaxed/relaxed;
-	bh=C6thk8aDkO3+RFrMj6Zn7+L4aByacKorBxGcYucUwVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oEbKUUyQkjwIBjqgohs22iifgUoeuUi6ef7l0WEzQg3Z6b6ttZVoybfCM7iVtv+YPn9sJYeGyZNVQB8Y998IVxvCdaIkrw57R6nRDHbuH28WL29XI/ejAE4Tk0IMR5bNzim/CkL8L0D6J+TSXdLmCiOHPVgf0RfcFCz4Qpk5LiXQ762bguqMlH0+zHuzFEQjJay8sXHLjBe8L1EN/auJsWBKE22h28kVOROCI7myEQ9lkvbbzhuwHlcueb6b2r0CvSsC32VY3TtBHXojpeETudGqbGPM4HJ6FkEuDbcvDCg0wg8Hcu95x7Aou84jp+Qm/E0AQlhyigMIPaiRY6B1FA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qWQyvxcV; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1772625394; c=relaxed/relaxed;
+	bh=0GSFW9HWutiyPhp3WzVGPO7yi4M3/V6mlTS86vxN+yo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WzzfRAVcaI7Fj+Bi8F3ZEDzEPVbq2kS6zL5Em52Ln9TDTv5HoVOEC0wL0pF7oqGsBjcuibjZ9xjjDIpjzzVsX3oyKNbc0dAhNYxy78xo+MkJcfzP+Ti/JpAG0ECvVATsUROKb+/tWW0XZ1DFNv6x8Qb+yCp/06hj5iHVUcfS85ILBEbHDwAoRDjYIeHFuWIDxYGz0eAHA1qNgULLMS/R1s6JeGdsKGtdExzBZm1kTFTEdffjz53Vn6/E/5s4M2CJ2t7OsMSoBi3IYmHQctYOqx30BCIHWiaJBVhey6Y/FZoGf+mj55Jm5W++rGtIBYmRiNCeZNQUFVdtt5sV+80w+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cKcOQ1qd; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::b0; helo=out-176.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qWQyvxcV;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cKcOQ1qd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b0; helo=out-176.mta1.migadu.com; envelope-from=usama.arif@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [IPv6:2001:41d0:203:375::b0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQqzz5c4Dz2yY0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 22:23:43 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7540B4423F;
-	Wed,  4 Mar 2026 11:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458E1C19423;
-	Wed,  4 Mar 2026 11:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772623421;
-	bh=h9cK7pBF4PrYZeuQA4C5C9xLaF0GsLQIP8AyKutBfBQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qWQyvxcVOI9I/fIn34XDL82Wiv/j9A/0CO+HIzbod1hKepstSs1YL1ATVeJEuknoO
-	 G1E4RF2B/MFABg8S/0HhAy7IvbBvPtrGcibTxXxqkZQ7xBDxvBJC+yaoeOlcsC6Ee+
-	 ndfD62jjuB1WSwU9SVxtgMsERFivVEvg8KyfWfUpQ6HpK0FeTcVeHuK+vhjHF+mHdR
-	 7iIAPaFKpFinAHvRkXItep1op8e6chjhnFmk+4fHsAdkX3yQkRo/ZVscYgN2TuR0Cp
-	 cg3k1KseLgnQfcRh46WMlVr7dOefgQP+hRWN1QSYHzDduu6zyCnUwr/opYJn6h1XZx
-	 PclxjlJCDXevA==
-Date: Wed, 4 Mar 2026 11:23:29 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Vineet Gupta <vgupta@kernel.org>, Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
-	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-amlogic@lists.infradead.org, linux-leds@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-watchdog@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH 05/14] regulator: drop unneeded dependencies on OF_GPIO
-Message-ID: <31c9910c-8157-40bb-9128-9db34704d637@sirena.org.uk>
-References: <20260304-gpio-of-kconfig-v1-0-d597916e79e7@oss.qualcomm.com>
- <20260304-gpio-of-kconfig-v1-5-d597916e79e7@oss.qualcomm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQrjq010Mz2yY0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 22:56:29 +1100 (AEDT)
+Message-ID: <498e94a6-08e7-42dc-81e9-113265bf3cff@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772625364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0GSFW9HWutiyPhp3WzVGPO7yi4M3/V6mlTS86vxN+yo=;
+	b=cKcOQ1qdVvdnQejcmemBI4Pq3qOY5VnVc9kwe4KNTg0wcqUPZFubgLA+UZ+vtrX4xkvo9N
+	0LseiTbrMFJEX6nLoxhpStCE8IXpZXBTvgwWs/UtvTWYbzeBgnEsX6Hj6op/UWLNSEvgpZ
+	/TOscOWi9uf7M4MNwUTzadtAmjmzgqo=
+Date: Wed, 4 Mar 2026 14:55:55 +0300
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,96 +58,142 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zVeDWCP0gn6RDW1P"
-Content-Disposition: inline
-In-Reply-To: <20260304-gpio-of-kconfig-v1-5-d597916e79e7@oss.qualcomm.com>
-X-Cookie: Take it easy, we're in a hurry.
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Subject: Re: [RFC v2 12/21] mm: thp: handle split failure in device migration
+Content-Language: en-GB
+To: Nico Pache <npache@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ lorenzo.stoakes@oracle.com, willy@infradead.org, linux-mm@kvack.org,
+ fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
+References: <20260226113233.3987674-1-usama.arif@linux.dev>
+ <20260226113233.3987674-13-usama.arif@linux.dev>
+ <CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Flag: YES
+X-Spam-Status: Yes, score=3.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Report: 
+	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+	*      [2001:41d0:203:375:0:0:0:b0 listed in]
+	[zen.spamhaus.org]
+	* -0.0 SPF_PASS SPF: sender matches SPF record
+	* -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+	*      envelope-from domain
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: C88ED1FEE9E
+X-Rspamd-Queue-Id: 034DE1FFB38
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.81 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.79 / 15.00];
+	SPAM_FLAG(5.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17715-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17718-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[broonie@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[46];
-	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:abrodkin@synopsys.com,m:vgupta@kernel.org,m:oss@buserror.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:lgirdwood@gmail.com,m:linusw@kernel.org,m:brgl@kernel.org,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:dvorkin@tibbo.com,m:wellslutw@gmail.com,m:lee@kernel.org,m:pavel@kernel.org,m:linux@roeck-us.net,m:wim@linux-watchdog.org,m:mchehab@kernel.org,m:gregkh@linuxfoundation.org,m:sre@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-amlogic@lists.infradead.org,m:linu
- x-leds@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-watchdog@vger.kernel.org,m:linux-media@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-pm@vger.kernel.org,m:martinblumenstingl@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FORGED_RECIPIENTS(0.00)[m:npache@redhat.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:lorenzo.stoakes@oracle.com,m:willy@infradead.org,m:linux-mm@kvack.org,m:fvdl@google.com,m:hannes@cmpxchg.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:kas@kernel.org,m:baohua@kernel.org,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:Liam.Howlett@oracle.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:lance.yang@linux.dev,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[arm.com,kernel.org,synopsys.com,buserror.net,linux.ibm.com,ellerman.id.au,gmail.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,baylibre.com,googlemail.com,tibbo.com,roeck-us.net,linux-watchdog.org,linuxfoundation.org,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.934];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,linux.dev:dkim,linux.dev:email,linux.dev:mid]
 X-Rspamd-Action: no action
 
 
---zVeDWCP0gn6RDW1P
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Mar 04, 2026 at 10:02:26AM +0100, Bartosz Golaszewski wrote:
-> OF_GPIO is selected automatically on all OF systems. Any symbols it
-> controls also provide stubs so there's really no reason to select it
-> explicitly.
+On 02/03/2026 21:20, Nico Pache wrote:
+> On Thu, Feb 26, 2026 at 4:34 AM Usama Arif <usama.arif@linux.dev> wrote:
+>>
+>> Device memory migration has two call sites that split huge PMDs:
+>>
+>> migrate_vma_split_unmapped_folio():
+>>   Called from migrate_vma_pages() when migrating a PMD-mapped THP to a
+>>   destination that doesn't support compound pages.  It splits the PMD
+>>   then splits the folio via folio_split_unmapped().
+>>
+>>   If the PMD split fails, folio_split_unmapped() would operate on an
+>>   unsplit folio with inconsistent page table state.  Propagate -ENOMEM
+>>   to skip this page's migration. This is safe as folio_split_unmapped
+>>   failure would be propagated in a similar way.
+>>
+>> migrate_vma_insert_page():
+>>   Called from migrate_vma_pages() when inserting a page into a VMA
+>>   during migration back from device memory.  If a huge zero PMD exists
+>>   at the target address, it must be split before PTE insertion.
+>>
+>>   If the split fails, the subsequent pte_alloc() and set_pte_at() would
+>>   operate on a PMD slot still occupied by the huge zero entry.  Use
+>>   goto abort, consistent with other allocation failures in this function.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  mm/migrate_device.c | 16 ++++++++++++++--
+>>  1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>> index 78c7acf024615..bc53e06fd9735 100644
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -909,7 +909,13 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+>>         int ret = 0;
+>>
+>>         folio_get(folio);
+> 
+> Should we be concerned about this folio_get? Are we incrementing a
+> reference that was already held if we back out of the split?
+> 
 
-> diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-> index d10b6f9243d51574a9ac662b93d4678cd7d94a4f..10e64e3ffb1f5f60e0b62b16ab513f002a42fa1f 100644
-> --- a/drivers/regulator/Kconfig
-> +++ b/drivers/regulator/Kconfig
-> @@ -1232,7 +1232,6 @@ config REGULATOR_RASPBERRYPI_TOUCHSCREEN_ATTINY
->  	depends on ARM || ARM64 || COMPILE_TEST
->  	depends on BACKLIGHT_CLASS_DEVICE
->  	depends on I2C
-> -	depends on OF_GPIO
->  	select REGMAP_I2C
->  	help
->  	  This driver supports ATTINY regulator on the Raspberry Pi 7-inch
+Good catch! I think this bug existed even before this patch, if
+folio_split_unmapped fails, the reference is still there. Let me
+send an independent fix for this.
 
-This is a depends rather than a select, though it's fairly redundant
-with the arch:
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---zVeDWCP0gn6RDW1P
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmoFjAACgkQJNaLcl1U
-h9CHUQf+OxkRqulw7IQRBWvsy5b7fUXsBVsAfKiGM5xDUpiNuKd4S1A6tLOnAn45
-3I8XeQGoX3PGjjNCIQsc3+Tsta1x1lKnTINxC1oxhPg4vuQF8O96ExfK5rw2SbNu
-wIgQOz00KrJnhI/QkBNPEUhw2mWXzQuqkwd4ljTlDlUXJCwgc0bWAcR6W7LWq9bW
-YeqQrGM7BM83jHyDJAFQsnVLeA6gQM+fV/LkZSTwcNYN3SMz3Csdy3wlcHOEpkbE
-Tl7qsVyLstyKIr9F6wUeYRPOH2hl9/Oi9cTvCYBRu1CK/zLsDPyczcWKF0yhfMaO
-Q+nIB9oU+/dYWlYxHma+RHEckx9A8A==
-=6Y+O
------END PGP SIGNATURE-----
-
---zVeDWCP0gn6RDW1P--
+> -- Nico
+> 
+>> -       split_huge_pmd_address(migrate->vma, addr, true);
+>> +       /*
+>> +        * If PMD split fails, folio_split_unmapped would operate on an
+>> +        * unsplit folio with inconsistent page table state.
+>> +        */
+>> +       ret = split_huge_pmd_address(migrate->vma, addr, true);
+>> +       if (ret)
+>> +               return ret;
+>>         ret = folio_split_unmapped(folio, 0);
+>>         if (ret)
+>>                 return ret;
 
