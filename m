@@ -1,55 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-17731-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17732-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOf6H2JtqGn9uQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17731-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 18:35:30 +0100
+	id QB3uCaN6qGl0uwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17732-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 19:32:03 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74E0205364
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 18:35:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDCC20662B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 19:32:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fR0Ds6v4Sz3c1J;
-	Thu, 05 Mar 2026 04:35:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fR1V73yTRz3c1T;
+	Thu, 05 Mar 2026 05:31:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772645725;
-	cv=none; b=nUw7+F3mkQo+EC39blXX1ri8P+f6sosHrVF1ltPnMS7MuNfejP22rdOL0Rr3ArT1blOkr+ATV25L2IbWgZ+2m+ZSG9A9tDDwxxBZ43v0kgEqZtHQr1zRBTI0WAet89aIa5+CHp7+yciKYNz5xMCvBlqKMkJWbLc0F6KtIQYaPrxM5BqFY2nIdrq7sfksGckP516zHrDU/G92QP4Hlr4JP4wQEo3vhTGXuHDATzM7+aJ656pNdqo+toXl3gBRk+bCg6sQyIVI5J8YADMYx53wpdMZJiend5qZGSvmWe1VhEt0GpRe0xbJbMMeXHxV7stGZV4inmhxHrc8SomjWfCsyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::136"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772649119;
+	cv=none; b=NgjKdrGiV/wUELRIT91g/vpaB00yp+shBHAghuHKb/9jUDVZhtiquhDIsj+oJbUgt2OLQlMoMw22+Ubad0ZsADnfaHfElSR2ux2zi50j+YEL2OY1yGNSuGCvOEoLAwlV7saUQgvvwOETxb0Su2GcdTYJphhf7PxDOXvXtrs9Af9w56vSl1jjz90DANw6sNhRyIL9xpYmgpaBMIryigZseblZeyr40r4IqbjJaiPI3XVodLnHQEJZzXR8WXRFCdE/Kku9e0xSSrNMXgEZG9qD+NzDaqsqBMnFOTCQYb5Idwpt2IuCjujq87IhcGksMlKnYL1l7KUmBVGo7rP4n3MuLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772645725; c=relaxed/relaxed;
-	bh=o/Mkga0srX3I0i3AgbPBUYNrkN2bA/RLtAQdn1ppl68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VSpphlPxKOjbG3FtFr0zq4OsJc5vCPEQ3LtUASFsq7PaV6TKfOVtbdZKl4XEutrfKNNcmmogtKPxjp/7ntjW+2oYf0CkoIsqmYnthNjPGCFU6VX2S2d9Pfq64ZR8aXW1SoqzTTCbQIlCI3vePbq9ABhFZn/Ro39nHzefjQdukureEwUF7OFMQ+i6EYRzgBOyqYw7CnocxsoETxNL4wxCUBfTGct6wg+QLIMy/kjolt652+crUsejixbV2NuyMNEmIdmWgrAifkrJjerJtLdSNkAGVF6flFCLM3fKPHRR2jn+Luh+XKNskJnMCevtwzrqJZxI304Nc8iLAW1We95lHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p3gRyRbA; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=vgupta@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1772649119; c=relaxed/relaxed;
+	bh=ljHNVjrQPTeL1smxXsNRDrNvvI88tAHz0REgyCrUbZE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=VKo63dXakamT6LsWpWFL8+O92xp26LKo+t7DAYzpuCWt0sTTK5oMrJcj2J1L7vGpSDymk2R4Kh36OoP/+/HzGptWSv7FY0Ix+Isfnpw1eu3GQaZPowWeK4XvQABlI37jeIW1WHoEsH4eDvTtm6RA/Zmgv+N9mAoruvnLaHGZPDAc4uokL+yqfNhpFUQ2/AKEhRFs2h1QCwrjgbhrEwOqT2bxaKqU3XO/hdzwsx+TVVNcliTIDZUPDQ8WWNrmFeByEpi/8wh5Hig1TRf7w8bFQRFDsUSNUHDhgKobcG/ahUDBHs9D8qR31d5vHR8r1vSUegINty+UvWvb4OLM2QhKOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com; dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2026022301 header.b=UBcPyiSj; dkim-atps=neutral; spf=pass (client-ip=2607:7c80:54:3::136; helo=mail.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org) smtp.mailfrom=zytor.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p3gRyRbA;
+	dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2026022301 header.b=UBcPyiSj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=vgupta@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zytor.com (client-ip=2607:7c80:54:3::136; helo=mail.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org)
+Received: from mail.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3::136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fR0Dr6h40z3btf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 04:35:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 488884409E;
-	Wed,  4 Mar 2026 17:35:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829B1C4CEF7;
-	Wed,  4 Mar 2026 17:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772645722;
-	bh=G9vyc/ilKI+19PmiBHaHsKJ89Xu7vIMfI3QiSI5VErY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p3gRyRbAmt88QYW+qJdvWj5qtD8qosiS8iWmV/39WnJFzuC4DFAe3Tyh3mY5h74qn
-	 7FInoYzEWeFQ7CY8OwV54MEwdqBRVWYnNQjTVdnKRUwBSziNDWA8ecqaRvzzK/Ff90
-	 NfHNcwk1I3PM4D715Ch9BaVnphe1VPolSNNw/U/tzszjymiQfwM4YNdTcdbZC7y810
-	 7RYshqucnV1ca7eqd5+alsDV7oBEf6j/gB6X5uQ0hYuTexFE8Xvio9sCPsXsInNbYo
-	 9ZA6X79vEceTQn8vjICVOHvGoStAFiT1AZGx6edtfTQ2DKM/24xYE+6Yy8QIDT5o5s
-	 kOKClwu9c5Q9w==
-Message-ID: <f00b1812-a27f-49db-9277-6697af098248@kernel.org>
-Date: Wed, 4 Mar 2026 09:35:19 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fR1V60vCHz30hq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 05:31:57 +1100 (AEDT)
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 624IUfCb1282071
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 4 Mar 2026 10:30:41 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 624IUfCb1282071
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772649044;
+	bh=ljHNVjrQPTeL1smxXsNRDrNvvI88tAHz0REgyCrUbZE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=UBcPyiSjjdnc8u1gNm87gwC/Er0xhMwNBV1m2zZ+o+XgCspHTxXnYoyIzHym2/l4v
+	 LAMVfwfC9TEBHNfDK3cZDDckk6EZTO3c4wMWGYx+aIeWu3wwSMTg1BF2mr0c9hua9m
+	 hhochLIfnTPq4UNrw53Y3+7EdXSR8kyrwSdK2afFrW0Cgn8gQjyS1qCvj+mlcEDaIL
+	 skh1+MAfpYjdw6H15iV6N/LRGfuX+6a6/KXr6dR+//0WTs35oexlXE6fzobAf7zMuO
+	 prQ2ReLjhkk0x5duyIKv/HxPQuZFYCs8H7lVT7hdsyqeAsQ0nhyDT+NmofYCM9ChyA
+	 jIXH41IMvCKGw==
+Date: Wed, 04 Mar 2026 10:30:34 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: =?ISO-8859-1?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+CC: Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH 1/7] x86/vdso: Respect COMPAT_32BIT_TIME
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260304081505-a2a3a376-20c9-46cb-8dc9-2c4deec1a55e@linutronix.de>
+References: <20260227-vdso-compat_32bit_time-v1-0-3f0286a7bac3@linutronix.de> <20260227-vdso-compat_32bit_time-v1-1-3f0286a7bac3@linutronix.de> <c29f5e70-bd17-4e1b-a005-5a3282e70075@app.fastmail.com> <03cd1e21-a2f2-46a1-a674-cbaef9712016@app.fastmail.com> <20260227103226-cc3bb32c-0107-4c09-b81a-ca33ea03ad5c@linutronix.de> <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com> <20260304081505-a2a3a376-20c9-46cb-8dc9-2c4deec1a55e@linutronix.de>
+Message-ID: <6909A81E-AE50-459C-9604-3EEAEFE3838E@zytor.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,66 +85,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/14] arc: axs10x: drop unneeded dependency on OF_GPIO
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Alexey Brodkin <abrodkin@synopsys.com>, Vineet Gupta <vgupta@kernel.org>,
- Scott Wood <oss@buserror.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
- Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Guenter Roeck <linux@roeck-us.net>, Wim Van Sebroeck
- <wim@linux-watchdog.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sebastian Reichel <sre@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-leds@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-watchdog@vger.kernel.org,
- linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-pm@vger.kernel.org
-References: <20260304-gpio-of-kconfig-v1-0-d597916e79e7@oss.qualcomm.com>
- <20260304-gpio-of-kconfig-v1-2-d597916e79e7@oss.qualcomm.com>
-From: Vineet Gupta <vgupta@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260304-gpio-of-kconfig-v1-2-d597916e79e7@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: C74E0205364
+X-Rspamd-Queue-Id: 2DDCC20662B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026022301];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-17731-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,arm.com,kernel.org,synopsys.com,buserror.net,linux.ibm.com,ellerman.id.au,gmail.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,baylibre.com,googlemail.com,tibbo.com,roeck-us.net,linux-watchdog.org,linuxfoundation.org];
-	FORGED_SENDER(0.00)[vgupta@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[47];
-	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:abrodkin@synopsys.com,m:vgupta@kernel.org,m:oss@buserror.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:linusw@kernel.org,m:brgl@kernel.org,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:dvorkin@tibbo.com,m:wellslutw@gmail.com,m:lee@kernel.org,m:pavel@kernel.org,m:linux@roeck-us.net,m:wim@linux-watchdog.org,m:mchehab@kernel.org,m:gregkh@linuxfoundation.org,m:sre@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-amlogic@lists
- .infradead.org,m:linux-leds@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-watchdog@vger.kernel.org,m:linux-media@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-pm@vger.kernel.org,m:martinblumenstingl@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17732-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[hpa@zytor.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[arndb.de,kernel.org,redhat.com,alien8.de,linux.intel.com,armlinux.org.uk,arm.com,linux.ibm.com,ellerman.id.au,gmail.com,alpha.franken.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:thomas.weissschuh@linutronix.de,m:arnd@arndb.de,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:tsbogend@alpha.franken.de,m:vincenzo.frascino@arm.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-mips@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -132,44 +118,82 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vgupta@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[zytor.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,zytor.com:dkim,zytor.com:mid,linutronix.de:email]
 X-Rspamd-Action: no action
 
-
-
-On 3/4/26 1:02 AM, Bartosz Golaszewski wrote:
-> OF_GPIO is automatically enabled on all OF systems. There's no need to
-> select it explicitly.
+On March 3, 2026 11:35:52 PM PST, "Thomas Wei=C3=9Fschuh" <thomas=2Eweisssc=
+huh@linutronix=2Ede> wrote:
+>On Tue, Mar 03, 2026 at 10:11:52AM -0800, H=2E Peter Anvin wrote:
+>> On 2026-02-27 01:34, Thomas Wei=C3=9Fschuh wrote:
+>> >>>
+>> >> The thing about gettimeofday() and time() is that they don't have
+>> >> a 64-bit version and libc implementations are expected to call
+>> >> clock_gettime() instead=2E The result was that there was never a
+>> >> patch to turn the off either=2E
+>> >=20
+>> > gettimeofday() is currently the only way to get the timezone of the k=
+ernel=2E
+>> > But I guess this is a legacy thing anyways=2E If you say we should dr=
+op it,
+>> > let's drop it=2E
+>> >=20
+>>=20
+>> The time zone in the kernel has never worked anyway, as it would requir=
+e the
+>> kernel to contain at least the forward portion of the zoneinfo/tzdata t=
+able in
+>> order to actually work correctly=2E The only plausible use of it would =
+be for
+>> local time-based filesystems like FAT, but I don't think we bother=2E
 >
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  arch/arc/plat-axs10x/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
+>sys_tz is currently used by a bunch of drivers and filesystems (including=
+ FAT)=2E
+>It is also used when writing to the RTC=2E
 >
-> diff --git a/arch/arc/plat-axs10x/Kconfig b/arch/arc/plat-axs10x/Kconfig
-> index b9652c69d1b90e506f82b3b8c5be373c51246671..40f2a74d404ad9759ab9d6764c2496159eea045a 100644
-> --- a/arch/arc/plat-axs10x/Kconfig
-> +++ b/arch/arc/plat-axs10x/Kconfig
-> @@ -7,7 +7,6 @@ menuconfig ARC_PLAT_AXS10X
->  	bool "Synopsys ARC AXS10x Software Development Platforms"
->  	select DW_APB_ICTL
->  	select GPIO_DWAPB
-> -	select OF_GPIO
->  	select HAVE_PCI
->  	select GENERIC_IRQ_CHIP
->  	select GPIOLIB
+>> A bigger question is whether or not we should omit these from the vDSO
+>> completely (potentially causing link failures) or replace them with stu=
+bs
+>> returning -ENOSYS=2E
+>
+>I am a bit confused here=2E You mention 'link failures' and in another ma=
+il
+>'weak references as fallback'=2E Both are things that happen during linki=
+ng
+>('link failures' could also be interpreted as failures during loading)=2E
+>Somewhere else someone also mentioned the vDSO to be 'linkable'=2E
+>But as far as I understand, only libc interprets the vDSO, it completely
+>bypasses both the linker and the loader=2E And libc already does graceful
+>fallbacks to the regular systemcalls if the vDSO is missing completely or
+>lacks one of the functions, as both cases may happen on normal systems=2E
+>
+>What am I missing?
+>
+>
+>Thomas
 
-Acked-by: Vineet Gupta <vgupta@kernel.org>
+Weak references would be a way to work around the link failures=2E=20
 
-Thx and apologies for the delay in getting to it.
+At least in practice the RTC timezone should be managed from user space=2E=
+=20
 
-Cheers,
--Vineet
+As I said, managing time zone information in the kernel correctly (beyond =
+"right now", which can be dealt with by an external daemon on discontinuiti=
+es; maybe systemd does that) would require far more than settimeofday() pro=
+vides=2E
+
+Downloading a binary zoneinfo (TZif2) blob into the kernel certainly isn't=
+ out of the question and would solve this issue correctly once and for all;=
+ a single zoneinfo blob is (currently) slightly below 4K in size, and the s=
+tock interpreter is about 14K, which, even if we can't strip out any additi=
+onal functionality we don't need, is more or less a drop in the bucket thes=
+e days=2E
+
+    -hpa
 
