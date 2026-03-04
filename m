@@ -1,80 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-17746-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17747-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOMPFlyOqGmzvgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17746-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 20:56:12 +0100
+	id uJ+3DmKOqGmzvgAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17747-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 20:56:18 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763FC207486
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 20:56:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2F620748D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 20:56:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fR3MD67dSz3c8x;
-	Thu, 05 Mar 2026 06:56:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fR3MM1KKKz3cCr;
+	Thu, 05 Mar 2026 06:56:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::534"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772633561;
-	cv=none; b=KTCGS9xg8saEJ7wsIgwn9shuGy3nJbExmkptfK92e5axe1SGx82QDsoUz6757q2GBMqK0Y3viOC99lfu4pwAQtylS2J9oUZt5caTp3dAsp1nrQN4NxxLAiBNhfINC2H7FXG8D4RDMdEDsyIIc3c7ihibBydR8TwMaVPNj4yrBAWFJZnS7FdXV5xDqM1JvAr+gI+Vq3jSgDg8H2sGG+7qx+HED2Us6TZOyGhoW/Gjgvh2rmzc8uGzohwmovvXctTybdHekSD+Wx+tjEkssYyAPX2l7aWiqxSom+cNKc0p/yW0AI8Buplr922HqWSsvqFle2HpoJ7rEolOdXukV0Yg4g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1034"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772633609;
+	cv=none; b=OihKAVBSI1HdNHi77JPWw+i9sJRRXQX5Q2Xg+CSn1lKvp/dA+4KxunMiO8GtFT95eynIVeRjnvxJ3ega8mX3VP6C/RGh3RZaiyfHdo2tCO1R6n1RhsLc43Tp8xUNBAMaWMUJEQ1mCm16rqmV/MVKchZJ8dR+45AcDk/xJTe8UW7Ka1qGzLc97dhgWMJk1upWhMZ2zV7CulBZbhWTe6ovvRfy5zakcRy8qjsGa7Rq9ITumSMDhXpQYJaOJnOIu36hmr8/odHyZdVA6ivo/gTNj1P8A1T0Nu8slbiPX3DkxvFwH5XAQ/BlBPLZ+xmGVafCV7Xer7tz1ZsjQnvnBKlrWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772633561; c=relaxed/relaxed;
-	bh=wvXorwNx3S8EJD2J965xM8gci4hmlt6ydwx4B/ML9So=;
+	t=1772633609; c=relaxed/relaxed;
+	bh=zDFd5knNMvGZs41+mG0JwsLcBevtPF3DeTcjycQtFwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wjr7+Sf6+gPD4omfqpEnt8cl7oJ/kL9rSY1yIH/jn/3IMRoFspjCSmSjhn44gBil8uiNTp/tSGPfgvZPxqB9EGfkHZg9/znIOYC36uFJBpb2m5FvST6aqdH3n75RTKMwvw1JkttIO+95oUeCql3qjajNtdmQZ9LXhnC5Uvi9wP2JOQCJgvW6Dllob6yHB9XFarvei2z9fBQ/uEGX3x94VErp4Mbz6BjwI5ps1g/NgIlNDjKyMpvXDLSDaRIBLanwsXl0GwKbFrIXFvHTpxQKTBv6XQah2Ty1scLEoJcitusz91A5DSd6cUvpCQdjNYTajlSWynRmLSsl7rBdKF174g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Owga0+GI; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=linux.amoon@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=TNyCqwwzE2U5GitamN6x+/R7I6tyFWqDwMB/ET4X9mJazUkOXbkqQnFSWRT+nod+WpNk1VJsO9zgssPnFRwu8lNAlmVvfo6zb2EQjC8gh6tA6VmHS8UEWR0Xa2ItSqXJi1RWa4e4RmuquodkVBP+Z8WLiabBOm0HP0M4nrbnn9EeDZNPZZMI+7lafmc0GxzcBit9rtdWt64ybWc2bKX3ykVaHENkjhGUzKqb20ePJGERO94mkPkBNEUtux6/6SnRobrbQomfFXo5tIaSlnYBd6noYIx89E2OGJn9wzcd9GFUKAD8qmKX/HD1+AkbWIm2zmEKvTLudYgCF3XE4m7U7g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gTJMKi4M; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=linux.amoon@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Owga0+GI;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gTJMKi4M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=linux.amoon@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=linux.amoon@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQvkx2FVfz3btg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 01:12:41 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so2071090a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 06:12:41 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQvlr6V1Gz3btg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 01:13:28 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-3598cab697eso2002428a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 06:13:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772633559; x=1773238359; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1772633607; x=1773238407; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wvXorwNx3S8EJD2J965xM8gci4hmlt6ydwx4B/ML9So=;
-        b=Owga0+GI0ToGZIyBOybw9Z7zVSsKCz6TycFerbNLIsJlNv/sxkre0cXsmPmLJLMGa4
-         hidAIU8NzzQSvb925x1gQ7p9MG16M33JuQjpPSmPzpC1+JaXwRtcIXrZkpyzT5YT5y4r
-         xQyufbO2U6IKOu4VBrD2KDjOvU9hCWMb1O8S41ZT/ALmkx7VwQ3enxdsuX+bmegIypqv
-         cluUAqk6Vd00NJZALYOhTT2Q/J7edF60qE/u+MSaldKQfyURkPWm69ZZT8gzTYyFLn5i
-         WI8UT7tW//qoA/JWUFVCgipce/BmFu/Cgfq8iUgHaJgjboGI5OEHOXpMtnDoGO6SHyYF
-         85ww==
+        bh=zDFd5knNMvGZs41+mG0JwsLcBevtPF3DeTcjycQtFwY=;
+        b=gTJMKi4Mc9eCYpwOlf6B07ZWSK7G937Vn5FmjJpZ0Y5/90B+MIGLgiUmzW+sx9K/VD
+         eagDq5nfIYuH+FgzQWSNpfJj1l3Rrm13hbaiAKRWMaXvITBDD2hWzyUE8hAS0vO0et+5
+         0MQjxPCSfxArgh6uD/kJiKz5v2DiI2hp/HYAwUe2BsSLnE8zWaBbkM1Ypg/BwA9xjvH6
+         y0TcRRI2TLIiR9ZOmss0l1aUGTTijR4tK/0jYFK2J5k87cw0KKlWsAmcOV6TuEwB8fcv
+         /9YjA0QG30sNIFF7Iv0VMQS0V1K/iXHfCEs4lDn3S78JOQTjMZegk8pIDpmDiS3+NTDq
+         fzmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772633559; x=1773238359;
+        d=1e100.net; s=20230601; t=1772633607; x=1773238407;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wvXorwNx3S8EJD2J965xM8gci4hmlt6ydwx4B/ML9So=;
-        b=u9NICe2UJgaAOy9/g28DbAP7x9glY8OC4II91iuSCWeOsuFHgSNZS1bbIrD5+m9pNQ
-         GJ0oZ3IUfg+to5UZVFtCwP7LGHuvKbdaV9RjsF/jmCmhT93/mcs0zHLJfmh527NaZcEY
-         YeqkLaiuT3mgrWRs2iIJhQ9VVTitWun8L2du/SwHeKVUANFjbIXzE4WLtQgzquQDa17k
-         y4cN3OvbYcsTudEqht4dKYqXfOaMA49VXR9XYt1ob60039Ds98WyJEL34u/3wZeGjjKu
-         vN6EAKjbFO+Z6RTFMDyIE6VQJFLKQbdzXkYtfce7ih/ho7hUQhMHsQXkVP5q5tQbq6Ui
-         RkaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUh5G0P18VqMhSciWSXB7R71TB5LFjBX9UNsK2kYvKxZmsvMfW95Yi5Wgcf1lYd9600uoIW6muSv1inFIM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwhfA3mcYtZSGUxS4X8wJ2MiaBFjsb8/1H3OIj56Eq0L9HNNruU
-	n+5lubFjShHXn6SCLMxfE0Hmfe/t7p2bVryC/C7yGpoVAM1ZiSHs9Tkr
-X-Gm-Gg: ATEYQzx3V0YG+Asc5nNsEkVs6HPAFCAFQGqet4fx1x3bzqJmoifIq00ZbM/HV9Q6/h0
-	eDx0HuhZb1B/Z4GuvNfArZS2S5mCqlrk5S8KrWgneibvuUCyR6MnoTBH1ahhg5WspEOON/GLjey
-	hY4qdme2TMdIlieHZy3EzE6giufFy3jmATPrtqCSVljPwm89DthPXmW2FrPvkj9DmEuiznV3Kc8
-	7hihTgt1Bqg9QOKpPIA0F47IwmD+VAh9rCM3HIaCPiu/XyxYVIAs7uxh+XlgkjvHLrjCCf/lZjR
-	Vh9uN1Y9GydzymeFw5xXItsGuVBeCvc1Mm8UnWzKHcysXxiths0NW5jvKhHe8D024Rp+KzCTP8q
-	kJu6rOiINs4TJwUOok+qA8VRKabXNbCflgIrIBZd4+tV6nVNUMMu22dhiVsqKTOuDFRprOPQKy7
-	lowXsSpaoqBePx+RqvmJek
-X-Received: by 2002:a17:90b:3c46:b0:354:9b26:cdf8 with SMTP id 98e67ed59e1d1-359a69c774cmr2111843a91.10.1772633559439;
-        Wed, 04 Mar 2026 06:12:39 -0800 (PST)
+        bh=zDFd5knNMvGZs41+mG0JwsLcBevtPF3DeTcjycQtFwY=;
+        b=ehniAxjqt9CHsQfRXxAy5ShNXe7L4w1pMawa8aE7BV4Ca71gjUaL6GKOa4h2q5xxo2
+         sf0iqIazD0vqCHYIhT7ExY6WuazRBEDSsIhBTvT/B2Wnoxwa2ohLRJhEUXApjGBvZ5GU
+         rDIzyQVSkwwDOa25qunvl8hMIVDzFH/fundaWf3idmmH2rM88HSideROkxyiOJhCbRMj
+         B46ARgQTGoPcRxBJQtGzsnFlicIIiThoTwoKpnsenIr1ZZ3MzGFV4IEfdO8lBtR7KNJS
+         vm7g3T/cQOr+vVLyNoJ76C98/Glnl9d3UKwSgl5zsFjFWF62c8EYCTFIQKaAeOkfQR00
+         qYeg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3LgKpAvMKnYozpZQaHpqPqh8ngnkikqEHzoOaS00YzVx3wqhtGzARCFlOlSfGb0J8q0ITJ8fLwYQDuQs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyLxUhsdjXYybyNMfhlasIPc6uIK+QsIXjobsnuCAph6+9cu3X0
+	twDZyMA0Emunhio8rRSRgpMwiAM0K8tqbUtkZoFxWwRrOVW5/0+mEj+v
+X-Gm-Gg: ATEYQzyv6xao1gen89RCBTxGdIN+bfZIxGT8IfA4xocIMWoaiktu7mfOg3AVYVeFg6x
+	plY2klClH1w+hSwjh9UF36TaK0pcefLDlg2Qd4XhuPb2cYlFdyn4OKZ124OEBolynR6LQxFwTUT
+	UaSrxOv+O3nJExjU0gCbQkxS3VIr05/lMjAVW78OIx7IzJEY4tJhfJVcGMvNvyyob6j/OTzGRxs
+	EuU/0dL2lKvEl0QFcZadMV+h9DbmCqduhG7+e3OH0TQKqRtArH0lTXXxG4SKGjgSSbOmrmMTgg2
+	hQkF87msT/Xeta1poi8en6Ksx4H6GezD2SIyI8damH2sVYRoPwocq4wK6e+ONaoOxxMnhJ3DJNL
+	95nlQu2/ADZWn/JTKLemq1Lez8WxekIn9O1rF9uw5IQHIrnh38mQVL7qQFYhjcdA2cJkkBtgrNd
+	v8RLPwrV8aDc/Nw/s7Tnhc
+X-Received: by 2002:a17:90b:5286:b0:359:83a3:584d with SMTP id 98e67ed59e1d1-3599ce32dabmr5222786a91.6.1772633607253;
+        Wed, 04 Mar 2026 06:13:27 -0800 (PST)
 Received: from rockpi-5b ([45.112.0.200])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c4c0f80sm6826545a91.16.2026.03.04.06.12.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c4c0f80sm6826545a91.16.2026.03.04.06.13.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 06:12:38 -0800 (PST)
+        Wed, 04 Mar 2026 06:13:26 -0800 (PST)
 From: Anand Moon <linux.amoon@gmail.com>
 To: Vignesh Raghavendra <vigneshr@ti.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
@@ -112,13 +112,12 @@ To: Vignesh Raghavendra <vigneshr@ti.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
 	Niklas Cassel <cassel@kernel.org>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Koichiro Den <den@valinux.co.jp>,
 	Hans Zhang <18255117159@163.com>,
-	Sai Krishna Musham <sai.krishna.musham@amd.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
 	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sai Krishna Musham <sai.krishna.musham@amd.com>,
 	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
-	Nagarjuna Kristam <nkristam@nvidia.com>,
 	Vidya Sagar <vidyas@nvidia.com>,
 	linux-omap@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
 	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
@@ -133,9 +132,9 @@ To: Vignesh Raghavendra <vigneshr@ti.com>,
 	linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT),
 	linux-riscv@lists.infradead.org (open list:SIFIVE DRIVERS:Keyword:fu[57]40)
 Cc: Anand Moon <linux.amoon@gmail.com>
-Subject: [RFC v1 11/18] PCI: keembay: Allow asynchronous probing for background link training
-Date: Wed,  4 Mar 2026 19:21:54 +0530
-Message-ID: <20260304140329.7089-12-linux.amoon@gmail.com>
+Subject: [RFC v1 12/18] PCI: kirin: Allow asynchronous probing for background link training
+Date: Wed,  4 Mar 2026 19:21:55 +0530
+Message-ID: <20260304140329.7089-13-linux.amoon@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260304140329.7089-1-linux.amoon@gmail.com>
 References: <20260304140329.7089-1-linux.amoon@gmail.com>
@@ -157,7 +156,7 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 763FC207486
+X-Rspamd-Queue-Id: 8E2F620748D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.21 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -165,33 +164,33 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17746-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17747-lists,linuxppc-dev=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:vigneshr@ti.com,m:s-vadapalli@ti.com,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:mani@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:jingoohan1@gmail.com,m:krzk@kernel.org,m:alim.akhtar@samsung.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:yue.wang@Amlogic.com,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:jonnyc@amazon.com,m:thomas.petazzoni@bootlin.com,m:jesper.nilsson@axis.com,m:pjw@kernel.org,m:greentime.hu@sifive.com,m:samuel.holland@sifive.com,m:lchuanhua@maxlinear.com,m:srikanth.thokala@intel.com,m:songxiaowei@hisilicon.com,m:wangbinghui@hisilicon.com,m:unicorn_wang@outlook.com,m:inochiama@gmail.com,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:hayashi.kunihiko@socionext.com,m:mhiramat@kernel.org,m:nobuhiro.iwamatsu.x90@mail.toshiba,m:cassel@kernel.org,m:rongqianfeng@vivo.com,m:den@valinux.co.jp,m:18255117159@163.com,m:sai.krishna.musham@amd.c
- om,m:jirislaby@kernel.org,m:thippeswamy.havalige@amd.com,m:nkristam@nvidia.com,m:vidyas@nvidia.com,m:linux-omap@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-samsung-soc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:imx@lists.linux.dev,m:linux-amlogic@lists.infradead.org,m:linux-arm-kernel@axis.com,m:sophgo@lists.linux.dev,m:linux-tegra@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:linux.amoon@gmail.com,m:martinblumenstingl@gmail.com,m:thierryreding@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:vigneshr@ti.com,m:s-vadapalli@ti.com,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:mani@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:jingoohan1@gmail.com,m:krzk@kernel.org,m:alim.akhtar@samsung.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:yue.wang@Amlogic.com,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:jonnyc@amazon.com,m:thomas.petazzoni@bootlin.com,m:jesper.nilsson@axis.com,m:pjw@kernel.org,m:greentime.hu@sifive.com,m:samuel.holland@sifive.com,m:lchuanhua@maxlinear.com,m:srikanth.thokala@intel.com,m:songxiaowei@hisilicon.com,m:wangbinghui@hisilicon.com,m:unicorn_wang@outlook.com,m:inochiama@gmail.com,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:hayashi.kunihiko@socionext.com,m:mhiramat@kernel.org,m:nobuhiro.iwamatsu.x90@mail.toshiba,m:cassel@kernel.org,m:18255117159@163.com,m:rongqianfeng@vivo.com,m:jirislaby@kernel.org,m:tglx@kernel.org,m:sai
+ .krishna.musham@amd.com,m:thippeswamy.havalige@amd.com,m:vidyas@nvidia.com,m:linux-omap@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-samsung-soc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:imx@lists.linux.dev,m:linux-amlogic@lists.infradead.org,m:linux-arm-kernel@axis.com,m:sophgo@lists.linux.dev,m:linux-tegra@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:linux.amoon@gmail.com,m:martinblumenstingl@gmail.com,m:thierryreding@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER(0.00)[linuxamoon@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[ti.com,kernel.org,google.com,gmail.com,samsung.com,nxp.com,Amlogic.com,linaro.org,baylibre.com,googlemail.com,amazon.com,bootlin.com,axis.com,sifive.com,maxlinear.com,intel.com,hisilicon.com,outlook.com,nvidia.com,socionext.com,mail.toshiba,vivo.com,valinux.co.jp,163.com,amd.com,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.linux.dev];
+	FREEMAIL_TO(0.00)[ti.com,kernel.org,google.com,gmail.com,samsung.com,nxp.com,Amlogic.com,linaro.org,baylibre.com,googlemail.com,amazon.com,bootlin.com,axis.com,sifive.com,maxlinear.com,intel.com,hisilicon.com,outlook.com,nvidia.com,socionext.com,mail.toshiba,163.com,vivo.com,amd.com,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[57];
+	RCPT_COUNT_GT_50(0.00)[56];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[linuxamoon@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
@@ -204,21 +203,21 @@ are being probed.
 
 Signed-off-by: Anand Moon <linux.amoon@gmail.com>
 ---
- drivers/pci/controller/dwc/pcie-keembay.c | 1 +
+ drivers/pci/controller/dwc/pcie-kirin.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-keembay.c b/drivers/pci/controller/dwc/pcie-keembay.c
-index 2666a9c3d67e..a82d69b37e4d 100644
---- a/drivers/pci/controller/dwc/pcie-keembay.c
-+++ b/drivers/pci/controller/dwc/pcie-keembay.c
-@@ -478,6 +478,7 @@ static struct platform_driver keembay_pcie_driver = {
- 		.name = "keembay-pcie",
- 		.of_match_table = keembay_pcie_of_match,
- 		.suppress_bind_attrs = true,
+diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+index 91559c8b1866..bc905056a9d7 100644
+--- a/drivers/pci/controller/dwc/pcie-kirin.c
++++ b/drivers/pci/controller/dwc/pcie-kirin.c
+@@ -757,6 +757,7 @@ static struct platform_driver kirin_pcie_driver = {
+ 		.name			= "kirin-pcie",
+ 		.of_match_table		= kirin_pcie_match,
+ 		.suppress_bind_attrs	= true,
 +		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
  	},
- 	.probe  = keembay_pcie_probe,
  };
+ module_platform_driver(kirin_pcie_driver);
 -- 
 2.50.1
 
