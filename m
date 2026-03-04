@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17690-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMKFIEH1p2mtmwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17690-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 10:02:57 +0100
+	id 6OvZBrn1p2mtmwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 10:04:57 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB261FD10B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 10:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D4F1FD266
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 10:04:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQmsV01kgz3bp0;
-	Wed, 04 Mar 2026 20:02:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQmtw48bkz3c9r;
+	Wed, 04 Mar 2026 20:04:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772614973;
-	cv=none; b=UsswrcPmgUKA15Dhx3lOJrfUvGSgxXfJ+uRA9TZl/DI6bpKHP9wsEsqx4qNiJAazD4+mfikFG1dT3RzaZcrVKU2hY44h909mqLL5M19XcUxFT3vgD8Tqkr5lSxfaZSCm1d7gawlXzaBaQKSDTRfm7bCc5NlLVJdeCTidstW8GwoBXLc+vQ/KNen1gUK+TJQ6Vhf+qyLDnuU5OeS/IWks9MclaXEijea5aY8UanhHxUpImI8DZsiyW9PVTtuh3mCACfVuvdtCsCACX5dpZMIFMyeHoOh8qehvq4aaRBWjoPgOURaEIWE4kxzvR/CAQQcjtZQeWdQqqMNxnFas82asbw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772615048;
+	cv=none; b=f/BBwfflDCoMUArSD7kLCq0oKzgODQ9MSt1FiEjdzzrVV8ndo3YqGHEd0Lxr+YwZsSmyh0AdXZQo3jMYlKYkqvpUftpY+9D07QIy7xSfP+qL7z+NyQz+4P+5b9MgphYwBERdCYIa5f8L/5Exyk0dh+E7eeuRWo/FF/dbrx5OaSA8tL/7Ej1xrQLJMep7Uhjj9JNUUOXBxizdm2mjPAHvSemvoNkEZFdfXbiRuHnUS2iIrEJ85gVM8u12V5AShr2yyiaU4p2jqL7a04mwdko0uon3yS/Es4QL1rQN6UP63iaY1YtlwSDUgZ7lbPdyMGXdMMhkc2pFFKJY8FPp+tNY8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772614973; c=relaxed/relaxed;
-	bh=7DHo8nnofvS0v9zWPBa2XQHrIeh/6sZBlfpPvEqhW5g=;
+	t=1772615048; c=relaxed/relaxed;
+	bh=sOQlj6naO92JugN1Y9eyq9OsCaSmpPv2KoT7HaBPRQc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XcL3roOlo9KsHMRn/mUpo1653fQIiyicGGg1FvB92E2dopMSaVKNml0OcQ+vJxoUVcR9U0aqBaMmlIx/D0E1r+68JtanOedHXaJG15dB+5fvwGabW3E8WEpjkSO1lCdkdfIZWHO5uAhF5z8Ij5ut/nhZgq5R0I/UV0zIdQrgEmKV3ydKFmFL+/+bG3RLZsGCA4S1o2582lNIyhPW/xoxY1hS0Az2PVuvZ7462fxHqlf1jhzg3spP6rO900f923tCu9Qho+MxBGNoGhqsDDaqFcxViWLb8xln7HA6sqmNYdAexIWt+bzxn3RMheuVRW3L/4z2guspATlZVxpVYZDGgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HhixUQ6H; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=lGDUqv+c6fJ1HicpJhIUB+C+nu0/k7smlqBky66PwNIdxAG/M+7JfDAiVxmOf7dRETcqxDE2FuLlFO9g2dqpFyARa19DNQng0YM8n1ISyKjBZAImwR05mEsmIgEPb1nuIed5mq67v+eY1ON05/6K9mOyWxrzh2DaBdG8cLY871M2VybSAU/K0ASeencNi+wo1MduNsIigd9iX/RrdyXFl0PXjn+/WOkAX33rtuQK94hti4CJgdJmcEJcJuZPYqXI/vitGVC9Asfx1nMS/7TbNu37DRmNmFei+Zu3bfPlo7OFfkETpTKMy3HZRkGFpB6IZdlz5U+6M7GcH/DR7T9wVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LO5cFKB3; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HhixUQ6H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LO5cFKB3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQmsS6M1mz2yFY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 20:02:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQmtv5Vrtz3c9M
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 20:04:07 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB11F60097;
-	Wed,  4 Mar 2026 09:02:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A82C19423;
-	Wed,  4 Mar 2026 09:02:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3387C40B99;
+	Wed,  4 Mar 2026 09:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F464C19423;
+	Wed,  4 Mar 2026 09:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772614970;
-	bh=kxfIGChB2wC+nGHup8CVs7dyrylhcmHq5LK6PQjxQRc=;
+	s=k20201202; t=1772615046;
+	bh=duYFPXRSVqTWjpnCYbxKCrWGKHrn4IMlEvOkeRB4SBc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HhixUQ6Hh4hoRpXlkVOmTId9s+P0IjU3EDdIeeT9+mpTbOUx+A28yRnTUnROHq7y7
-	 JdwDgCknbvOQ8P4fwjeO82HZKw4HYFFSZqansP/wuuPBpm/b3ldEYMU5ieW8DmGakr
-	 fJHL4DP0s8AddWHaYFgzv54RvRLx9oiN6ycuU0jK7mroppUgjLyzi8X5GhxYSKZ+u4
-	 rfUEaoVOOZo0SQBMWziJ5uh94KT5cN2O7wwEDZRWpMav6EwASPxK8pST3CiQOUkJ3q
-	 KTX+0X8FOUH+zchvZ7qlwozteoijtM7XLPnXqtCyYvoitu6x/Q6mVfWu3G1ho8y+k8
-	 uRWnMQmllPnfA==
-Message-ID: <9d07ed92-ca0d-4012-bbb9-b2dc37f17f44@kernel.org>
-Date: Wed, 4 Mar 2026 10:02:46 +0100
+	b=LO5cFKB3INrXPIS9/Zzl0WPAjo/Xz417AVxD+S6wAoYl8T2a9o4qmbHKzaF3yafXU
+	 qPupfGUV3z8mC/GJE5HSVUjlpZr/zfH/n8eG1iWtPbkj5xC4dE5vQqHN3pRq/NJY5p
+	 UNgtygr9jbQ5jthBp+wJPEHAwxOUPwCoo/6O6de4EnKslc+KW8thlzk44/3Q0fr+x0
+	 +9ttAdacuqh4wTMayA0UCQME/k/uUScbhIcelDUYRXOWs8gX4QALILX4bsw7L6V6dg
+	 tz9Jci+tOojITSRXWYmLBR01xP02JIAi0LHkPMAQtNNFCWjlsFZPmK6FeP0QEpjE8P
+	 NgjYWXUy5RhYQ==
+Message-ID: <88b77e80-8b6c-44de-b74f-ad589d49b6cd@kernel.org>
+Date: Wed, 4 Mar 2026 10:04:02 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,8 +64,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 06/10] powerpc/64s: Kill the unused argument of
- exit_lazy_flush_tlb
+Subject: Re: [RFC v1 07/10] powerpc: book3s64: Rename tlbie_va_lpid to
+ tlbie_va_pid_lpid
 To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
@@ -75,17 +75,17 @@ Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
  "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
  Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
- <9385e4fbc4bb99ba47ea6070fd82233e6576c228.1772013273.git.ritesh.list@gmail.com>
+ <465a2aac31f00d395be0d551574de37786ace094.1772013273.git.ritesh.list@gmail.com>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <9385e4fbc4bb99ba47ea6070fd82233e6576c228.1772013273.git.ritesh.list@gmail.com>
+In-Reply-To: <465a2aac31f00d395be0d551574de37786ace094.1772013273.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 9DB261FD10B
+X-Rspamd-Queue-Id: 39D4F1FD266
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -97,7 +97,7 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17690-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17706-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-mm@kvack.org,m:hughd@google.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:aneesh.kumar@kernel.org,m:venkat88@linux.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[gmail.com,lists.ozlabs.org];
@@ -126,110 +126,98 @@ X-Rspamd-Action: no action
 
 
 Le 25/02/2026 à 12:04, Ritesh Harjani (IBM) a écrit :
-> In previous patch we removed the only caller of exit_lazy_flush_tlb()
-> which was passing always_flush = false in it's second argument.
+> It only make sense to rename these functions, so it's better reflect what
+> they are supposed to do. For e.g. __tlbie_va_pid_lpid name better reflect
+> that it is invalidating tlbie using VA, PID and LPID.
 > 
-> With that gone, all the callers of exit_lazy_flush_tlb() are local to
-> radix_pgtable.c and there is no need of an additional argument.
-> 
-> This patch does the required cleanup. There should not be any
-> functionality change in this patch.
+> No functional change in this patch.
 > 
 > Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
 Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
 > ---
->   arch/powerpc/mm/book3s64/internal.h  |  2 --
->   arch/powerpc/mm/book3s64/pgtable.c   |  2 --
->   arch/powerpc/mm/book3s64/radix_tlb.c | 14 +++++---------
->   3 files changed, 5 insertions(+), 13 deletions(-)
+>   arch/powerpc/mm/book3s64/radix_tlb.c | 20 ++++++++++----------
+>   1 file changed, 10 insertions(+), 10 deletions(-)
 > 
-> diff --git a/arch/powerpc/mm/book3s64/internal.h b/arch/powerpc/mm/book3s64/internal.h
-> index cad08d83369c..f7055251c8b7 100644
-> --- a/arch/powerpc/mm/book3s64/internal.h
-> +++ b/arch/powerpc/mm/book3s64/internal.h
-> @@ -31,6 +31,4 @@ static inline bool slb_preload_disabled(void)
->   
->   void hpt_do_stress(unsigned long ea, unsigned long hpte_group);
->   
-> -void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush);
-> -
->   #endif /* ARCH_POWERPC_MM_BOOK3S64_INTERNAL_H */
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-> index 84284dff650a..52d3e0c4a030 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -23,8 +23,6 @@
->   #include <mm/mmu_decl.h>
->   #include <trace/events/thp.h>
->   
-> -#include "internal.h"
-> -
->   struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
->   EXPORT_SYMBOL_GPL(mmu_psize_defs);
->   
 > diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-> index 9e1f6558d026..339bd276840b 100644
+> index 339bd276840b..1adf20798ca6 100644
 > --- a/arch/powerpc/mm/book3s64/radix_tlb.c
 > +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -19,8 +19,6 @@
->   #include <asm/cputhreads.h>
->   #include <asm/plpar_wrappers.h>
+> @@ -1411,7 +1411,7 @@ static __always_inline void __tlbie_pid_lpid(unsigned long pid,
+>   	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+>   }
 >   
-> -#include "internal.h"
-> -
->   /*
->    * tlbiel instruction for radix, set invalidation
->    * i.e., r=1 and is=01 or is=10 or is=11
-> @@ -660,7 +658,7 @@ static bool mm_needs_flush_escalation(struct mm_struct *mm)
->    * If always_flush is true, then flush even if this CPU can't be removed
->    * from mm_cpumask.
->    */
-> -void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
-> +static void exit_lazy_flush_tlb(struct mm_struct *mm)
+> -static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long pid,
+> +static __always_inline void __tlbie_va_pid_lpid(unsigned long va, unsigned long pid,
+>   					    unsigned long lpid,
+>   					    unsigned long ap, unsigned long ric)
 >   {
->   	unsigned long pid = mm->context.id;
->   	int cpu = smp_processor_id();
-> @@ -703,19 +701,17 @@ void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
->   	if (cpumask_test_cpu(cpu, mm_cpumask(mm))) {
->   		dec_mm_active_cpus(mm);
->   		cpumask_clear_cpu(cpu, mm_cpumask(mm));
-> -		always_flush = true;
+> @@ -1443,7 +1443,7 @@ static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
+>   
+>   	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+>   		asm volatile("ptesync" : : : "memory");
+> -		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+> +		__tlbie_va_pid_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+>   				RIC_FLUSH_TLB);
 >   	}
->   
->   out:
-> -	if (always_flush)
-> -		_tlbiel_pid(pid, RIC_FLUSH_ALL);
-> +	_tlbiel_pid(pid, RIC_FLUSH_ALL);
+>   }
+> @@ -1474,7 +1474,7 @@ static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+>   	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
 >   }
 >   
->   #ifdef CONFIG_SMP
->   static void do_exit_flush_lazy_tlb(void *arg)
->   {
->   	struct mm_struct *mm = arg;
-> -	exit_lazy_flush_tlb(mm, true);
-> +	exit_lazy_flush_tlb(mm);
+> -static inline void fixup_tlbie_va_range_lpid(unsigned long va,
+> +static inline void fixup_tlbie_va_range_pid_lpid(unsigned long va,
+>   					     unsigned long pid,
+>   					     unsigned long lpid,
+>   					     unsigned long ap)
+> @@ -1486,11 +1486,11 @@ static inline void fixup_tlbie_va_range_lpid(unsigned long va,
+>   
+>   	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+>   		asm volatile("ptesync" : : : "memory");
+> -		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
+> +		__tlbie_va_pid_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
+>   	}
 >   }
 >   
->   static void exit_flush_lazy_tlbs(struct mm_struct *mm)
-> @@ -777,7 +773,7 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
->   			 * to trim.
->   			 */
->   			if (tick_and_test_trim_clock()) {
-> -				exit_lazy_flush_tlb(mm, true);
-> +				exit_lazy_flush_tlb(mm);
->   				return FLUSH_TYPE_NONE;
->   			}
+> -static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+> +static inline void __tlbie_va_range_pid_lpid(unsigned long start, unsigned long end,
+>   					 unsigned long pid, unsigned long lpid,
+>   					 unsigned long page_size,
+>   					 unsigned long psize)
+> @@ -1499,12 +1499,12 @@ static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+>   	unsigned long ap = mmu_get_ap(psize);
+>   
+>   	for (addr = start; addr < end; addr += page_size)
+> -		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
+> +		__tlbie_va_pid_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
+>   
+> -	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
+> +	fixup_tlbie_va_range_pid_lpid(addr - page_size, pid, lpid, ap);
+>   }
+>   
+> -static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
+> +static inline void _tlbie_va_range_pid_lpid(unsigned long start, unsigned long end,
+>   					unsigned long pid, unsigned long lpid,
+>   					unsigned long page_size,
+>   					unsigned long psize, bool also_pwc)
+> @@ -1512,7 +1512,7 @@ static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
+>   	asm volatile("ptesync" : : : "memory");
+>   	if (also_pwc)
+>   		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+> -	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
+> +	__tlbie_va_range_pid_lpid(start, end, pid, lpid, page_size, psize);
+>   	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+>   }
+>   
+> @@ -1563,7 +1563,7 @@ void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
+>   			_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
+>   			return;
 >   		}
-> @@ -823,7 +819,7 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
->   		if (current->mm == mm)
->   			return FLUSH_TYPE_LOCAL;
->   		if (cpumask_test_cpu(cpu, mm_cpumask(mm)))
-> -			exit_lazy_flush_tlb(mm, true);
-> +			exit_lazy_flush_tlb(mm);
->   		return FLUSH_TYPE_NONE;
+> -		_tlbie_va_range_lpid(start, end, pid, lpid,
+> +		_tlbie_va_range_pid_lpid(start, end, pid, lpid,
+>   				     (1UL << def->shift), psize, false);
 >   	}
->   
+>   }
 
 
