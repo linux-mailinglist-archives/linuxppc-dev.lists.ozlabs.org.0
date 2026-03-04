@@ -1,97 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-17665-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17666-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NRSI8/Xp2kRkQAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17665-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 07:57:19 +0100
+	id +AaUEuXgp2mrlAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17666-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:36:05 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC3F1FB552
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 07:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D56921FBAA4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 04 Mar 2026 08:36:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fQk4W5b9bz30hq;
-	Wed, 04 Mar 2026 17:57:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fQkxF0J05z3bp0;
+	Wed, 04 Mar 2026 18:36:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::102f" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772607435;
-	cv=pass; b=AuR4Ecl9LgsHb0APGYNSEUO4o5AqDczqImnkrJTxnMizZjurCIGDE5J+Xa0thpGx2xmXnC9iIW1XShpUUGz6QfNldwnNkUkAM0Z8tZg7r19I+fte30yNQufqFEyU1X6OHBwsrfmOim/119rM6XqmU/hFuV52eomoWa1bdOvDEbl0amrZtquDtpPAY1kyx7zu+6660QEVMbn0NMexfc0SJNs2KSa5Pqimk9LcUk9Kz9GDO//IFT14t8UsI3wRTdg+iXM2U14KghC/7GR7bk5kIqkjKcFxv3rusE5tUyw82KpUCllGqJNo2GgqW772OxOuftLyHJxzBxSswPhQ1g7ptA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772607435; c=relaxed/relaxed;
-	bh=zyusLvJCkkWzcJR88zYJ+rt6lxear+OrQKoL1DsRYO4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ROzB/OORt64hs1vfZrtGRygvHz6MKQnVcHoObZ4dViCdNZ1gvHkX/P1kTYkbxE+RIv31oiEi9kFYPKczzNqX1ED9KIgRDUcGEE+wg+rZdBDEnU28b41Sj1jATra8kQoviDySODVECA8WjSDkUx3FCSslBLiNO3igeRg6m5uOFijMOQo+T/xMUJE0JH+snELsll7ibls//PTFFHNvd4O2RgyyrQknrrgaLsTcz2QEQxsBw0hkQGhKDRSFzQEEo0SkCj2oqGDJf52Dq3Ug1r9q0A6rknQzjJOoFUHu+NH5G6ODkXcUtA+KuHyx85+LkiSxNIecEb25rZtfOGdIdFmypQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D6QJ2PR2; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772609760;
+	cv=none; b=VQdrVGjS/nYTumt92l3XSDpdCUZ8tV/1p9VEXPE957idrFMmbgbAND+/3IgxPwzE20UUty+Ra70sy0U9cCCpLnu5ZXL7oDNwv7gGxXgbHNNPjcRaVUCl82DABNF/KuQ+wwCxaDBKn4kj+VcUd35Lx3qKJDT9L2JYVkpGl/fUdHji9MrZF5gR7saDqGOXcAn8O1oBGx7sppLn+cWroMB9T2hWhPfH8mclMne1CYfTJOznDRiK3e4Gl0zczBelK/DxlRQItOOtyLyPsT6zyJ+UwzDWDkD2cykF/ZDc0U/LUta4W4ZK7NjqX1Wrt7mKkGsSVZyvkauGGzzlNF+wr5huIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772609760; c=relaxed/relaxed;
+	bh=2nS0P0VdyIdVGVKOpPjEYkaSE/WndtzqXP/uXSM1srU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/PKBTTeXWZkxvm9Fsk9+dIbffDqb3ole117VZGrSSzZmi+dml7UycqobZoqzHXxXLKhcwgLh25/Edkm8jnPibetM2g/0CYy9mRbUgL/itYsbk/GGTMKcHRcU2uu78JVdqKwyK8qz6QF7BF9swf9uZwwPmm5SMAc0rdPPnj36lBS/fbRmiUwpQW6ztBRidbbFN4o9iyTL1kVfnS5vREg5HF/rKaACFFt+Hu33Ja2hOmNEkfY6rNzrCwFj4cR7Qie0JCR+lRhs94+5aaI2TVC649Db0Jx6+O7hIwu/ux3F4alX+ZKROOWQeHeQrMWYEm/q/9tPgyVkhEFxUjBBre7WQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KgHt8zIL; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=FeUnLDHc; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D6QJ2PR2;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KgHt8zIL;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=FeUnLDHc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQk4V0SYNz2xT4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 17:57:13 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-3591cc98871so2846021a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Mar 2026 22:57:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772607430; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MIwoRrI1O0Vkm3cLMx3HlkZACwwlvUqRPdFwcgSB13NUCp773xrj247RfM2pAQrg15
-         HUuTVWW9SEt4Cco2dCuGYNB51TJ4PgQBxDh79vLcuP8iPo1Gcpoc28OVpIBupgJ58eS0
-         PIuIHP3Y7rRBBBm7aWD3n8/8g/nh2eOAemyxQpJEHVixN49ZEkkoXPLESQlr+N8gqs2q
-         8aUtmQroRsWxeFSMIB3Mc+iI1h/2DQuYnRbY1w53eDn5AZ5axS9s+xD3z3WO4UcwZ9u3
-         lXyX217xcDEjW9bFTfHxp2HWFXDnLR/238eEelPLq9MXTh8YnUbFG1vClz4fHKdtHXYg
-         7ELg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zyusLvJCkkWzcJR88zYJ+rt6lxear+OrQKoL1DsRYO4=;
-        fh=+665MZ71LyWABKPaIfcoVZamlM0PtEpJ6YTVqr0FFmc=;
-        b=JESnNJ032JaVza3AiAA4DnsR/jVTeqpBLdSTH7znUD0sNHTbz1TGmXKclkf90CZ61Q
-         7AtqNGeg7TK/n/kmLVD9ZH3eYtKkuG2riHhf33pImPrcswBoUuigFJM48rMze+UzEnlC
-         DGwTmrwIAJlnyGxev+ICyiM8pVwVCZiLHTn80SA+uH+9PcI9abE9hb8oH6Uud6fnHeMi
-         2zVFdHOsPvVVlDmU0hRDffBSPKATnUvZlg5CBvTzZ4y5b64mOoDCe7pugPhMLgwow2Hi
-         iN8donOd6oj4FVZuAEOc72flBqnsd8U7ATAFeV9zoBr9q1xRyANy/si0BSgcsI6HxIKe
-         L3xQ==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772607430; x=1773212230; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zyusLvJCkkWzcJR88zYJ+rt6lxear+OrQKoL1DsRYO4=;
-        b=D6QJ2PR2fXSVFf7pB3G20zyQER5GGyAdt4p1VqEIdDFU/Pob1zNgjUlWcEVXS8mnBu
-         tJi4SpJotB9+EgDyMWSZAvlcKmg+lQeSF4KBZwCaF2Ku1SDiV9NyORmugeKbgbeiK4WY
-         HqtOPQPz1DbUfBscvQ43wKAdNEuaH5SJM787ABCxVegUOKcg/bNoC6Vweins21ay+n9V
-         WS6p26xhdG2tceMeMPLF0J/9fVU1TQ6T0DYmq8++ANLpLc9vTGgd9PIpqLJNySsnklo/
-         9xhaW9evGtZ3ExzrHEoBcw6yJ8nAFVsPoPSwq6dqzhtcpla5fA2J6PdEJH6ZaoiDPubw
-         BKTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772607430; x=1773212230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zyusLvJCkkWzcJR88zYJ+rt6lxear+OrQKoL1DsRYO4=;
-        b=waFRIecHlpNOBkYietu+OQBx9DYJU53rafkFvtbwLxVtO/Ng5wEEdgQaAVNU+jtP4l
-         h0bXV03HY7XlSIWvkBQsDt+eFd+A4QXBKgLRBrBz/7zKyj9nZvbolgfxBHlAjBAv6slm
-         A471wyYCqhjYI5ficXSfwWbmAYnQiNw70xZZmFK/3pN7lj/QzamTFh2wnhENhtrb8pYJ
-         JeOuciIsK+MCkrVgBSL40CJZRyCMNSQMnDHabaMpMAAqFkeEUHpAQb1GfDEUarVKH+GO
-         5IaS1BgtF/kTmgW5cwlyhXCOAwZVf/9UkzjMOFeFqdpNjRfXR2qAeyRkEqutKyKLQ/zj
-         XlkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMMNtlBQMU9O6WPuMUUomIXZEgjSdbOs/pnkOCz+c89ygT/uWPvKi9NC6bOFYmfToenP20/BpKvdehO+A=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzomeOILpsszewIiihv5OCGDrejRsk7jdWg4A4CTLD6wVd9ZRmg
-	aEOELJ/pzhD4QXbQUJOMUqJ03Q8VUUWBCMD8OrpbQTfbB6Sw62ejV1TuARuFtxD0G024lRzmgR7
-	hRGWP7EqH1kHnXyvaBcP0vYhPxRNN4Sg=
-X-Gm-Gg: ATEYQzyXKYyoJv3z23dwctJ9D8IeQgS6v7Vm3REd58S/a5qtVYyIa8wBNxEwOxnamj3
-	XzbASfTacGrYZLu6FJugud2e0bMFvw51SG7zK8AVgyJHSphvWGhcOB2SSHcOCToLlNfUpYND3Rz
-	cnY0fIDUaNMAo8jDBG7Ndkm4EjeyxeOvPCYfTeee2y0zWDFFPbJpae3Zn9r4Tzlo/VoZBKiu2q9
-	LDZ7xH2Pktaa8d0zdoiIF5XzObzAmIxD4za1ba5cJAfQcP/bN/5eR8BKk6RCqM7JY1jp1LT5XzN
-	zqCLJqW2n6cGr25Anw==
-X-Received: by 2002:a17:90b:1d51:b0:359:8d2e:6f79 with SMTP id
- 98e67ed59e1d1-359a69e4ceamr1142608a91.14.1772607430572; Tue, 03 Mar 2026
- 22:57:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fQkxC3hm8z2yFY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Mar 2026 18:35:59 +1100 (AEDT)
+Date: Wed, 4 Mar 2026 08:35:52 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772609753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2nS0P0VdyIdVGVKOpPjEYkaSE/WndtzqXP/uXSM1srU=;
+	b=KgHt8zILvTsVGSQwSsns57pHb2TloH3vD3uJPBjZl2obifyWkKUMup+CbS9Un0sr5Js9cn
+	loqMUEKO3VL7C5ZoAaV8p9F/s5rmENwDQMVMMJZ1e/xbJU9lb6NBOgib9IOkHN04LBeCYK
+	1btTqKkyq2KlPA6NLmuP25Gtx9M091s4DpATEeJd9Z6tZyZzFVQmvP4CYEx063m5Pe3DnJ
+	SCNABHQOqRKWwnQnn2LPqTZbhyjRMbg0HCABUFv/8PdA3Bc8BQBz2jTv/scLxIXHgmwCw8
+	Av89DsQgAibY7sITO5jpPlm/fukn3h3EnTBNkTaDvPbcGzrTyAjs6viGrE2/CA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772609753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2nS0P0VdyIdVGVKOpPjEYkaSE/WndtzqXP/uXSM1srU=;
+	b=FeUnLDHcbU/dyPEQom2WG/MpgJXSq3BKlAV0VeTApGMVedxpYe1ZsGp9BuW+Xo+X9+23M5
+	4zr2HrH69nZzcHCg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH 1/7] x86/vdso: Respect COMPAT_32BIT_TIME
+Message-ID: <20260304081505-a2a3a376-20c9-46cb-8dc9-2c4deec1a55e@linutronix.de>
+References: <20260227-vdso-compat_32bit_time-v1-0-3f0286a7bac3@linutronix.de>
+ <20260227-vdso-compat_32bit_time-v1-1-3f0286a7bac3@linutronix.de>
+ <c29f5e70-bd17-4e1b-a005-5a3282e70075@app.fastmail.com>
+ <03cd1e21-a2f2-46a1-a674-cbaef9712016@app.fastmail.com>
+ <20260227103226-cc3bb32c-0107-4c09-b81a-ca33ea03ad5c@linutronix.de>
+ <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,115 +88,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260212072229.3247604-1-shengjiu.wang@nxp.com>
- <20260212072229.3247604-2-shengjiu.wang@nxp.com> <d823ad90-c62e-4960-b012-5e7ba1f1b0d2@sirena.org.uk>
-In-Reply-To: <d823ad90-c62e-4960-b012-5e7ba1f1b0d2@sirena.org.uk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 4 Mar 2026 14:56:50 +0800
-X-Gm-Features: AaiRm53fl0cJUERzYVac_QaueGqI1pQblBfTQEc26hH-1qPCv-Mn0sM8TTWiYJI
-Message-ID: <CAA+D8ANdF0vodObzWA678cTex+y=7zerkQV9AY23KQnzwji-=g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ASoC: fsl_sai: add bitcount and timestamp controls
-To: Mark Brown <broonie@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <49b7c9f9-198a-49f7-880b-6ae74d7bd985@zytor.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 8DC3F1FB552
+X-Rspamd-Queue-Id: D56921FBAA4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17665-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:shengjiu.wang@nxp.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:XiuboLee@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,gmail.com,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[arndb.de,kernel.org,redhat.com,alien8.de,linux.intel.com,armlinux.org.uk,arm.com,linux.ibm.com,ellerman.id.au,gmail.com,alpha.franken.de,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17666-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:hpa@zytor.com,m:arnd@arndb.de,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:linux@armlinux.org.uk,m:catalin.marinas@arm.com,m:will@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:tsbogend@alpha.franken.de,m:vincenzo.frascino@arm.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-mips@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:mid]
 X-Rspamd-Action: no action
 
-On Tue, Mar 3, 2026 at 8:25=E2=80=AFAM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> On Thu, Feb 12, 2026 at 03:22:28PM +0800, Shengjiu Wang wrote:
-> > The transmitter and receiver implement separate timestamp counters and
-> > bit counters. The bit counter increments at the end of each bit in a
-> > frame whenever the transmitter or receiver is enabled. The bit counter
-> > can be reset by software. The timestamp counter increments on the bus
-> > interface clock whenever it is enabled. The current value of the
-> > timestamp counter is latched whenever the bit counter increments.
-> > Reading the bit counter register will cause the latched timestamp
-> > value to be saved in the bit counter timestamp register. The timestamp
-> > counter can be reset by software, this also resets the latched timestam=
-p
-> > value and the bit counter timestamp register.
->
-> It seems this makes mixer-test deeply unhappy, spamming lots of:
->
-> [   56.466460] fsl-sai 30c10000.sai: ASoC error (-16): at soc_component_r=
-ead_no_lock() on 30c10000.sai for register: [0x000000fc]
-> [   56.466469] fsl-sai 30c10000.sai: ASoC error (-16): at snd_soc_compone=
-nt_update_bits() on 30c10000.sai for register: [0x000000fc]
->
+On Tue, Mar 03, 2026 at 10:11:52AM -0800, H. Peter Anvin wrote:
+> On 2026-02-27 01:34, Thomas Weißschuh wrote:
+> >>>
+> >> The thing about gettimeofday() and time() is that they don't have
+> >> a 64-bit version and libc implementations are expected to call
+> >> clock_gettime() instead. The result was that there was never a
+> >> patch to turn the off either.
+> > 
+> > gettimeofday() is currently the only way to get the timezone of the kernel.
+> > But I guess this is a legacy thing anyways. If you say we should drop it,
+> > let's drop it.
+> > 
+> 
+> The time zone in the kernel has never worked anyway, as it would require the
+> kernel to contain at least the forward portion of the zoneinfo/tzdata table in
+> order to actually work correctly. The only plausible use of it would be for
+> local time-based filesystems like FAT, but I don't think we bother.
 
-Thanks for pointing it out.
+sys_tz is currently used by a bunch of drivers and filesystems (including FAT).
+It is also used when writing to the RTC.
 
-The registers are volatile, at pm suspend state, the cache_only is enabled.
-Then regmap will return -EBUSY error when amixer tries to access these
-registers.
+> A bigger question is whether or not we should omit these from the vDSO
+> completely (potentially causing link failures) or replace them with stubs
+> returning -ENOSYS.
 
-Looks like for this case, I can't not use the common functions
-snd_soc_put_xr_sx(),
-snd_soc_get_enum_double(), soc_get_volsw().
+I am a bit confused here. You mention 'link failures' and in another mail
+'weak references as fallback'. Both are things that happen during linking
+('link failures' could also be interpreted as failures during loading).
+Somewhere else someone also mentioned the vDSO to be 'linkable'.
+But as far as I understand, only libc interprets the vDSO, it completely
+bypasses both the linker and the loader. And libc already does graceful
+fallbacks to the regular systemcalls if the vDSO is missing completely or
+lacks one of the functions, as both cases may happen on normal systems.
 
-I need to define my own functions to check the pm runtime status, to
-avoid accessing
-these registers when at pm suspend state.
+What am I missing?
 
-best regards
-Shengjiu Wang
 
-> into dmesg on the Toradax Verdin:
->
->   https://lava.sirena.org.uk/scheduler/job/2518775#L2238
->
-> I don't have results for i.MX8MP-EVK since I didn't test it with the
-> fixes from:
->
->   https://patch.msgid.link/20260205-asoc-fsl-easrc-fix-events-v1-2-39d4c7=
-66918b@kernel.org
->
-> applied so the test ran out of time due to the time taken to log those
-> issues but I'm guessing this new issue should be reproducible there too.
+Thomas
 
