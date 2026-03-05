@@ -1,77 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-17767-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iB1cIYMdqWlM2QAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17767-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 07:06:59 +0100
+	id wJgzI9E6qWkd3QAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 09:12:01 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD9820B1E3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 07:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FE020D3F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 09:11:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fRJvy0mfvz3c2k;
-	Thu, 05 Mar 2026 17:06:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fRMhD4FpCz3c5c;
+	Thu, 05 Mar 2026 19:11:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772690813;
-	cv=none; b=SlhwziYsAoP+4Zeqc6NmcHNPqre6uiI1I6kNpWIWMMrWHu//F8Y5PqMTDVW4g0IOql4jr5iSBgwSgzdJw4pUELgxY7UQmi2cYSvDOmuk+8RmiLydIEUHtEPZgXT6QNHS/7+Gq43hH7slqo0Hq0EbzU5cUbZsAtM71WxhIBqxdnqqgv3hscQiggczWs3EIVQ78lGupreIyjVmrPX3pA8ho0V0F3M/6EsS+whRqw8DBuuq8aN1gJN5fnvI7vY9HljAXnzRmluntpUhljhUaVCEXwxLfq4oAAvGCDpTIMItd/OYeOJusPVTY9+K1O/6kFd6/b1pNcC/oiU4U/CJxNW2MQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772698316;
+	cv=none; b=GjsDtQ3mpCyJ5cJOWFZZawqurhQ18K6eUvWTOKH79FS/jMVmWJ15DxFsPsHGlgf/64AULC4oOsqxrxBcHf2J9rR7eOLYrl/C4NY0nYSW7L/59CeET2eC1NKij2q751MSXBABvHhDWC0pRqZsV/7sKXYCQBvhsXkJ8OLsiyPsqgI0xy2CidrSNPfKK6M3Z9eeJaY5Tfz9trTLjmRGwfO2Q4ltHe0QcR/YqvoHPTNsNTk7AWlB0sAS6Lik37ol0p+ciKMdsdFK7QenfaYuWiWoUFW3q0TC3WBspAOJE3pj18dQwAg9HShamRLGcvL8sLujV1ehGUYA8m/j9CyxVU/pzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772690813; c=relaxed/relaxed;
-	bh=fRaWHhsPQMTu801NDYNbwqnuvViinAHR6Ad/5+qmXYo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=mXTZmXxsNR+Uh1rUqdpJxb7RB5UM0x3efTtD8rKGnoNlqCN7XPKG9oyzTC2RB86gOKetHQ36Qy/eis6AluSS6A3ztV9C8lNv2GaXYmipHzQ0uo1fW6qlS1Y7id245F789kuFiVUn8sNcu6hhJNvradzYIQS1ndV+WzSaY3DlEqRNTkRceqcZLvaisH5UD5VvLB6msd8h9T+Q5UCpSPtAJScoPGHkfC02gsmNBminvwe2aCVujGfExiMJVHIz4WeDEg0OOqLxF+B4Z4ctI5OVN/+2SMrMo35BilgRYeAEjN6yoEQdQL/Au6tSFrtAoqBHTUFCSDrDQlFZxoHstnltag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fBKhcbEt; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1772698316; c=relaxed/relaxed;
+	bh=IERoM+0LmeBY7ANqfOoUEbhu/sAxXm8IA6OMd9BX25M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=acc9cae74P3n6zQEaw4GmRi5/h+nfFeMtPNpopgpaoYl2VomrEIIYTLMvjdiEKQ33oXvAeztZyvRF9noy0R7Wu4c6RGZiuSDcbRQlEG7fGGd09oYIpvmR9pau5mfM0qc23o6gYVsci7lWgGDAuuXslRHFcS+V7pvocRYowm92S+JMqD5mYtzvTMxYEdvTgFRJVX6xF7jEDmjhZLXZ2z+6KegUPuos9DqKq06V61MXsXFeq0P4B0syWf6sttu4o6DRL/uRPG8sQcn65QGcURjWBMo8Q3F4VWwnOq/wQ0AGLZ2iaHQ5DKR3sntLyZcRZNRXSs2QBNBv7++bpE7vD1jHA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Uh1I0U7K; dkim-atps=neutral; spf=pass (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fBKhcbEt;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Uh1I0U7K;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRJvw5Hn3z3c1J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 17:06:51 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 624KoFfT1884906;
-	Thu, 5 Mar 2026 06:06:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fRaWHh
-	sPQMTu801NDYNbwqnuvViinAHR6Ad/5+qmXYo=; b=fBKhcbEt2BpwhCblADzUjZ
-	p//lLdfMokVUZvgMOZPyZtGyT5SxqZznhrxVOtumvRSCVdMEbk/A3k/MOxoSRnPr
-	OzurQ/vflAoUjKubqVKhjZ/WYDk7zSHx2inS0JBHF1hr5kJWS9hSy6MVFaVWFPGv
-	KH5+whdoVJzw+vfNIGPDdTWCQcbMGMySafRKzbjvG9IDMPDqSzSJDW6OuMJceffb
-	kMtEfDuFxmID+bVIDqTjCqCD6aFDF0AXh8vVRiPmgN9KPh8fBDe2eZ3GE/mCGYV5
-	n/3hYlYHDrE3qNKvWYeMnSpG2LlWKlyrhwDq6cs3p6O6bNUJFR4F2WFUhRosRBFQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckskd2cvy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 06:06:06 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6251xAOi027710;
-	Thu, 5 Mar 2026 06:06:05 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmcwjhk73-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 06:06:05 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 625664U456885720
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2026 06:06:04 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 07B1458059;
-	Thu,  5 Mar 2026 06:06:04 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE2185805D;
-	Thu,  5 Mar 2026 06:05:59 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.242.165])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  5 Mar 2026 06:05:59 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRMh75CQ9z3c40
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 19:11:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772698312; x=1804234312;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C5zLzfyENBPlFTeplVQUbZ2qMCLm6d9LophjVLEMU3A=;
+  b=Uh1I0U7KIqB1T5LvlQ1YWYHrr5AOIRcOuYDvkoUEe94XBb6V+xO9rhVy
+   Z2bWWrve9Th5zW51rTgPjp5uARwTstSQ3XSSbGAkeyPw6X2xNiitqpQR6
+   8hXaYfv0/Lv0AzNZqlM/kmpmzsX54LAmspGtOZJkVipj88678CT8VvT1N
+   54YsoKqtSLjMJfSxeYGmuUCokzkm/bOALA84aIVGDZk9t7sxW7fs7X0Do
+   P6quPbVyLpw07Xn81A1EBP0/0gfel+b2pFfCAkVBu9Q4phPvk1eypj77u
+   cFJO5uJn4lHHPypcgnJaKeLpqpZSrzSYJ9VRnt4BFvPejwLNuAqwlp7fr
+   Q==;
+X-CSE-ConnectionGUID: +uivQYcVRjyDSV9Aww1m2A==
+X-CSE-MsgGUID: ewGPNISHTlq17ceuKphj9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="77621899"
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="77621899"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 00:11:42 -0800
+X-CSE-ConnectionGUID: Iw4uhjOiRf+rxsmGmxlWiA==
+X-CSE-MsgGUID: 1kllHXJpTTC5o4nRplKxbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="216418398"
+Received: from lkp-server01.sh.intel.com (HELO cadc4577a874) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 05 Mar 2026 00:11:36 -0800
+Received: from kbuild by cadc4577a874 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vy3nv-000000000Gs-3xwF;
+	Thu, 05 Mar 2026 08:11:31 +0000
+Date: Thu, 5 Mar 2026 16:10:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: david.laight.linux@gmail.com, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andre Almeida <andrealmeid@igalia.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Darren Hart <dvhart@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Heiko Carstens <hca@linux.ibm.com>, Jan Kara <jack@suse.cz>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sven Schnelle <svens@linux.ibm.com>
+Cc: oe-kbuild-all@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 4/5] uaccess: Disable -Wshadow in
+ __scoped_user_access()
+Message-ID: <202603051642.i46zzlJ8-lkp@intel.com>
+References: <20260302132755.1475451-5-david.laight.linux@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,180 +106,449 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH] powerpc, perf: Check that current->mm is alive before
- getting user callchain
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <20260227082502.1882395-1-vmalik@redhat.com>
-Date: Thu, 5 Mar 2026 11:35:46 +0530
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Joe Perches <joe@perches.com>, Paul Mackerras <paulus@ozlabs.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD2CF5B8-43C4-42B6-88C9-1D52286CA832@linux.ibm.com>
-References: <20260227082502.1882395-1-vmalik@redhat.com>
-To: Viktor Malik <vmalik@redhat.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: sWXFxkk_5Vh6eK6l7zseO9ekx1R7C0SK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDA0MSBTYWx0ZWRfX12cTe7wgD2/B
- AVvunM2eoCe8gGigpUPEgQ30ydZiEBYkvHeOYl4crm5LgFqwVWWXgtXDtT9I0tVHUvstNDzCeu1
- 9JCXZWomrg6GegDy8giKworL0R3dHPm6anEAPr9j8/shHFKMS9CqBwGNzikip4GiVKwkOb2It5+
- Tdwrgu3WVFB8jfRzj3uD2MoHGglUqASwR3uzZKtSLDwwDJRFN6Pz6+xTACJXxxF/qwiVgIuFpQq
- x99aH5gUVSwf8WsNESNKoCFl/2KswUEx9vkzsxjs9QqVcx/PVXa+OMu7O+kRES9lxCmf2ffF8i2
- epAAoNCFjzYQ3mZXBotrYH3NUuIizoB5CWozkMea6GiEUSwpgoPaZHg/DPBwbT2rlDwxQVaKFJv
- FuUkk3xrJtOnL+vW/qUWyk9kLhiChOJlAjjPjOLZE6IUyk6GbphmHBVxpgWr/lAoCtxzJJMSNyh
- s/iiEa95a8XjJ+DNysg==
-X-Authority-Analysis: v=2.4 cv=H7DWAuYi c=1 sm=1 tr=0 ts=69a91d4e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=IR7ToW8eRpEKds_zBhIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: chi_52EH7bETP7h6aLGRD6ob0kFnAAJV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-05_01,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 phishscore=0 clxscore=1011 priorityscore=1501
- adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050041
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302132755.1475451-5-david.laight.linux@gmail.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: ACD9820B1E3
+X-Rspamd-Queue-Id: D7FE020D3F3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [0.29 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,perches.com,ozlabs.org,kernel.crashing.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17767-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17768-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,zeniv.linux.org.uk,igalia.com,citrix.com,linux.ibm.com,kernel.org,csgroup.eu,infradead.org,stgolabs.net,suse.cz,inria.fr,linux-foundation.org,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,efficios.com,ellerman.id.au,imag.fr,dabbelt.com,armlinux.org.uk];
+	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	FORGED_RECIPIENTS(0.00)[m:david.laight.linux@gmail.com,m:viro@zeniv.linux.org.uk,m:andrealmeid@igalia.com,m:andrew.cooper3@citrix.com,m:borntraeger@linux.ibm.com,m:brauner@kernel.org,m:christophe.leroy@csgroup.eu,m:chleroy@kernel.org,m:dvhart@infradead.org,m:dave@stgolabs.net,m:hca@linux.ibm.com,m:jack@suse.cz,m:julia.lawall@inria.fr,m:torvalds@linux-foundation.org,m:linux-arm-kernel@lists.infradead.org,m:linux-fsdevel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:maddy@linux.ibm.com,m:mathieu.desnoyers@efficios.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:nicolas.palix@imag.fr,m:palmer@dabbelt.com,m:pjw@kernel.org,m:peterz@infradead.org,m:linux@armlinux.org.uk,m:svens@linux.ibm.com,m:oe-kbuild-all@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,01.org:url,intel.com:dkim,intel.com:email,intel.com:mid]
 X-Rspamd-Action: no action
 
+Hi,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on brauner-vfs/vfs.all]
+[also build test ERROR on v7.0-rc2]
+[cannot apply to linus/master next-20260303]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/david-laight-linux-gmail-com/uaccess-Fix-scoped_user_read_access-for-pointer-to-const/20260302-213317
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
+patch link:    https://lore.kernel.org/r/20260302132755.1475451-5-david.laight.linux%40gmail.com
+patch subject: [PATCH v2 4/5] uaccess: Disable -Wshadow in __scoped_user_access()
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260305/202603051642.i46zzlJ8-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260305/202603051642.i46zzlJ8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603051642.i46zzlJ8-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   In file included from include/asm-generic/div64.h:27,
+                    from ./arch/nios2/include/generated/asm/div64.h:1,
+                    from include/linux/math.h:6,
+                    from include/linux/math64.h:6,
+                    from include/linux/time.h:6,
+                    from include/linux/compat.h:10,
+                    from kernel/futex/core.c:34:
+   kernel/futex/futex.h: In function 'futex_get_value_locked':
+>> include/linux/uaccess.h:740:20: warning: unused variable '_tmpptr' [-Wunused-variable]
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |                    ^~~~~~~
+   include/linux/compiler.h:396:14: note: in definition of macro 'and_with'
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |              ^~~~~~~~~~~
+   include/linux/uaccess.h:740:9: note: in expansion of macro 'with'
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |         ^~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/futex.h:288:16: note: in expansion of macro 'get_user_inline'
+     288 |         return get_user_inline(*dest, from);
+         |                ^~~~~~~~~~~~~~~
+>> include/linux/compiler.h:396:9: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |         ^~~
+   include/linux/compiler.h:394:17: note: in expansion of macro 'and_with'
+     394 |                 and_with (declaration)
+         |                 ^~~~~~~~
+   include/linux/uaccess.h:740:9: note: in expansion of macro 'with'
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |         ^~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/futex.h:288:16: note: in expansion of macro 'get_user_inline'
+     288 |         return get_user_inline(*dest, from);
+         |                ^~~~~~~~~~~~~~~
+   In file included from include/linux/compiler_types.h:173,
+                    from <command-line>:
+   include/linux/compiler-gcc.h:118:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+     118 | #define __diag(s)               _Pragma(__diag_str(GCC diagnostic s))
+         |                                 ^~~~~~~
+   include/linux/compiler-gcc.h:129:9: note: in expansion of macro '__diag'
+     129 |         __diag(__diag_GCC_ignore option)
+         |         ^~~~~~
+   include/linux/uaccess.h:742:31: note: in expansion of macro '__diag_ignore_all'
+     742 |                 __diag_push() __diag_ignore_all("-Wshadow", "uptr is readonly copy")    \
+         |                               ^~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/futex.h:288:16: note: in expansion of macro 'get_user_inline'
+     288 |         return get_user_inline(*dest, from);
+         |                ^~~~~~~~~~~~~~~
+   In file included from include/asm-generic/div64.h:27,
+                    from ./arch/nios2/include/generated/asm/div64.h:1,
+                    from include/linux/math.h:6,
+                    from include/linux/math64.h:6,
+                    from include/linux/time.h:6,
+                    from include/linux/compat.h:10,
+                    from kernel/futex/core.c:34:
+>> include/linux/uaccess.h:743:90: error: '_tmpptr' undeclared (first use in this function)
+     743 |                 and_with (const auto uptr __cleanup(__scoped_user_##mode##_access_end) = _tmpptr) \
+         |                                                                                          ^~~~~~~
+   include/linux/compiler.h:396:14: note: in definition of macro 'and_with'
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |              ^~~~~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/futex.h:288:16: note: in expansion of macro 'get_user_inline'
+     288 |         return get_user_inline(*dest, from);
+         |                ^~~~~~~~~~~~~~~
+   include/linux/uaccess.h:743:90: note: each undeclared identifier is reported only once for each function it appears in
+     743 |                 and_with (const auto uptr __cleanup(__scoped_user_##mode##_access_end) = _tmpptr) \
+         |                                                                                          ^~~~~~~
+   include/linux/compiler.h:396:14: note: in definition of macro 'and_with'
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |              ^~~~~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/futex.h:288:16: note: in expansion of macro 'get_user_inline'
+     288 |         return get_user_inline(*dest, from);
+         |                ^~~~~~~~~~~~~~~
+>> include/linux/compiler.h:396:28: error: '_with_done' undeclared (first use in this function)
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |                            ^~~~~~~~~~
+   include/linux/uaccess.h:743:17: note: in expansion of macro 'and_with'
+     743 |                 and_with (const auto uptr __cleanup(__scoped_user_##mode##_access_end) = _tmpptr) \
+         |                 ^~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/futex.h:288:16: note: in expansion of macro 'get_user_inline'
+     288 |         return get_user_inline(*dest, from);
+         |                ^~~~~~~~~~~~~~~
+   kernel/futex/core.c: In function 'get_futex_key':
+>> include/linux/uaccess.h:740:20: warning: unused variable '_tmpptr' [-Wunused-variable]
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |                    ^~~~~~~
+   include/linux/compiler.h:396:14: note: in definition of macro 'and_with'
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |              ^~~~~~~~~~~
+   include/linux/uaccess.h:740:9: note: in expansion of macro 'with'
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |         ^~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:584:21: note: in expansion of macro 'get_user_inline'
+     584 |                 if (get_user_inline(node, naddr))
+         |                     ^~~~~~~~~~~~~~~
+>> include/linux/compiler.h:396:9: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |         ^~~
+   include/linux/compiler.h:394:17: note: in expansion of macro 'and_with'
+     394 |                 and_with (declaration)
+         |                 ^~~~~~~~
+   include/linux/uaccess.h:740:9: note: in expansion of macro 'with'
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |         ^~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:584:21: note: in expansion of macro 'get_user_inline'
+     584 |                 if (get_user_inline(node, naddr))
+         |                     ^~~~~~~~~~~~~~~
+   In file included from include/linux/compiler_types.h:173,
+                    from <command-line>:
+   include/linux/compiler-gcc.h:118:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+     118 | #define __diag(s)               _Pragma(__diag_str(GCC diagnostic s))
+         |                                 ^~~~~~~
+   include/linux/compiler-gcc.h:129:9: note: in expansion of macro '__diag'
+     129 |         __diag(__diag_GCC_ignore option)
+         |         ^~~~~~
+   include/linux/uaccess.h:742:31: note: in expansion of macro '__diag_ignore_all'
+     742 |                 __diag_push() __diag_ignore_all("-Wshadow", "uptr is readonly copy")    \
+         |                               ^~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:584:21: note: in expansion of macro 'get_user_inline'
+     584 |                 if (get_user_inline(node, naddr))
+         |                     ^~~~~~~~~~~~~~~
+   In file included from include/asm-generic/div64.h:27,
+                    from ./arch/nios2/include/generated/asm/div64.h:1,
+                    from include/linux/math.h:6,
+                    from include/linux/math64.h:6,
+                    from include/linux/time.h:6,
+                    from include/linux/compat.h:10,
+                    from kernel/futex/core.c:34:
+>> include/linux/uaccess.h:743:90: error: '_tmpptr' undeclared (first use in this function)
+     743 |                 and_with (const auto uptr __cleanup(__scoped_user_##mode##_access_end) = _tmpptr) \
+         |                                                                                          ^~~~~~~
+   include/linux/compiler.h:396:14: note: in definition of macro 'and_with'
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |              ^~~~~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:584:21: note: in expansion of macro 'get_user_inline'
+     584 |                 if (get_user_inline(node, naddr))
+         |                     ^~~~~~~~~~~~~~~
+>> include/linux/compiler.h:396:28: error: '_with_done' undeclared (first use in this function)
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |                            ^~~~~~~~~~
+   include/linux/uaccess.h:743:17: note: in expansion of macro 'and_with'
+     743 |                 and_with (const auto uptr __cleanup(__scoped_user_##mode##_access_end) = _tmpptr) \
+         |                 ^~~~~~~~
+   include/linux/uaccess.h:755:9: note: in expansion of macro '__scoped_user_access'
+     755 |         __scoped_user_access(read, usrc, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:767:9: note: in expansion of macro 'scoped_user_read_access_size'
+     767 |         scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:831:9: note: in expansion of macro 'scoped_user_read_access'
+     831 |         scoped_user_read_access(_tmpsrc, efault)                \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:584:21: note: in expansion of macro 'get_user_inline'
+     584 |                 if (get_user_inline(node, naddr))
+         |                     ^~~~~~~~~~~~~~~
+>> include/linux/uaccess.h:740:20: warning: unused variable '_tmpptr' [-Wunused-variable]
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |                    ^~~~~~~
+   include/linux/compiler.h:396:14: note: in definition of macro 'and_with'
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |              ^~~~~~~~~~~
+   include/linux/uaccess.h:740:9: note: in expansion of macro 'with'
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |         ^~~~
+   include/linux/uaccess.h:778:9: note: in expansion of macro '__scoped_user_access'
+     778 |         __scoped_user_access(write, udst, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:790:9: note: in expansion of macro 'scoped_user_write_access_size'
+     790 |         scoped_user_write_access_size(udst, sizeof(*(udst)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:856:9: note: in expansion of macro 'scoped_user_write_access'
+     856 |         scoped_user_write_access(_tmpdst, efault)               \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:604:37: note: in expansion of macro 'put_user_inline'
+     604 |                 if (node_updated && put_user_inline(node, naddr))
+         |                                     ^~~~~~~~~~~~~~~
+>> include/linux/compiler.h:396:9: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+     396 |         for (declaration; !_with_done; _with_done = true)
+         |         ^~~
+   include/linux/compiler.h:394:17: note: in expansion of macro 'and_with'
+     394 |                 and_with (declaration)
+         |                 ^~~~~~~~
+   include/linux/uaccess.h:740:9: note: in expansion of macro 'with'
+     740 |         with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))        \
+         |         ^~~~
+   include/linux/uaccess.h:778:9: note: in expansion of macro '__scoped_user_access'
+     778 |         __scoped_user_access(write, udst, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:790:9: note: in expansion of macro 'scoped_user_write_access_size'
+     790 |         scoped_user_write_access_size(udst, sizeof(*(udst)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:856:9: note: in expansion of macro 'scoped_user_write_access'
+     856 |         scoped_user_write_access(_tmpdst, efault)               \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:604:37: note: in expansion of macro 'put_user_inline'
+     604 |                 if (node_updated && put_user_inline(node, naddr))
+         |                                     ^~~~~~~~~~~~~~~
+   In file included from include/linux/compiler_types.h:173,
+                    from <command-line>:
+   include/linux/compiler-gcc.h:118:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+     118 | #define __diag(s)               _Pragma(__diag_str(GCC diagnostic s))
+         |                                 ^~~~~~~
+   include/linux/compiler-gcc.h:129:9: note: in expansion of macro '__diag'
+     129 |         __diag(__diag_GCC_ignore option)
+         |         ^~~~~~
+   include/linux/uaccess.h:742:31: note: in expansion of macro '__diag_ignore_all'
+     742 |                 __diag_push() __diag_ignore_all("-Wshadow", "uptr is readonly copy")    \
+         |                               ^~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:778:9: note: in expansion of macro '__scoped_user_access'
+     778 |         __scoped_user_access(write, udst, size, elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:790:9: note: in expansion of macro 'scoped_user_write_access_size'
+     790 |         scoped_user_write_access_size(udst, sizeof(*(udst)), elbl)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/uaccess.h:856:9: note: in expansion of macro 'scoped_user_write_access'
+     856 |         scoped_user_write_access(_tmpdst, efault)               \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/futex/core.c:604:37: note: in expansion of macro 'put_user_inline'
+     604 |                 if (node_updated && put_user_inline(node, naddr))
+         |                                     ^~~~~~~~~~~~~~~
+..
 
 
-> On 27 Feb 2026, at 1:55=E2=80=AFPM, Viktor Malik <vmalik@redhat.com> =
-wrote:
->=20
-> It may happen that mm is already released, which leads to kernel =
-panic.
-> This adds the NULL check for current->mm, similarly to 20afc60f892d
-> ("x86, perf: Check that current->mm is alive before getting user
-> callchain").
->=20
-> I was getting this panic when running a profiling BPF program
-> (profile.py from bcc-tools):
->=20
->    [26215.051935] Kernel attempted to read user page (588) - exploit =
-attempt? (uid: 0)
->    [26215.051950] BUG: Kernel NULL pointer dereference on read at =
-0x00000588
->    [26215.051952] Faulting instruction address: 0xc00000000020fac0
->    [26215.051957] Oops: Kernel access of bad area, sig: 11 [#1]
->    [...]
->    [26215.052049] Call Trace:
->    [26215.052050] [c000000061da6d30] [c00000000020fc10] =
-perf_callchain_user_64+0x2d0/0x490 (unreliable)
->    [26215.052054] [c000000061da6dc0] [c00000000020f92c] =
-perf_callchain_user+0x1c/0x30
->    [26215.052057] [c000000061da6de0] [c0000000005ab2a0] =
-get_perf_callchain+0x100/0x360
->    [26215.052063] [c000000061da6e70] [c000000000573bc8] =
-bpf_get_stackid+0x88/0xf0
->    [26215.052067] [c000000061da6ea0] [c008000000042258] =
-bpf_prog_16d4ab9ab662f669_do_perf_event+0xf8/0x274
->    [...]
->=20
-> Fixes: 20002ded4d93 ("perf_counter: powerpc: Add callchain support")
-> Signed-off-by: Viktor Malik <vmalik@redhat.com>
-> ---
+vim +/_tmpptr +743 include/linux/uaccess.h
 
-This issue was reported [1] sometime last year on the linux-next repo. =
-And even Shrikanth, has also reported this, and with more accurate repro =
-steps[2].
+   689	
+   690	/**
+   691	 * __scoped_user_access - Open a scope for user access
+   692	 * @mode:	The mode of the access class (read, write, rw)
+   693	 * @uptr:	The pointer to access user space memory
+   694	 * @size:	Size of the access
+   695	 * @elbl:	Error label to goto when the access region is rejected. It
+   696	 *		must be placed outside the scope
+   697	 *
+   698	 * If the user access function inside the scope requires a fault label, it
+   699	 * can use @elbl or a different label outside the scope, which requires
+   700	 * that user access which is implemented with ASM GOTO has been properly
+   701	 * wrapped. See unsafe_get_user() for reference.
+   702	 *
+   703	 *	scoped_user_rw_access(ptr, efault) {
+   704	 *		unsafe_get_user(rval, &ptr->rval, efault);
+   705	 *		unsafe_put_user(wval, &ptr->wval, efault);
+   706	 *	}
+   707	 *	return 0;
+   708	 *  efault:
+   709	 *	return -EFAULT;
+   710	 *
+   711	 * The scope is internally implemented as a autoterminating nested for()
+   712	 * loop, which can be left with 'return', 'break' and 'goto' at any
+   713	 * point.
+   714	 *
+   715	 * When the scope is left user_##@_mode##_access_end() is automatically
+   716	 * invoked.
+   717	 *
+   718	 * When the architecture supports masked user access and the access region
+   719	 * which is determined by @uptr and @size is not a valid user space
+   720	 * address, i.e. < TASK_SIZE, the scope sets the pointer to a faulting user
+   721	 * space address and does not terminate early. This optimizes for the good
+   722	 * case and lets the performance uncritical bad case go through the fault.
+   723	 *
+   724	 * The eventual modification of the pointer is limited to the scope.
+   725	 * Outside of the scope the original pointer value is unmodified, so that
+   726	 * the original pointer value is available for diagnostic purposes in an
+   727	 * out of scope fault path.
+   728	 *
+   729	 * Nesting scoped user access into a user access scope is invalid and fails
+   730	 * the build. Nesting into other guards, e.g. pagefault is safe.
+   731	 *
+   732	 * The masked variant does not check the size of the access and relies on a
+   733	 * mapping hole (e.g. guard page) to catch an out of range pointer, the
+   734	 * first access to user memory inside the scope has to be within
+   735	 * @uptr ... @uptr + PAGE_SIZE - 1
+   736	 *
+   737	 * Don't use directly. Use scoped_masked_user_$MODE_access() instead.
+   738	 */
+   739	#define __scoped_user_access(mode, uptr, size, elbl)					\
+ > 740		with (auto _tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl))	\
+   741			/* Force modified pointer usage within the scope */			\
+   742			__diag_push() __diag_ignore_all("-Wshadow", "uptr is readonly copy")	\
+ > 743			and_with (const auto uptr __cleanup(__scoped_user_##mode##_access_end) = _tmpptr) \
+   744			__diag_pop()
+   745	
 
-[1]: =
-https://lore.kernel.org/all/49cb29fc-003c-422a-98bd-dee8f13aa0b4@linux.ibm=
-.com/
-
-[2]: =
-https://lore.kernel.org/all/2a71b853-f461-4327-8d44-ef97564b2b91@linux.ibm=
-.com/
-
-If it makes sense, add below tag.
-
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-Regards,
-Venkat.=20
-
-> arch/powerpc/perf/callchain_32.c | 3 +++
-> arch/powerpc/perf/callchain_64.c | 3 +++
-> 2 files changed, 6 insertions(+)
->=20
-> diff --git a/arch/powerpc/perf/callchain_32.c =
-b/arch/powerpc/perf/callchain_32.c
-> index ddcc2d8aa64a..b46e21679566 100644
-> --- a/arch/powerpc/perf/callchain_32.c
-> +++ b/arch/powerpc/perf/callchain_32.c
-> @@ -144,6 +144,9 @@ void perf_callchain_user_32(struct =
-perf_callchain_entry_ctx *entry,
-> sp =3D regs->gpr[1];
-> perf_callchain_store(entry, next_ip);
->=20
-> + if (!current->mm)
-> + return;
-> +
-> while (entry->nr < entry->max_stack) {
-> fp =3D (unsigned int __user *) (unsigned long) sp;
-> if (invalid_user_sp(sp) || read_user_stack_32(fp, &next_sp))
-> diff --git a/arch/powerpc/perf/callchain_64.c =
-b/arch/powerpc/perf/callchain_64.c
-> index 115d1c105e8a..eaaadd6fa81b 100644
-> --- a/arch/powerpc/perf/callchain_64.c
-> +++ b/arch/powerpc/perf/callchain_64.c
-> @@ -79,6 +79,9 @@ void perf_callchain_user_64(struct =
-perf_callchain_entry_ctx *entry,
-> sp =3D regs->gpr[1];
-> perf_callchain_store(entry, next_ip);
->=20
-> + if (!current->mm)
-> + return;
-> +
-> while (entry->nr < entry->max_stack) {
-> fp =3D (unsigned long __user *) sp;
-> if (invalid_user_sp(sp) || read_user_stack_64(fp, &next_sp))
-> --=20
-> 2.53.0
->=20
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
