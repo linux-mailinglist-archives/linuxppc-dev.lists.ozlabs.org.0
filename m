@@ -1,63 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-17763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oN86Nh/0qGmfzgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 04:10:23 +0100
+	id kDiBCyj0qGmfzgAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 04:10:32 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BB520A709
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 04:10:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8978920A714
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 04:10:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fRDzz38Bvz3cB3;
-	Thu, 05 Mar 2026 14:10:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fRF003xDDz3cCr;
+	Thu, 05 Mar 2026 14:10:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c207::3" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772680207;
-	cv=pass; b=V/2d5RcAQaS/+huKe5nxy0EdsfQPUOG2r+OrLRzA9Binbd70NHiQD8YRZPqYtsFgChXdHdaRrkW0n9lBvohrHZZbGnJNnx+52n7AFTaRT9vKJjU3pHjczQaxnrMOPNFUZcke3hFkidBwpSxMLfAwT9H7Q9/wk/Ouv6hYbMD+OSDGktFw6B4kCwucRHuf11h8v0fSYt9X4XQ7rYCRWIkgRskPsNkXtOmni4HYIsYr/9Nr5XT6GC2bF5Bqu0ni/31RWK5p8sP9CCLyKv+AwLsG/wK6y5F2wryMnozPK8yKZ8+RfY+eA9LelIcjLrKMB/5Vc3J3BOv68h+OyAEBMhI6/g==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772680208;
+	cv=pass; b=VRlevWOZI33+f5pOoC80OZ8Je7Dar6tZ6HdotsAAGWIj++cSATOHbxz3TLMRy7uGZLXbfEhbfjFI4Ck3Uli7TFJiCUlMOgRiEdGK1bhUgqoaVpvBlcQxhVlY9SiPmIL1k8wYYRhxJ8ms1yc0u51L7ZEQ/zx2+bPNX4cVwAvoOViJWk352y+qNEBS2JsVmzHLCIB7sYVSpwLk21+t/JsZ2WCyumfMaLbNeSsUKmzbLx5g/7G+zznFcOktTrGchVQaUawhbeq7Ct0yYo1KKwn/X3GcMZbUZXx+9nUqbxEt6YBg5HU3CXKo7V1VlzAedLe+n9bguYOsLqQdwYK54p3Hug==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772680207; c=relaxed/relaxed;
-	bh=RBwQGeMBF3fJZE/VCEBVajJFXCLIy9W3IaOdwEAOhXc=;
+	t=1772680208; c=relaxed/relaxed;
+	bh=lNLCAJkY5y9KOlMh40hJZdodo8zWnpYY02Zu6ZApTd4=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b9vZdQU/fc7apowYG7MZa86mWkZvBlUCYOiO1J51PpgSkEHKCN4eMYCZdPzUiQHvIQayg2ZbM0a3CKv0IaNzWDue5x2L1lIgx8hg9Cx1OykCGpw9kzESkGzK6MIN0GfDGiGI9+JVj1veo+PNdp2jCLcwDiFqorekQMfDtTPSJp2tUhcbMSTwCA+IQVXIYi6ACJXsq+7BZldqLAV0mPbgGHdxByBT8E7mgDebIkPZYnXh7NFtQXPwWp31B02KxsdmKnNCDebWi5qMvDXErQ9GGX4LLC1Xzex2Mie3h90ED/XmBCuMEpYVxkgqxNO2sVXXAeLxE74VjMtZF+y3ay2jLw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V5hTD3BL; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c207::3; helo=mrwpr03cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=oASPLSd/ZeDk5gCfKuJQPRd7mUg9JmbV6Qvwi3BkbeCm99E1AHg/iNqg5LfdQaDCg/ASCmxScunq/tJX7Dtkw6nQmbcfsbrUOEDr/eG6hEMsqXD3M5CP5bi6M10qzyz3ICnWJzu6WMPaY7E+Dnd+UsXQgJ85vkG2s4Od+su58UocwaEKbAd2NePpSLfy6wuObxZrDHoOMaNCw2B5qTlXTT626mtDPQu6AfLimYQ8NYQTOudvYhwvzi6rlnwhrLPEMPSj5bW3a9Qo/XAR03WsJZFYNy0fVp5zGkdrdCdeWMdQ05oU24V2gZDDVM0JUlTcdiK8+T0u27wNvCx6vrgC6A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V9xvWO4l; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c207::3; helo=mrwpr03cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V5hTD3BL;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V9xvWO4l;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c207::3; helo=mrwpr03cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c207::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRDzy3VQ8z3c9M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 14:10:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRDzz47rPz3cBN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 14:10:07 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=slBb+NiYWR0FipMlrEea18WjDU5RWwL4tT4lmLG/tF2jKRfsOoUob+dFycVWLD1WW4aimmEXmQ993QnZGaigOk3Yp4F//swRVsPoaFKp2oFIhDEExCU5HLmGI7Og8XBKB5VY8Wo569RrFfHhtA8Td+k4OVDGDxWWoUXGMadoZJrdEHSFvxinxAD2HGFsVAN7PpisYkNEkdudxerl/GQoQUgMdhqz1kSYWk0vvfD37J8vELzYlAuomSrLzVj2d5vL/01g98qoKgRvBzNB34pJACbZ8gYOFemmLV2nOic1K618KA6ha2uVKnJnUrXwuGn1EvwvwG3kNq3N+mIwqt+tnA==
+ b=XZNt5kOurnguEHwg0WTMhJc4EX+dIrOlVA6ZPUzWjKACcJ1Iy45wqHJGMYQZsHCWAwhbhzA+xPvSr6e/6+9aBCrz04zfmuj417HOsDB3EFpLvYL9bqod6ri3X55ij4GMwmR4oCpgWROy0BdjahDRmiXUZyfVKX7jT5lv0wZQFPbKQsafNFrRV+eEIuZelz2IJ/jrlSueA5aikRYWbELErNdnry7a/W2mvvICZLRfUtKI2OblvR0KgFencQRmt6DQLTNLwhtL0IEXGpqrfawalgg+tVCH6NY2DGj0UvrDsQKzIPaoHpLRKS1x37DmgDJZUBpU0jZjgqgKuNqkc7i6sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RBwQGeMBF3fJZE/VCEBVajJFXCLIy9W3IaOdwEAOhXc=;
- b=mEoFGANJaZHoWad5j7e7WU4eT+RPoZSk+/aCQpq9NfJyyqCjedMhIXS3p69fClMJvazFlHsBDdIZtY4rlrdr3T63Z+AKBV9m/6oLQem3eAnKp8nB0W+i+eRPRFllRc93KL3FaRqPhGdEnEVvGI2s8klluLL+ZrVl64qFOgO6sYLoiuvtqoyLuCdgYRlWzeQyqTEhV4788Zz5joRJjuxv5qCRh7VjM08voK2j+zORhlTq2RR/BLYeCBYn9J25jysVj0mq2AxUCWl2JBhNfKHrBEhsWaJEqwCVMeOIKpHKAMdquXc48ZtUcAFcLxUBlDaWxKFe47lSeqExnLo5104yAg==
+ bh=lNLCAJkY5y9KOlMh40hJZdodo8zWnpYY02Zu6ZApTd4=;
+ b=F8E9d66lYrq9x1qDDqSbr8EUMfTO9wZ2OtU33Fkv2VyzX2VPQtkSdgLKqdSwXkLkwxAFPI4ixq/lSMwkvnc/xuYrzOdPYVuG9lKR91SLkHC69SeOSIIaTWoYp8YuEIB1R80eO7NqzjskknzsTwpsU5MbMQ1WF2xbUsiNKlgpnhb7lpK1R7YeV0W16No/vTcGL1dA+Gp6lioJYAtSGdCJeVxyuhMhI+lW35X5+wicHlg3Vd72tXfD660/CJZej1zMZ7kbiD6eSEqS78TsrjhoG4XhhqeNkgorc4W0nR/ZsnEyoLY3CPJ31fzjpTfcvElo6MvBfzmrB3Ii1N0l0wMxNg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RBwQGeMBF3fJZE/VCEBVajJFXCLIy9W3IaOdwEAOhXc=;
- b=V5hTD3BLICqRxeBbgKDC+q+SRxKSbD7FjXgjrRt/3RVIM+L4sl04XXRErz1OCrdi3WHgQrBivijMuqd9Fl0wEJtbrsIiNc4epNHCLrT8IwZNXjW0g8ZvbMrxeBdX5cBv35oG/Oo0Vc5gyCcb+NMP3LX/roEa36ZSNvh/Gh1A2uBg765YZFTR2HTQCefFkA3DMTWkd+YYWCv+p5kuw7W55+hOkugX9QQCdAJvX0ncu1XB6zsdKarM1KBZzwroJR9AvDjBoSXiPlzMG9S9NMG2JQC8TG5ct1mbXjfZBX16pKktw/2UKtW/ZHZnNYp6OYpUqizc+ucsrYDILTDxPz0kHA==
+ bh=lNLCAJkY5y9KOlMh40hJZdodo8zWnpYY02Zu6ZApTd4=;
+ b=V9xvWO4lmINh7N0gfgyHb/yJqsP/BzOzxV+NFCS/wEVyRSmynAiFEb9ryWvpRi5tpDp2dqjR0c3JScPg4rIs83mAia2Hn+50tVijUlTRUjaCnPfR9sjg2dBFsw2ycWFfZGUQHxi6nn1cdhVOAvZpV36Y84PD9N0K4FBtTZ6QF43TvLr6fb2WoKd0+hcK8l1N3Fwr+pp48jlsQMsDRmNEpNM0cd8ZXXbxqK2YzIb8+J1Vh2BxScot+nTx2v/QqLLekheZ8mZ0Sn/LH/FqTtBQtj1ddk7RtonIQOSZd+LzuMSwxtpcY3GS4wq9aVcDLHmmhfa3XkalIvcwcbeWzjHr9w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from VI1PR04MB7055.eurprd04.prod.outlook.com (2603:10a6:800:123::21)
  by PAXPR04MB8159.eurprd04.prod.outlook.com (2603:10a6:102:1c1::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
- 2026 03:09:49 +0000
+ 2026 03:09:55 +0000
 Received: from VI1PR04MB7055.eurprd04.prod.outlook.com
  ([fe80::4dee:baeb:a5cf:1664]) by VI1PR04MB7055.eurprd04.prod.outlook.com
  ([fe80::4dee:baeb:a5cf:1664%3]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 03:09:49 +0000
+ 03:09:54 +0000
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: shengjiu.wang@gmail.com,
 	Xiubo.Lee@gmail.com,
@@ -70,9 +70,9 @@ To: shengjiu.wang@gmail.com,
 	linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/3] ASoC: fsl_sai: add bitcount and timestamp controls
-Date: Thu,  5 Mar 2026 11:10:30 +0800
-Message-Id: <20260305031031.3808182-3-shengjiu.wang@nxp.com>
+Subject: [PATCH v3 3/3] ASoC: fsl_xcvr: add bitcount and timestamp controls
+Date: Thu,  5 Mar 2026 11:10:31 +0800
+Message-Id: <20260305031031.3808182-4-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20260305031031.3808182-1-shengjiu.wang@nxp.com>
 References: <20260305031031.3808182-1-shengjiu.wang@nxp.com>
@@ -96,63 +96,63 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI1PR04MB7055:EE_|PAXPR04MB8159:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03160b02-cea7-4234-0606-08de7a64a913
+X-MS-Office365-Filtering-Correlation-Id: 557ad167-a676-497f-21e6-08de7a64ac80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|7416014|19092799006|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	ST+Rf9PtEQEACzd3W00y4Bb8UnZkTH4cmhl5jzPXxSPP9TMnm77jcIwagDiG1OFEHRUcLHhkqVVs2jaUa0d20kJtPgmOzYucJlB4P+69+L5ISYJQUpSzhCnhvSuwOJUrTQnmsjOULJv7jRqfIiSFlv8Wfq0bOYfp+GL1Yw883N9ft19Dz99Y0thbPL8pbC0Zc4KXHHfg/DFJhqczRBU/szaSj5UCL3Cf7SLzWkWLz/3S+A5DFfgB+ohDaKSp73gMPpbtevQd4Il9tEhbklT6DpV3WPzsaAUofmCFCNR54mq1g+caeMU3dKiD9NuN8nY6HdFFtEcewrTA6C7pL7D2fQYYA17zGC/ZzAv8Q1D+OjdCQUdJAXbG2dZTi8lsphaqHyLOUVV/L/Xxn1LRsOdLtBkdou47muFD87+hKzJ5Y7PAJ44421rSbblCWWx4+eG53s3YVaS8AlcLxzJeDVgrIORIF9Bsj9cjNDlb4ci/Sxsy1z1Lz0+9rpClataEvnMxVc4nwkxkkU04a3neEmoLcRvCngg0zE6LP1IEnYUZ523FyxuGLipjyQRZem7SIAwTrSRCXfowLnwRegB0QzOC2GqGS++1xHsUlDCvjcKnvYu/iCFZZOvbDqE6ZzX/qU/fb9QXwkcBmUn1ovgyKo357ii9fYdXlPFVl6MbYGijgdigfg2RsAM/fmMHRQzEbX9/w2vj+Qx6QL8hlQInhxi0GZCXSmBcMUA3zQRSaDWn431Y0P/M6MQcvgpYghJwmNLlgjTPVZJGdwhXOfMvkc3kZyBJSn/dcHZoLmsPJG9HzQ9YSn39+u+WtXCnK0H2GDYx
+	Z58T1AdUGOcH6O4S5ypq2pYXFWiRB6zN6L8G8ZoUMhY2x1P/h0gkQAP0tBhdbauxRTG3xUqbMPOWdGuLUKRamnEfMqRiczXXwVGXgoU8ugCj/BhHQ2Rk5XwRbQlgOK36DlcGy3mzi/9FRKmFw0aLARogmvZqjYCX5to+OGzIwrPpp1URZGykin4Z4mJmWZ6K3hLK+KM6BlymDpq5XAoVoWbe+JsLE8BPa65MOSoMQce8Y2rdTaFqYDKumyACqnPBzg6nXxxevMk+N95VmUnfLoFfyPw1YBC90cHrBI4wB+th+p1T89Eu3cPZWY41KKM7xo0fdrd8rRX5GP+rcx5boio3mIoW+pEkX84Bqi/zoTnLEmf8+mizrShsxA/pxben+CPPCPonmMVMZRHuGMl2Myes/1K1CvF+x73TyGYHQkS13FONezxdBEpl5FtY5YguO0zl6Twzqzk+Fy/6DEdCsWaDsc8Y2Uey84aeqz8zKeGTsA6ibioF5GF/GO5t4PGFgOC+SOJszL+TgbqSti6SsVODbgxFU1fbahJ8yxVsjAVlT7GulryCPXnqVu+CUK45NvsMbS0EEGnWYOflQzfexGmhzSedN81TcioLmD9nQ4INxm5Hd54mFreS1zAI5LByzIoAMG26PdpR8s+pzhNEHMDeOgk5Y+PwPhlSRK6jBPZW9TxPjAK66pTnDNwiIf10xD7iQajQYFvdUKrsqk3SQt78ZUwCKEegdT40m+R6M69Nchf4OtPjFK5N1UNNSBm0//luNFFgd+UGj9F6LBN6hnQL3IQfJxT9HVYVv7tN4BVVR5ctaVKaqemj2T2G+0mn
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7055.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(7416014)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?egSV7HHK99a9O8JGs8i1QkXYs+XNi91Pc3CHboUfR0QjxSf3XdGXN0uNbtlV?=
- =?us-ascii?Q?hh36Ye8mbAP+mZljl5DU6nOX2S8KThBsYU29ZQ2/ZBi0apbc5qMylDlCL41I?=
- =?us-ascii?Q?CUa2Cl/URp48BI6+/6dL0imNTldNoSkB2xCxy9H6+Lk9j0b7oPpKhFWGPDW9?=
- =?us-ascii?Q?wAhtcKqJfbKgzval24NAM8vVsfMONoRB6wP/IDHkWn2fHB74piS8kxhK2tWQ?=
- =?us-ascii?Q?t6m7UnLG0V/3Ow0yahNxvmhQgSqKZxhBgKA0sie7paFWekAMjzxMi7dZ1YcN?=
- =?us-ascii?Q?HDFqqu3F9kZ08x8ViA9QoVuRvS/sroSkdPzafFAHKxf6RS+kiOxpDiyrjpEx?=
- =?us-ascii?Q?5zMLnRVgVG4etlBa91pQL9c5gtdTDYDgWrylmzmAkbB8cyckxqx+FlCKKfj7?=
- =?us-ascii?Q?2w/xNOoQXT+VkBcbk0CJYd4Ez2TyAmjrFtWvBzI2cvH0/xP/u6aYSXQSNvfe?=
- =?us-ascii?Q?J6/naSPCP15KC0a4LzFx5zsHtyM4V1Id4QUguq5bryeyvWN7NKYJRwh2YUbJ?=
- =?us-ascii?Q?ZVSxhd/J9dlb2DMt/1IWZYZxanI4AeyBQzwBA1G1NP0q/l2aHTzSLCb60kCC?=
- =?us-ascii?Q?xp33U9YS6Q1APzmsu+4yVngjP3mOoj6vI+CSQ+hL34Zv+wETdVVM8+enXlGJ?=
- =?us-ascii?Q?rvDl3ao32D11HyjZRSsVrbC9jMMlM+azuK0rt9A8bDmf6BIo+TC7DfiCLoxu?=
- =?us-ascii?Q?LX23wZfomOtQHvbmj4BbnvKi3vrWYgvixmz6cRRPwFn0pRToNOy6ClAFz2vB?=
- =?us-ascii?Q?1WstTgq6y16Ea5wJW9+DTiuyj/x8H7QF/A4y+6gbS7jiyp0r9OuIydkW2GWL?=
- =?us-ascii?Q?kGpBCGqmPLHgUgunCVNCVFmeKW3J6uZyHORfK7ag8riJud99qeIaMid9GpFQ?=
- =?us-ascii?Q?DMz5GJ+SkYMkpOu8Ileq4FUMi9ECqCWIsCkX72MV5elU23uYXC0XBhFRumEX?=
- =?us-ascii?Q?D7tm176xygTweC6WBUhHL8zUoXD9HCs8iFG+LtxPbodycQoHFGPllamaKk8k?=
- =?us-ascii?Q?ycvwYYdwkRKu205VkO59g9nLOmgzjRpSoDG1EJyEMug2IO/yTM3kEEklJq/C?=
- =?us-ascii?Q?o4SwtglJUfbullqilxEUDxdpPm1tBZGMuVtGlUhDMG9jVXw2HetQQCWbrfyr?=
- =?us-ascii?Q?6WkjiSSwr9oYAcerLNdzA31FluHUBwS2ERMipmpEGYcOSEXuI8ohU+qxpt7E?=
- =?us-ascii?Q?FpUvHhCfhM2L+6LzJm9HDf/lHkdsIAjMgTw7+9VoMbFs4BxAM7WaF/Yy+V4q?=
- =?us-ascii?Q?e/XdOESOwAJFsDxGTGqssZez+TeI8zuTNwACMrfn4dNcil6R3qCPOV9GITiH?=
- =?us-ascii?Q?isDsxZzbAKEDl+61zSObCRoHSKfScZClB3aFVj62Pp5XlGTr2X7iW8cDhQgu?=
- =?us-ascii?Q?pnireVjeL3L9bjqH70BDrP/prby/T/3ap/Ee/wvMIJ2O8M2rml2IsAd/o3OO?=
- =?us-ascii?Q?Ux9DcKKxxonKPoKDK9tsCqMMa3M355KOah8wqrwgx1BZWSxwDNVSjcvyrwZD?=
- =?us-ascii?Q?Av/00uKCKanOw61052H38uIdtzzTrCi7W7Hz7ksYDszPckTp6tqfSUkiBZpZ?=
- =?us-ascii?Q?0omTZDTL21d9eKcm0r8MdZneXoCwGO4MEFysFo14gUA7p9Yn6iyEe4Hj/ss6?=
- =?us-ascii?Q?vhDCT/9wPFDfKuy+enMlin2dJ8diYHIbznwtRyaLbeDeTMSmgShZrBFawG4g?=
- =?us-ascii?Q?MhNK4FuFF/IcHuDCwN1yYU8oI1Cm4HoDGpNsaRWC35lnw3hudUx/y0CiqXu0?=
- =?us-ascii?Q?zcEfhpsKjg=3D=3D?=
+	=?us-ascii?Q?XU80NtXe6wQKrehu948sgKmdN8Y8JD29KE3SHNPm8g0paaDbuBKnKQ5Ta3/W?=
+ =?us-ascii?Q?nThcx0w1YX6R5tf0i22w8b9kb7hGv7H9Uma7zn3zMLXMXh/jyH+/OKQiOhWf?=
+ =?us-ascii?Q?9bownIWzlPtgvHLPD1cdKdhSU7IZnaxTOxGzHdwh9BGQnfKG9gpTyvO7Pt/w?=
+ =?us-ascii?Q?T4TyAELuOhkWntVqY7daVAKVkvxhy0N7EPELMdfmFUCxK+0nlszfn1bTLHE8?=
+ =?us-ascii?Q?mHST+suDUXQp+q5pBfNKfvdXEsH8PvpC1suSr18raCSUTT2s78mVTv7vq+Wn?=
+ =?us-ascii?Q?BHt12jKnw1xwqtjh9SoCKBpAaiekE5V+R0Mj28OJVet/SeBGh5+qop1dSmLp?=
+ =?us-ascii?Q?SE44Rboe0seJ3MfYytYljMlCXgRdjP9icVYKqfElvZl7Ubkp2nc+eUdkXzBU?=
+ =?us-ascii?Q?ra2hOAbmP7Mcv1JVo7uEFpb+2VprkIadgmYlE/anMsu0YQXLT4MMk1dIX9L7?=
+ =?us-ascii?Q?x4Vrfc2cR696VGJM7Va3gvg5nHDLL2IubpWHetLVaDKe3Rvp6Z1suttcOdPf?=
+ =?us-ascii?Q?IsuFg/uIEpWDKRTq/KPbAl3h5Bs4/H2w1PHirS2qoL/3ugLKXa0HXM9IRpux?=
+ =?us-ascii?Q?80jJ7zX11FmfimmsbFStl44k1+Q7efLlqGw41pTv4fe/pec6EJQc69aaU8CX?=
+ =?us-ascii?Q?5jQV6cZ+mCB2PHHdufcLSloP3ESHCyqghQi5Dy3WTY+MyVfVT0Qc1MKr7D+H?=
+ =?us-ascii?Q?HQODNyJnSpuz/eD4NEdrReUbPxeqD5cvsuRCsgv6jzoAHf4qLP51G5ZY6vj3?=
+ =?us-ascii?Q?2PoVlg7Yi16PdzON7VKAWUonJT7uq1twH6X8jZxgXQCRQCuyIrLSxkvoyOzB?=
+ =?us-ascii?Q?Cs04wsKZs8TEOgrPnBj6J6fd8NGu2XeHJwMFV9BsRtz3joqUH8bUU96a13sn?=
+ =?us-ascii?Q?SoSnDDG+ETcshM/MpjzEp16zpBAhnboa30KHrb2hvzPnITS4CzAoF2rBVVna?=
+ =?us-ascii?Q?Kk9DdNDeVD/5dyTzPYZPYyWqW2f/DpKInMAqAQdRBHHqOItURmqsU6bCgPce?=
+ =?us-ascii?Q?gzJfVsqZUHmyS+6HgDDp9N0UCB9mhnJbxcR/k2sGh2gdS7gm9vyh60/X6pby?=
+ =?us-ascii?Q?3o+aXVaC/Ry9C7VwhBYlL4gJWRab52DUeQJO7PjaXs8MlAz1rfeaUWK+zeZb?=
+ =?us-ascii?Q?Oryt7996TplKVbwe1VHLECGDD5URnCWroMT6XtTrILKq/cc9UhArpbuqRw3a?=
+ =?us-ascii?Q?hdoyfMdTw4GOhTZ8lI0/TV1zAapTPZbk+4UdbmWA6aROk9g0cUVOYYWyZyIr?=
+ =?us-ascii?Q?0HmvFWuoZYS1T+6eLxRgPdZ2FZciI/8d44tsOf8cRIMM8cofv9U99xx5mDye?=
+ =?us-ascii?Q?wYtILE7RM8pi1FwhOUIMxF0DaFLNiG51dausp8/162gk7vQqaawz7sCTsEWa?=
+ =?us-ascii?Q?c9deeIN6npgOesN8mvbZB2SE4TCZoBD1mYoDSdArZY5/hPQuK9k4UcCLaQDJ?=
+ =?us-ascii?Q?aOUmPTVJD7I9uDCDMGdxWng2mN+/RBVJ4MEK63EdkCWz5EuC7+uV+2nk9lnc?=
+ =?us-ascii?Q?ASgGyv7fzLsafR/CBDjBzOC1LFy4G7Vlk5DYpvBOZeAFRsL3vIKc5c8xMWt9?=
+ =?us-ascii?Q?bwtFS3tC6fBQMUVyusxB7JsdER1V+/ElTsu/Af0YmG9AxzaKmbKAWRn2t2kS?=
+ =?us-ascii?Q?yGdQE8m5vwq27pLzkHFXPjXcIVAeyTnUbq9LQyDmw27EBnL247LyvGYxv3x8?=
+ =?us-ascii?Q?WJmOgF2tkd9LOFB587YXHgkoneQk941dHL+uLFKP6GTsXvcgFE9Vbl2yCbbi?=
+ =?us-ascii?Q?fy5Y1n4L/Q=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03160b02-cea7-4234-0606-08de7a64a913
+X-MS-Exchange-CrossTenant-Network-Message-Id: 557ad167-a676-497f-21e6-08de7a64ac80
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 03:09:49.2377
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 03:09:54.8918
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M/PuNh2+n9ms8S+4m/Ss8zf9JotJzV2Wh57ReiJ3N4mEEQSDiXyisUKjeKc5xIFV/sl34IovfA/LBJEcSTIkww==
+X-MS-Exchange-CrossTenant-UserPrincipalName: NpgIQ4OxhqGeOFtgQ6k6xJIbtFa4iDS4xZ7JrlOGKzMGDz8txuAHmmwZU3xfMFfAQD3E37cmpHOH/rsKdBjEdA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8159
 X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
 	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: E3BB520A709
+X-Rspamd-Queue-Id: 8978920A714
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -161,7 +161,7 @@ X-Spamd-Result: default: False [0.79 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -171,9 +171,9 @@ X-Spamd-Result: default: False [0.79 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17763-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17764-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TO_DN_NONE(0.00)[];
@@ -205,21 +205,22 @@ the progress of the transmitter and receiver. It can also be used to
 calculate the relative frequency of the bit clock against the bus
 interface clock.
 
-These bitcount and timestamp registers are volatile, and supported when
-the module has timestamp features.
+As there are three regmap handlers defined in this driver, explicitly
+call the snd_soc_component_init_regmap() to init regmap handler for the
+component.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- sound/soc/fsl/fsl_sai.c | 62 +++++++++++++++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_sai.h |  4 +++
- 2 files changed, 66 insertions(+)
+ sound/soc/fsl/fsl_xcvr.c | 64 ++++++++++++++++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_xcvr.h | 18 +++++++++++
+ 2 files changed, 82 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 148e09e58dfa..aebb5278cea7 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -41,6 +41,48 @@ static const struct snd_pcm_hw_constraint_list fsl_sai_rate_constraints = {
- 	.list = fsl_sai_rates,
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index a268fb81a2f8..a945defa8b3f 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -62,6 +62,58 @@ struct fsl_xcvr {
+ 	u32 spdif_constr_rates_list[SPDIF_NUM_RATES];
  };
  
 +static const char * const inc_mode[] = {
@@ -227,105 +228,106 @@ index 148e09e58dfa..aebb5278cea7 100644
 +};
 +
 +static SOC_ENUM_SINGLE_DECL(transmit_tstmp_enum,
-+			    FSL_SAI_TTCTL, FSL_SAI_xTCTL_TSINC_SHIFT, inc_mode);
++			    FSL_XCVR_TX_DPTH_CNTR_CTRL,
++			    FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC_SHIFT, inc_mode);
 +static SOC_ENUM_SINGLE_DECL(receive_tstmp_enum,
-+			    FSL_SAI_RTCTL, FSL_SAI_xTCTL_TSINC_SHIFT, inc_mode);
++			    FSL_XCVR_RX_DPTH_CNTR_CTRL,
++			    FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC_SHIFT, inc_mode);
 +
-+static const struct snd_kcontrol_new fsl_sai_timestamp_ctrls[] = {
-+	SOC_SINGLE_EXT("Transmit Timestamp Control Switch", FSL_SAI_TTCTL,
-+		       FSL_SAI_xTCTL_TSEN_SHIFT, 1, 0,
++static const struct snd_kcontrol_new fsl_xcvr_timestamp_ctrls[] = {
++	SOC_SINGLE_EXT("Transmit Timestamp Control Switch", FSL_XCVR_TX_DPTH_CNTR_CTRL,
++		       FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN_SHIFT, 1, 0,
 +		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
 +	SOC_ENUM_EXT("Transmit Timestamp Increment", transmit_tstmp_enum,
 +		     fsl_asoc_get_enum_double, fsl_asoc_put_enum_double),
-+	SOC_SINGLE_EXT("Transmit Timestamp Reset", FSL_SAI_TTCTL, FSL_SAI_xTCTL_RTSC_SHIFT, 1, 0,
++	SOC_SINGLE_EXT("Transmit Timestamp Reset", FSL_XCVR_TX_DPTH_CNTR_CTRL,
++		       FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC_SHIFT, 1, 0,
 +		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	SOC_SINGLE_EXT("Transmit Bit Counter Reset", FSL_SAI_TTCTL, FSL_SAI_xTCTL_RBC_SHIFT, 1, 0,
++	SOC_SINGLE_EXT("Transmit Bit Counter Reset", FSL_XCVR_TX_DPTH_CNTR_CTRL,
++		       FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC_SHIFT, 1, 0,
 +		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Timestamp Counter", FSL_SAI_TTCTN,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Timestamp Counter", FSL_XCVR_TX_DPTH_TSCR,
 +				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Bit Counter", FSL_SAI_TBCTN,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Bit Counter", FSL_XCVR_TX_DPTH_BCR,
 +				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Latched Timestamp Counter", FSL_SAI_TTCAP,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Bit Count Timestamp", FSL_XCVR_TX_DPTH_BCTR,
 +				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	SOC_SINGLE_EXT("Receive Timestamp Control Switch", FSL_SAI_RTCTL,
-+		       FSL_SAI_xTCTL_TSEN_SHIFT, 1, 0,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Latched Timestamp Counter", FSL_XCVR_TX_DPTH_BCRR,
++				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
++	SOC_SINGLE_EXT("Receive Timestamp Control Switch", FSL_XCVR_RX_DPTH_CNTR_CTRL,
++		       FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN_SHIFT, 1, 0,
 +		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
 +	SOC_ENUM_EXT("Receive Timestamp Increment", receive_tstmp_enum,
 +		     fsl_asoc_get_enum_double, fsl_asoc_put_enum_double),
-+	SOC_SINGLE_EXT("Receive Timestamp Reset", FSL_SAI_RTCTL, FSL_SAI_xTCTL_RTSC_SHIFT, 1, 0,
++	SOC_SINGLE_EXT("Receive Timestamp Reset", FSL_XCVR_RX_DPTH_CNTR_CTRL,
++		       FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC_SHIFT, 1, 0,
 +		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	SOC_SINGLE_EXT("Receive Bit Counter Reset", FSL_SAI_RTCTL, FSL_SAI_xTCTL_RBC_SHIFT, 1, 0,
++	SOC_SINGLE_EXT("Receive Bit Counter Reset", FSL_XCVR_RX_DPTH_CNTR_CTRL,
++		       FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC_SHIFT, 1, 0,
 +		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Timestamp Counter", FSL_SAI_RTCTN,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Timestamp Counter", FSL_XCVR_RX_DPTH_TSCR,
 +				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Bit Counter", FSL_SAI_RBCTN,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Bit Counter", FSL_XCVR_RX_DPTH_BCR,
 +				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Latched Timestamp Counter", FSL_SAI_RTCAP,
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Bit Count Timestamp", FSL_XCVR_RX_DPTH_BCTR,
++				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
++	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Latched Timestamp Counter", FSL_XCVR_RX_DPTH_BCRR,
 +				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
 +};
 +
- /**
-  * fsl_sai_dir_is_synced - Check if stream is synced by the opposite stream
-  *
-@@ -1010,6 +1052,17 @@ static int fsl_sai_dai_resume(struct snd_soc_component *component)
- 	return 0;
- }
+ static const struct fsl_xcvr_pll_conf {
+ 	u8 mfi;   /* min=0x18, max=0x38 */
+ 	u32 mfn;  /* signed int, 2's compl., min=0x3FFF0000, max=0x00010000 */
+@@ -1070,8 +1122,20 @@ static struct snd_soc_dai_driver fsl_xcvr_dai = {
+ 	},
+ };
  
-+static int fsl_sai_component_probe(struct snd_soc_component *component)
++static int fsl_xcvr_component_probe(struct snd_soc_component *component)
 +{
-+	struct fsl_sai *sai = snd_soc_component_get_drvdata(component);
++	struct fsl_xcvr *xcvr = snd_soc_component_get_drvdata(component);
 +
-+	if (sai->verid.feature & FSL_SAI_VERID_TSTMP_EN)
-+		snd_soc_add_component_controls(component, fsl_sai_timestamp_ctrls,
-+					       ARRAY_SIZE(fsl_sai_timestamp_ctrls));
++	snd_soc_component_init_regmap(component, xcvr->regmap);
 +
 +	return 0;
 +}
 +
- static struct snd_soc_dai_driver fsl_sai_dai_template[] = {
- 	{
- 		.name = "sai-tx-rx",
-@@ -1063,6 +1116,7 @@ static struct snd_soc_dai_driver fsl_sai_dai_template[] = {
- 
- static const struct snd_soc_component_driver fsl_component = {
- 	.name			= "fsl-sai",
-+	.probe			= fsl_sai_component_probe,
- 	.resume			= fsl_sai_dai_resume,
+ static const struct snd_soc_component_driver fsl_xcvr_comp = {
+ 	.name			= "fsl-xcvr-dai",
++	.probe			= fsl_xcvr_component_probe,
++	.controls		= fsl_xcvr_timestamp_ctrls,
++	.num_controls		= ARRAY_SIZE(fsl_xcvr_timestamp_ctrls),
  	.legacy_dai_naming	= 1,
  };
-@@ -1211,6 +1265,14 @@ static bool fsl_sai_volatile_reg(struct device *dev, unsigned int reg)
- 	case FSL_SAI_RDR5:
- 	case FSL_SAI_RDR6:
- 	case FSL_SAI_RDR7:
-+	case FSL_SAI_TTCTN:
-+	case FSL_SAI_RTCTN:
-+	case FSL_SAI_TTCTL:
-+	case FSL_SAI_TBCTN:
-+	case FSL_SAI_TTCAP:
-+	case FSL_SAI_RTCTL:
-+	case FSL_SAI_RBCTN:
-+	case FSL_SAI_RTCAP:
- 		return true;
- 	default:
- 		return false;
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index 7605cbaca3d8..af967833b6ed 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -196,9 +196,13 @@
- #define FSL_SAI_MDIV_MASK	    0xFFFFF
  
- /* SAI timestamp and bitcounter */
-+#define FSL_SAI_xTCTL_TSEN_SHIFT   0
- #define FSL_SAI_xTCTL_TSEN         BIT(0)
-+#define FSL_SAI_xTCTL_TSINC_SHIFT  1
- #define FSL_SAI_xTCTL_TSINC        BIT(1)
-+#define FSL_SAI_xTCTL_RTSC_SHIFT   8
- #define FSL_SAI_xTCTL_RTSC         BIT(8)
-+#define FSL_SAI_xTCTL_RBC_SHIFT    9
- #define FSL_SAI_xTCTL_RBC          BIT(9)
+diff --git a/sound/soc/fsl/fsl_xcvr.h b/sound/soc/fsl/fsl_xcvr.h
+index dade3945cc0c..0cc7945b1d9f 100644
+--- a/sound/soc/fsl/fsl_xcvr.h
++++ b/sound/soc/fsl/fsl_xcvr.h
+@@ -233,6 +233,24 @@
+ #define FSL_XCVR_TX_DPTH_CTRL_CLK_RATIO		BIT(29)
+ #define FSL_XCVR_TX_DPTH_CTRL_TM_NO_PRE_BME	GENMASK(31, 30)
  
- /* SAI type */
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN_SHIFT	0
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN		BIT(0)
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC_SHIFT	1
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC	BIT(1)
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC_SHIFT	8
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC		BIT(8)
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC_SHIFT	9
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC		BIT(9)
++
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN_SHIFT	0
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN		BIT(0)
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC_SHIFT	1
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC	BIT(1)
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC_SHIFT	8
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC		BIT(8)
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC_SHIFT	9
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC		BIT(9)
++
+ #define FSL_XCVR_PHY_AI_CTRL_AI_RESETN		BIT(15)
+ #define FSL_XCVR_PHY_AI_CTRL_AI_RWB		BIT(31)
+ 
 -- 
 2.34.1
 
