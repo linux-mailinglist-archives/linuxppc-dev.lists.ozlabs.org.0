@@ -1,103 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-17785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17786-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPKtD/TLqWl+FQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 19:31:16 +0100
+	id cANPJGcVqmnFKgEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17786-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 00:44:39 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F57216F9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 19:31:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8558B219721
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 00:44:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fRdQj57G1z3c8s;
-	Fri, 06 Mar 2026 05:31:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fRmNJ59DMz3c9D;
+	Fri, 06 Mar 2026 10:44:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::112e" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772735469;
-	cv=pass; b=lVqDqNpGQKDkmbahbWRQYPvAUHpoiaa5LAqqCWVKInb9ImoCAEcUYm/mqd6dE3AU82dcWqo4LkaBtoLwGSibkOJ75IY7Z8+3JYKdD4ZRGeGDEtjDsZzr9RPipq1XmElgqdR8bjNbd/9aAzCyiK4pYFOY+MYz6pv2FkKUqUldPsW62NRCZkxr+YqoMqqeWrcanCOMHXCcDzlaWpFLqk+VLeu/VgcXwIE8oNlRlBDzzLh94bFWKD+LFyKDyEtyaDrV+xDpZBD8G44oDn121Eo0zPpvLLTYla9vC6FwUWCc7Da68O5sk/Z8+Qd0yhz09PqxqpJzzUUkjnXgwvLIgx34nw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772735469; c=relaxed/relaxed;
-	bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RGNhVxUPCsVgthwO9tv042VkENKw/z/AdbaKLPCbOr5N+XETbtKZ2Vp/z+Nmp5BqLZe2hDV1zvDucZdH/2AZPhk8gN++5vxYbnJMGDpcNp5Fs0H0lfByt+jEuQ7f1vM0fONvZ54pCQC+nDphb8M8vplytdCI/5d9PaRejCyUte3Db0R0fP9rFzWYY1zITjAvhVNdJhbTgt9cOOUxfAulXOss94SbhoO479VYafHNh6TKrAUqEcPMPHzeRnXf11iAaJkSNEVXzdG3v7jlWKmQUk2pAh8aiaXQx2TQAIMxd4l/MWUELFheN49oQCzb5MwEu2mMCbAmvloUnDQF1HBxSA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=W2WkNmw5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=ryabinin.a.a@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::136"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772754272;
+	cv=none; b=FCmRvFgh22NkjxxysoQdCFMjEsklyslXfy4E4W0LRAgTOF5V4LSqqS9GjlvMSoGNfMCisahFuXKaFMCeJ8wsf9ORlmPD71e7Tnx4cUzSPfM3vcm/B5WUpW7dJ3oegmAZ+VZ94wZYoW+C4U7E2yvXTMvRIsgjQyKYA1mhEHBB6WnOObFRk5YiEMe8q9fsry4cvygm3SyEZct1YGVKSMxVaTIHYQly+/krBkGwy4bv7rwSUOpJRhCU6vM+hNKfBXABLTuwueVMej5K0u9iioDjdbWgJJ3yygg/6fkqKgCi+mmmifb2Ec702l4ho2dRXsX9MQrdDMRe4i7vWxZSD4Kmtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772754272; c=relaxed/relaxed;
+	bh=W+08PYjDQhAaObzzVmi0H3Jb7j0xETdylBL3/4YZEk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bFG81wOs/tJdwtff8TDboiQmCoGAShmFZBUnV1peLeK0LfQghq+3+wh6xpNjyN+wnr6S10i3TU19/RN+c2WnB9kotrdob7VHVPNqhVyJhZIbstqpLID4Hc5MgHgdlDaU+4mtjyUXFuybcfafSyps1HrfV+oCbCtRaN7SCWlyiUkeqgmyHwml9M3nA+CY1ZhrbEcm16ftVcamJZPvyVSINMa/oB5LUsvJ9nJUAgv5DQFHSXmLTnfkcg/gWAnO4tVe92q2/Znv6r8ToE7hNZF06lp0KCOFyxST9QNsck35c/B0QOr3BMbPhosTyrcQVmz/fNEWY1ai7EDTYZuFItXh2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com; dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2026022301 header.b=NiuHMNof; dkim-atps=neutral; spf=pass (client-ip=2607:7c80:54:3::136; helo=mail.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org) smtp.mailfrom=zytor.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=W2WkNmw5;
+	dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2026022301 header.b=NiuHMNof;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=ryabinin.a.a@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zytor.com (client-ip=2607:7c80:54:3::136; helo=mail.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org)
+Received: from mail.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3::136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRdQg4crmz3bhG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 05:31:06 +1100 (AEDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-79652789a0cso5038987b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 10:31:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772735465; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iUg7T+33ri/JUiSGaLBN1lVSsEd4Wual73Ghhbt7KYpPgL3jiEO6How9IFZgfcv6Oh
-         zfzPOLeQlB+sZUsJcKOyygDm1VzUE2jmkPhQdGwKS3bG6o4Rjgxs+KNroJtKsz0nFdWQ
-         5jSEenLepq7yfHglw5+XGwzHUnxxA+uI+i70DtovIQ8ItaRbQO3fcahZz1fUztVIW7Q4
-         TqAZS0fAwRvkY5dCl1uTOXICSlnUaiafmJdvn+CzONDXTq6zAR2ODHqUA6eksI4mJVFU
-         +9u0ifosMZEMgYkWA55YXqsN3I2cxPJqFrXM52yX81l29vYnvQIsfz2Zzvk9GftW5Lje
-         fj2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-        fh=TszvtxQROQFh9suYZZOWpyJq1J/aaiizdMUeouUMvxs=;
-        b=YseDrE8EqpySgCOOiXrks9J+PGexUi8DKZRO1Q8S4UJgRkvCDs018DFQG3oQz4GkQW
-         jJe0VM1lYF9b0E/jC+3NbkpAQbYnvcWliO9mc9eetQBV4B7LqUlaRBbXgzBZ1XJ4woyJ
-         w4xVoI0rij520jIjZ0QnD4BViwnMcv1eOengbRKFMz+Y93C5LzOQdDL2pZL29rCQX/dB
-         PgkaCDXXVTBRZdAv1kNGFY72m7xIU1uvhl/b9vpZ+1cyn4lYmfC7jhgWAOYJaVOcNSPL
-         mispsGDuyxs127TYQUr3N4tbXWni46fzsWqDX3hlYeMRx/aXqllE8OOsoGd4d1Yw6vPR
-         Z6lA==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772735465; x=1773340265; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-        b=W2WkNmw5ng5usTygfq+TvkNX5XbMTq3fAzPYAEcX546TwkyXrqbMexCwVZrejKUixa
-         hJBXqnlNXPhaAHiqFqEgjpg8bYvZSntQgGTL75KQNQaZcJaaIFFEiuO5Bxh4UtP3itEz
-         V2CAnitDTuMaLCpw+/qep9SBg5gsFB0AKn0GJrG4zjAesw8oJKN8TEmFmctb81G4WcyP
-         xq8EcepilbgkNLTxfOaZjDGmzXcqkQyaKIvmeNdE35WlPmqh+wlA4ZhnrmdHpJ8JmaPt
-         T60dKjIPVLQ6XKOpeyGNGQS4vS29qnh5lYES7CNugHTc+77H5OqXZnU7mDYgqh0Cky1Q
-         Sxog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772735465; x=1773340265;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-        b=r7/e1d1+RwiM4D8lJhhrrP5f2El4dTAGFSbEydNEOsHdHw/0w0+1L+rtg8XLiZfWAD
-         XZ0LjJzI1YnRSr0Dd0d+IxPebapliWWr3e3Gnc3fwQ/xO7tkDNMvV2o6obghOksM+IzA
-         9wrQ+CSCJvJU40KFC6jzL1xyPLRnU7hNbtFDacRFw44x0YfJWNaWBwKExtP1WpH+pymJ
-         lx1yYJZgNYBjqYEunDoVNMDy2/twpks9CuFLvHadWdOmSKlKvq7dlvdYLGO4qmr2XM4O
-         PZnGdcbQ5HJpjWPcaXWeRNxPKDrmifJdanwTDpxWyGZ+Ue6oRMxPXwnkoPULjYn3tOM1
-         F//w==
-X-Forwarded-Encrypted: i=1; AJvYcCVJWrRlBmULOeVC01Cces7Qa8iUI+lyc0533V4jIbmxjoertbA3MTSrWIF2oOnmeVU7IFyhK5loqhk/EoU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyUnU3nLzVZVnmdCCHlSnwrr7+E6+Kw4i3MmMRRL1cCu2+tKMzf
-	svM5T+NGDjzQivMPARNtyg1GisiXURcIas47LZ9tqcXu63M7zgolrSWOjfaMOaPaeJyQAI2PoFm
-	4hiJAh93b5VK+6KNOkGgTX7+PEbyfTbg=
-X-Gm-Gg: ATEYQzx8yCBqge+tXQegdysTOHEF1/xePGv+HMV0900qvzi1c7U9gjITbzQJHWQeA24
-	FrG60lUNgVSM2pNyUSbXVAMKqg7iGq2tJNkeKqtNeI9Z8i+E887A2mlLnolhTf7llwuX+Jx7vqX
-	LOKpXakH7YPi5rbYqDn0Oe2c60uI4NB4/GPplvxqBrU0L7xox0IN7s4EHPXdo27hoPH/n/D6Mjx
-	+WAnaVMcJwD18UCqQT8Xm4G8lsQDD0XxSZEw9vhZB38+Yu1ZEVyV6dhpddvwsq+fyBglxZTGoVD
-	Q9y93w==
-X-Received: by 2002:a05:690c:113:b0:794:ce39:c63a with SMTP id
- 00721157ae682-798c6b7f74bmr47076567b3.2.1772735464762; Thu, 05 Mar 2026
- 10:31:04 -0800 (PST)
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 5 Mar 2026 12:31:04 -0600
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 5 Mar 2026 12:31:03 -0600
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
-References: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRmNC5QcVz3c8x
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 10:44:26 +1100 (AEDT)
+Received: from [172.27.2.41] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 625NhY3o4127751
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 5 Mar 2026 15:43:35 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 625NhY3o4127751
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772754218;
+	bh=W+08PYjDQhAaObzzVmi0H3Jb7j0xETdylBL3/4YZEk8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NiuHMNofaKp4X3OTkTE4sx+ETMmwUFwgJjU83eBnK2/BqKkOamVxH8/VjJ6FOT+rj
+	 cX8EORzUxiaeuPL/1KqpN374d4Fv+bjiIc9qbH2fAFX6suJ7cqLLdsFwbLkHnOb4e/
+	 4rbho2As0pJPemgWwc3J3VEGg1b0DHzc5RkY8zixe6iRpSUQIEDHsEBxGqiEhzlUvB
+	 SdoTrvFmB+3vG9ZsjdkJ/n76P3jMN/BwJ0h8M1f7ogLYnkjnS0DdO4PbTJCc0rLtsz
+	 xxrlilrcBpzg9J0XWBj/4aaFK7REjIiRGJ0ywiqx438ZCLfQPfIZNO74P6Ue7O7SPu
+	 4MLF4w7uvkNjQ==
+Message-ID: <01433066-eb9b-4a96-8d7f-794af941d365@zytor.com>
+Date: Thu, 5 Mar 2026 15:43:29 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -111,80 +64,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Thu, 5 Mar 2026 12:31:03 -0600
-X-Gm-Features: AaiRm52GZ13axMWytXPAWQiFZUnqLmaKbYqKRkeisNV1Nap28ZH-9coEHa7p224
-Message-ID: <CAPAsAGxB6RGSYzMq=tjQQmEDu3QP+v_AqmkbWTRyqkk+K35o-w@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/kasan: Fix double free for kasan pXds
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, kasan-dev@googlegroups.com
-Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org, 
-	stable@vger.kernel.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] kbuild: Switch from '-fms-extensions' to
+ '-fms-anonymous-structs' when available
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+        llvm@lists.linux.dev
+References: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 94F57216F9A
+X-Rspamd-Queue-Id: 8558B219721
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026022301];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17785-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kvack.org,google.com,gmail.com,arm.com,lists.ozlabs.org,vger.kernel.org,linux.ibm.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:kasan-dev@googlegroups.com,m:linux-mm@kvack.org,m:glider@google.com,m:andreyknvl@gmail.com,m:dvyukov@google.com,m:vincenzo.frascino@arm.com,m:linuxppc-dev@lists.ozlabs.org,m:stable@vger.kernel.org,m:venkat88@linux.ibm.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ryabininaa@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17786-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:nathan@kernel.org,m:nsc@kernel.org,m:torvalds@linux-foundation.org,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:kernel@xen0n.name,m:James.Bottomley@HansenPartnership.com,m:deller@gmx.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:ardb@kernel.org,m:ilias.apalodimas@linaro.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:kees@kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:linux-efi@vger.kernel.org,m:llvm@lists.linux.dev,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[hpa@zytor.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[38];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,googlegroups.com];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryabininaa@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linux-foundation.org,arm.com,kernel.org,xen0n.name,HansenPartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[zytor.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zytor.com:dkim,zytor.com:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> writes:
+On 2026-02-23 11:10, Nathan Chancellor wrote:
+> Hi all,
+> 
+> The kernel enabled '-fms-extensions' in commit c4781dc3d1cf ("Kbuild:
+> enable -fms-extensions") in 6.19 to gain access to a Microsoft
+> (originally Plan 9) extension around including a tagged structure/union
+> anonymously in an other structure/union. Since then, Clang 23.0.0
+> (current main) has added a flag to enable only that extension, rather
+> than all Microsoft extensions, '-fms-anonymous-structs' [1]. Using this
+> narrower compiler option would have avoided the build error fixed by
+> commit a6773e6932cb ("jfs: Rename _inline to avoid conflict with clang's
+> '-fms-extensions'"). While these errors are not expected to be common,
+> using the narrower option when available has no drawbacks because the
+> kernel only cares about this extension in '-fms-extensions', no others.
+> While this could result in build errors for folks using
+> '-fms-anonymous-structs' if a developer uses another extension in
+> '-fms-extensions' (either intentionally or unintentionally), flagging
+> these uses for further scrutiny seems worthwhile.
+> 
+> This series converts the build system to use that flag when it is
+> available. The first patch consolidates all of the C dialect flags into
+> a single variable to make future updates to the dialect flags less
+> painful, as updating the logic in every place that uses their custom
+> built C flags is getting cumbersome (and C23 is looming). The second
+> patch makes the actual switch.
+> 
+> I would like Nicolas to carry this in the Kbuild tree for 7.1, please
+> provide Acks as necessary.
+> 
+> [1]: https://github.com/llvm/llvm-project/commit/c391efe6fb67329d8e2fd231692cc6b0ea902956
+> 
 
-> kasan_free_pxd() assumes the page table is always struct page aligned.
-> But that's not always the case for all architectures. E.g. In case of
-> powerpc with 64K pagesize, PUD table (of size 4096) comes from slab
-> cache named pgtable-2^9. Hence instead of page_to_virt(pxd_page()) let's
-> just directly pass the start of the pxd table which is passed as the 1st
-> argument.
->
-> This fixes the below double free kasan issue seen with PMEM:
->
-> radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
-> ==================================================================
-> BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
-...
->
-> Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
-> Cc: stable@vger.kernel.org
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->
+Question: does clang allow this with __extension__, or only if the option is
+on the command line?  It would be desirable in the long run if both clang and
+gcc would allow this with __extension__, as that would be required to use it
+in uapi headers (at least without some doable-but-nontrivial preprocessing,
+which might be worthwhile to do anyway...)
 
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+	-hpa
+
 
