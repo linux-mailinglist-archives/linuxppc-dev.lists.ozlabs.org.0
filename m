@@ -1,86 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-17764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17765-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDiBCyj0qGmfzgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 04:10:32 +0100
+	id gDYHBuYIqWlc0gAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17765-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 05:39:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8978920A714
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 04:10:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F9C20ADBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 05 Mar 2026 05:39:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fRF003xDDz3cCr;
-	Thu, 05 Mar 2026 14:10:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fRGyT0S7Zz3c1T;
+	Thu, 05 Mar 2026 15:38:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c207::3" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772680208;
-	cv=pass; b=VRlevWOZI33+f5pOoC80OZ8Je7Dar6tZ6HdotsAAGWIj++cSATOHbxz3TLMRy7uGZLXbfEhbfjFI4Ck3Uli7TFJiCUlMOgRiEdGK1bhUgqoaVpvBlcQxhVlY9SiPmIL1k8wYYRhxJ8ms1yc0u51L7ZEQ/zx2+bPNX4cVwAvoOViJWk352y+qNEBS2JsVmzHLCIB7sYVSpwLk21+t/JsZ2WCyumfMaLbNeSsUKmzbLx5g/7G+zznFcOktTrGchVQaUawhbeq7Ct0yYo1KKwn/X3GcMZbUZXx+9nUqbxEt6YBg5HU3CXKo7V1VlzAedLe+n9bguYOsLqQdwYK54p3Hug==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772680208; c=relaxed/relaxed;
-	bh=lNLCAJkY5y9KOlMh40hJZdodo8zWnpYY02Zu6ZApTd4=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oASPLSd/ZeDk5gCfKuJQPRd7mUg9JmbV6Qvwi3BkbeCm99E1AHg/iNqg5LfdQaDCg/ASCmxScunq/tJX7Dtkw6nQmbcfsbrUOEDr/eG6hEMsqXD3M5CP5bi6M10qzyz3ICnWJzu6WMPaY7E+Dnd+UsXQgJ85vkG2s4Od+su58UocwaEKbAd2NePpSLfy6wuObxZrDHoOMaNCw2B5qTlXTT626mtDPQu6AfLimYQ8NYQTOudvYhwvzi6rlnwhrLPEMPSj5bW3a9Qo/XAR03WsJZFYNy0fVp5zGkdrdCdeWMdQ05oU24V2gZDDVM0JUlTcdiK8+T0u27wNvCx6vrgC6A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V9xvWO4l; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c207::3; helo=mrwpr03cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772685536;
+	cv=none; b=KGc383kwgOgzZDEzYpOZ0w/6VFGITPD1L7p5IvhVMNKxiy/vP4qZewEuPnnre0LROJEFFsSCU4VfYRTHr11sGr9bnsuWPxzqmWuVxvP8BUNiPsHQ2h33pzcWN/fG3MZr3QvExEymLkIzPshcK7TpBBy7XzkXJVkenW4iEpbde47TSHSRRoAmPszk2sGIzNPV9zt//PkzywR9ovdjCXOLvoPdUuMLMCdaX2LgDYZP27pHO/xMFk+PxfIvkghWp8Mw3wnSGceh2hFvhnYlgCMBTFuBZaEyWDErqa+9QjkzGzivERY5xFZAoolLvVuWm1YcsNqIJ7f+IecBHsa1GYiCvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772685536; c=relaxed/relaxed;
+	bh=7DKCi0CEZ4kOlHss64569CeW7Pl6xyCkAjw18r6eN7o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CdjOYEnVBkVPvzTJ/lhsJZtctzZW5CZtmNMgqa8RaYB3PUXyUs0kM27/6byOT4o0EcMeY7S4dUKZ+xNse94MzbclXvZZI/DByMCJHBA8/A+CF+O8KhOqWLN2xLtXGbbREDldWD4tNBKHNY1H7BxNM+mki9+7PrmBvNkEJJd6yaraFRTIdhGlIz6UfPmKVaq/aAyEdMLp+YFWQiByBdNXrmZq4PCse6w71l6BXRO7bHxO/adDVJPvAKKdxNVCdP7wrHKGtUhhKxskg7xKYMTAWxm9vLGXeCNWwsJoldIIzqVYiENfKP+HjJfHjhwFTXYfmtH2KfRnmiPPvnRT68k6Ug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZmbtqWUQ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V9xvWO4l;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZmbtqWUQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c207::3; helo=mrwpr03cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c207::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRDzz47rPz3cBN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 14:10:07 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XZNt5kOurnguEHwg0WTMhJc4EX+dIrOlVA6ZPUzWjKACcJ1Iy45wqHJGMYQZsHCWAwhbhzA+xPvSr6e/6+9aBCrz04zfmuj417HOsDB3EFpLvYL9bqod6ri3X55ij4GMwmR4oCpgWROy0BdjahDRmiXUZyfVKX7jT5lv0wZQFPbKQsafNFrRV+eEIuZelz2IJ/jrlSueA5aikRYWbELErNdnry7a/W2mvvICZLRfUtKI2OblvR0KgFencQRmt6DQLTNLwhtL0IEXGpqrfawalgg+tVCH6NY2DGj0UvrDsQKzIPaoHpLRKS1x37DmgDJZUBpU0jZjgqgKuNqkc7i6sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lNLCAJkY5y9KOlMh40hJZdodo8zWnpYY02Zu6ZApTd4=;
- b=F8E9d66lYrq9x1qDDqSbr8EUMfTO9wZ2OtU33Fkv2VyzX2VPQtkSdgLKqdSwXkLkwxAFPI4ixq/lSMwkvnc/xuYrzOdPYVuG9lKR91SLkHC69SeOSIIaTWoYp8YuEIB1R80eO7NqzjskknzsTwpsU5MbMQ1WF2xbUsiNKlgpnhb7lpK1R7YeV0W16No/vTcGL1dA+Gp6lioJYAtSGdCJeVxyuhMhI+lW35X5+wicHlg3Vd72tXfD660/CJZej1zMZ7kbiD6eSEqS78TsrjhoG4XhhqeNkgorc4W0nR/ZsnEyoLY3CPJ31fzjpTfcvElo6MvBfzmrB3Ii1N0l0wMxNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lNLCAJkY5y9KOlMh40hJZdodo8zWnpYY02Zu6ZApTd4=;
- b=V9xvWO4lmINh7N0gfgyHb/yJqsP/BzOzxV+NFCS/wEVyRSmynAiFEb9ryWvpRi5tpDp2dqjR0c3JScPg4rIs83mAia2Hn+50tVijUlTRUjaCnPfR9sjg2dBFsw2ycWFfZGUQHxi6nn1cdhVOAvZpV36Y84PD9N0K4FBtTZ6QF43TvLr6fb2WoKd0+hcK8l1N3Fwr+pp48jlsQMsDRmNEpNM0cd8ZXXbxqK2YzIb8+J1Vh2BxScot+nTx2v/QqLLekheZ8mZ0Sn/LH/FqTtBQtj1ddk7RtonIQOSZd+LzuMSwxtpcY3GS4wq9aVcDLHmmhfa3XkalIvcwcbeWzjHr9w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB7055.eurprd04.prod.outlook.com (2603:10a6:800:123::21)
- by PAXPR04MB8159.eurprd04.prod.outlook.com (2603:10a6:102:1c1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
- 2026 03:09:55 +0000
-Received: from VI1PR04MB7055.eurprd04.prod.outlook.com
- ([fe80::4dee:baeb:a5cf:1664]) by VI1PR04MB7055.eurprd04.prod.outlook.com
- ([fe80::4dee:baeb:a5cf:1664%3]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 03:09:54 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] ASoC: fsl_xcvr: add bitcount and timestamp controls
-Date: Thu,  5 Mar 2026 11:10:31 +0800
-Message-Id: <20260305031031.3808182-4-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20260305031031.3808182-1-shengjiu.wang@nxp.com>
-References: <20260305031031.3808182-1-shengjiu.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5P287CA0094.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d4::17) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRGyS07Btz3bhG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 15:38:55 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62512PmS2060996;
+	Thu, 5 Mar 2026 04:38:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=7DKCi0
+	CEZ4kOlHss64569CeW7Pl6xyCkAjw18r6eN7o=; b=ZmbtqWUQYgedcK2lOV6dwD
+	GbGQO42SwgW5k+PgCa37CT9ErBfyiCGtYFurQvSvGczV0X6rq6OqW4RyJrl5VwX7
+	pvYhk5pdtT+8EdJj6HoJ6BT0KfLGgIAj7Rmqa9QALDAV4DcbR8YfY0yVdnSGiwD7
+	pPX3MITOnnHQW1xpTHsJMhFgg+l3MXz4NhoocB4JZ3o9yHlI6G76oz9Fi/FdNRwB
+	0VD/gbH2rEvp+v+YM34bEjA82OVzgXoYXDpta8wmlT4XvU+K10XmbvseGxQvCjbn
+	/smr7tvmyBiocsAhRLgo7GCwDbdskaAdszlyTeKLZ81syDRh6P/kizFJ/1u9ORTg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksrja7bw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Mar 2026 04:38:50 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6254DI7n028908;
+	Thu, 5 Mar 2026 04:38:50 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmaps9rsg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Mar 2026 04:38:50 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6254cmFg40698520
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 5 Mar 2026 04:38:48 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0924D5805F;
+	Thu,  5 Mar 2026 04:38:48 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CACD758043;
+	Thu,  5 Mar 2026 04:38:44 +0000 (GMT)
+Received: from [9.61.242.165] (unknown [9.61.242.165])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Mar 2026 04:38:44 +0000 (GMT)
+Message-ID: <54abb4c8-56e5-46fa-93cf-f34c42b42720@linux.ibm.com>
+Date: Thu, 5 Mar 2026 10:08:43 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,241 +85,393 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB7055:EE_|PAXPR04MB8159:EE_
-X-MS-Office365-Filtering-Correlation-Id: 557ad167-a676-497f-21e6-08de7a64ac80
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|7416014|19092799006|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	Z58T1AdUGOcH6O4S5ypq2pYXFWiRB6zN6L8G8ZoUMhY2x1P/h0gkQAP0tBhdbauxRTG3xUqbMPOWdGuLUKRamnEfMqRiczXXwVGXgoU8ugCj/BhHQ2Rk5XwRbQlgOK36DlcGy3mzi/9FRKmFw0aLARogmvZqjYCX5to+OGzIwrPpp1URZGykin4Z4mJmWZ6K3hLK+KM6BlymDpq5XAoVoWbe+JsLE8BPa65MOSoMQce8Y2rdTaFqYDKumyACqnPBzg6nXxxevMk+N95VmUnfLoFfyPw1YBC90cHrBI4wB+th+p1T89Eu3cPZWY41KKM7xo0fdrd8rRX5GP+rcx5boio3mIoW+pEkX84Bqi/zoTnLEmf8+mizrShsxA/pxben+CPPCPonmMVMZRHuGMl2Myes/1K1CvF+x73TyGYHQkS13FONezxdBEpl5FtY5YguO0zl6Twzqzk+Fy/6DEdCsWaDsc8Y2Uey84aeqz8zKeGTsA6ibioF5GF/GO5t4PGFgOC+SOJszL+TgbqSti6SsVODbgxFU1fbahJ8yxVsjAVlT7GulryCPXnqVu+CUK45NvsMbS0EEGnWYOflQzfexGmhzSedN81TcioLmD9nQ4INxm5Hd54mFreS1zAI5LByzIoAMG26PdpR8s+pzhNEHMDeOgk5Y+PwPhlSRK6jBPZW9TxPjAK66pTnDNwiIf10xD7iQajQYFvdUKrsqk3SQt78ZUwCKEegdT40m+R6M69Nchf4OtPjFK5N1UNNSBm0//luNFFgd+UGj9F6LBN6hnQL3IQfJxT9HVYVv7tN4BVVR5ctaVKaqemj2T2G+0mn
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7055.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(7416014)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XU80NtXe6wQKrehu948sgKmdN8Y8JD29KE3SHNPm8g0paaDbuBKnKQ5Ta3/W?=
- =?us-ascii?Q?nThcx0w1YX6R5tf0i22w8b9kb7hGv7H9Uma7zn3zMLXMXh/jyH+/OKQiOhWf?=
- =?us-ascii?Q?9bownIWzlPtgvHLPD1cdKdhSU7IZnaxTOxGzHdwh9BGQnfKG9gpTyvO7Pt/w?=
- =?us-ascii?Q?T4TyAELuOhkWntVqY7daVAKVkvxhy0N7EPELMdfmFUCxK+0nlszfn1bTLHE8?=
- =?us-ascii?Q?mHST+suDUXQp+q5pBfNKfvdXEsH8PvpC1suSr18raCSUTT2s78mVTv7vq+Wn?=
- =?us-ascii?Q?BHt12jKnw1xwqtjh9SoCKBpAaiekE5V+R0Mj28OJVet/SeBGh5+qop1dSmLp?=
- =?us-ascii?Q?SE44Rboe0seJ3MfYytYljMlCXgRdjP9icVYKqfElvZl7Ubkp2nc+eUdkXzBU?=
- =?us-ascii?Q?ra2hOAbmP7Mcv1JVo7uEFpb+2VprkIadgmYlE/anMsu0YQXLT4MMk1dIX9L7?=
- =?us-ascii?Q?x4Vrfc2cR696VGJM7Va3gvg5nHDLL2IubpWHetLVaDKe3Rvp6Z1suttcOdPf?=
- =?us-ascii?Q?IsuFg/uIEpWDKRTq/KPbAl3h5Bs4/H2w1PHirS2qoL/3ugLKXa0HXM9IRpux?=
- =?us-ascii?Q?80jJ7zX11FmfimmsbFStl44k1+Q7efLlqGw41pTv4fe/pec6EJQc69aaU8CX?=
- =?us-ascii?Q?5jQV6cZ+mCB2PHHdufcLSloP3ESHCyqghQi5Dy3WTY+MyVfVT0Qc1MKr7D+H?=
- =?us-ascii?Q?HQODNyJnSpuz/eD4NEdrReUbPxeqD5cvsuRCsgv6jzoAHf4qLP51G5ZY6vj3?=
- =?us-ascii?Q?2PoVlg7Yi16PdzON7VKAWUonJT7uq1twH6X8jZxgXQCRQCuyIrLSxkvoyOzB?=
- =?us-ascii?Q?Cs04wsKZs8TEOgrPnBj6J6fd8NGu2XeHJwMFV9BsRtz3joqUH8bUU96a13sn?=
- =?us-ascii?Q?SoSnDDG+ETcshM/MpjzEp16zpBAhnboa30KHrb2hvzPnITS4CzAoF2rBVVna?=
- =?us-ascii?Q?Kk9DdNDeVD/5dyTzPYZPYyWqW2f/DpKInMAqAQdRBHHqOItURmqsU6bCgPce?=
- =?us-ascii?Q?gzJfVsqZUHmyS+6HgDDp9N0UCB9mhnJbxcR/k2sGh2gdS7gm9vyh60/X6pby?=
- =?us-ascii?Q?3o+aXVaC/Ry9C7VwhBYlL4gJWRab52DUeQJO7PjaXs8MlAz1rfeaUWK+zeZb?=
- =?us-ascii?Q?Oryt7996TplKVbwe1VHLECGDD5URnCWroMT6XtTrILKq/cc9UhArpbuqRw3a?=
- =?us-ascii?Q?hdoyfMdTw4GOhTZ8lI0/TV1zAapTPZbk+4UdbmWA6aROk9g0cUVOYYWyZyIr?=
- =?us-ascii?Q?0HmvFWuoZYS1T+6eLxRgPdZ2FZciI/8d44tsOf8cRIMM8cofv9U99xx5mDye?=
- =?us-ascii?Q?wYtILE7RM8pi1FwhOUIMxF0DaFLNiG51dausp8/162gk7vQqaawz7sCTsEWa?=
- =?us-ascii?Q?c9deeIN6npgOesN8mvbZB2SE4TCZoBD1mYoDSdArZY5/hPQuK9k4UcCLaQDJ?=
- =?us-ascii?Q?aOUmPTVJD7I9uDCDMGdxWng2mN+/RBVJ4MEK63EdkCWz5EuC7+uV+2nk9lnc?=
- =?us-ascii?Q?ASgGyv7fzLsafR/CBDjBzOC1LFy4G7Vlk5DYpvBOZeAFRsL3vIKc5c8xMWt9?=
- =?us-ascii?Q?bwtFS3tC6fBQMUVyusxB7JsdER1V+/ElTsu/Af0YmG9AxzaKmbKAWRn2t2kS?=
- =?us-ascii?Q?yGdQE8m5vwq27pLzkHFXPjXcIVAeyTnUbq9LQyDmw27EBnL247LyvGYxv3x8?=
- =?us-ascii?Q?WJmOgF2tkd9LOFB587YXHgkoneQk941dHL+uLFKP6GTsXvcgFE9Vbl2yCbbi?=
- =?us-ascii?Q?fy5Y1n4L/Q=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 557ad167-a676-497f-21e6-08de7a64ac80
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 03:09:54.8918
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NpgIQ4OxhqGeOFtgQ6k6xJIbtFa4iDS4xZ7JrlOGKzMGDz8txuAHmmwZU3xfMFfAQD3E37cmpHOH/rsKdBjEdA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8159
-X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] powerpc: fix KUAP warning in VMX usercopy path
+To: Sayali Patil <sayalip@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com
+Cc: aboorvad@linux.ibm.com, sshegde@linux.ibm.com, chleroy@kernel.org,
+        riteshh@linux.ibm.com, hbathini@linux.ibm.com, ming.lei@redhat.com,
+        csander@purestorage.com, czhong@redhat.com
+References: <20260304122201.153049-1-sayalip@linux.ibm.com>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20260304122201.153049-1-sayalip@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Rp/I7SmK c=1 sm=1 tr=0 ts=69a908da cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=_xPUD3OQOQiS13dPZGkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDAzMyBTYWx0ZWRfXzrD1WMbq4abf
+ 9IMF5H30Fl7kvxjtmwbAagMWbm4Gpl1oZ96N0AuY7qH9WAAwV5vGRIkujxqx0WUnH2Fnfh4JEyE
+ cvjysHVmycL3LBr+DfCknOaRnqLJYnxQV6Vi29sJ990pAU7T123oA+ELwm5G/piCI/EMEvglCwH
+ swVEDcCKC0Op5Nr9ioPjgXRjbFLsaq5UiHS9SJKw3Z9ggrFoX8y/CYdHnwkVo07J3Ex4tCFR4Kj
+ FQGCIUbvB2mSNoa37adZyGIYjMpfvyTPLyyU62qQHYRZL7KHPYSFotjwoYgsFk3prhUl4fkPLjX
+ 7tGFewtaPWbFlJ7+iHn0zkkoDrmNpWPNVc7hun/LMYsEO8avhN/qvHaqLU6gd/5o57vWWrD/UPB
+ Um3+b46Nb2Qk84ogcZsuoLQ1AdoNaEhn2OE8IbhTu5xCqyUu7aKKmSaKj/5UyFBsC48Hpj5CuSi
+ ILn2dHrQRMoAA/KV+Lw==
+X-Proofpoint-GUID: 5ETEwn3Ru8pMiAeHGhhS3l5eglMn0M34
+X-Proofpoint-ORIG-GUID: 5ETEwn3Ru8pMiAeHGhhS3l5eglMn0M34
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-04_09,2026-03-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 spamscore=0 phishscore=0 adultscore=0
+ bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050033
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 8978920A714
+X-Rspamd-Queue-Id: 81F9C20ADBD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+X-Spamd-Result: default: False [-2.21 / 15.00];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[shengjiu.wang@nxp.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-17764-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shengjiu.wang@nxp.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[nxp.com:+];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-17765-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:sayalip@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:aboorvad@linux.ibm.com,m:sshegde@linux.ibm.com,m:chleroy@kernel.org,m:riteshh@linux.ibm.com,m:hbathini@linux.ibm.com,m:ming.lei@redhat.com,m:csander@purestorage.com,m:czhong@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:dkim,nxp.com:email,nxp.com:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-The transmitter and receiver implement separate timestamp counters and
-bit counters. The bit counter increments at the end of each bit in a
-frame whenever the transmitter or receiver is enabled. The bit counter
-can be reset by software. The timestamp counter increments on the bus
-interface clock whenever it is enabled. The current value of the
-timestamp counter is latched whenever the bit counter increments.
-Reading the bit counter register will cause the latched timestamp
-value to be saved in the bit counter timestamp register. The timestamp
-counter can be reset by software, this also resets the latched timestamp
-value and the bit counter timestamp register.
 
-The timestamp counter and bit counter can be used by software to track
-the progress of the transmitter and receiver. It can also be used to
-calculate the relative frequency of the bit clock against the bus
-interface clock.
+On 04/03/26 5:52 pm, Sayali Patil wrote:
+> On powerpc with PREEMPT_FULL or PREEMPT_LAZY and function tracing enabled,
+> KUAP warnings can be triggered from the VMX usercopy path under memory
+> stress workloads.
+>
+> KUAP requires that no subfunctions are called once userspace access has
+> been enabled. The existing VMX copy implementation violates this
+> requirement by invoking enter_vmx_usercopy() from the assembly path after
+> userspace access has already been enabled. If preemption occurs
+> in this window, the AMR state may not be preserved correctly,
+> leading to unexpected userspace access state and resulting in
+> KUAP warnings.
+>
+> Fix this by restructuring the VMX usercopy flow so that VMX selection
+> and VMX state management are centralized in raw_copy_tofrom_user(),
+> which is invoked by the raw_copy_{to,from,in}_user() wrappers.
+>
+> The new flow is:
+>
+>    - raw_copy_{to,from,in}_user() calls raw_copy_tofrom_user()
+>    - raw_copy_tofrom_user() decides whether to use the VMX path
+>      based on size and CPU capability
+>    - Call enter_vmx_usercopy() before enabling userspace access
+>    - Enable userspace access as per the copy direction
+>      and perform the VMX copy
+>    - Disable userspace access as per the copy direction
+>    - Call exit_vmx_usercopy()
+>    - Fall back to the base copy routine if the VMX copy faults
+>
+> With this change, the VMX assembly routines no longer perform VMX state
+> management or call helper functions; they only implement the
+> copy operations.
+> The previous feature-section based VMX selection inside
+> __copy_tofrom_user_power7() is removed, and a dedicated
+> __copy_tofrom_user_power7_vmx() entry point is introduced.
+>
+> This ensures correct KUAP ordering, avoids subfunction calls
+> while KUAP is unlocked, and eliminates the warnings while preserving
+> the VMX fast path.
+>
+> Fixes: de78a9c42a79 ("powerpc: Add a framework for Kernel Userspace Access Protection")
+> Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/20260109064917.777587-2-sshegde@linux.ibm.com/
+> Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
 
-As there are three regmap handlers defined in this driver, explicitly
-call the snd_soc_component_init_regmap() to init regmap handler for the
-component.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_xcvr.c | 64 ++++++++++++++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_xcvr.h | 18 +++++++++++
- 2 files changed, 82 insertions(+)
+This patch fixes, reported issue.
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index a268fb81a2f8..a945defa8b3f 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -62,6 +62,58 @@ struct fsl_xcvr {
- 	u32 spdif_constr_rates_list[SPDIF_NUM_RATES];
- };
- 
-+static const char * const inc_mode[] = {
-+	"On enabled and bitcount increment", "On enabled"
-+};
-+
-+static SOC_ENUM_SINGLE_DECL(transmit_tstmp_enum,
-+			    FSL_XCVR_TX_DPTH_CNTR_CTRL,
-+			    FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC_SHIFT, inc_mode);
-+static SOC_ENUM_SINGLE_DECL(receive_tstmp_enum,
-+			    FSL_XCVR_RX_DPTH_CNTR_CTRL,
-+			    FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC_SHIFT, inc_mode);
-+
-+static const struct snd_kcontrol_new fsl_xcvr_timestamp_ctrls[] = {
-+	SOC_SINGLE_EXT("Transmit Timestamp Control Switch", FSL_XCVR_TX_DPTH_CNTR_CTRL,
-+		       FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN_SHIFT, 1, 0,
-+		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	SOC_ENUM_EXT("Transmit Timestamp Increment", transmit_tstmp_enum,
-+		     fsl_asoc_get_enum_double, fsl_asoc_put_enum_double),
-+	SOC_SINGLE_EXT("Transmit Timestamp Reset", FSL_XCVR_TX_DPTH_CNTR_CTRL,
-+		       FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC_SHIFT, 1, 0,
-+		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	SOC_SINGLE_EXT("Transmit Bit Counter Reset", FSL_XCVR_TX_DPTH_CNTR_CTRL,
-+		       FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC_SHIFT, 1, 0,
-+		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Timestamp Counter", FSL_XCVR_TX_DPTH_TSCR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Bit Counter", FSL_XCVR_TX_DPTH_BCR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Bit Count Timestamp", FSL_XCVR_TX_DPTH_BCTR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Transmit Latched Timestamp Counter", FSL_XCVR_TX_DPTH_BCRR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	SOC_SINGLE_EXT("Receive Timestamp Control Switch", FSL_XCVR_RX_DPTH_CNTR_CTRL,
-+		       FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN_SHIFT, 1, 0,
-+		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	SOC_ENUM_EXT("Receive Timestamp Increment", receive_tstmp_enum,
-+		     fsl_asoc_get_enum_double, fsl_asoc_put_enum_double),
-+	SOC_SINGLE_EXT("Receive Timestamp Reset", FSL_XCVR_RX_DPTH_CNTR_CTRL,
-+		       FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC_SHIFT, 1, 0,
-+		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	SOC_SINGLE_EXT("Receive Bit Counter Reset", FSL_XCVR_RX_DPTH_CNTR_CTRL,
-+		       FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC_SHIFT, 1, 0,
-+		       fsl_asoc_get_volsw, fsl_asoc_put_volsw),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Timestamp Counter", FSL_XCVR_RX_DPTH_TSCR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Bit Counter", FSL_XCVR_RX_DPTH_BCR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Bit Count Timestamp", FSL_XCVR_RX_DPTH_BCTR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+	FSL_ASOC_SINGLE_XR_SX_EXT_RO("Receive Latched Timestamp Counter", FSL_XCVR_RX_DPTH_BCRR,
-+				     1, 32, 0, 0xffffffff, 0, fsl_asoc_get_xr_sx),
-+};
-+
- static const struct fsl_xcvr_pll_conf {
- 	u8 mfi;   /* min=0x18, max=0x38 */
- 	u32 mfn;  /* signed int, 2's compl., min=0x3FFF0000, max=0x00010000 */
-@@ -1070,8 +1122,20 @@ static struct snd_soc_dai_driver fsl_xcvr_dai = {
- 	},
- };
- 
-+static int fsl_xcvr_component_probe(struct snd_soc_component *component)
-+{
-+	struct fsl_xcvr *xcvr = snd_soc_component_get_drvdata(component);
-+
-+	snd_soc_component_init_regmap(component, xcvr->regmap);
-+
-+	return 0;
-+}
-+
- static const struct snd_soc_component_driver fsl_xcvr_comp = {
- 	.name			= "fsl-xcvr-dai",
-+	.probe			= fsl_xcvr_component_probe,
-+	.controls		= fsl_xcvr_timestamp_ctrls,
-+	.num_controls		= ARRAY_SIZE(fsl_xcvr_timestamp_ctrls),
- 	.legacy_dai_naming	= 1,
- };
- 
-diff --git a/sound/soc/fsl/fsl_xcvr.h b/sound/soc/fsl/fsl_xcvr.h
-index dade3945cc0c..0cc7945b1d9f 100644
---- a/sound/soc/fsl/fsl_xcvr.h
-+++ b/sound/soc/fsl/fsl_xcvr.h
-@@ -233,6 +233,24 @@
- #define FSL_XCVR_TX_DPTH_CTRL_CLK_RATIO		BIT(29)
- #define FSL_XCVR_TX_DPTH_CTRL_TM_NO_PRE_BME	GENMASK(31, 30)
- 
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN_SHIFT	0
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSEN		BIT(0)
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC_SHIFT	1
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TSINC	BIT(1)
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC_SHIFT	8
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RBC		BIT(8)
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC_SHIFT	9
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_RTSC		BIT(9)
-+
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN_SHIFT	0
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSEN		BIT(0)
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC_SHIFT	1
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TSINC	BIT(1)
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC_SHIFT	8
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RBC		BIT(8)
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC_SHIFT	9
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_RTSC		BIT(9)
-+
- #define FSL_XCVR_PHY_AI_CTRL_AI_RESETN		BIT(15)
- #define FSL_XCVR_PHY_AI_CTRL_AI_RWB		BIT(31)
- 
--- 
-2.34.1
 
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
+
+
+>
+> v3->v4
+>    - Addressd as per review feedback for some editorial comments.
+>
+> v3: https://lore.kernel.org/all/20260304053506.118632-1-sayalip@linux.ibm.com/
+>
+> ---
+>   arch/powerpc/include/asm/uaccess.h | 65 +++++++++++++++++++++---------
+>   arch/powerpc/lib/copyuser_64.S     |  1 +
+>   arch/powerpc/lib/copyuser_power7.S | 45 +++++++--------------
+>   arch/powerpc/lib/vmx-helper.c      |  2 +
+>   4 files changed, 63 insertions(+), 50 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index ba1d878c3f40..8b25be472cf0 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -15,6 +15,9 @@
+>   #define TASK_SIZE_MAX		TASK_SIZE_USER64
+>   #endif
+>   
+> +/* Threshold above which VMX copy path is used */
+> +#define VMX_COPY_THRESHOLD 3328
+> +
+>   #include <asm-generic/access_ok.h>
+>   
+>   /*
+> @@ -326,40 +329,62 @@ do {								\
+>   extern unsigned long __copy_tofrom_user(void __user *to,
+>   		const void __user *from, unsigned long size);
+>   
+> -#ifdef __powerpc64__
+> -static inline unsigned long
+> -raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+> +unsigned long __copy_tofrom_user_base(void __user *to,
+> +				      const void __user *from, unsigned long size);
+> +
+> +unsigned long __copy_tofrom_user_power7_vmx(void __user *to,
+> +					    const void __user *from, unsigned long size);
+> +
+> +static __always_inline bool will_use_vmx(unsigned long n)
+> +{
+> +	return IS_ENABLED(CONFIG_ALTIVEC) && cpu_has_feature(CPU_FTR_VMX_COPY) &&
+> +	       n > VMX_COPY_THRESHOLD;
+> +}
+> +
+> +static __always_inline unsigned long
+> +raw_copy_tofrom_user(void __user *to, const void __user *from,
+> +		     unsigned long n, unsigned long dir)
+>   {
+>   	unsigned long ret;
+>   
+> -	barrier_nospec();
+> -	allow_user_access(to, KUAP_READ_WRITE);
+> +	if (will_use_vmx(n) && enter_vmx_usercopy()) {
+> +		allow_user_access(to, dir);
+> +		ret = __copy_tofrom_user_power7_vmx(to, from, n);
+> +		prevent_user_access(dir);
+> +		exit_vmx_usercopy();
+> +
+> +		if (unlikely(ret)) {
+> +			allow_user_access(to, dir);
+> +			ret = __copy_tofrom_user_base(to, from, n);
+> +			prevent_user_access(dir);
+> +		}
+> +		return ret;
+> +	}
+> +
+> +	allow_user_access(to, dir);
+>   	ret = __copy_tofrom_user(to, from, n);
+> -	prevent_user_access(KUAP_READ_WRITE);
+> +	prevent_user_access(dir);
+>   	return ret;
+>   }
+> -#endif /* __powerpc64__ */
+>   
+> -static inline unsigned long raw_copy_from_user(void *to,
+> -		const void __user *from, unsigned long n)
+> +#ifdef CONFIG_PPC64
+> +static inline unsigned long
+> +raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+>   {
+> -	unsigned long ret;
+> +	barrier_nospec();
+> +	return raw_copy_tofrom_user(to, from, n, KUAP_READ_WRITE);
+> +}
+> +#endif /* CONFIG_PPC64 */
+>   
+> -	allow_user_access(NULL, KUAP_READ);
+> -	ret = __copy_tofrom_user((__force void __user *)to, from, n);
+> -	prevent_user_access(KUAP_READ);
+> -	return ret;
+> +static inline unsigned long raw_copy_from_user(void *to, const void __user *from, unsigned long n)
+> +{
+> +	return raw_copy_tofrom_user((__force void __user *)to, from, n, KUAP_READ);
+>   }
+>   
+>   static inline unsigned long
+>   raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+>   {
+> -	unsigned long ret;
+> -
+> -	allow_user_access(to, KUAP_WRITE);
+> -	ret = __copy_tofrom_user(to, (__force const void __user *)from, n);
+> -	prevent_user_access(KUAP_WRITE);
+> -	return ret;
+> +	return raw_copy_tofrom_user(to, (__force const void __user *)from, n, KUAP_WRITE);
+>   }
+>   
+>   unsigned long __arch_clear_user(void __user *addr, unsigned long size);
+> diff --git a/arch/powerpc/lib/copyuser_64.S b/arch/powerpc/lib/copyuser_64.S
+> index 9af969d2cc0c..25a99108caff 100644
+> --- a/arch/powerpc/lib/copyuser_64.S
+> +++ b/arch/powerpc/lib/copyuser_64.S
+> @@ -562,3 +562,4 @@ exc;	std	r10,32(3)
+>   	li	r5,4096
+>   	b	.Ldst_aligned
+>   EXPORT_SYMBOL(__copy_tofrom_user)
+> +EXPORT_SYMBOL(__copy_tofrom_user_base)
+> diff --git a/arch/powerpc/lib/copyuser_power7.S b/arch/powerpc/lib/copyuser_power7.S
+> index 8474c682a178..17dbcfbae25f 100644
+> --- a/arch/powerpc/lib/copyuser_power7.S
+> +++ b/arch/powerpc/lib/copyuser_power7.S
+> @@ -5,13 +5,9 @@
+>    *
+>    * Author: Anton Blanchard <anton@au.ibm.com>
+>    */
+> +#include <linux/export.h>
+>   #include <asm/ppc_asm.h>
+>   
+> -#ifndef SELFTEST_CASE
+> -/* 0 == don't use VMX, 1 == use VMX */
+> -#define SELFTEST_CASE	0
+> -#endif
+> -
+>   #ifdef __BIG_ENDIAN__
+>   #define LVS(VRT,RA,RB)		lvsl	VRT,RA,RB
+>   #define VPERM(VRT,VRA,VRB,VRC)	vperm	VRT,VRA,VRB,VRC
+> @@ -47,10 +43,14 @@
+>   	ld	r15,STK_REG(R15)(r1)
+>   	ld	r14,STK_REG(R14)(r1)
+>   .Ldo_err3:
+> -	bl	CFUNC(exit_vmx_usercopy)
+> +	ld      r6,STK_REG(R31)(r1)	/* original destination pointer */
+> +	ld      r5,STK_REG(R29)(r1)	/* original number of bytes */
+> +	subf    r7,r6,r3		/* #bytes copied */
+> +	subf    r3,r7,r5		/* #bytes not copied in r3 */
+>   	ld	r0,STACKFRAMESIZE+16(r1)
+>   	mtlr	r0
+> -	b	.Lexit
+> +	addi    r1,r1,STACKFRAMESIZE
+> +	blr
+>   #endif /* CONFIG_ALTIVEC */
+>   
+>   .Ldo_err2:
+> @@ -74,7 +74,6 @@
+>   
+>   _GLOBAL(__copy_tofrom_user_power7)
+>   	cmpldi	r5,16
+> -	cmpldi	cr1,r5,3328
+>   
+>   	std	r3,-STACKFRAMESIZE+STK_REG(R31)(r1)
+>   	std	r4,-STACKFRAMESIZE+STK_REG(R30)(r1)
+> @@ -82,12 +81,6 @@ _GLOBAL(__copy_tofrom_user_power7)
+>   
+>   	blt	.Lshort_copy
+>   
+> -#ifdef CONFIG_ALTIVEC
+> -test_feature = SELFTEST_CASE
+> -BEGIN_FTR_SECTION
+> -	bgt	cr1,.Lvmx_copy
+> -END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+> -#endif
+>   
+>   .Lnonvmx_copy:
+>   	/* Get the source 8B aligned */
+> @@ -263,23 +256,14 @@ err1;	stb	r0,0(r3)
+>   15:	li	r3,0
+>   	blr
+>   
+> -.Lunwind_stack_nonvmx_copy:
+> -	addi	r1,r1,STACKFRAMESIZE
+> -	b	.Lnonvmx_copy
+> -
+> -.Lvmx_copy:
+>   #ifdef CONFIG_ALTIVEC
+> +_GLOBAL(__copy_tofrom_user_power7_vmx)
+>   	mflr	r0
+>   	std	r0,16(r1)
+>   	stdu	r1,-STACKFRAMESIZE(r1)
+> -	bl	CFUNC(enter_vmx_usercopy)
+> -	cmpwi	cr1,r3,0
+> -	ld	r0,STACKFRAMESIZE+16(r1)
+> -	ld	r3,STK_REG(R31)(r1)
+> -	ld	r4,STK_REG(R30)(r1)
+> -	ld	r5,STK_REG(R29)(r1)
+> -	mtlr	r0
+>   
+> +	std     r3,STK_REG(R31)(r1)
+> +	std     r5,STK_REG(R29)(r1)
+>   	/*
+>   	 * We prefetch both the source and destination using enhanced touch
+>   	 * instructions. We use a stream ID of 0 for the load side and
+> @@ -300,8 +284,6 @@ err1;	stb	r0,0(r3)
+>   
+>   	DCBT_SETUP_STREAMS(r6, r7, r9, r10, r8)
+>   
+> -	beq	cr1,.Lunwind_stack_nonvmx_copy
+> -
+>   	/*
+>   	 * If source and destination are not relatively aligned we use a
+>   	 * slower permute loop.
+> @@ -478,7 +460,8 @@ err3;	lbz	r0,0(r4)
+>   err3;	stb	r0,0(r3)
+>   
+>   15:	addi	r1,r1,STACKFRAMESIZE
+> -	b	CFUNC(exit_vmx_usercopy)	/* tail call optimise */
+> +	li r3,0
+> +	blr
+>   
+>   .Lvmx_unaligned_copy:
+>   	/* Get the destination 16B aligned */
+> @@ -681,5 +664,7 @@ err3;	lbz	r0,0(r4)
+>   err3;	stb	r0,0(r3)
+>   
+>   15:	addi	r1,r1,STACKFRAMESIZE
+> -	b	CFUNC(exit_vmx_usercopy)	/* tail call optimise */
+> +	li r3,0
+> +	blr
+> +EXPORT_SYMBOL(__copy_tofrom_user_power7_vmx)
+>   #endif /* CONFIG_ALTIVEC */
+> diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
+> index 54340912398f..554b248002b4 100644
+> --- a/arch/powerpc/lib/vmx-helper.c
+> +++ b/arch/powerpc/lib/vmx-helper.c
+> @@ -27,6 +27,7 @@ int enter_vmx_usercopy(void)
+>   
+>   	return 1;
+>   }
+> +EXPORT_SYMBOL(enter_vmx_usercopy);
+>   
+>   /*
+>    * This function must return 0 because we tail call optimise when calling
+> @@ -49,6 +50,7 @@ int exit_vmx_usercopy(void)
+>   		set_dec(1);
+>   	return 0;
+>   }
+> +EXPORT_SYMBOL(exit_vmx_usercopy);
+>   
+>   int enter_vmx_ops(void)
+>   {
 
