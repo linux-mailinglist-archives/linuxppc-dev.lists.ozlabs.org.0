@@ -1,95 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-17852-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PIoC79Eq2nJbgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17852-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 22:18:55 +0100
+	id SHljEuvRqmn3XQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:08:59 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407D1227E0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 22:18:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E93221646
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:08:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fSK5l480Vz3bfG;
-	Sat, 07 Mar 2026 08:18:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fS6DQ3Vjkz3bnJ;
+	Sat, 07 Mar 2026 00:08:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772801007;
-	cv=none; b=kMhgk/uMjeR+GYqF7UO5jP0T58JsiPZRJw0sTpVBJyyxKrSprM3gMQXewChvlN9bJONsdUci0U/6Th5mtCO8on6LltXDlQOVTzArhiQzP3oBgJfjkq4K1MtuK5dDUjouAOff48R/r7NXNt1oXpIA2TyZLG3Vjl8+8OjUeK2CBg/qnYTEKkUYuGg0q6BSQWKY/qk1n5vpSNjk9zF601ggR3hSKl/T9LlpPBN0G8SHEGL/82OT2REPA9NmayT0VhqhH9dTTigZ9irfzbsN12kwKVQjhvhAY9TqVwbbIE9m122zSNToIVZ9V5QFHFwpwR1yzXc1y+CifFerVtYswkDTaQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772802534;
+	cv=none; b=Rj/hIFa3QjfNMOboGTTGmAFrA0VCiFOoDvIEDQuNyX9D92jRR0uLDiis6BoVhlY2a9AfUkMnXfV26gy9O5lFvzEILfAc1ee8ZoWVrxB64Fc2UxdjRt0PHNhrNzkvC5HD/LVy+bX2IlYoAoTZmLxawW0Te/VZDa1xdl66PUA6BVCp0+H9E76domVBBJTs1Wz935jQ2Pj0ALBAQh31caC7P4q6bVAt3L6HZPtb5vGNc7iay/8nB3kkMpYZ2FDwJIZRgWYk3ooEI2UWsw0SStTJNzMSU/wv6pcrxDDEPdCCO3ew18UC4g6VQqCeZMTa1llXtr9hBVVDRb+XD+0v8l1++Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772801007; c=relaxed/relaxed;
-	bh=QWdPDMTwGM6a5JRcgYVSuAzDD6OQV73Y1dH59k1txJQ=;
+	t=1772802534; c=relaxed/relaxed;
+	bh=u1rHxfLLP4YKNg1WjBlVzgw1fLtfT2Y/arepS+6+PYM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kMpfNgjL3/1z9hGx0xO2ccXPsPYhzHdnU+vmLpmVa2pc3mOERu7gfcbMtxXqsHQSVJM/YEWgCUIs1I0L3CakdAZjTmuen+UI23W8uSy7GZ65QEyUljCArAjhALpuEI9a7kIYrwBBVV5yndoYl70oeYLzssaWjHuNH/PFKcd/X30u7SA2RO/cAHutarizRlJP13v63nZvF3P37QAEFiSSYXcfqsLEllt03kygvoG2YGYQywPus2DFpk+CN5VhKQAGbS18Bwd4WKJ68g10kDWrZ+5oMb/GbpdaRfHvwAnIdX1rD65cmUopttvE48yBr+L7LZIP9ePhMZ2f0vKeu2HeuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p9mC0Dtb; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ljs@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=B5xq51XmjqtXICECsEk62tNIg3G7Jw8VyBHwrXGvzG28/yH5rjH5Thvpgmh+iWcYx6H78FfbrNEMPKpgVfE1jcx1Spb0sdrVY6NZ/HE7jkg9FKe/UlIoBS2QLZ0QvojR2gfzVk5quRvHRhy8dulaixCEWRTnv5XDAdwdCrR+HHJw5diKuJ7hwBKi4zkfBHkTroNUd1PvrTRbZOlnRQyjuV70te/WrSi0SdMCuvAXIFoS2L73xzuy2a1DZWidA6/MN4b843sw+TDMWdTH+YPrgbI4yaRVnBCbNlGeNs2i6O9I/8kdmcGHOSZBBM41HVOMAN2YfA6SotzlKJ+q4rFDig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EebIOyn1; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1XTZ5fbt; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p9mC0Dtb;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EebIOyn1;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1XTZ5fbt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ljs@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS5g25tx6z30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 23:43:26 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C43F340571;
-	Fri,  6 Mar 2026 12:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149B7C4CEF7;
-	Fri,  6 Mar 2026 12:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772801004;
-	bh=laI5Gks8UKTtQyxqn7mx9nW4b8iCTs15iKu2otVUFHw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p9mC0Dtb5HP8pcPpgD7riizGZNEqblFXhyCBB7gyX3iYqVlML2IEu/E46TQAfJ6kB
-	 5ES8F1tVf64ZhuAJ2vES+zOK4kRMzYtKhCjqesskIYnO8sAKVgRvaUWEnRMwLwSDQe
-	 6ozGy1rqY43AQN4mamdsvpi0UFTEWG/1ua9kPc8CcoyCTro7l1nx6xbY3HJtSjDB33
-	 HoXIf0/JjwlmXYcHIiJHIJDR1zTA/RgIid+TR7+6DmUz/5MSsmXaWj5qjtxVswmSpB
-	 y7qIWK2NRTkB+QK0r3eC/5U81n1lw5TgFlHl0zqxfvXpiP2u3XAAAbXR9+cd9x48Kv
-	 4L7tL1NMHpRqQ==
-Date: Fri, 6 Mar 2026 12:43:21 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 16/16] mm/memory: support VM_MIXEDMAP in
- zap_special_vma_range()
-Message-ID: <f2a7bdf4-8db7-4101-b7c6-3f5d9c20e078@lucifer.local>
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-17-david@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS6DN3gX8z2xT4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 00:08:52 +1100 (AEDT)
+Date: Fri, 6 Mar 2026 14:08:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772802522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u1rHxfLLP4YKNg1WjBlVzgw1fLtfT2Y/arepS+6+PYM=;
+	b=EebIOyn1GAkztXhhb/xOs7a50yTpFmXp1eD4k+lUvkDCKBPOfjcZoid4acV7G2wCcI6U/V
+	FGYlHmTgtqYBOcT5LOUcDj48GKf1xI9dsZbtHFMVDfMD8QKWZnfBhAfIsC0er950JLst3G
+	6JCXw0rW8FCEIqQ4EdRofZoi+7PToRjpFsfZWgq6KSWgxM5VzOzxkvFDckuV9HuDXNJY9w
+	dJkHqusUNd2P6UJhs66+UdaGK3zu2qm9NzQTl7UvcHcis/8MEhXrw7hgxaVE4raAHdHgtw
+	D5zt0ivPKP6gya6n3/1XNG1t57ugX6PbBXVeZtmUSg9pkp+kzgOb6KN8X6tx8Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772802522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u1rHxfLLP4YKNg1WjBlVzgw1fLtfT2Y/arepS+6+PYM=;
+	b=1XTZ5fbtGTrjwv0i4R2ZCuY19THERe245goUh2z2oB9xbmf1QhzB2aBzdWp3Iq8hSDD9kc
+	a+BxNXuHRPasJ4BQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
+	David Laight <david.laight.linux@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
+	Sun Jian <sun.jian.kdev@gmail.com>, kernel test robot <lkp@intel.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [PATCH v2 0/5] vDSO: Use 32-bit CHECKFLAGS for compat vDSO
+Message-ID: <20260306115350-ef265661-6d6b-4043-9bd0-8e6b437d0d67@linutronix.de>
+References: <20260302-vdso-compat-checkflags-v2-0-78e55baa58ba@linutronix.de>
+ <96cdd223-5139-4535-b82d-831dac472cc3@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,100 +88,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-17-david@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <96cdd223-5139-4535-b82d-831dac472cc3@kernel.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 407D1227E0B
+X-Rspamd-Queue-Id: E9E93221646
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,oracle.com,kernel.org,google.com,suse.com,suse.de,linux.dev,infradead.org,linux.ibm.com,ellerman.id.au,redhat.com,alien8.de,linuxfoundation.org,android.com,mev.co.uk,visionengravers.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,ziepe.ca,hpe.com,arndb.de,iogearbox.net,arm.com,davemloft.net,lists.ozlabs.org,lists.freedesktop.org];
-	TAGGED_FROM(0.00)[bounces-17852-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:rientjes@google.com,m:shakeel.butt@linux.dev,m:willy@infradead.org,m:aliceryhl@google.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:jarkko@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:cmllamas@google.com,m:abbotti@mev.co.uk,m:hsweeten@visionengravers.com,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:jgg@ziepe.
- ca,m:leon@kernel.org,m:dimitri.sivanich@hpe.com,m:arnd@arndb.de,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:edumazet@google.com,m:ncardwell@google.com,m:davem@davemloft.net,m:dsahern@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:ojeda@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sgx@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-rdma@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:netdev@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ljs@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17819-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[davemloft.net,gaisler.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,arndb.de,linux.ibm.com,ellerman.id.au,gmail.com,vger.kernel.org,lists.ozlabs.org,intel.com,linaro.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:davem@davemloft.net,m:andreas@gaisler.com,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:arnd@arndb.de,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:sparclinux@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-s390@vger.kernel.org,m:david.laight.linux@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:sun.jian.kdev@gmail.com,m:lkp@intel.com,m:dan.carpenter@linaro.org,m:davidlaightlinux@gmail.com,m:sunjiankdev@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[74];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,lucifer.local:mid]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 09:08:47PM +0100, David Hildenbrand (Arm) wrote:
-> There is demand for also zapping page table entries by drivers in
-> VM_MIXEDMAP VMAs[1].
->
-> Nothing really speaks against supporting VM_MIXEDMAP for driver use. We
-> just don't want arbitrary drivers to zap in ordinary (non-special) VMAs.
->
-> [1] https://lore.kernel.org/r/aYSKyr7StGpGKNqW@google.com
+On Fri, Mar 06, 2026 at 11:43:24AM +0100, Christophe Leroy (CS GROUP) wrote:
+> 
+> 
+> Le 02/03/2026 ‡ 08:58, Thomas Weiﬂschuh a Ècrit†:
+> > When building the compat vDSO the CHECKFLAGS from the 64-bit kernel
+> > are used. These are combined with the 32-bit CFLAGS. This confuses
+> > sparse, producing false-positive warnings or potentially missing
+> > real issues.
+> > 
+> > Manually override the CHECKFLAGS for the compat vDSO with the correct
+> > 32-bit configuration.
+> > 
+> > Not all architectures are supported, as many do not use sparse for their
+> > (compat) vDSO. These can be enabled later.
+> > 
+> > Also add some checks to bitsperlong.h to detect such issues earlier.
+> > 
+> > Based on tip/timers/vdso.
+> > 
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> > ---
+> > Changes in v2:
+> > - Simplify __BITS_PER_LONG consistency checks
+> > - Fix an inconsistency in the powerpc audit code
+> 
+> The powerpc audit code should be replaced by generic
+> AUDIT_ARCH_COMPAT_GENERIC, as there is no difference between them
+> apparently.
 
-Dude, you have to start your indices with 0 what kind of programmer are
-you? ;)
+Agreed.
 
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> A tentative was made in the past but was declined by audit maintainers
+> because we were not able to test it allthought the failure was the same
+> before and after the patch, see
+> https://github.com/linuxppc/issues/issues/412
 
-Agreed that there's no reason not to allow this, so LGTM and:
+On v7.0-rc1 the test failure of filter_exclude/test is gone.
+It also keeps working when applying your patch. Some other tests are
+broken, but it looks that is due to missing dependencies on Debian.
+So maybe it is time to resubmit your patch.
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+In any case, I don't really want to entangle my series with the switch
+to AUDIT_ARCH_COMPAT_GENERIC. My proposed cleanup does not make the code
+worse and if both patches are applied the conflict will be trivial to
+resolve.
 
-Thanks for this series overall, very nice cleanup and I was frustra^Whappy
-to see that there was nothing major or really of note to comment on here, a
-rare occurrence in review :)
 
-> ---
->  mm/memory.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index f3b7b7e16138..3fe30dc2f179 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2239,13 +2239,13 @@ void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
->   * @size: number of bytes to zap
->   *
->   * This function does nothing when the provided address range is not fully
-> - * contained in @vma, or when the @vma is not VM_PFNMAP.
-> + * contained in @vma, or when the @vma is not VM_PFNMAP or VM_MIXEDMAP.
->   */
->  void zap_special_vma_range(struct vm_area_struct *vma, unsigned long address,
->  		unsigned long size)
->  {
->  	if (!range_in_vma(vma, address, address + size) ||
-> -	    		!(vma->vm_flags & VM_PFNMAP))
-> +	   !(vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP)))
->  		return;
->
->  	zap_vma_range(vma, address, size);
-> --
-> 2.43.0
->
-
-Cheers, Lorenzo
+Thomas
 
