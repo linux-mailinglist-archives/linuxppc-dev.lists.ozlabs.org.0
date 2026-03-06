@@ -1,90 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17827-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17828-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICDABEn1qmlGZAEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17827-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 16:39:53 +0100
+	id aEFbHlj2qmlaZAEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17828-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 16:44:24 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025D5223FD9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 16:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94287224171
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 16:44:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fS9ZW52yKz30T9;
-	Sat, 07 Mar 2026 02:39:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fS9gm6jrKz30T9;
+	Sat, 07 Mar 2026 02:44:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772811587;
-	cv=none; b=Ev3GeZRdWoUGtE+b+G760mW650p8n1E4Orfc0eQF//8vQEd7TDPUqTpTa6jDNdTsGx2bNjfrgzgfUwG7WKseozWDHE6Y5oUxom/CzospDa1+/hFsFK3wOfi+RQCh4atqtzk48WHmBscaEyNgXwIopiT7lpHamJpcPpZ5kBSnIVOcox+mHQaxyT9nmyIQzskwdo1Yab9PTOrUmiGUydAD61gH00zAqK5/H2Q4JUT3HOqL1rmYVcruyUEOJs4tIT34aQ+QVQT4sO0R8AhGDOFmqHjlCAovr1TEHJzaFGe6n4x5NnYtjR0jOtjO4jrbpEXnZexWXczOo0pIQpKg04WkEw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772811860;
+	cv=none; b=h5NQ9n1PmN64svrrh8/wvsToeyJy+SFtHvhTi/ifDxK6JvBQlw5sJESbVA9+yfGsKVvIyVEVoOyKyGVjQkEFnIyCAHVhZtxNPKPIIzoRoyd88MwOjT7mEqoYMO4jw0/fjV9EVB4iQJmnNalqqEuw20aCqouhfcUA0YIzfja7VfqjRnszLHBB3ISGzheSN1qV++8fbbsw1Ac6ui2HRiYEXyD8DSnbpCRW8YP0qL2Rbh36tk51H5ZR9wNc3A3LKTdOCxB/igTRbB4bXez1psm4aQHlmjXG6auJu6E1IFSCmIsfch9CF6jaWJmntv3f14HKgYZ+AjGLPUBT/8AgBWeT2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772811587; c=relaxed/relaxed;
-	bh=ecugwceZRXjAL34b3Y6VujivoFDaKE6QF8IGHx366Hc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xzq4lgV99yjJMNnsyUGDWEfHcPpWA70qMBz0HYunXRRUIJpYbxLzgCW0eRiLKGjAqaaZoU4cUM3DZGxzMH2Bj64FDQ4lIyoWhIyxQJ1/MLpb3nNwvfcuMbXDuFobLgNEmjJpONKdXRAPZ1WJ90WW5blTSxkb90cf0wDFEZ29sePU1Ba/U34XP1JmZFU8x/jp0NWapXIjjTHmA1Fapgrt6qqd5+vDa5CU7nveSQ1JyAq0QeJg53oT9fIwgBAbpcePUUKSdju7XWKPr2A9LCUZNeKQ5w2slmQeOMuKfVOyNYQ48HhCbk0PAKpVMNlUqvMC3Z4f9kU0koGPeh5DlzMsoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=joeYs+2f; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1772811860; c=relaxed/relaxed;
+	bh=WIwxDrFnlcYBpeh8ciPv7iyV+DIVmuhIWfboIKVpOiE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BCZ8r4Y1nUpdeNzLAdDwyLaX3XdM5q2xqW9be/BswtAHTFowl/6iPgeeanZD31cpvRxktuLmZkwVX82Ggr9g2+fHbLIFUhksMk2drCwDGvG2UTsWcOP3m8yj/ruh8oPNbfFuC98ibt5yV8A7PEksA5VT+9uIpf2FJiGGOM2DGBzbIU5IqVhSLfb+BbGQyZON6lalOGSORWBHnpLbhQhJ7x4yBIOFa2VOI/0vX/Xn6l6xQRQd8nCnIHYyryvgawxRtnjxkyplYYxpFMvJuqTc4rxMba+Y7bjRQP3VY6vcPD5qehT8196EHFSkjCTIpomUhk7EHUnESVqoT1aq+vvv+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cPwvk7hY; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=joeYs+2f;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cPwvk7hY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS9ZV46n4z2xqm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 02:39:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS9gm0Hw3z2xqm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 02:44:19 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04B036012A;
-	Fri,  6 Mar 2026 15:39:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FF3C4CEF7;
-	Fri,  6 Mar 2026 15:39:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D15A960127;
+	Fri,  6 Mar 2026 15:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042BFC2BC86;
+	Fri,  6 Mar 2026 15:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772811583;
-	bh=sA7klZwAjMGzSg7D2nkr3VzQfy3dllPSLjh1NxQleUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=joeYs+2fl+4Fec/1XHfYv3A7Q4YKPP5eiMn0LZM+qRweq/0Nb7kbhiLzqCxvkgWRC
-	 tCAS/Xx0agJmoxvvAVc6x4X8GZR1BI3svk9yKBfAEuQLgkLqDqRKwm7e6RwKl4pyMn
-	 dUQ95O395D88k9Yg13CcVMogOutjKpVqLmwup4Ex7i4Z3ch4u/o8zh10VAGacvteCd
-	 0ioPnzAhuVix78W0UsYEYvBbJxV/ywhcyOOMiApmh0S1ywx8DF+VobQ/QLsAzG3m/C
-	 LWHfX4xBdayp9vmOMWP88nGMykl3fWI4var5kS7GlnVBK6RWTpAzcxPtZHOdhHq20R
-	 +kKU1lnmfWAMg==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vyXHA-000000003em-3GlB;
-	Fri, 06 Mar 2026 16:39:40 +0100
-Date: Fri, 6 Mar 2026 16:39:40 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-actions@lists.infradead.org,
-	linux-media@vger.kernel.org
-Subject: Re: [PATCH v2 00/13] i2c: add and start using i2c_adapter-specific
- printk helpers
-Message-ID: <aar1PDUB2t7DgEP6@hovoldconsulting.com>
-References: <20260223-i2c-printk-helpers-v2-0-13b2a97762af@oss.qualcomm.com>
- <aaFcs1miP88QWmtH@hovoldconsulting.com>
- <aaFfEsfh0xTh0b1y@shikoro>
- <aaFsZbiLYSz_YEjw@hovoldconsulting.com>
- <CAMRc=MfcvD1nJy=zpoCkSkJq6WjyXQxFUZ4QE6vyCS+XFCn5AA@mail.gmail.com>
- <aaHI_VavZugXjVoL@hovoldconsulting.com>
- <CAMRc=MdKF29McBJ9U=qELkzf9GYV1CQpRF7U6OweDNtVzMXo7A@mail.gmail.com>
- <aacE-27iaYneKCJi@hovoldconsulting.com>
- <CAMRc=Mcx8Hu407arSEo3o-Xhmep_ZK4BM2TVi_55nXGwYcaijw@mail.gmail.com>
+	s=k20201202; t=1772811857;
+	bh=Irog342MSr8k0zPuW6pGzgfpJRPPfcyU46dDqhpUBU8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cPwvk7hYBURwasb7XgxxL1kr9EppTKvwp8HXAgsivHXKjqp75sTPHdGxFMqtH5GoC
+	 KWahvwUXupdk0vP9+GXBHipHQQaevBgrSxRfLxtzes8UcuTMob+APPrkVxnMkQ43H4
+	 pqYJhYjEEPC6KmAUY+xkMmbNui7Qj/X1BlHXLP7cxJoqraZdVLVMgU71DKUckL8hlD
+	 U99gWs8Qztv8u3kD1L8S1yKRUESqYW3qiE3m5QVefWfGRMXRXb2kxyi5TOLk2Jh50O
+	 s5ZJkDQL5uz7rygM1S6oeiYTyYKoEc7zKF2NvNddiKTezKxSMgVXGP1dArr2DxQVXv
+	 OaWe1NzgWP/6A==
+Message-ID: <81e7bd1c-54d5-4f88-969a-685177447c51@kernel.org>
+Date: Fri, 6 Mar 2026 16:44:06 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,260 +63,223 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mcx8Hu407arSEo3o-Xhmep_ZK4BM2TVi_55nXGwYcaijw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 05/13] mm/page_vma_mapped: Add flag to
+ page_vma_mapped_walk::flags to track device private pages
+To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
+Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ ziy@nvidia.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com,
+ lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
+ willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
+ intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
+ jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ ying.huang@linux.alibaba.com
+References: <20260202113642.59295-1-jniethe@nvidia.com>
+ <20260202113642.59295-6-jniethe@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260202113642.59295-6-jniethe@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 025D5223FD9
+X-Rspamd-Queue-Id: 94287224171
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17827-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[sang-engineering.com,oss.qualcomm.com,kernel.org,gmail.com,sholland.org,nvidia.com,suse.com,linux.ibm.com,ellerman.id.au,suse.de,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:brgl@kernel.org,m:wsa+renesas@sang-engineering.com,m:bartosz.golaszewski@oss.qualcomm.com,m:andi.shyti@kernel.org,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:kblaiech@nvidia.com,m:asmaa@nvidia.com,m:jdelvare@suse.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:afaerber@suse.de,m:mani@kernel.org,m:mchehab@kernel.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-actions@lists.infradead.org,m:linux-media@vger.kernel.org,m:wsa@sang-engineering.com,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[johan@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17828-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,oracle.com,redhat.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au,linux.alibaba.com];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	FORGED_RECIPIENTS(0.00)[m:jniethe@nvidia.com,m:linux-mm@kvack.org,m:balbirs@nvidia.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:ziy@nvidia.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:lyude@redhat.com,m:dakr@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rcampbell@nvidia.com,m:mpenttil@redhat.com,m:jgg@nvidia.com,m:willy@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:intel-xe@lists.freedesktop.org,m:jgg@ziepe.ca,m:Felix.Kuehling@amd.com,m:jhubbard@nvidia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:ying.huang@linux.alibaba.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026 at 01:55:14AM -0800, Bartosz Golaszewski wrote:
-> On Tue, Mar 3, 2026 at 4:57 PM Johan Hovold <johan@kernel.org> wrote:
-> >
-> > On Mon, Mar 02, 2026 at 12:03:19PM -0600, Bartosz Golaszewski wrote:
-> > > On Fri, Feb 27, 2026 at 5:41 PM Johan Hovold <johan@kernel.org> wrote:
-> > > >
-> > > > On Fri, Feb 27, 2026 at 04:42:09PM +0100, Bartosz Golaszewski wrote:
-> > > > > On Fri, Feb 27, 2026 at 11:06 AM Johan Hovold <johan@kernel.org> wrote:
-> > > >
-> > > > > > It seems all that is needed is to decouple the struct i2c_adapter from
-> > > > > > the driver data and have core manage the lifetime of the former using
-> > > > > > the reference count of the embedded struct device.
-> > > >
-> > > > > This is a weird pattern you sometimes see where a driver allocates
-> > > > > something and passes the ownership to the subsystem.
-> > > >
-> > > > It's not weird at all, this is the standard way to handle this. We have
-> > > > these things called reference counts for a reason.
-> > >
-> > > I wouldn't say it's *the* standard way. There are at least several different
-> > > ways driver subsystems handle resource ownership. And even so: the fact that
-> > > something's done a lot does not make it automatically correct.
-> >
-> > It's the way the driver model works.
+On 2/2/26 12:36, Jordan Niethe wrote:
+> A future change will remove device private pages from the physical
+> address space. This will mean that device private pages no longer have
+> normal PFN and must be handled separately.
 > 
-> No, it does not impose any specific pattern to use for subsystems other than
-> requiring each device that's been *initialized* to provide a .release() callback
-> called when the last reference is dropped.
-
-Reference counting is a core part of the driver model and this is
-reflected in the way subsystems manage lifetime.
-
-> > > I'm advocating for a hard split between the subsystem data (reference-counted)
-> > > and driver data (living from probe() until remove()). A logical struct device
-> > > managed entirely by the subsystem should live in a separate structure than
-> > > driver data and be allocated - and freed - by the subsystem module.
-> >
-> > It doesn't really matter what you think. You can't just go around
-> > making up new subsystem specific rules at your whim. The linux driver
-> > model uses reference counting and that's what developers expect to be
-> > used.
-> >
+> Prepare for this by adding a PVMW_DEVICE_PRIVATE flag to
+> page_vma_mapped_walk::flags. This indicates that
+> page_vma_mapped_walk::pfn contains a device private offset rather than a
+> normal pfn.
 > 
-> And I've never said that it should not use reference counting. I'm not sure
-> what you're implying here.
-
-You have posted changes that will prevent driver from accessing the
-struct device of core i2c structures. This is unexpected, non-idiomatic
-and subsystem specific and therefore a bad idea.
-
-> > > Let's put aside kernel code for a minute and work with an abstract C example,
-> > > where the equivalent of what you're proposing would look like this:
-> > >
-> > > struct bar {
-> > >	   struct foo foo;
-> > >	   ...
-> > > };
-> > >
-> > > struct bar *bar = malloc(sizeof(*bar));
-> > >
-> > > ret = foo_register(&bar->foo);
-> > >
-> > > And the corresponding free() lives who knows where because foo_register()
-> > > automagically introduces reference counting (nevermind the need to calculate
-> > > where bar is in relations to foo).
-> >
-> > No, that's not what I'm suggesting here, but it would be compatible with
-> > the driver model (ever heard of struct device which works exactly like
-> > this?).
+> Once the device private pages are removed from the physical address
+> space this flag will be used to ensure a device private offset is
+> returned.
 > 
-> I know how struct device works. I'm pointing out that this is a bad API (just
-> to be absolutely clear: not the reference counting of struct device itself but
-> using it in a way tha looks like it's not refcounted but becomes so after an
-> API call) because it's confusing. I'm not buying the argument that if it
-> confuses you then you should not be doing kernel development because it's not
-> the goal of API design to make it as complex and confusing as possible - quite
-> the contrary. And it *is* confusing given the amount of misuse present. I've
-> heard Greg KH say on multiple occasions during his talks that we try to offload
-> complex code to subsystems so that drivers can remain fairly simple. I agree
-> with that.
-
-Again, this is a core feature of the driver model. You can't just ignore
-it and come up with random ways to work around just because you disagree
-with design decisions that were made 25 years ago.
-
-> > > I strongly believe that this makes more sense:
-> > >
-> > > struct bar {
-> > >	   ...
-> > > };
-> > >
-> > > struct bar *bar = malloc();
-> > >
-> > > struct foo *foo = foo_register(bar);
-> > >
-> > > // foo is reference counted and allocated in the provider of foo_register()
-> > >
-> > > foo_put(foo);
-> > > free(bar);
-> > >
-> > > The equivalent of which is moving struct device out of struct i2c_adapter.
-> >
-> > No, it's not.
-> >
-> > > In fact: I would love to see i2c_adapter become a truly reference-counted
-> > > object detached from driver data but due to it being embedded in every bus
-> > > driver data structure it realistically won't happen.
-> >
-> > And this is what I've been suggesting all along, separating the driver
-> > data and making the adapter reference counted.
-> >
-> > The idiomatic way to handle this is:
-> >
-> >		 xyz_probe()
-> >		 {
-> >				 adap = i2c_adapter_alloc();
-> >				 // initialise driver data, store pointer in adap
-> >				 i2c_adapter_register(adap);
-> >		 }
-> >
-> >		 xyz_remove()
-> >		 {
-> >				 i2c_adapter_deregister(adap);
-> >				 i2c_adapter_put(adap);
-> >		 }
-> >
-> > Exactly where the driver data is stored is secondary, it could be memory
-> > allocated by core or by the driver.
-> >
-> > But the adapter is reference counted and kept around until all users are
-> > gone.
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> ---
+> v1:
+>   - Update for HMM huge page support
+> v2:
+>   - Move adding device_private param to check_pmd() until final patch
+> v3:
+>   - Track device private offset in pvmw::flags instead of pvmw::pfn
+> v4:
+>   - No change
+> ---
+>  include/linux/rmap.h | 24 ++++++++++++++++++++++--
+>  mm/page_vma_mapped.c |  4 ++--
+>  mm/rmap.c            |  4 ++--
+>  mm/vmscan.c          |  2 +-
+>  4 files changed, 27 insertions(+), 7 deletions(-)
 > 
-> Yeah, that's awesome but that's not what's being done in i2c. We do:
-> 
-> struct foo_i2c_driver_data {
-> 	struct i2c_adapter adap {
-> 		struct device dev;
-> 		...
-> 	};
-> 	...
-> };
-> 
-> instead which is a completely different story. It makes foo_i2c_driver_data
-> implicitly reference counted despite its lifetime being tied to the bound-state
-> of the device. It becomes painfully obvious in rust when the compiler starts
-> enforcing proper lifetime management.
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index daa92a58585d..1b03297f13dc 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -921,6 +921,8 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
+>  #define PVMW_SYNC		(1 << 0)
+>  /* Look for migration entries rather than present PTEs */
+>  #define PVMW_MIGRATION		(1 << 1)
+> +/* pvmw::pfn is a device private offset */
+> +#define PVMW_DEVICE_PRIVATE	(1 << 2)
+>  
+>  /* Result flags */
+>  
+> @@ -939,14 +941,32 @@ struct page_vma_mapped_walk {
+>  	unsigned int flags;
+>  };
+>  
+> +static inline unsigned long page_vma_walk_flags(const struct folio *folio,
+> +						unsigned long flags)
+> +{
+> +	if (folio_is_device_private(folio))
+> +		return flags | PVMW_DEVICE_PRIVATE;
+> +	return flags;
+> +}
+> +
+> +static inline unsigned long folio_page_vma_walk_pfn(const struct folio *folio)
+> +{
+> +	return folio_pfn(folio);
+> +}
+> +
+> +static inline struct folio *page_vma_walk_pfn_to_folio(struct page_vma_mapped_walk *pvmw)
+> +{
+> +	return pfn_folio(pvmw->pfn);
+> +}
+> +
+>  #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
+>  	struct page_vma_mapped_walk name = {				\
+> -		.pfn = folio_pfn(_folio),				\
+> +		.pfn = folio_page_vma_walk_pfn(_folio),			\
+>  		.nr_pages = folio_nr_pages(_folio),			\
+>  		.pgoff = folio_pgoff(_folio),				\
+>  		.vma = _vma,						\
+>  		.address = _address,					\
+> -		.flags = _flags,					\
+> +		.flags = page_vma_walk_flags(_folio, _flags),		\
+>  	}
 
-I'm quite aware of that and that's why we are discussing how to change
-it.
+That's all rather horrible ...
 
-> But sure, your example works fine too. My point is: getting to that state would
-> require more churn than allowing drivers to continue allocating i2c_adapter
-> struct themselves with struct device being moved out of it - making reference
-> counting of it work properly.
-> 
-> And I agree: doing the above would be even better but you'd need - for every
-> driver - to move the i2c_adapter struct out of driver data and make it a
-> pointer. That's in addition to providing new APIs and using them. I2C drivers
-> are spread treewide. There's a reason why nobody attempted it for decades. I'm
-> proposing something a bit less complex: allow drivers to free i2c_adapter at
-> unbind but make i2c core keep a private, reference-counted structure for as
-> long as it's needed.
 
-But its non-idiomatic and therefore not a good idea. Sometimes you just
-have to dig in and fix the real problem instead of trying to work around
-it.
+I was asking myself recently, why something that is called
+"page_vma_mapped_walk" consume a pfn. It's just a horrible interface.
 
-> > > > Yes, you have to update the allocation and replace container_of() with
-> > > > dev_get_drvdata() but it's a straight-forward transformation that brings
-> > > > the i2c subsystem more in line with the driver model (unlike whatever it
-> > > > is you're trying to do).
-> > > >
-> > >
-> > > No, it's not that simple. The .release() callback of struct device embedded
-> > > in struct i2c_adapter is assigned from the bus type and only calls complete()
-> > > (yeah, I too don't think it looks right, one would expect to see the associated
-> > > kfree() here, right?). It relies on the bus driver freeing the data in its
-> > > remove() path. That's why we wait until all references to said struct device
-> > > are dropped. After your proposed change, if your new release() lives in the
-> > > driver module, it must not be removed until all the references are dropped
-> > > - basically where we are now. If on the other hand, the release() callback's
-> > > functionality is moved into i2c-core, how would you handle the fact i2c_adapter
-> > > can be embedded in a larger driver data structure? Provide yet another callback
-> > > in i2c_adapter called from the device's .release()? Sure, can be done but I
-> > > doubt it's a better solution.
-> >
-> > You seem to be constructing some kind of straw man here. Obviously, the
-> > release function would free the memory allocated for the adapter struct.
-> >
-> > An adapter driver can free its driver data on unbind as core will
-> > guarantee that there are no further callbacks after the adapter has been
-> > deregistered.
-> >
-> 
-> Sure, but my point all along has been that - with struct device currently
-> embedded in struct i2c_adapter - that's not the case. Driver data *and*
-> i2c_adapter are tied together. You need a major rework in either case.
 
-And I've being saying that the driver data should be *decoupled* from
-the i2c_adapter.
+* DEFINE_FOLIO_VMA_WALK() users obviously receive a folio.
+* mm/migrate_device.c just abuses page_vma_mapped_walk() to make
+  set_pmd_migration_entry() work. But we have a folio.
+* page_mapped_in_vma() has a page/folio.
 
-> I'm frustrated because I'm spending time working on an actual solution. I've
-> explained what I'm doing and what the end result will look like based on what
-> works for GPIO (struct gpio_chip's lifetime is bound to device's "bound" state,
-> struct gpio_device is refcounted, I want to mirror it with i2c_adapter and
-> whatever we eventually call its refcounted counterpart - let's say:
-> i2c_bus_device). If you claim you have a better alternative - will you do the
-> work to make it happen?
+mapping_wrprotect_range_one() and pfn_mkclean_range() are the real
+issues. They all end up calling page_vma_mkclean_one(), which does not
+operate on pages/folios.
 
-Sure. I'll fix this properly.
+Ideally, the odd pfn case would use it's own simplified infrastructure.
 
-Johan
+
+So, could we simply add a folio+page pointer in case we have one, and
+use that one if set, leaving leaving the pfn unset?
+
+Then, the pfn would only be set for the
+mapping_wrprotect_range_one/pfn_mkclean_range case. I don't think
+device-private folios would ever have to mess with that.
+
+
+Then, you just always have a folio+page and don't even have to worry
+about the pfn?
+
+
+-- 
+Cheers,
+
+David
 
