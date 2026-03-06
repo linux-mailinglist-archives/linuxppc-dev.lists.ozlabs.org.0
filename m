@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAhjCO/Vqmn3XQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:26:07 +0100
+	id MIifIBjWqmn3XQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:26:48 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED2B2218AE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A73E52218E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:26:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fS6cB0xfTz30T9;
-	Sat, 07 Mar 2026 00:26:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fS6d06b4Yz30T9;
+	Sat, 07 Mar 2026 00:26:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772803561;
-	cv=none; b=lWO9Zc2dqjlXmnHExNbnT7YrDKcRJWC1qf+v1cavAiaG9gXaYwzkGlskYC/UugxWhpRsELbB8RsHyVucpOzJuhH6Rq4tWwsnsNJ32cXXdlmSs0iesFaTywjJjE+btn5RTrVldZGOMm67P7gKjFAWK29UPFKuYvN8f7fEFerEMJjg6xhkGnCpEtfKmkNR9kvWenODUi+VD+3rGMJV6RZXIdB51hS0dm+KXDtv97b3sSd7yw+5ET5JMksrE4FZHuYcZtW6GbzKGf+OEHlZrVXr2R9cBUUPlFLhN9NFYVV9nSlhqrYF6PHwJmzxFZbfgnWACo2mzx9SdIJ31QvSQPWHtQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772803604;
+	cv=none; b=lLtlBUjFF/ZxVcj1hDe8HOj+hkz+UMtfn5J9UhZTT1no4J4jvMxuCwBMnHJg+9p5pJxdOZRBTyAGrcKcZ/xSu4uuFV5oZ+R+awNshapl2LqjsrUb53CY7SmxtzRWZDuFxWMAqj/T06f8PTv9zZGx2+PNK3Od2WTofpEwTueKEw1VuetEtRRqqG4920w+M1TlQec6Avs7KUfLugEShSB5GSfu9l9qOAbwVjh33TrZFbiDWV7NSSQwzvI4xpaZ+AsPQQxPXVtBPzfBlU7WongjlA2Wew09bfHya9LJ8NbHjIrQo3o2tYtIhNK0/LkmhaQeU1PAvLXaLo7pYnREllBwdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772803561; c=relaxed/relaxed;
-	bh=7LFhEDz+8fbvJWmaugKgIjBYARs432xMAbsmDyA1By8=;
+	t=1772803604; c=relaxed/relaxed;
+	bh=df5ajusRl1mTyz4QEN1b6qe012o5RmwmEQN9zOYMiTo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hr1WEtsL/dJ+PiaXJTqgLHy9bRMM1NoOLGCR8vSyRyCpDjiCv91QC1u4DESE6AFg+HxfODDV7dLJHiyT33euPq3cV10HObNXwAQ1eHJOyemH3jVKtus8oSwejmK2rWVD1L+iB84//omzWo3fYXUfF6XGBzpxxgkdVLA6oReTVVgamKAligs//44OYeCCFUsHYX3s6zzFIE3F0s5yAHrh9qQb+mag6W713ReSMz3Tx+A8R8lgpsiGd8CElpJFlUuxSSIfUF+qy7p8bO+sULQrvnPUK7xBLA6eZQTiYp8vlAZy/6DKEqMR8M6tp2U7T3wHmBpHde21r8lwdtPMbx4uCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+rWmYyq; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=WLDs4yr5UaGYTmCPiF91EGGx8V2sKS4FHvM91DeMcxH5bojSsEC0qPyTwDH8DKw/Y4d+E/YYVIxaam89jw6AfVl1+Xbgoasbf2GUJ+fCLk7W1O6Y1wCVeCRsxnx6QDxzb9B0Mend4bI8qb4Dsmf+RwIS612tDeWatJNG5dp8TJMLmv7LD/YGXK6e72IVzvjbfmdEr/j3wa+v+qk00qoCJUe95wliFOo1Q1v4pnVLMc8JGy2zqFOGpKTxmBvxQQrGDtbIWaHwUu/XGBdzRTqrKax4fQN9iUdb3JgmgSd2v7nEvD8rDE+QE9sibc9GQ7iY8oKovgMDw7gy4wKiVkanzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qVqpZu8S; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+rWmYyq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qVqpZu8S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS6c86MKqz2xT4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 00:26:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS6cz6WcNz2xT4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 00:26:43 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7418D60127;
-	Fri,  6 Mar 2026 13:25:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2742DC2BC86;
-	Fri,  6 Mar 2026 13:25:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C3E7A60134;
+	Fri,  6 Mar 2026 13:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F89C4CEF7;
+	Fri,  6 Mar 2026 13:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772803558;
-	bh=VU30iKH+h/qW7CEQKlKOIowLeYhmlgQ/q/0Y/mYCK3U=;
+	s=k20201202; t=1772803601;
+	bh=sR/kIGYNND8K9nQw+FjdFBOKIkK/ANUJzx5w8waG85s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V+rWmYyqOSRcqABxv0QWdLshlJpYgu7fEwgb64B0fTA/c6pgG8MG/w+ZcKT0/BuWP
-	 PXHroR3YWS3vqI4BXdgO/PxHbkyiiDZx4CmTzeiMilwaV9zEePGKlT7F+TKuzNdFq6
-	 v2AJAZCJG5oFbUGQE7dJAZb6p4yLwKqLyUPcFhQnI/04TmuuPHAC8Dlx12mvsL1UE+
-	 2la+iQcxibbkBOTCIH3s+84DEkiaAmThXEppa4VEG3WIhzOKk8/fe/f2f7DQvpp676
-	 uLIpdNki57hG3MPr5ty1Pt4afb+h9Ntc6yYqShkM0PHnlXPALS6pVO+pdo3KeYSU62
-	 7t2ssBVeagtzQ==
-Message-ID: <729e14d4-6949-4d46-9380-12331b5ad363@kernel.org>
-Date: Fri, 6 Mar 2026 14:25:51 +0100
+	b=qVqpZu8S/0TQR7CEKgDfDM8hrU1N4lLByrpecHCFJ9rd9kU2UuFJCwUl8CKVXZxsb
+	 Fl/m8BIcs6TvfadSYBelOUxIOjBsO9TSySEvhI9Bw9VxhmMwHNHpBKsr/nf0NpApIE
+	 Lzno5NcUDSeRl4qBWWD+UQn3vFc599K7kr7pM+HLyerwq89vH8/qIsW7EMzkXbchZp
+	 wXnQcDRO0cNpto62BhoHJjxLyqNV9ovxlNkjrLgMhlD3d9ysgPfbkt2NWUo0i20Ajz
+	 n1KwwMzAD0NVYw/WOdaDwVApZdC/YrZqyeFYf92rdOTiyvFay3e02NZvcq4kWQXpTb
+	 wTPnLmsZLMXlA==
+Message-ID: <e404a5a0-a46b-450f-bbf3-7bd8ea494bc2@kernel.org>
+Date: Fri, 6 Mar 2026 14:26:33 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,169 +64,126 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm: move vma_kernel_pagesize() from hugetlb to
- mm.h
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>
-References: <20260306101600.57355-1-david@kernel.org>
- <20260306101600.57355-2-david@kernel.org>
- <833950ef-e01d-4914-b5f9-bc1f6261b184@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <833950ef-e01d-4914-b5f9-bc1f6261b184@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 0/5] vDSO: Use 32-bit CHECKFLAGS for compat vDSO
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ David Laight <david.laight.linux@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Sun Jian <sun.jian.kdev@gmail.com>, kernel test robot <lkp@intel.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+References: <20260302-vdso-compat-checkflags-v2-0-78e55baa58ba@linutronix.de>
+ <96cdd223-5139-4535-b82d-831dac472cc3@kernel.org>
+ <20260306115350-ef265661-6d6b-4043-9bd0-8e6b437d0d67@linutronix.de>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260306115350-ef265661-6d6b-4043-9bd0-8e6b437d0d67@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 1ED2B2218AE
+X-Rspamd-Queue-Id: A73E52218E2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:dan.j.williams@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17822-lists,linuxppc-dev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17823-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FORGED_RECIPIENTS(0.00)[m:thomas.weissschuh@linutronix.de,m:davem@davemloft.net,m:andreas@gaisler.com,m:luto@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:arnd@arndb.de,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:sparclinux@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-s390@vger.kernel.org,m:david.laight.linux@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:sun.jian.kdev@gmail.com,m:lkp@intel.com,m:dan.carpenter@linaro.org,m:davidlaightlinux@gmail.com,m:sunjiankdev@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[davemloft.net,gaisler.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,arndb.de,linux.ibm.com,ellerman.id.au,gmail.com,vger.kernel.org,lists.ozlabs.org,intel.com,linaro.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,linutronix.de:email,outlook.com:url]
 X-Rspamd-Action: no action
 
-On 3/6/26 12:07, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 06, 2026 at 11:15:57AM +0100, David Hildenbrand (Arm) wrote:
->> In the past, only hugetlb had special "vma_kernel_pagesize()"
->> requirements, so it provided its own implementation.
+
+
+Le 06/03/2026 à 14:08, Thomas Weißschuh a écrit :
+> On Fri, Mar 06, 2026 at 11:43:24AM +0100, Christophe Leroy (CS GROUP) wrote:
 >>
->> In commit 05ea88608d4e ("mm, hugetlbfs: introduce ->pagesize() to
->> vm_operations_struct") we generalized that approach by providing a
->> vm_ops->pagesize() callback to be used by device-dax.
 >>
->> Once device-dax started using that callback in commit c1d53b92b95c
->> ("device-dax: implement ->pagesize() for smaps to report MMUPageSize")
->> it was missed that CONFIG_DEV_DAX does not depend on hugetlb support.
+>> Le 02/03/2026 à 08:58, Thomas Weißschuh a écrit :
+>>> When building the compat vDSO the CHECKFLAGS from the 64-bit kernel
+>>> are used. These are combined with the 32-bit CFLAGS. This confuses
+>>> sparse, producing false-positive warnings or potentially missing
+>>> real issues.
+>>>
+>>> Manually override the CHECKFLAGS for the compat vDSO with the correct
+>>> 32-bit configuration.
+>>>
+>>> Not all architectures are supported, as many do not use sparse for their
+>>> (compat) vDSO. These can be enabled later.
+>>>
+>>> Also add some checks to bitsperlong.h to detect such issues earlier.
+>>>
+>>> Based on tip/timers/vdso.
+>>>
+>>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+>>> ---
+>>> Changes in v2:
+>>> - Simplify __BITS_PER_LONG consistency checks
+>>> - Fix an inconsistency in the powerpc audit code
 >>
->> So building a kernel with CONFIG_DEV_DAX but without CONFIG_HUGETLBFS
->> would not pick up that value.
->>
->> Fix it by moving vma_kernel_pagesize() to mm.h, providing only a single
->> implementation. While at it, improve the kerneldoc a bit.
->>
->> Ideally, we'd move vma_mmu_pagesize() as well to the header. However,
->> its __weak symbol might be overwritten by a PPC variant in hugetlb code.
->> So let's leave it in there for now, as it really only matters for some
->> hugetlb oddities.
->>
->> This was found by code inspection.
->>
->> Fixes: c1d53b92b95c ("device-dax: implement ->pagesize() for smaps to report MMUPageSize")
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> The powerpc audit code should be replaced by generic
+>> AUDIT_ARCH_COMPAT_GENERIC, as there is no difference between them
+>> apparently.
 > 
-> LGTM, but you need to fix up VMA tests, I attach a patch below to do this. Will
-> this resolved:
-
-Thanks!
-
-I assume that should go into patch #2 instead?
-
+> Agreed.
 > 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-
-[...]
-
-> ---
->  tools/testing/vma/include/dup.h | 7 +++++++
->  1 file changed, 7 insertions(+)
+>> A tentative was made in the past but was declined by audit maintainers
+>> because we were not able to test it allthought the failure was the same
+>> before and after the patch, see
+>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Flinuxppc%2Fissues%2Fissues%2F412&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cca6c85b42bd44c6a80c608de7b81819d%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639083993321723266%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=VxTy22klpH9H8Altgcthr%2F%2ByUIL6q%2FbBkDV7FQS%2BljI%3D&reserved=0
 > 
-> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> index 3078ff1487d3..65b1030a7fdf 100644
-> --- a/tools/testing/vma/include/dup.h
-> +++ b/tools/testing/vma/include/dup.h
-> @@ -1318,3 +1318,10 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
->  	swap(vma->vm_file, file);
->  	fput(file);
->  }
-> +
-> +static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
-> +{
-> +	if (unlikely(vma->vm_ops && vma->vm_ops->pagesize))
-> +		return vma->vm_ops->pagesize(vma);
-> +	return PAGE_SIZE;
+> On v7.0-rc1 the test failure of filter_exclude/test is gone.
+> It also keeps working when applying your patch. Some other tests are
+> broken, but it looks that is due to missing dependencies on Debian.
+> So maybe it is time to resubmit your patch.
+> 
+> In any case, I don't really want to entangle my series with the switch
+> to AUDIT_ARCH_COMPAT_GENERIC. My proposed cleanup does not make the code
+> worse and if both patches are applied the conflict will be trivial to
+> resolve.
 
-Should we just KIS and use PAGE_SIZE for the test?
+I didn't mean to interfere with your patch, it is just that your patch 
+reminded me that tentative.
 
--- 
-Cheers,
+Thanks for testing, I will consider re-posting my patch based on your test.
 
-David
+Christophe
 
