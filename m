@@ -1,55 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-17824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEocHGjWqmnfXgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:28:08 +0100
+	id gBsZIwjtqmmOYAEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 16:04:40 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE3A221936
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 14:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1F222362D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 16:04:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fS6fX3HCVz30T9;
-	Sat, 07 Mar 2026 00:28:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fS8nw0Nffz30T9;
+	Sat, 07 Mar 2026 02:04:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772803684;
-	cv=none; b=cVnkHBkPYZiR+i4VRUxe2xcTx/D8CvfqCUwc7j3vJZ0ifrXo3WbHZd2EkBtL5uixFyFvkyDnKtIdcQ0c4YQmlItGmOeke6KU+VwGzXRJTBqeQhCEYgMQBnZC4YBdbh++f1eERCXXOpYNSOrDUp28PiFxOW6zD+Qt15xnkgonzzoF6mIMMurEsSqdTQRa40urdvvKpL6QvcTjSYfNVBQyfR1PsOO8jLLI4amP+NaetJ76cPGYT94lXnAahmiLAi8qVJQLgHbRMyT59xAivjdnILCy8V0JwNCvTIROzs4TOJ/AIBuoKoBWBLb1zbkG6B6euVxR5xAAYoDuxOBnAEo1gQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772809475;
+	cv=none; b=ZrDj3lyBa6M6VeBY3tTJYS/LvHkMFZW+xGBxeqzbf7pKUvMa8HS5w2S/Qz+LFovqZzhgSP0Yoj/X7+rHV4cZ+6b0d3ST8txwaF3EFuokIxvUZEIuj68CvMF8wwBUkJHFn90XA4ge2n3teQ8/+dZhrppt55SW1tRNqyKPSHGqrP33MQfhStWb/3yb0Cbc54IN84PLLhEbc/9CxG5ahm7mICj9667DZUo7esMUz6lhy55B8XpkMHHjAnFG9SH8M64Fy6HJicl4sDtbibUFkmQS54BwdFbXMKbzAPxlyMyHyr29W00bqsKW6FZRuX0YKUwpQWKW3O7jZiW7yeRWUWdIaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772803684; c=relaxed/relaxed;
-	bh=rsq2LzVtMcyu9YHrqs4HAX1iAq7nMfeZ48dssBJyd2g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZSW+erxb+dBKetkpNb+nDCl4J41OxEreP+kqCzrOt4K6tlvaeOnm7XWGjZd6SQHMJtmu5do6jjeT/VM9rfuxVnpArOeqzZ7ioCJF17pQXrAFMuFPOjpixmN02SRVapudX8E09tdYCLDK9gtGWxRuHYmkVzu1hW9/WEiNxGZsGxWB434GchfswrOH+G75C9WpjoTIEejlifZVUvotU3qwXjoIyDaePbic0kUG5c1kkicgXMI0Y2NAD5R+vdWwuMeDEQuLevOxWS0p0/Knk7muDSBb/tMVuhvlie1BA+56GGfelve76Q90gp5IgtRMgEKFxczepndwIUN79h72ij2GpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=klmrVagm; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1772809475; c=relaxed/relaxed;
+	bh=kWkqAWhJ2arHOPG/MP72bMgLHzSneb4Uqrx4KzqS3Jc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zvgj6aJATKtZIJHHs19RifsREveNitl2nWQE81V40nGN2g6hbztfuSOOT++RZG1kUdOQPvekhCmoFJ887afnkhHYYkH1ewxYdOcPcMLM53ao/sHjSio2rEHkYi6Uz9QA1MG25yIcsZP1RFigzpkmBtFpQgxdQ28vd6c7e4EjkW2mqF11TcQhIbL+oxUIoV/Nc9o7PjU1d9gM59bEvsFxON40tFoaLCaHqRrYxsai2vDnAVWAcFjEn1uJ/owlFmPDXPcz9FgoEFBzvq7Mm9Oj8cBdDLXHLA/LH0VxEL1JpuihiarSbP4bI1V9AWxUA1/5K0TOutbraM1XyP1r3dhK+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l00mYyAe; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=klmrVagm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l00mYyAe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS6fW3yJcz2xT4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 00:28:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS8nt6Fkfz2xjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 02:04:34 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B6A0860018;
-	Fri,  6 Mar 2026 13:28:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA26C2BC87;
-	Fri,  6 Mar 2026 13:27:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F83040DCD;
+	Fri,  6 Mar 2026 15:04:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2D7C4CEF7;
+	Fri,  6 Mar 2026 15:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772803681;
-	bh=b4U3xjNeltKbkeNzgWxFljW210JkNn6MPbdzC3gSIjo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=klmrVagmasGkU+kD2JWGkZJzLXk2A3iawm5yGVjyge88NXEO5dK6ETi83DLBMIQj8
-	 IU1UuibEG3O/0jt7pcj7Tpv9p1dB55yDQWvU1M48LvqcGNQ1+BapOUW12vjO8BJke7
-	 AfQmhLTWukPTM5c08VI/1rbVNNSeWhHW0EhnoiPDixqrHYb7H/bEez+PPiHAsQzVyX
-	 9d9ap2BiUXv4akVNqPdCzR/FlxEJrOzc2MA8tmp1l1w1bnpC8Fwf7Nl1ju9Y4t71IS
-	 p/8s5sAr7sTpi8tB7sCYlqH1aruOYy7cfTMN+/pOuwZu1DcjBJASyAM01aEm1RGFfd
-	 vEav6Fj4utRhQ==
-Message-ID: <7c74ea71-cf5a-4167-a2ff-26a424271007@kernel.org>
-Date: Fri, 6 Mar 2026 14:27:55 +0100
+	s=k20201202; t=1772809471;
+	bh=25CPe4EGSUbqlSDNHofrLGG8PR/WzU7sNEADToXqfos=;
+	h=From:To:Cc:Subject:Date:From;
+	b=l00mYyAeVzZNhOkHGoBqNdxgrGLiNdHhVl3kHwWYeL1Y9cFWXVlXooc68wEuF7L0Q
+	 OF2NVmz98U+4tMbNLueBvXb1fQq7cXDImpDKIGf4tKnWW++vZxu/EY+wexkETnxwFD
+	 MWqyCam4Ic8JyGq5WqejMJe9U3A1XlNrnepTU7jea0jQaiV8DaUy+MCEWae68Risxu
+	 qkBXP3twWnqgmthNNhGJ5AZYReddCWjdC3dgnUrpIrec7ooGju9tx+THX/KeuImLH8
+	 yhx06aMwr48pfMFdKNoEE3NgYZYj6wC+11wNOWM+t5CSAxsd0lxY8gLOiIilbMEZIm
+	 dZ/eso6rn5L2w==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Coiby Xu <coxu@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH] integrity: avoid using __weak functions
+Date: Fri,  6 Mar 2026 16:03:24 +0100
+Message-Id: <20260306150421.270124-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,115 +98,259 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/4] KVM: remove hugetlb.h inclusion
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
-References: <20260306101600.57355-1-david@kernel.org>
- <20260306101600.57355-4-david@kernel.org>
- <305a98f5-0a28-4eb9-a647-a30716e61cb4@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <305a98f5-0a28-4eb9-a647-a30716e61cb4@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 6EE3A221936
+X-Rspamd-Queue-Id: DD1F222362D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	MAILLIST(-0.20)[generic];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17825-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[33];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17824-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:arnd@arndb.de,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:jarkko@kernel.org,m:nathan@kernel.org,m:ardb@kernel.org,m:coxu@redhat.com,m:npiggin@gmail.com,m:chleroy@kernel.org,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:eric.snowberg@oracle.com,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:ajd@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:keyrings@vger.kernel.org,m:llvm@lists.linux.dev,m:dmitrykasatkin@gmail.com,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[arnd@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,arndb.de,huawei.com,gmail.com,paul-moore.com,namei.org,hallyn.com,kernel.org,redhat.com];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,oracle.com,google.com,lists.ozlabs.org,vger.kernel.org,lists.linux.dev];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-On 3/6/26 12:11, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 06, 2026 at 11:15:59AM +0100, David Hildenbrand (Arm) wrote:
->> hugetlb.h is no longer required now that we moved vma_kernel_pagesize()
->> to mm.h.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> Aww this is the tiniest cutest patch evah!
+From: Arnd Bergmann <arnd@arndb.de>
 
-It's a very smol patch! :)
+The security/integrity/secure_boot.c file containing only a __weak function
+leads to a build failure with clang:
 
+Cannot find symbol for section 2: .text.
+security/integrity/secure_boot.o: failed
+
+Moving the function into another file that has at least one non-__weak
+symbol would solve this, but this is always fragile.
+
+Avoid __weak definitions entirely and instead move the stub helper into
+an asm-generic header that gets used by default on architectures that
+do not provide their own version. This is consistent with how a lot
+of other architecture specific functionality works, and is more reliable.
+
+Fixes: a0f87ede3bf4 ("integrity: Make arch_ima_get_secureboot integrity-wide")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+This is a larger change than I had hoped for.
+
+If you prefer a different way to address the build failure, please
+treat this as a Reported-by when you apply your own fix
+---
+ arch/powerpc/include/asm/secure_boot.h        |  6 +++
+ arch/powerpc/kernel/secure_boot.c             |  1 -
+ arch/s390/include/asm/secure_boot.h           |  9 +++++
+ include/asm-generic/Kbuild                    |  1 +
+ include/asm-generic/secure_boot.h             | 37 +++++++++++++++++++
+ include/linux/secure_boot.h                   |  8 +---
+ security/integrity/Makefile                   |  2 +-
+ .../integrity/platform_certs/load_powerpc.c   |  2 +-
+ security/integrity/secure_boot.c              | 16 --------
+ 9 files changed, 56 insertions(+), 26 deletions(-)
+ create mode 100644 arch/s390/include/asm/secure_boot.h
+ create mode 100644 include/asm-generic/secure_boot.h
+ delete mode 100644 security/integrity/secure_boot.c
+
+diff --git a/arch/powerpc/include/asm/secure_boot.h b/arch/powerpc/include/asm/secure_boot.h
+index a2ff556916c6..db72dcdf5bb3 100644
+--- a/arch/powerpc/include/asm/secure_boot.h
++++ b/arch/powerpc/include/asm/secure_boot.h
+@@ -10,11 +10,17 @@
+ 
+ #ifdef CONFIG_PPC_SECURE_BOOT
+ 
++bool arch_get_secureboot(void);
+ bool is_ppc_secureboot_enabled(void);
+ bool is_ppc_trustedboot_enabled(void);
+ 
+ #else
+ 
++static inline bool arch_get_secureboot(void)
++{
++	return false;
++}
++
+ static inline bool is_ppc_secureboot_enabled(void)
+ {
+ 	return false;
+diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+index 28436c1599e0..e3ea46124180 100644
+--- a/arch/powerpc/kernel/secure_boot.c
++++ b/arch/powerpc/kernel/secure_boot.c
+@@ -7,7 +7,6 @@
+ #include <linux/of.h>
+ #include <linux/secure_boot.h>
+ #include <linux/string_choices.h>
+-#include <asm/secure_boot.h>
+ 
+ static struct device_node *get_ppc_fw_sb_node(void)
+ {
+diff --git a/arch/s390/include/asm/secure_boot.h b/arch/s390/include/asm/secure_boot.h
+new file mode 100644
+index 000000000000..4086fdfb9e5c
+--- /dev/null
++++ b/arch/s390/include/asm/secure_boot.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_S390_SECURE_BOOT_H
++#define _ASM_S390_SECURE_BOOT_H
++
++#include <linux/types.h
++
++bool arch_get_secureboot(void);
++
++#endif
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 0f97f7b594c3..8c0a499141fb 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -51,6 +51,7 @@ mandatory-y += rqspinlock.h
+ mandatory-y += runtime-const.h
+ mandatory-y += rwonce.h
+ mandatory-y += sections.h
++mandatory-y += secure_boot.h
+ mandatory-y += serial.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
+diff --git a/include/asm-generic/secure_boot.h b/include/asm-generic/secure_boot.h
+new file mode 100644
+index 000000000000..08d8e294576c
+--- /dev/null
++++ b/include/asm-generic/secure_boot.h
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
++ *
++ * Author: Coiby Xu <coxu@redhat.com>
++ */
++#ifndef _ASM_SECURE_BOOT_H
++#define _ASM_SECURE_BOOT_H
++
++
++#include <linux/types.h>
++
++#ifdef CONFIG_EFI
++
++/*
++ * Default implementation.
++ * Architectures that support secure boot must override this.
++ *
++ * Returns true if the platform secure boot is enabled.
++ * Returns false if disabled or not supported.
++ */
++bool arch_get_secureboot(void);
++
++#else
++
++/*
++ * Default implementation.
++ * Architectures that support secure boot must override this.
++ */
++static inline bool arch_get_secureboot(void)
++{
++	return false;
++}
++
++#endif
++
++#endif
+diff --git a/include/linux/secure_boot.h b/include/linux/secure_boot.h
+index 3ded3f03655c..9ddfbe109b1d 100644
+--- a/include/linux/secure_boot.h
++++ b/include/linux/secure_boot.h
+@@ -8,12 +8,6 @@
+ #ifndef _LINUX_SECURE_BOOT_H
+ #define _LINUX_SECURE_BOOT_H
+ 
+-#include <linux/types.h>
+-
+-/*
+- * Returns true if the platform secure boot is enabled.
+- * Returns false if disabled or not supported.
+- */
+-bool arch_get_secureboot(void);
++#include <asm/secure_boot.h>
+ 
+ #endif /* _LINUX_SECURE_BOOT_H */
+diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+index 548665e2b702..45dfdedbdad4 100644
+--- a/security/integrity/Makefile
++++ b/security/integrity/Makefile
+@@ -5,7 +5,7 @@
+ 
+ obj-$(CONFIG_INTEGRITY) += integrity.o
+ 
+-integrity-y := iint.o secure_boot.o
++integrity-y := iint.o
+ integrity-$(CONFIG_INTEGRITY_AUDIT) += integrity_audit.o
+ integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
+ integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
+diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/integrity/platform_certs/load_powerpc.c
+index 714c961a00f5..ab74e947a8bc 100644
+--- a/security/integrity/platform_certs/load_powerpc.c
++++ b/security/integrity/platform_certs/load_powerpc.c
+@@ -10,7 +10,7 @@
+ #include <linux/cred.h>
+ #include <linux/err.h>
+ #include <linux/slab.h>
+-#include <asm/secure_boot.h>
++#include <linux/secure_boot.h>
+ #include <asm/secvar.h>
+ #include "keyring_handler.h"
+ #include "../integrity.h"
+diff --git a/security/integrity/secure_boot.c b/security/integrity/secure_boot.c
+deleted file mode 100644
+index fc2693c286f8..000000000000
+--- a/security/integrity/secure_boot.c
++++ /dev/null
+@@ -1,16 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
+- *
+- * Author: Coiby Xu <coxu@redhat.com>
+- */
+-#include <linux/secure_boot.h>
+-
+-/*
+- * Default weak implementation.
+- * Architectures that support secure boot must override this.
+- */
+-__weak bool arch_get_secureboot(void)
+-{
+-	return false;
+-}
 -- 
-Cheers,
+2.39.5
 
-David
 
