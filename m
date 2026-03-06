@@ -1,97 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-17790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIzAKjdjqmmYQgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 06:16:39 +0100
+	id iNMVDNeSqml0TQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 09:39:51 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E532321BAAA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 06:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDB021D33E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 09:39:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fRvlR19sZz3c8x;
-	Fri, 06 Mar 2026 16:16:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fS0Fv0lPyz3c5f;
+	Fri, 06 Mar 2026 19:39:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::42e" arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772774195;
-	cv=pass; b=WsPkvO6n4nrri+aME4NpJk8XX68ab+SLUzhAkwZvndnYJdpdKLJwyjyAj8xvgKpPi0Dg1huBe70PkpJKAjey+E1da9rplQ/oWD0v1qB0uqyuQIQxk7qBU3wXMWExlgesWPkVmQCDM5HC+1wO6oCo9YI3lGmvIbaGWbl2g0dLCzdbcW1bg6NYArxA/HI/vYzKwKsD/hwls3opgZpLKD58FHOLQPLPVomTOUSKqg+eSJwWLTsjSj0EQakho0RSgfAtg7Ca3VR0UngWX+jourWSOfWNo6J3C2/mxLVa6c+xbk7XP/OQ8SQLPnHPFUnmU+2BI8qIz2EPulQpBuPX9hMGow==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772774195; c=relaxed/relaxed;
-	bh=i4bJ53LWAF7Dgbm3MaLrGdxoClqcQbF8GzZ/FzZGtDA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iPItcx96NEBEDMlZE+8WI+VYRO2nC2JnUhaQT8G9yL0BU+q9bQiHSP9FVk6bhze9j1n1RlnH1oUucYr5temS+6L3sVD1T7S79R0PsFCl5OT4HJOjizwgZGB70UIzxMuD0YysswzZNId8ClDtFe6R6pn9sXmY84k30mN5jOgP10ItTvY5ksdNii030DOHI6hHIWp7LWA3tnalwPlQyPS85K+P9k8uR3AtPa8cJChg5Gx60eqJ4ydCIBEwj7CWKokA1Fb6LADoYkPeJFZ5X304Cq368L/xGEd/nErOGzrM4rtvsUozoAIB1j/tSeZb3+34OT/qiTtkNmKNEmclbEO/Lg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=J6AG1V2n; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772786386;
+	cv=none; b=cw4AyH3oXdawi8YW7iq3scOxLi4nOkj5bi8+Qyx2sPwSX5GW4W9rzKCa7RFYrXMtL4Lfof4MGp77lB7kKzmxDIwGwEyUMNc+FCpgxCwqRQf4ArL+Vt56qQof2bAxqB1WKS7fP1J0YdiuaPZcr7WsURMhmThtmYTuZ2x6wlYZgICFgZoJU0U0ZBp2WLiRcBu48+BmwMbV57CePDD5LuuladwQZweO5IUKoLuPusW2g6Bz79sJhuMdtz9sYUAEvE8vSeKZ3s4zoS0Lo/DNL/pCo3cLEaMhKe9E55K2faIDdarVkV8wzgopY+QBwlgg2P/9icAzGNs4ZlHCldJv5ONX4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1772786386; c=relaxed/relaxed;
+	bh=HUIl7fBnMjNKk+2kv/hV6OWGFREjM/5mAylke7VaoUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MG6T/GGqhf0F+uhbqsl3/BFldzKs1AIN3j9ikdUZWBWcnDkUhbJbWdF6C6RU2qcLt2Jplru92BwKmSOF6FxQnp3+IwxqhzlYpojyougc+Lc1xd5nogZRR/v0NCdBueeB35j6YBf8nVhuvcgXaJtNr1UA529cN3zUhpBPNPk8eO0uUfz3q3BHt2ZRdgzlVWf2Yia7F8fl4iIhtmHCsO5rFw7zR2a4SmFXch9tv553qC+QNqen8hpksKKr1he6zd2xSH5yMa1XB0RxBGoAJOKalWTZSelfdfvXmKyBh9kPYK6yZNpNPyApPMRGnKzaaR9ahVxMbwhGYyScRhCIvSyOsg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=gC4EOFEJ; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=J6AG1V2n;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=gC4EOFEJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fRvlP247zz3bn7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 16:16:32 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-82976220e97so1464865b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Mar 2026 21:16:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772774189; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HULBW3riSTGa1YrdKixOwmPPDjth9h8Nty2fO8DiWHbaSHtg8hH+YX88jzaVi8uPED
-         QybTlojcb7qm/uRGdK/kyG/hIaxJiSZuGDkrmdT8VLlsRP3CpUlJ9ImnRhG3eXqWgUlx
-         9cMXiJ+hlt8sIgzQIJM6UJgPAaY0z/Mv+pmGv/zVlY121Tm7pguZHP+xavrIEZQvZ2a+
-         SHsJOax5ZhX7AwAGlBDy3ApxKuY0OwmieKDmcZHB0+7bHgllzb1ufN94wjTKvXROONmm
-         r1vDOgB+pjWxhgh2bsVpxFVSY66x8rtyrHvg1R2RGgCrW2yT5HcYc/bKTNncW2UoZH5M
-         M5LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i4bJ53LWAF7Dgbm3MaLrGdxoClqcQbF8GzZ/FzZGtDA=;
-        fh=fnT/9wagLbwK5ZDL1ClBJJhXgqdG9m9tVfL1+T4PT0o=;
-        b=dXxb2mfUzQry0x6JQlJnquw24bkHVowe4fj6m5sIbm25soY9VU3i4BwHpH6OhTuXMZ
-         uzee6SdzVVUsffxhlJQQtSrBRzNREfcUpVI2tNoyGJlIV17ccadcUERAuUvdz2CwakE0
-         FiuQLqkOdRIeMZ+/HTsNs4uKG5GTt5ScoIuqMWxqtSmTCfEkjy3W8gob9CFDwsylprSy
-         NkQ45kgzBk0l3u7U3uzIYoOkAdJH+TAP9Nx2AlSE21eUF7mb/FKhKAzbVl4KA3rwSFmU
-         e0Cw1QzVR8DC1uA9YyvaOB2GRhtuxByuTIJNOf6iE6W8RyCzvavo20edYVt+6xjmBr6v
-         HcnQ==;
-        darn=lists.ozlabs.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772774189; x=1773378989; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i4bJ53LWAF7Dgbm3MaLrGdxoClqcQbF8GzZ/FzZGtDA=;
-        b=J6AG1V2nZTvVrkkQ5KYqLl9ZPRniJk6K8gwhh0XRZ65s7y5kjS0QnqQg47RlfxHEyd
-         5MaQCGodoKDKqM8H8z32LM7powTN01LBqpo2EVpvsnKlbYFjaZqZwSLzET60IVxa4AMY
-         TpBTm4aqRcjx170W4rj175JpjLu+P7v18zmeboaGAWVVuHihkmHC+CewuWKnDPcJXwrZ
-         7xVmick4GZV1Km9TD7JpyZEdYjsgzWnkCfF/XUZogEA7XzBOzP2J6MyKcSiILf6xWB3t
-         XHz+08K6gSJlCOXa6yhoIFm+UYjK6euCpD5EyfNcB+BLnApVf62LpDAUvBpbSFAPctkE
-         YRKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772774189; x=1773378989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=i4bJ53LWAF7Dgbm3MaLrGdxoClqcQbF8GzZ/FzZGtDA=;
-        b=Gtzs5SDPhF67MJPDG2uWambXc6oEsYjvFJ8O+NCBESIv3Jzsm+2EOFdatwBU9ciQ05
-         rO8e8q+DCFrNg59+ZcjPjWDSnHVpGKH/HpqRX1m8GRUDMq9jStBsp6J9F3RHZzDeUFyq
-         poPMD9HfZ0liqdl6ZxO8bF4ghCN1xZl4xn22U3y0AoKB/X1BWA4a7jxKrJUOIb5Yeq5m
-         g9EOZZECTqBY7sWNHKqZNder14kEE8szY4x60IiXIX4NTcQjeko/eDvghHNJg2bbr140
-         W8S+umDYINXnvrviZSnMyjNzUJ1jWd8PcP3X9fiEXqMt9izQ1qLLpOQA+sWDQNI7mw+G
-         oi7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXi16T0Pnh/ynKPyey0mJVfM0pNghozCF+Iz5ljNqmHGSOr1VexaqUa3U4fuYioNn+bmNrSD2MujcsI9TY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyud4uBpPzuVRkOZZB1AiJja4WY2WxOYqeN+yugc7m9KWKEmfhE
-	Re/nLf6kVbDhL6FYe1NrVdhjY/9srQ1t5MgepaOAPQSVzOUxwt7p9W82xRIkwOjwhOr8/nGmKwZ
-	TYLB5wFJX3GH9gjE/au160AerfIIZyOc=
-X-Gm-Gg: ATEYQzz7T9P50y3RiAufS3g32CgGp9R0Xrdt5yxQQir+j+ABXU6EQfARJ6r8GjLfrCG
-	jNs779H7dppkOV9XzdPvOXVYLVGC7Y4AKMm9XVE0OdHnUVc33vRpu0u/0ZLqqDi1ZfDez1g8rw5
-	SWNzRS45g9fT3QTlpPxPUSkVDucy27Eb6gbs8g7YlsAHuqArEG+5LaMnygPLEXyLncuV0DQLRla
-	S/AoDemkVOZypU+XJ0xxuHdu0KLOoENJaquCvKwq6n7SB83+CSx1nyXGeHpFtrvc7NiCHjfjus2
-	0/GR0Go=
-X-Received: by 2002:a05:6a21:7484:b0:38b:de3d:d530 with SMTP id
- adf61e73a8af0-398590ff0femr1031916637.72.1772774189507; Thu, 05 Mar 2026
- 21:16:29 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS0Fq5rS5z30T9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 19:39:42 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id CC3E1240101
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Mar 2026 09:39:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1772786376; bh=HUIl7fBnMjNKk+2kv/hV6OWGFREjM/5mAylke7VaoUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=gC4EOFEJESiWVyZzIbEXMK5eifhrokpoYiDtKYVS9DwNoZoSVrqrcNDw1kOrjpumL
+	 dYcB3LpM6KqrmUyHB5qxKkbCSz2DY2ZHGhc8F1HPobhS8pwALUM8srn3juImAwPZAY
+	 5zpbOSnNY82YynEdkY8VOHYdlX8FKSqjW5YnS2iT3iVwzQoaFRqvX51MueAit46Otu
+	 NpPw0TaqrgVPk0yAClAFub+ccULT6B87FAIeeRx98p2knprbVOMP/Ta72qklQi0Vmc
+	 4f6rS5diZXfXKcW75yCmEbP3gkh5QDymO2RWMiz6EhJlUz4eho94IcTRxgW+xPMQTS
+	 l7x4drOwBSCmg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fS0Fd6XyWz6tvm;
+	Fri,  6 Mar 2026 09:39:33 +0100 (CET)
+Date: Fri, 06 Mar 2026 08:39:35 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: j.ne@posteo.net, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2] powerpc: dts: Build devicetrees of enabled platforms
+Message-ID: <aaqSxUNNNnRcB5U5@probook>
+References: <20260305-mpc83xx-dtb-v2-1-cdb751458445@posteo.net>
+ <6d736f38-bd33-4484-b3f2-bb9391976fe2@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,222 +77,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260305031031.3808182-1-shengjiu.wang@nxp.com>
- <20260305031031.3808182-2-shengjiu.wang@nxp.com> <7665641b-1cad-4a65-94a1-771701363bf2@sirena.org.uk>
-In-Reply-To: <7665641b-1cad-4a65-94a1-771701363bf2@sirena.org.uk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 6 Mar 2026 13:16:06 +0800
-X-Gm-Features: AaiRm51kMa-O1sAC39Dn2vCk8cWF4P1mitNEX2s0U2KmBk3uO7t_JP-YBfFrl0o
-Message-ID: <CAA+D8AO71d6mYi9YmTnzKy6hXXF0qLhFdCH_eQ5kGqOoDuBCsA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] ASoC: fsl_utils: Add snd_kcontrol functions for
- specific cases
-To: Mark Brown <broonie@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6d736f38-bd33-4484-b3f2-bb9391976fe2@kernel.org>
+X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,PDS_OTHER_BAD_TLD,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: E532321BAAA
+X-Rspamd-Queue-Id: 3CDB021D33E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [-0.21 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[posteo.net,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[posteo.net:s=2017];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17790-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:shengjiu.wang@nxp.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:XiuboLee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,gmail.com,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-17791-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:j.ne@posteo.net,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:devicetree@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:geert@linux-m68k.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[j.ne@posteo.net,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[posteo.net:+];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[j.ne@posteo.net,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[posteo.net,kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,vger.kernel.org,lists.ozlabs.org,linux-m68k.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,freescale.com:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:url]
 X-Rspamd-Action: no action
 
-On Thu, Mar 5, 2026 at 11:12=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Thu, Mar 05, 2026 at 11:10:29AM +0800, Shengjiu Wang wrote:
->
-> > +int fsl_asoc_get_xr_sx(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol)
-> > +{
-> > +     struct snd_soc_component *component =3D snd_kcontrol_chip(kcontro=
-l);
-> > +     bool pm_active =3D pm_runtime_active(component->dev);
+On Thu, Mar 05, 2026 at 10:32:41AM +0100, Christophe Leroy (CS GROUP) wrote:
+> 
+> 
+> Le 05/03/2026 à 10:15, J. Neuschäfer via B4 Relay a écrit :
+> > From: "J. Neuschäfer" <j.ne@posteo.net>
+> > 
+> > Follow the same approach as other architectures such as Arm or RISC-V,
+> > and build devicetrees based on platforms selected in Kconfig. This makes
+> > it unnecessary to use CONFIG_OF_ALL_DTBS on PowerPC in order to build
+> > DTB files.
+> > 
+> > This makes it easier to use other build and test infrastructure such as
+> > `make dtbs_check`, and is a first step towards generating FIT images
+> > that include all the relevant DTBs with `make image.fit`.
+> > 
+> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > ---
+> > Changes in v2:
+> > - Use "dtb-$(FOO) += foo.dtb" format on every line, avoid backslashes
+> >    (suggested by Geert Uytterhoeven)
+> > - Link to v1: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20260119-mpc83xx-dtb-v1-1-522f841290bf%40posteo.net&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C9264db0cd3014d5c30c608de7a97cd4c%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639082989567825654%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=QS4N0muz5oPD3WzZQE3FsF5ghDDu9PSJ79iA5R%2FAd3w%3D&reserved=0
+> > ---
+> >   arch/powerpc/boot/dts/Makefile     | 111 +++++++++++++++++++++++++++++++++++++
+> >   arch/powerpc/boot/dts/fsl/Makefile |  79 ++++++++++++++++++++++++++
+> >   2 files changed, 190 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/boot/dts/Makefile b/arch/powerpc/boot/dts/Makefile
+> > index 0cd0d8558b475c..7fce8c819d3d72 100644
+> > --- a/arch/powerpc/boot/dts/Makefile
+> > +++ b/arch/powerpc/boot/dts/Makefile
+> > @@ -3,3 +3,114 @@
+> >   subdir-y += fsl
+> >   dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(src)/%.dts,%.dtb, $(wildcard $(src)/*.dts))
 > > +
-> > +     if (!pm_active) {
-> > +             ucontrol->value.integer.value[0] =3D 0;
-> > +             return 0;
-> > +     }
-> > +
-> > +     return snd_soc_get_xr_sx(kcontrol, ucontrol);
-> > +}
->
-> This is racy, what happens if we race with runtime PM disabling the
-> device so it gets powered off between the check and the call to the
-> generic function?  I think we need to take a runtime reference here,
-> this is annoying but I can't see how else to do things robustly and
-> probably in practice there's not much performance impact.
+> > +# PPC44x platforms
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += arches.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += bamboo.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += bluestone.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += glacier.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += eiger.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += katmai.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += rainier.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += redwood.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += sequoia.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += taishan.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += yosemite.dtb
+> > +dtb-$(CONFIG_PPC44x_SIMPLE) += icon.dtb
+> 
+> Why so many lines ? You should be able to fit approximaly four per line,
+> 
+> dtb-$(CONFIG_PPC44x_SIMPLE) += arches.dtb bamboo.dtb bluestone.dtb
+> glacier.dtb
+> dtb-$(CONFIG_PPC44x_SIMPLE) += eiger.dtb katmai.dtb rainier.dtb redwood.dtb
+> dtb-$(CONFIG_PPC44x_SIMPLE) += sequoia.dtb taishan.dtb
+>  yosemite.dtb icon.dtb
 
-Ok, let me try this.
-Thanks.
+Hm, fair enough, that would work too, and make it visually somewhat
+clearer what belongs together.
 
-Best regards
-Shengjiu Wang
+I'll wait for more comments, but I think this is a good enough
+improvement for a v3, while still keeping potential edit churn away as
+Geert Uytterhoeven previously pointed out:
 
->
-> > +EXPORT_SYMBOL(fsl_asoc_get_xr_sx);
-> > +
-> > +int fsl_asoc_put_xr_sx(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol)
-> > +{
-> > +     struct snd_soc_component *component =3D snd_kcontrol_chip(kcontro=
-l);
-> > +     bool pm_active =3D pm_runtime_active(component->dev);
-> > +
-> > +     if (!pm_active)
-> > +             return 0;
-> > +
-> > +     return snd_soc_put_xr_sx(kcontrol, ucontrol);
-> > +}
-> > +EXPORT_SYMBOL(fsl_asoc_put_xr_sx);
-> > +
-> > +int fsl_asoc_get_enum_double(struct snd_kcontrol *kcontrol,
-> > +                          struct snd_ctl_elem_value *ucontrol)
-> > +{
-> > +     struct snd_soc_component *component =3D snd_kcontrol_chip(kcontro=
-l);
-> > +     bool pm_active =3D pm_runtime_active(component->dev);
-> > +
-> > +     if (!pm_active) {
-> > +             ucontrol->value.enumerated.item[0] =3D 0;
-> > +             return 0;
-> > +     }
-> > +
-> > +     return snd_soc_get_enum_double(kcontrol, ucontrol);
-> > +}
-> > +EXPORT_SYMBOL(fsl_asoc_get_enum_double);
-> > +
-> > +int fsl_asoc_put_enum_double(struct snd_kcontrol *kcontrol,
-> > +                          struct snd_ctl_elem_value *ucontrol)
-> > +{
-> > +     struct snd_soc_component *component =3D snd_kcontrol_chip(kcontro=
-l);
-> > +     bool pm_active =3D pm_runtime_active(component->dev);
-> > +
-> > +     if (!pm_active)
-> > +             return 0;
-> > +
-> > +     return snd_soc_put_enum_double(kcontrol, ucontrol);
-> > +}
-> > +EXPORT_SYMBOL(fsl_asoc_put_enum_double);
-> > +
-> > +int fsl_asoc_get_volsw(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol)
-> > +{
-> > +     struct snd_soc_component *component =3D snd_kcontrol_chip(kcontro=
-l);
-> > +     bool pm_active =3D pm_runtime_active(component->dev);
-> > +
-> > +     if (!pm_active) {
-> > +             ucontrol->value.integer.value[0] =3D 0;
-> > +             return 0;
-> > +     }
-> > +
-> > +     return snd_soc_get_volsw(kcontrol, ucontrol);
-> > +}
-> > +EXPORT_SYMBOL(fsl_asoc_get_volsw);
-> > +
-> > +int fsl_asoc_put_volsw(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol)
-> > +{
-> > +     struct snd_soc_component *component =3D snd_kcontrol_chip(kcontro=
-l);
-> > +     bool pm_active =3D pm_runtime_active(component->dev);
-> > +
-> > +     if (!pm_active)
-> > +             return 0;
-> > +
-> > +     return snd_soc_put_volsw(kcontrol, ucontrol);
-> > +}
-> > +EXPORT_SYMBOL(fsl_asoc_put_volsw);
-> > +
-> >  MODULE_AUTHOR("Timur Tabi <timur@freescale.com>");
-> >  MODULE_DESCRIPTION("Freescale ASoC utility code");
-> >  MODULE_LICENSE("GPL v2");
-> > diff --git a/sound/soc/fsl/fsl_utils.h b/sound/soc/fsl/fsl_utils.h
-> > index 21b25a11ecda..0cf9d1e7fb14 100644
-> > --- a/sound/soc/fsl/fsl_utils.h
-> > +++ b/sound/soc/fsl/fsl_utils.h
-> > @@ -31,4 +31,34 @@ void fsl_asoc_constrain_rates(struct snd_pcm_hw_cons=
-traint_list *target_constr,
-> >                             const struct snd_pcm_hw_constraint_list *or=
-iginal_constr,
-> >                             struct clk *pll8k_clk, struct clk *pll11k_c=
-lk,
-> >                             struct clk *ext_clk, int *target_rates);
-> > +
-> > +/* Similar to SOC_SINGLE_XR_SX, but it is for read only registers. */
-> > +#define FSL_ASOC_SINGLE_XR_SX_EXT_RO(xname, xregbase, xregcount, xnbit=
-s, \
-> > +                             xmin, xmax, xinvert, xhandler_get) \
-> > +{    .iface =3D SNDRV_CTL_ELEM_IFACE_MIXER, .name =3D (xname), \
-> > +     .access =3D SNDRV_CTL_ELEM_ACCESS_READ |          \
-> > +             SNDRV_CTL_ELEM_ACCESS_VOLATILE,         \
-> > +     .info =3D snd_soc_info_xr_sx, .get =3D xhandler_get, \
-> > +     .private_value =3D (unsigned long)&(struct soc_mreg_control) \
-> > +             {.regbase =3D xregbase, .regcount =3D xregcount, .nbits =
-=3D xnbits, \
-> > +             .invert =3D xinvert, .min =3D xmin, .max =3D xmax} }
-> > +
-> > +int fsl_asoc_get_xr_sx(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol);
-> > +
-> > +int fsl_asoc_put_xr_sx(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol);
-> > +
-> > +int fsl_asoc_get_enum_double(struct snd_kcontrol *kcontrol,
-> > +                          struct snd_ctl_elem_value *ucontrol);
-> > +
-> > +int fsl_asoc_put_enum_double(struct snd_kcontrol *kcontrol,
-> > +                          struct snd_ctl_elem_value *ucontrol);
-> > +
-> > +int fsl_asoc_get_volsw(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol);
-> > +
-> > +int fsl_asoc_put_volsw(struct snd_kcontrol *kcontrol,
-> > +                    struct snd_ctl_elem_value *ucontrol);
-> > +
-> >  #endif /* _FSL_UTILS_H */
-> > --
-> > 2.34.1
-> >
+>> Even when it wouldn't fit on a single line, having separate
+>> 
+>>     dtb-$(CONFIG_FOO) += bar1.dtb
+>>     dtb-$(CONFIG_FOO) += bar2.dtb
+>> 
+>> lines not only makes it a little bit shorter, but avoids the churn of
+>> adding a backslash to the previous line when adding new entries.
+
+
+Best Regards,
+J. Neuschäfer
 
