@@ -1,96 +1,123 @@
-Return-Path: <linuxppc-dev+bounces-17858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17857-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABL1Kk9jq2mmcgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 00:29:19 +0100
+	id QNdXHUZjq2mmcgEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17857-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 00:29:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8115228B1C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 00:29:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DDC228AF6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 00:29:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fSN0C5GN1z3cDy;
-	Sat, 07 Mar 2026 10:29:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fSN0261rYz3cB3;
+	Sat, 07 Mar 2026 10:29:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.141
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772839755;
-	cv=none; b=d3fHXZua9g2yLrrFY7X3TwYVg8rH0087MG8QxEqACDXiGoQ6n0CGi5+pwHoSeA9BgMn0jn9ZGmEA9b4B+GqfvgloZNKTuWqdHyvxGURN9F8lGEcuZLYFCWk0S5F5FchY9h2ycUi2PF4GX6X+4ZUrkGDFlyfXy+9EEWHp+QG+VSNj0svW+iQVtqc6xDGzF3o9jgUZstjzOs8h37h0LyLIFkxRF12rAgOiAQTh2iBja3F/bWKMJmbSrD+ujX62wYRsk7zjF6gR+6QSWteUDPiqvzb2ZXHkOz7ktVQ++I5b9WYjLQ63UriQM/n+LksCRVjInCdqNGPQP4hw2yYcIoMMRg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::436"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772839746;
+	cv=none; b=YupvELnQpe+l63Qj7ZPsBAXE3nutQoIRRA+V+J+wSOyZTWRcL5LkvdJlrr2uRs9H1imb8wU8sQHaP29gvy4dRDhuPgIsovfbDUe4NyNKUEeTiTmBoUoMe98U2b0mRTpf3DtCLiNBf8vrVKPzuzsQgz8bH08tUUfsf5+3XmYWxu39w524pA4kH9K5a81FskVIfF9dyRfwY+/GR4S5YixOt50AndgbNv0n6nw8eMVBA4G0iefG3V5Da9Ea/ygfWApYwKjtq8FLMFo49SZMd5ad/TaPxefFdtuYoQrCbH+t3moAyZTa0kxsb9LA3v8yLr682B86aikDKTVYYzVG07m/0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772839755; c=relaxed/relaxed;
-	bh=GETdZGM4YA8yA694WxEZkZM09wEgzGQFz172whB4Qxk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=cJDJrYd20EYG2wwYixTzXrH6by/9+bSuY8EJa7/0mh6enJH5EN7Iw61oKkCKF6yIdGijuY0SLSol/7ZmyVFCJUQfcIltTYzaB/WWGQFJ3ABAKXJU2TdhFHObTXmdmDib7Kykqdhtj8rtVam55daR5qYQvH0MaxdOvjRUtHYX2EyPlsmFkptQ0wYVgoc3ATGmRTzrHEsE+kY0pCKuzEprVyyHUtg988qtV1rTLWeg8004LKGiOXdzyX5rjniAuLi0sByuEd79vdRgGEM0ndPoB/zJy5nYv+OlBOpRggc2Xphd5FDe/iQWXOOv4+weImsNDvxVrzLMByG/bzyDu3Njcw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=DZLtQeEa; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wseMXmnJ; dkim-atps=neutral; spf=pass (client-ip=103.168.172.141; helo=flow-a6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1772839746; c=relaxed/relaxed;
+	bh=jmuJidMV1Wwe0qpdw07DaES1yYrCFjR7mRIMJgUWNXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=THJ/rKiU+Y2cptqlO9rXmBdEhYHgri1UDSyaVhQgyjGLAiaKJKN0RDu+g1x4/UqiWolW8/eJEA4ES56S4PCVmp33zfUaU8dX2axxpYOuweFiAMqE2W/0+trgKhX3AKtqpI5f8n0XQOqetrWdZ2G0cEw1W18Q6bMktCzZAGi9GqxreLyc4DpWoMuvUOiN77sRHQ4EKqDG1CysGGyOFEoFQZhcoylScEt5F8D+1xu4x44xGZGIb4S3J/MFALcbFmac1EC/8kLx46yFShXMcrsH/yXhHDHpczdL3jjB7ol8iz3wkBX7qjUWDmJVB1ZaBENO5D+2smt9H8bBqCjiRbBr6w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XAICvB62; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=DZLtQeEa;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wseMXmnJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XAICvB62;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.141; helo=flow-a6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSN0832Jtz3cDf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 10:29:11 +1100 (AEDT)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 468D31380B55;
-	Fri,  6 Mar 2026 18:29:08 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Fri, 06 Mar 2026 18:29:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772839748;
-	 x=1772846948; bh=GETdZGM4YA8yA694WxEZkZM09wEgzGQFz172whB4Qxk=; b=
-	DZLtQeEaE1Dg/BQ7D4AeSS6PstNxPQGzBfjmzElVIT2ViU5ATfpUTqv7ybEr9Ht1
-	oNWpbiqL2pq7dtr+d/nQeWQrsgtFOolMVDDHLGag5CqmqYuNkKJu2fV6pYT4kFal
-	VDcmU/ygQtSSYNKAlWfynduCxhSfxMxJ/q6eqKV67R8jo3kpmDwFf+3Ik4ZFpRP+
-	kvRibMs1AygZJ5Mt/9LmTVRSM1O1u1satUPynemVwMfrv1RBET+4vzB1y5wKEJxP
-	mNV8qPxnb6oCZhF7tZuLWePLcH4p1BgF4X0Dl+jJZpUQtYR5ZhLhvmsR+wjOQQGx
-	O2oXve4Du80lwmuLrMWrCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772839748; x=
-	1772846948; bh=GETdZGM4YA8yA694WxEZkZM09wEgzGQFz172whB4Qxk=; b=w
-	seMXmnJeT7pXctEfb0cuHkhDGFIved/RrLP41GOYSHJZIudzgjXdkCaMKc3/fuOc
-	VZSiKq/sFK46Wv0P1yfi6XTTGcjVcOF4t16lFjNAn0khkeQexoCxqlKk20jAOh5Z
-	3FXnJc/w+W/aHe8VwOhDWyYQlwq2ziIThwloozu1G1am3J/+FA4JrhkVlv382NxA
-	OLKtCAKtzSbyQfVzIG1J+C+7UP4aLUuKtIeM+0s/AdlXgqDkeRlkd44mZXcj+fa3
-	w3JdHa4D+s/qlnJKWqICmb+3+32uBHUCjfdPoY02ErP23mAM8KZErJQaJiORqdAK
-	1b4FEirgnOfR6NSecGlLA==
-X-ME-Sender: <xms:QmOraWsyLvlZyKLelmZchVJg1xBgRira818lH5Wjars5zRp85n6CQw>
-    <xme:QmOraWRtKrrRDmlCNZGOpBg7hN286NecEsEM-hXsK-CEU4Kvci-J_B3E_EW-_GbjF
-    PGKco_Wq02UUw_hQh5BDkaiv8zqs7AnWCU8vkT9nPcakQV0ANylFxQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjedtiedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfeefpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhope
-    gumhhithhrhidrkhgrshgrthhkihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhhi
-    tghkrdguvghsrghulhhnihgvrhhsodhlkhhmlhesghhmrghilhdrtghomhdprhgtphhtth
-    hopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjhhushhtihhnshht
-    ihhtthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepmhhorhgsohesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepshgvrhhgvgeshhgrlhhlhihnrdgtohhmpdhrtghpthhtohep
-    rhhosggvrhhtohdrshgrshhsuheshhhurgifvghirdgtohhmpdhrtghpthhtoheprghrug
-    gssehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:QmOraRrSb10jiymrzAb9WoZsi2Tz-RWq3EgTbOMgthiE6ddf2js5fg>
-    <xmx:QmOraV59nHhEl8HgbMxhoT5o00wgqHOBxJi98jSFMQacjFhPKo6bVA>
-    <xmx:QmOraeTzKignEiBCyYkH7DDUy6V7Tt_Ly1cVrUvLgxoPLAb5URLvJA>
-    <xmx:QmOraV22SWxKf9dNjfi4R5SgY50umdOU57z7mmavyGXn0CHg06wlMA>
-    <xmx:RGOraemTV6W3wcgRW43rhHE9NEY71V2JSNopp6mLKexfMh9JtslQFcRw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 629A3700065; Fri,  6 Mar 2026 18:29:06 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSN010xfrz3c9l
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 10:29:03 +1100 (AEDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-82735a41920so3743979b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 15:29:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772839741; x=1773444541; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jmuJidMV1Wwe0qpdw07DaES1yYrCFjR7mRIMJgUWNXw=;
+        b=XAICvB62+KGP9ue7Ll7LppEnxdPN9TwryMA/qiFeMsQBwLxo/5MfGFBnoA91901vbo
+         5Za8vi1hNUUbzOcPX83q6EtMThmW8y+RQNPZllSZKabj4r0Au5sXqVX9ob1pGD+Kz7Su
+         OvX+evD3oMxgzON4ZAPau0ThcSsQXzv54raZVLZe4mi3g8QJOJniLu6wyJUGcg8eUut7
+         1NrZ2y7JFFXqEPp1s5DvWrWF4094v5kLJD/+QGFinJmb/OquNzAEL7OseCMY4ndBXisF
+         zgzwYv4UChDyAQH3cKYrN8HUrgWAj7MGrC/0lMiVLTSzhfbPXg/YWp96rg+1LPm4fCrA
+         GPvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772839741; x=1773444541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jmuJidMV1Wwe0qpdw07DaES1yYrCFjR7mRIMJgUWNXw=;
+        b=UleBWytVuN/xNDcgp5Fr5R2EzI2zyCHse85GNflr/yn+E1X8vVrf3Rc7J7Z1i5azlP
+         V6i5GApE25d0AKu3onnVmo5RSHMq4YC1w6HGDLMb5eB4gP2vWvnFoV6e8j5ENITdE9Yo
+         ZQCXq7XLnvtDpVYf7O96l24HtTZraXZqFzLjSNQtd0gZpKQ2GHzxyrtM6PdED1B9m1wp
+         soEIACnOqYJm/eu487hiRJhFchdzCn9Vn2eaCwliP8gT4+76eq5OgxV3rQKKfL+mShaY
+         tKUmuL0RcZcB3OOFG2Q5CRMX9lYwU2r7EJ33Y4Yal+gh4D5bY7QKy79KKGqRLpRnpCOw
+         ebyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHG6Xhuen/4uQlJfecZqikLpYIKAY+N5YdZL5CE7fB7pzG1FWMl2LSKlKIq5piiAUHti6j2touvDTL7zc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxXSOTt9ozd0xcaixXu4iE8ey0yYPGCS/DTtRnY8ge7K7bG9zGw
+	Tjgab7KHkCkQjr1bTBwkQCyBDgqtR+O0nen6hYOilZYGSvFo3FYUkmkH
+X-Gm-Gg: ATEYQzy69V11E74JKiqHQs5dwPVrA5xzgEttU8WU1pH0NpxHRmoTBMU76wMBZGKZzuM
+	EC2gxgSip8DGiu/7utfq2DixcS8vafHZdGjTl9Y1MmWL+h7SDJ64dJ1xgEPkl7y5OGEbshRRFEv
+	cQa40jO9kcssIfKlPB9b4/dkaUVrWHPReZIjprvAK7zF28fQDfsbidGDHnMnCo0NMK5eTfb/xzi
+	HWymIVEQwwe7MHYUzbkm0ixhfV+l+L/qOAEej05d8WBeg+Fg7+bWQdlt3U+QsfcycBC7it40ELf
+	f5QMVVgfncZxznZ2vGbAjisJsfXcgvyHLSP4OkdbuabbcsKk0d2T0zDz1/OHqungRpJ6P01wG9S
+	+dMYWd9aPc3no/2qBpWzMiHU0fVDVXiE/zvPT5nsQI84Q6QXcNZGPCPRCne8wFitl6qQQlvLpmQ
+	MVoRROrD+7qr9TNs6yKU9TqPxFfNUM03M7DsKa
+X-Received: by 2002:a05:6a00:9510:b0:829:8942:2c93 with SMTP id d2e1a72fcca58-829a2d86b43mr3749707b3a.9.1772839741072;
+        Fri, 06 Mar 2026 15:29:01 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a48d3621sm3213092b3a.62.2026.03.06.15.29.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 15:29:00 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Fri, 6 Mar 2026 15:28:59 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Vineet Gupta <vgupta@kernel.org>, Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
+	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-amlogic@lists.infradead.org, linux-leds@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH 10/14] watchdog: convert the Kconfig dependency on
+ OF_GPIO to OF
+Message-ID: <2c6ad0ca-fd72-4bf5-9180-f45c20e60d37@roeck-us.net>
+References: <20260304-gpio-of-kconfig-v1-0-d597916e79e7@oss.qualcomm.com>
+ <20260304-gpio-of-kconfig-v1-10-d597916e79e7@oss.qualcomm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,99 +131,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AYSH_HmCkp7N
-Date: Sat, 07 Mar 2026 00:28:27 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nathan Chancellor" <nathan@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Mimi Zohar" <zohar@linux.ibm.com>,
- "Roberto Sassu" <roberto.sassu@huawei.com>,
- "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
- "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "Jarkko Sakkinen" <jarkko@kernel.org>,
- "Ard Biesheuvel" <ardb@kernel.org>, "Coiby Xu" <coxu@redhat.com>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Eric Snowberg" <eric.snowberg@oracle.com>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>,
- "Andrew Donnellan" <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-integrity@vger.kernel.org,
- linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
- llvm@lists.linux.dev
-Message-Id: <e16f0912-c928-4f25-94f8-18b260416ce3@app.fastmail.com>
-In-Reply-To: <20260306225648.GC2746259@ax162>
-References: <20260306150421.270124-1-arnd@kernel.org>
- <20260306225648.GC2746259@ax162>
-Subject: Re: [PATCH] integrity: avoid using __weak functions
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304-gpio-of-kconfig-v1-10-d597916e79e7@oss.qualcomm.com>
+X-Spam-Status: No, score=0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: B8115228B1C
+X-Rspamd-Queue-Id: 87DDC228AF6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.70 / 15.00];
+X-Spamd-Result: default: False [-0.21 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-17858-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[arnd@arndb.de,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FORGED_RECIPIENTS(0.00)[m:nathan@kernel.org,m:arnd@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:jarkko@kernel.org,m:ardb@kernel.org,m:coxu@redhat.com,m:npiggin@gmail.com,m:chleroy@kernel.org,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:eric.snowberg@oracle.com,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:ajd@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:keyrings@vger.kernel.org,m:llvm@lists.linux.dev,m:dmitrykasatkin@gmail.com,m:nickdesaulniers@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-17857-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,huawei.com,gmail.com,paul-moore.com,namei.org,hallyn.com,kernel.org,redhat.com,oracle.com,google.com,lists.ozlabs.org,vger.kernel.org,lists.linux.dev];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linuxppc-dev,lkml];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	FORGED_SENDER(0.00)[linux@roeck-us.net,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[46];
+	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:abrodkin@synopsys.com,m:vgupta@kernel.org,m:oss@buserror.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:andrew@lunn.ch,m:hkallweit1@gmail.com,m:linux@armlinux.org.uk,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:linusw@kernel.org,m:brgl@kernel.org,m:neil.armstrong@linaro.org,m:khilman@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:dvorkin@tibbo.com,m:wellslutw@gmail.com,m:lee@kernel.org,m:pavel@kernel.org,m:wim@linux-watchdog.org,m:mchehab@kernel.org,m:gregkh@linuxfoundation.org,m:sre@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-amlogic@lists.infradead.org,m:linu
+ x-leds@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-watchdog@vger.kernel.org,m:linux-media@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-pm@vger.kernel.org,m:martinblumenstingl@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[arm.com,kernel.org,synopsys.com,buserror.net,linux.ibm.com,ellerman.id.au,gmail.com,lunn.ch,armlinux.org.uk,davemloft.net,google.com,redhat.com,linaro.org,baylibre.com,googlemail.com,tibbo.com,linux-watchdog.org,linuxfoundation.org,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:dkim,messagingengine.com:dkim]
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,roeck-us.net:email]
 X-Rspamd-Action: no action
 
-On Fri, Mar 6, 2026, at 23:56, Nathan Chancellor wrote:
-> On Fri, Mar 06, 2026 at 04:03:24PM +0100, Arnd Bergmann wrote:
->
-> Thanks, I noticed this as well. The version I came up with and have been
-> locally testing is the following, which is a little bit more compact.
->
->  arch/Kconfig                     |  3 +++
->  arch/powerpc/Kconfig             |  1 +
->  arch/s390/Kconfig                |  1 +
->  arch/s390/kernel/ipl.c           | 10 +++++-----
->  include/linux/secure_boot.h      |  4 ++++
->  security/integrity/Makefile      |  2 +-
->  security/integrity/secure_boot.c | 16 ----------------
->  7 files changed, 15 insertions(+), 22 deletions(-)
->
+On Wed, Mar 04, 2026 at 10:02:31AM +0100, Bartosz Golaszewski wrote:
+> OF_GPIO is selected automatically on all OF systems. Any symbols it
+> controls also provide stubs so there's really no reason to select it
+> explicitly. We could simply remove the dependency but in order to avoid
+> a new symbol popping up for everyone in make config - just convert it to
+> requiring CONFIG_OF.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  drivers/watchdog/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+> index dc78729ba2a5d6e035ed3cbe5c2b631d11b76b20..ef200339a22a6f9c51a46c9c0b8466add74313e2 100644
+> --- a/drivers/watchdog/Kconfig
+> +++ b/drivers/watchdog/Kconfig
+> @@ -250,7 +250,7 @@ config DA9062_WATCHDOG
+>  
+>  config GPIO_WATCHDOG
+>  	tristate "Watchdog device controlled through GPIO-line"
+> -	depends on OF_GPIO
+> +	depends on OF
 
-Right, your version looks good to me as well.
+AI feedback:
 
-       Arnd
+  Could this change inadvertently allow the driver to be selected when GPIOLIB
+  is disabled?
+
+  In drivers/gpio/Kconfig, OF_GPIO is defined inside the "if GPIOLIB" block,
+  so it implicitly depends on GPIOLIB. By changing the dependency directly to
+  OF, the GPIOLIB dependency is lost.
+
+  If GPIOLIB is disabled, the driver will still compile because of the stubs
+  in include/linux/gpio/consumer.h, but devm_gpiod_get() will unconditionally
+  return -ENOSYS, causing the probe to fail. Since the driver's sole purpose
+  is to control a watchdog via a GPIO line, should it be prevented from being
+  configured without GPIOLIB by using something like:
+
+	depends on OF && GPIOLIB
+
+It has a point. Please update.
+
+Thanks,
+Guenter
+
+>  	select WATCHDOG_CORE
+>  	help
+>  	  If you say yes here you get support for watchdog device
 
