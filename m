@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-17847-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17848-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHUnKodEq2kKbwEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17847-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 22:17:59 +0100
+	id MLOyLY9Eq2nJbgEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17848-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 22:18:07 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D080B227D9F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 22:17:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5658227DAF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 22:18:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fSK4h352hz2yFl;
-	Sat, 07 Mar 2026 08:17:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fSK4q5sH5z2xnl;
+	Sat, 07 Mar 2026 08:18:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772800216;
-	cv=none; b=cevq+NX8HjqflowA7BQJRMZIyP5i/Gcx5pbNGKZHfWwioqMy4AoS/pk1JLd+xe4bm+QXDwoLWKt/SE8D6EIjxBwOE2wW1ug8AdWPMK01+s6j/3Fjyzah81KP/C4qpqNKwugxAbiz3fgoM/5/yQlRr0iBEIa4nubO5wa0FcRAD6hrhmCswSvUAhc92Vl5uwI3n6wXG2hRpcwAX+wQEP/+dIAeOI3KmpxQXILlYwTDCeIJKgb0ILbQTbK/sBxIGmodBfN2Kn+fe6muX9e0CZ6raH0KvKLPoQMiwHOCvJN9qadiON697dPomMwvcHfo4BlHNpngJ7Zyb4YDMoXd2ES/xg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772800285;
+	cv=none; b=fuMwne8CrAqlOJ8QnWDn5ALUb1MZuTtAGATq7lxtJoRPPaQeRDJWnDCY1OWrzAKWjy/OwKMF3wknk0qkY5BGjGXsUfZL7frtf+imkGzPx5dGZamE/IikbAbi8qMT+6cPkB5bEPnV6CbeulF9Yr16Z/l38NYpn/F9NHYaf/WtK3gbe4cVkkif2ZvGpEJJVKXtc/q34guYwotrjqS0HslB7A/JcHJEunxhA24VGk5AG8QwzV7URe7KvP4fVY/LocfoXuMO4UkeG7Q0N99obUxJXnXnJXcqQhi12zhp5aNHCTR1G+TWTiB38k5PGbN2aYJCFGSdam1pmEkD6cX5SBrVyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772800216; c=relaxed/relaxed;
-	bh=x3u3PLujGP7HIMgiks7XBwFOh1HdWRmuG3DKugPgRFw=;
+	t=1772800285; c=relaxed/relaxed;
+	bh=BTF13s/d85AeKY0BUT+g0GhGGYmCw3CXQ9719Ls0ojY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TcsSsFDKKcRFfSPyM9EHyCFcRIJWWess5AvvAQOLpq5tHtnAS1x+hXsw5Q0fsdeEVlmOFIKrYztKTYaPh4K1+bfxV+EPSFpul4WGL6M/pxBc/lRpRttLDAUpFjHmz0L9bjlBlh82XHyo3LJCFg79OQ9MUxY5tk3UYtYOjE0/nH3W/pXd94BxS3pWX1wvFQ0p/N/lG9Q450zKanEFEi8s8TLKfWZReiqP99Yf4Zjek4lM3KsJeaOEOIM1/6eB7tAfxiV5g5JOvtPzXJsp9jGTqqO4ROL1lhM5o/H5+uMggv+gg1hH7JxWOAGjV5kc+jtgtpHM/SQDCa0XMyoUwQ+H5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RrOKh0OA; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ljs@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=aPO6qHbWfoIDwXIvYScHMJC4QorWeUeEKMrmbcAt6YzKN0wchha2kKc4NtSOnsOy96+Q/Z1MyBZ9cmDPy0b0z0BFFRHkZWwue7H/YDp6Cy005W2Wg+w3CojTj9G2rbCb4mJNTfPhj63hAvE3lo7rKx6QxEgNBvceK1nvIG2NkGI1DDT3D1Xge0zLqllW2DgQw3pBE5kPOtdJFH7Ual0hl5qfYqeIGLGfiXJl9I9DT6WbGkdtQrcOWpWghv7oulycTEHl5pbOVMFkCe+hUIoDOH+XhYBm3Y1cTGRPt/n4yAxTwyled5qAyr3d2ZexzRZsw96HFKpGWo1aKvB33Xp67A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LvR/7HPf; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ljs@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RrOKh0OA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LvR/7HPf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ljs@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ljs@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS5Mq4G6Xz3bnJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 23:30:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS5P827f5z3bnJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 23:31:24 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6AF21440A6;
-	Fri,  6 Mar 2026 12:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33C3C4CEF7;
-	Fri,  6 Mar 2026 12:30:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 45BED60018;
+	Fri,  6 Mar 2026 12:31:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF81C2BC86;
+	Fri,  6 Mar 2026 12:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772800213;
-	bh=Kftdd8omZX7VELmkL5LGQUFF+sQIeOHfzVU13moKjvE=;
+	s=k20201202; t=1772800282;
+	bh=LAJ3eHMG09TcFhgWs2EdIeu79xlpIcUA+/nV0cLjx24=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RrOKh0OAhxHMytB1jOn/jttu3GJlb3C3rXPB9TooAMKbyt3vUr89Pt0+i4u40IkqV
-	 RX2hBvNB6H5hwNgpkw2833/q+m2pIU+tXLy6aT2UqxNKjA9gRXZUoAjf58JN5/E+WU
-	 b+1XKEzPnARh8OeG9Vznq4eIhrMwfxCOh6yt4sHKclOXteR/4dXp5YR9O3YGnPPT2n
-	 aDJp5EcMC6pPhjaUS4A5KpHj2GJduynNISMtMzESwpD0c6OWnPmGQWuaLB8H96xPbV
-	 V8tWz99yS9NFw2rriHryb/Y2+I+FJmH4No3lieIJOsE5G/KrymQlZobYCswq94RN1W
-	 nF2PinBdqWDrw==
-Date: Fri, 6 Mar 2026 12:30:10 +0000
+	b=LvR/7HPf6wcbcyYRLsw0NDSdEUL1xaUkAW3JmG67UyRk8nOpjrEr2b2NGZY1Rm0QK
+	 rmjZWXs/kgIZrKXYtCLoe2wOfAeqwFjFcPcvt+uoLGfKG/Qo+cZY/KlECky/nu7yfe
+	 VWWd7vd2jX7axW3zB4eXySNQkQ60kLA1VNARXlEtx0PgK1qc1mJkOGYLZPeIU1jkWi
+	 k2zaxtrQMGavqzpX3B010TqicSFWti+U38spA0MblbRmX/eAooWrBcs3e2lHItMiNa
+	 oY8qJI8Dwm7XxpAxiijBNODF9u6hWMWr4FWbAtfufjRBYMdKm2jnZp6E+SB/W5VYzM
+	 3FhaTnLG18eEQ==
+Date: Fri, 6 Mar 2026 12:31:18 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, 
@@ -85,10 +85,11 @@ Cc: linux-kernel@vger.kernel.org,
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
 	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 12/16] mm: rename zap_vma_pages() to zap_vma()
-Message-ID: <2f4ee3ee-549c-4c0f-980d-3853193776b6@lucifer.local>
+Subject: Re: [PATCH v1 13/16] mm: rename zap_page_range_single_batched() to
+ zap_vma_range_batched()
+Message-ID: <c63bd1e9-52b0-42a3-a568-bfb0ac0afd5b@lucifer.local>
 References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-13-david@kernel.org>
+ <20260227200848.114019-14-david@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,24 +105,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-13-david@kernel.org>
+In-Reply-To: <20260227200848.114019-14-david@kernel.org>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: D080B227D9F
+X-Rspamd-Queue-Id: C5658227DAF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,oracle.com,kernel.org,google.com,suse.com,suse.de,linux.dev,infradead.org,linux.ibm.com,ellerman.id.au,redhat.com,alien8.de,linuxfoundation.org,android.com,mev.co.uk,visionengravers.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,ziepe.ca,hpe.com,arndb.de,iogearbox.net,arm.com,davemloft.net,lists.ozlabs.org,lists.freedesktop.org];
-	TAGGED_FROM(0.00)[bounces-17847-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17848-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:rientjes@google.com,m:shakeel.butt@linux.dev,m:willy@infradead.org,m:aliceryhl@google.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:jarkko@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:cmllamas@google.com,m:abbotti@mev.co.uk,m:hsweeten@visionengravers.com,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:jgg@ziepe.
  ca,m:leon@kernel.org,m:dimitri.sivanich@hpe.com,m:arnd@arndb.de,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:edumazet@google.com,m:ncardwell@google.com,m:davem@davemloft.net,m:dsahern@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:ojeda@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sgx@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-rdma@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:netdev@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
@@ -138,17 +139,18 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lucifer.local:mid]
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 09:08:43PM +0100, David Hildenbrand (Arm) wrote:
-> Let's rename it to an even simpler name. While at it, add some
-> simplistic kernel doc.
+On Fri, Feb 27, 2026 at 09:08:44PM +0100, David Hildenbrand (Arm) wrote:
+> Let's make the naming more consistent with our new naming scheme.
+>
+> While at it, polish the kerneldoc a bit.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
@@ -157,82 +159,91 @@ LGTM, so:
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  arch/powerpc/platforms/book3s/vas-api.c | 2 +-
->  arch/powerpc/platforms/pseries/vas.c    | 2 +-
->  include/linux/mm.h                      | 6 +++++-
->  lib/vdso/datastore.c                    | 2 +-
->  mm/page-writeback.c                     | 2 +-
->  5 files changed, 9 insertions(+), 5 deletions(-)
+>  mm/internal.h |  2 +-
+>  mm/madvise.c  |  5 ++---
+>  mm/memory.c   | 23 +++++++++++++----------
+>  3 files changed, 16 insertions(+), 14 deletions(-)
 >
-> diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-> index ea4ffa63f043..e96d79db69fe 100644
-> --- a/arch/powerpc/platforms/book3s/vas-api.c
-> +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> @@ -414,7 +414,7 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
->  	/*
->  	 * When the LPAR lost credits due to core removal or during
->  	 * migration, invalidate the existing mapping for the current
-> -	 * paste addresses and set windows in-active (zap_vma_pages in
-> +	 * paste addresses and set windows in-active (zap_vma() in
->  	 * reconfig_close_windows()).
->  	 * New mapping will be done later after migration or new credits
->  	 * available. So continue to receive faults if the user space
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-> index ceb0a8788c0a..fa05f04364fe 100644
-> --- a/arch/powerpc/platforms/pseries/vas.c
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -807,7 +807,7 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
->  		 * is done before the original mmap() and after the ioctl.
->  		 */
->  		if (vma)
-> -			zap_vma_pages(vma);
-> +			zap_vma(vma);
->
->  		mutex_unlock(&task_ref->mmap_mutex);
->  		mmap_write_unlock(task_ref->mm);
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 4710f7c7495a..4bd1500b9630 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2837,7 +2837,11 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
->  		  unsigned long size);
->  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
->  			   unsigned long size);
-> -static inline void zap_vma_pages(struct vm_area_struct *vma)
-> +/**
-> + * zap_vma - zap all page table entries in a vma
-> + * @vma: The vma to zap.
-> + */
-> +static inline void zap_vma(struct vm_area_struct *vma)
->  {
->  	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+> diff --git a/mm/internal.h b/mm/internal.h
+> index df9190f7db0e..15a1b3f0a6d1 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -536,7 +536,7 @@ static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
 >  }
-> diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-> index a565c30c71a0..222c143aebf7 100644
-> --- a/lib/vdso/datastore.c
-> +++ b/lib/vdso/datastore.c
-> @@ -121,7 +121,7 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
->  	mmap_read_lock(mm);
->  	for_each_vma(vmi, vma) {
->  		if (vma_is_special_mapping(vma, &vdso_vvar_mapping))
-> -			zap_vma_pages(vma);
-> +			zap_vma(vma);
->  	}
->  	mmap_read_unlock(mm);
 >
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 601a5e048d12..29f7567e5a71 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2645,7 +2645,7 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
->   * while this function is in progress, although it may have been truncated
->   * before this function is called.  Most callers have the folio locked.
->   * A few have the folio blocked from truncation through other means (e.g.
-> - * zap_vma_pages() has it mapped and is holding the page table lock).
-> + * zap_vma() has it mapped and is holding the page table lock).
->   * When called from mark_buffer_dirty(), the filesystem should hold a
->   * reference to the buffer_head that is being marked dirty, which causes
->   * try_to_free_buffers() to fail.
+>  struct zap_details;
+> -void zap_page_range_single_batched(struct mmu_gather *tlb,
+> +void zap_vma_range_batched(struct mmu_gather *tlb,
+>  		struct vm_area_struct *vma, unsigned long addr,
+>  		unsigned long size, struct zap_details *details);
+>  int zap_vma_for_reaping(struct vm_area_struct *vma);
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index b51f216934f3..fb5fcdff2b66 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -855,9 +855,8 @@ static long madvise_dontneed_single_vma(struct madvise_behavior *madv_behavior)
+>  		.reclaim_pt = true,
+>  	};
+>
+> -	zap_page_range_single_batched(
+> -			madv_behavior->tlb, madv_behavior->vma, range->start,
+> -			range->end - range->start, &details);
+> +	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
+> +			      range->start, range->end - range->start, &details);
+>  	return 0;
+>  }
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 1c0bcdfc73b7..e611e9af4e85 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2167,17 +2167,20 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
+>  }
+>
+>  /**
+> - * zap_page_range_single_batched - remove user pages in a given range
+> + * zap_vma_range_batched - zap page table entries in a vma range
+>   * @tlb: pointer to the caller's struct mmu_gather
+> - * @vma: vm_area_struct holding the applicable pages
+> - * @address: starting address of pages to remove
+> - * @size: number of bytes to remove
+> - * @details: details of shared cache invalidation
+> + * @vma: the vma covering the range to zap
+> + * @address: starting address of the range to zap
+> + * @size: number of bytes to zap
+> + * @details: details specifying zapping behavior
+> + *
+> + * @tlb must not be NULL. The provided address range must be fully
+> + * contained within @vma. If @vma is for hugetlb, @tlb is flushed and
+> + * re-initialized by this function.
+>   *
+> - * @tlb shouldn't be NULL.  The range must fit into one VMA.  If @vma is for
+> - * hugetlb, @tlb is flushed and re-initialized by this function.
+> + * If @details is NULL, this function will zap all page table entries.
+>   */
+> -void zap_page_range_single_batched(struct mmu_gather *tlb,
+> +void zap_vma_range_batched(struct mmu_gather *tlb,
+>  		struct vm_area_struct *vma, unsigned long address,
+>  		unsigned long size, struct zap_details *details)
+>  {
+> @@ -2225,7 +2228,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+>  	struct mmu_gather tlb;
+>
+>  	tlb_gather_mmu(&tlb, vma->vm_mm);
+> -	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
+> +	zap_vma_range_batched(&tlb, vma, address, size, NULL);
+>  	tlb_finish_mmu(&tlb);
+>  }
+>
+> @@ -4251,7 +4254,7 @@ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
+>  		size = (end_idx - start_idx) << PAGE_SHIFT;
+>
+>  		tlb_gather_mmu(&tlb, vma->vm_mm);
+> -		zap_page_range_single_batched(&tlb, vma, start, size, details);
+> +		zap_vma_range_batched(&tlb, vma, start, size, details);
+>  		tlb_finish_mmu(&tlb);
+>  	}
+>  }
 > --
 > 2.43.0
 >
