@@ -1,62 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-17799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2P+hJoepqmnjVAEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 11:16:39 +0100
+	id mJdAEo6pqmnjVAEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 11:16:46 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55C921E8DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 11:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5083E21E8E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 11:16:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fS2PY2JmMz3cD1;
-	Fri, 06 Mar 2026 21:16:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fS2Pb3L1Cz3cFM;
+	Fri, 06 Mar 2026 21:16:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772792193;
-	cv=none; b=aiGMI053Npr8X2YQ3pv6c+vcV6rhoZCEoTf7pklThbunJJcUJf8abKCAvBSDUZlSvSELfZh6LRZsaR8NZhBGELxbubkhDRHim3D+MnJWKLSEN41AJHv8lsqNqDDFGdhSV9vpRvulvMD6qAsTpDbN7O7+xgyziTrKmz4NRDQSGm54VlL6i9dns+4irsQK01PzYwSGEfAeBeHE+y//zcfE421kYLPZmQDrWVFTq91vinx66JPB4l96WMemJAhaegjT5Ft3EAIALuaFlEFi9zOjgQ+bY9ihAdK+Ck3BReFRLl8TdotAhzQXxq+2Ic0uKh9Wb9ykeghmIv18m+w8TeAGVA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772792195;
+	cv=none; b=nuR9TnC8sa7ziOY917CJ59zjjSn3B9SuWcKbIvQeknXdO0luvnXXWFQ9DXnbeS7ODX9aBOcaq/g+QK9fmF00FZi7r2EPNjieqbvecbKaJQBy1BhzwT6+Lc+vtEWnRhufW1iM4Yj5mA2SAaKo4CeF2sRsb0qi6CLYvvtwbqzddH5go0210gVoZJACp1hYCJWz3SDYyui/sZ4kxdIl0RkY2PNPW9O0d62+jxQhAkNx3yH9BVe339G1LC0PvZc7h5hWUftOnH/p3h90RSxvnbTPC6HB/x7g80myi+u9Szt+zuwovIEyRejSVMETcArQOy7Ap1y2hUc/v6JgtYLzm6O1Hg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772792193; c=relaxed/relaxed;
-	bh=xSrxtXOfqFJ/zzJV7v+EYECVDPgUeHpXQ1grbZIaXow=;
+	t=1772792195; c=relaxed/relaxed;
+	bh=5/dkJdaAB+pKo1P+eI25ypsj40QWLqgHpKTD+Xjo1is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRiOnkTIAEKn8L6K6gwW7PUXrQkCU92bFjDpN4Sm5h9w0fk9YYdhtTbDq/kLN3kyjsDYK1URmOSdggwJiBFJS1YkXQC1KG7Iqre1M4Yff6qljTvsmY9r1IHQMMZvqH9AcGsCRd6P5m6MuTmRHwymlNzz+ASw2zuNoCGGMFKAjzO/HfNBhKcbUDFDuJOgNohVdSo82DU1d3OAIoCPT3B4TEkNwpIJTozTctcgfJsdq+AJLQEE/2ZbRH1qY+K9wTEaNino0orVp5nCI/3sZZEgA58ELEQE7g8UAuH4F3E3gnWEJe+Llwlm/whxIDQdwsOIntEo/+NyO7Bv1EvMIN9x9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EYcnWM2P; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=EoWbG4FUYXhshHREks0Dy8PgvCTlEFpmk/eFRhh4NIAHRqlZz5+YZAAdBpaGE8nFoBXjukJZUru9nnu9lvOlLTLdOZNR6QC/LJGhV/CoaUJ5hKngxO+pBvBpl8Qj2/HkFWhx5+OvXlXjs33U37aXFYXn4yohQyJdXrU+gg7OY1TF3QreB5omhhhDfSb3RcjOZ8v6tYM3CQteeCLfHxZch7LzmwxLHv5gU5NsUvisoq57wehI++t61DcwK3SsCyDo4gyxkJ7/j8vaQnEQJYohL3haCBDqXXAL+BQwAaRcPTWchpJg6WzlmGRj9/mTNWSXWOLhGqg4y4JPrqVFvqJOzQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UMh7g+zY; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EYcnWM2P;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UMh7g+zY;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS2PX2K1mz30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 21:16:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fS2PZ5QYjz30T9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Mar 2026 21:16:34 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 659EA60132;
+	by tor.source.kernel.org (Postfix) with ESMTP id D309F60131;
+	Fri,  6 Mar 2026 10:16:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB1BC19422;
 	Fri,  6 Mar 2026 10:16:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC97C19422;
-	Fri,  6 Mar 2026 10:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772792190;
-	bh=KFS0WOpkdK9snEXTKSGUmyIFzfkZVmc/zggsd23+mPE=;
+	s=k20201202; t=1772792192;
+	bh=k5FQ3POVWHUqSFCK1KHjIrKMQkLSCam/RT4g8330CaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYcnWM2PgaWt6KxKlBcserIDb5ISS2Ic/hH+YyGWSC4Cqq2/USjVGANct3h7BfHt4
-	 iW6y0uLP8t4sYT4ySUgqzDyj4hDrff4hHN/PsXcs9QvO7K5FLNGeCyZ/3DVJylLgRe
-	 7U2K54YOXWxerIVfnPyqlMMrGP9bFizxosZUiJIyP2Uiw4DHt8jGnRqacwq3A12d7+
-	 Skem0a5LGx7Pbjrufkhom/w2uXLP+r0yyLjY7Y8IleoxyTanIrXRvDUGqL2b1vIMsE
-	 CWDPWCecGQaqHgSNqdgWeuVPq7Kx30S2PKeKYHQjxvifSKd140d8SVhWR94UrscsZF
-	 qLJZBmv+f7EjA==
+	b=UMh7g+zYXegSicI9M1aLSZ+o/u9Faw6vtFXpS+dhIFChWaHhnesz2CqTrWf5lZ1YX
+	 PwR/89DOY0KxCfaDF+zvV/j0Ch3nBLN4zXZ99O5x+zsLJnKtg+Jp/8d0ZrzcYbo67E
+	 hJ4fiZkHg6cip8UbajFYj19bxe1E8BxOFId9YL/FGpdsypVTI0uZCX4EeT1GlBw/ab
+	 v6QBUypGeW3DremKETuRvO9dxgJz/QXm1sCkZZIosBs97NVkjiLD8T1uFOzHSu9wWz
+	 /ZloImQknfKb+rfKqLT+2ao8Mf7tlJQPkn+MKqx5VK5iK0Xrx6O7k0ZQZPwfkpqZws
+	 H8SRiS+Qx0qUg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
 	linuxppc-dev@lists.ozlabs.org,
 	kvm@vger.kernel.org,
 	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH v1 2/4] mm: move vma_mmu_pagesize() from hugetlb to vma.c
-Date: Fri,  6 Mar 2026 11:15:58 +0100
-Message-ID: <20260306101600.57355-3-david@kernel.org>
+Subject: [PATCH v1 3/4] KVM: remove hugetlb.h inclusion
+Date: Fri,  6 Mar 2026 11:15:59 +0100
+Message-ID: <20260306101600.57355-4-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260306101600.57355-1-david@kernel.org>
 References: <20260306101600.57355-1-david@kernel.org>
@@ -78,7 +78,7 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: A55C921E8DB
+X-Rspamd-Queue-Id: 5083E21E8E2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-17799-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17800-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -113,112 +113,26 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-vma_mmu_pagesize() is also queried on non-hugetlb VMAs and does not
-really belong into hugetlb.c.
-
-PPC64 provides a custom overwrite with CONFIG_HUGETLB_PAGE, see
-arch/powerpc/mm/book3s64/slice.c, so we cannot easily make this a
-static inline function.
-
-So let's move it to vma.c and add some proper kerneldoc.
+hugetlb.h is no longer required now that we moved vma_kernel_pagesize()
+to mm.h.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/hugetlb.h |  7 -------
- include/linux/mm.h      |  2 ++
- mm/hugetlb.c            | 11 -----------
- mm/vma.c                | 21 +++++++++++++++++++++
- 4 files changed, 23 insertions(+), 18 deletions(-)
+ virt/kvm/kvm_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 44c1848a2c21..aaf3d472e6b5 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -777,8 +777,6 @@ static inline unsigned long huge_page_size(const struct hstate *h)
- 	return (unsigned long)PAGE_SIZE << h->order;
- }
- 
--extern unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
--
- static inline unsigned long huge_page_mask(struct hstate *h)
- {
- 	return h->mask;
-@@ -1175,11 +1173,6 @@ static inline unsigned long huge_page_mask(struct hstate *h)
- 	return PAGE_MASK;
- }
- 
--static inline unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
--{
--	return PAGE_SIZE;
--}
--
- static inline unsigned int huge_page_order(struct hstate *h)
- {
- 	return 0;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 227809790f1a..22d338933c84 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1327,6 +1327,8 @@ static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
- 	return PAGE_SIZE;
- }
- 
-+unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
-+
- static inline
- struct vm_area_struct *vma_find(struct vma_iterator *vmi, unsigned long max)
- {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 66eadfa9e958..f6ecca9aae01 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1017,17 +1017,6 @@ static pgoff_t vma_hugecache_offset(struct hstate *h,
- 			(vma->vm_pgoff >> huge_page_order(h));
- }
- 
--/*
-- * Return the page size being used by the MMU to back a VMA. In the majority
-- * of cases, the page size used by the kernel matches the MMU size. On
-- * architectures where it differs, an architecture-specific 'strong'
-- * version of this symbol is required.
-- */
--__weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
--{
--	return vma_kernel_pagesize(vma);
--}
--
- /*
-  * Flags for MAP_PRIVATE reservations.  These are stored in the bottom
-  * bits of the reservation map pointer, which are always clear due to
-diff --git a/mm/vma.c b/mm/vma.c
-index be64f781a3aa..e95fd5a5fe5c 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -3300,3 +3300,24 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
- 
- 	return 0;
- }
-+
-+/**
-+ * vma_mmu_pagesize - Default MMU page size granularity for this VMA.
-+ * @vma: The user mapping.
-+ *
-+ * In the common case, the default page size used by the MMU matches the
-+ * default page size used by the kernel (see vma_kernel_pagesize()). On
-+ * architectures where it differs, an architecture-specific 'strong' version
-+ * of this symbol is required.
-+ *
-+ * The default MMU page size is not affected by Transparent Huge Pages
-+ * being in effect, or any usage of larger MMU page sizes (either through
-+ * architectural huge-page mappings or other explicit/implicit coalescing of
-+ * virtual ranges performed by the MMU).
-+ *
-+ * Return: The default MMU page size granularity for this VMA.
-+ */
-+__weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
-+{
-+	return vma_kernel_pagesize(vma);
-+}
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 22f8a672e1fd..58059648b881 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -41,7 +41,6 @@
+ #include <linux/spinlock.h>
+ #include <linux/compat.h>
+ #include <linux/srcu.h>
+-#include <linux/hugetlb.h>
+ #include <linux/slab.h>
+ #include <linux/sort.h>
+ #include <linux/bsearch.h>
 -- 
 2.43.0
 
