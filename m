@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17835-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17836-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JNS/C7T8qmkIZQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17835-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:11:32 +0100
+	id yEpVBt39qmkIZQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17836-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:16:29 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32346224983
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:11:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8039E224A90
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:16:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fSBH42Tptz3bnJ;
-	Sat, 07 Mar 2026 03:11:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fSBNm4ldjz3bfV;
+	Sat, 07 Mar 2026 03:16:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772813488;
-	cv=none; b=kIhpDLnGUO+vvH/K537t96MkwzzLJeIrIMAD4Mw+JzyOySyB8fojMi6FfbyRejfaPTZI04bjlIviKXDSKP6gxnJY4XlYJeIYnNushDRHiZRaZ5dFJNAKSRI556qYVaKV8Oi8nX7QMPlSvdz1VVbGRrhwv3nJWYqp5FmEPlQVaSsRFKUcvpgJDou11PwFYd48T303IjH7/uyPbkJVzjUHOWwMhaRsSj+aCOfNMHYxtdIOzFQ5iugaeynVAZddS0oRTvSvE5tujnLJbEaQcuRwlZB3jN6peDDvozHVRvEKPq0VDhQAuB71LJb+D5zKA/anupepyk/5k7tMaJLmBfHe+Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772813784;
+	cv=none; b=CSKMznGbqm9V8Qjc3ynYKONottrkDG6/AWy51hE+S+hcqMI2TJ905nY785YZEO3nvDe9NbPFfWvIBN9q97r0GQhf/UEBTNEmACGGFYMqF6lCOTFrELHPvMjHhEyUo5bqG3vxOFFi2vIFGZPjxdAAAWyO4NIzZIlTWXRn9XGd+sZKCQHUtbEu5l8gOMcI/D9of4+c7YIYwlHjOKMI/79gBWzEznr7O0CfHO18fEfEqJpvb6CvKxV/VhCVBAmXTpLnzQOmfCJzZgtSgBN69ZPghHkpi/IkeoH/qSCtlomC4y+xUPJqhrjWm6nC8uDQf7mq8VKdE8O6cFKHd2SlwOLSEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772813488; c=relaxed/relaxed;
-	bh=OK4izAPsrMEs8JzC8oKsVnVMiFJsqp9sGWCgLoXqLco=;
+	t=1772813784; c=relaxed/relaxed;
+	bh=lP9jumz6wLn8OX+eXWAbEQ/S7VqmzpRWyOE2Vs73/aA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XdRNipaoL6eoSrq4cT09OAsVGIKEI9Axl+Ll+98SzmhZufv4DEe9eB6MITVci907grTnAFoqmhzhBwHVdRsjEeoY+DsSzaqTIdVL/GTbGqfjNy8LZr159cJ6C3P07Md5Zqe9ucvQUL6x6k+XSz/Ya0T0pa7qvXQ50rfZV7N9ZOo9FTmBefRbd1fjq/dGnfCgC96ZGcD7oLFZoXwnTwvfxPGhsZen6KaJUzFlpPs97EFAMrt0/010OCJPaK+XnYluYZWwj4Ea7ZAMUTOfm94O8uIL2U2go8gXtgiUiaHTfL9eHzbO1x731DQfkTmcK2pdLNlaS7uCniBU6D8i2Zi9lw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mTF0Gake; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=n13QKFxh9XkbiFNUgXBx/G3RXMAd3qHXuOPwMuxHpDkj1ZYp7k5IbcJOo76QwW7F6vB4Ucm7xIiyU0M1gvcFmHH43GgW4FteZ5xpcRdN27CDf9qHN4ZSxpBt4L6F3otn5JtngT9wvQ/bQJbNTz7QyZz6TqbYrVFNwfkw2HR69tUZwEbGPOfABoxoUcRiDiIAb7YSMyu3bToazYXtsy5+IpLyCH+pMPDwfJkJ2JelhjQqM8c6dI1JbnsVnWxLIXAgzPl9mq6CfXpbvsu/OaeXZtfqxPsFQ/fBA/yC58fZ0hoAoSTyW6GSlDU8oIjzQrTczkS73cNRtjqAcP/KKr2AnA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fB9eR77I; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mTF0Gake;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fB9eR77I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSBH33MGWz30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 03:11:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSBNl4BWQz2ySS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 03:16:23 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB78F401C6;
-	Fri,  6 Mar 2026 16:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133AAC4CEF7;
-	Fri,  6 Mar 2026 16:11:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 434D56014B;
+	Fri,  6 Mar 2026 16:16:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2259C2BCFB;
+	Fri,  6 Mar 2026 16:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772813485;
-	bh=giDNf5Uurfn7J3U1n15U/wA3Va2VYqmcI//1lmmKH8U=;
+	s=k20201202; t=1772813780;
+	bh=bSoLpDgciZvLKcLpry12CM7hW3LkYxz40OevChlf6Ag=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mTF0GakeaIpC4RT05s8KQlYVtcp9iPQeMAh7LhMmX6PqqJW5gvxQuVHNGKS/dwqAr
-	 lJuhmLkipTH46kV4owrtV6UV21IyyFx7KBJmmXFACQuSZAR9duYEBUlnhSWTaU+dN8
-	 AEvDj7a7bcwDMJ1zPU6USQfFKTpQM8goxhWuoeMOERgdPpyLAWzva4xGwnPmC+5rh7
-	 K1pcDuSLGQ0PvcZK9VXPdK9Wq1W2fuhXAH1q3F3jtQrQFW+mxolk2K8LC478yYCber
-	 61qM96UpnGv7AFe3yjcbie0qlBFgrdAvPadCTGeZkxkhF5akJGW8QJQkq2Met1A4k8
-	 kbDI855WQ0IzA==
-Message-ID: <cd9885ff-a48a-424f-b9ee-9bd7d1514b73@kernel.org>
-Date: Fri, 6 Mar 2026 17:11:13 +0100
+	b=fB9eR77IHdGatCGnXlVWVFZYhEFsPn0a17EEK+vshyU+cRryGUdCLlkmjIox5MlNq
+	 fmmGCHvutrD+ewyv2Tr0gf2MB8DRkS/bSgx55QPYqf/96NJg8yH54FxgYQjnSY9jem
+	 563ZaUZJsbu0Z/GtfcyLT5NTy1CgUpufTlohFKl1ugfHJZ6ItY/TCVzwxRYhK+dhzN
+	 43d6EsUPgkYNHSaUbIphGgdhPtyL6ZY+ii29lrcU9iQAf1C2/MvvTZ8EpR6t4doWBO
+	 /WoSQm3LeMdFd7gHPM0PlVD7irrOHGNrhW2XRwVG3Un/Rhg4DvGLiSb0R48SsjqcV6
+	 8irklsMQU2IoQ==
+Message-ID: <4b5b222a-18e8-4d48-9acb-39e5bfe4e5f7@kernel.org>
+Date: Fri, 6 Mar 2026 17:16:09 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,8 +64,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/13] mm: Remove device private pages from the
- physical address space
+Subject: Re: [PATCH v6 00/13] Remove device private pages from physical
+ address space
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -77,7 +77,6 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
  ying.huang@linux.alibaba.com
 References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-14-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,25 +123,25 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260202113642.59295-14-jniethe@nvidia.com>
+In-Reply-To: <20260202113642.59295-1-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 32346224983
+X-Rspamd-Queue-Id: 8039E224A90
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17835-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17836-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,oracle.com,redhat.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au,linux.alibaba.com];
@@ -164,19 +163,25 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,nvidia.com:email,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
 On 2/2/26 12:36, Jordan Niethe wrote:
+> Introduction
+> ------------
+> 
 > The existing design of device private memory imposes limitations which
 > render it non functional for certain systems and configurations where
-> the physical address space is limited.
+> the physical address space is limited. 
+> 
+> Limited available address space
+> -------------------------------
 > 
 > Device private memory is implemented by first reserving a region of the
 > physical address space. This is a problem. The physical address space is
 > not a resource that is directly under the kernel's control. Availability
 > of suitable physical address space is constrained by the underlying
-> hardware and firmware and may not always be available.
+> hardware and firmware and may not always be available. 
 > 
 > Device private memory assumes that it will be able to reserve a device
 > memory sized chunk of physical address space. However, there is nothing
@@ -188,139 +193,74 @@ On 2/2/26 12:36, Jordan Niethe wrote:
 > device private memory. This is more likely to occur on 43 bit physical
 > width systems which have less physical address space.
 > 
-> Instead of using the physical address space, introduce a device private
-> address space and allocate devices regions from there to represent the
-> device private pages.
+> The fundamental issue is the physical address space is not a resource
+> the kernel can rely on being to allocate from at will.  
 > 
-> Introduce a new interface memremap_device_private_pagemap() that
-> allocates a requested amount of device private address space and creates
-> the necessary device private pages.
+> New implementation
+> ------------------
 > 
-> To support this new interface, struct dev_pagemap needs some changes:
+> This series changes device private memory so that it does not require
+> allocation of physical address space and these problems are avoided.
+> Instead of using the physical address space, we introduce a "device
+> private address space" and allocate from there.
 > 
->   - Add a new dev_pagemap::nr_pages field as an input parameter.
->   - Add a new dev_pagemap::pages array to store the device
->     private pages.
+> A consequence of placing the device private pages outside of the
+> physical address space is that they no longer have a PFN. However, it is
+> still necessary to be able to look up a corresponding device private
+> page from a device private PTE entry, which means that we still require
+> some way to index into this device private address space. Instead of a
+> PFN, device private pages use an offset into this device private address
+> space to look up device private struct pages.
 > 
-> When using memremap_device_private_pagemap(), rather then passing in
-> dev_pagemap::ranges[dev_pagemap::nr_ranges] of physical address space to
-> be remapped, dev_pagemap::nr_ranges will always be 1, and the device
-> private range that is reserved is returned in dev_pagemap::range.
+> The problem that then needs to be addressed is how to avoid confusing
+> these device private offsets with PFNs. It is the limited usage
+> of the device private pages themselves which make this possible. A
+> device private page is only used for userspace mappings, we do not need
+> to be concerned with them being used within the mm more broadly. This
+> means that the only way that the core kernel looks up these pages is via
+> the page table, where their PTE already indicates if they refer to a
+> device private page via their swap type, e.g.  SWP_DEVICE_WRITE. We can
+> use this information to determine if the PTE contains a PFN which should
+> be looked up in the page map, or a device private offset which should be
+> looked up elsewhere.
 > 
-> Forbid calling memremap_pages() with dev_pagemap::ranges::type =
-> MEMORY_DEVICE_PRIVATE.
+> This applies when we are creating PTE entries for device private pages -
+> because they have their own type there are already must be handled
+> separately, so it is a small step to convert them to a device private
+> PFN now too.
 > 
-> Represent this device private address space using a new
-> device_private_pgmap_tree maple tree. This tree maps a given device
-> private address to a struct dev_pagemap, where a specific device private
-> page may then be looked up in that dev_pagemap::pages array.
+> The first part of the series updates callers where device private
+> offsets might now be encountered to track this extra state.
 > 
-> Device private address space can be reclaimed and the assoicated device
-> private pages freed using the corresponding new
-> memunmap_device_private_pagemap() interface.
+> The last patch contains the bulk of the work where we change how we
+> convert between device private pages to device private offsets and then
+> use a new interface for allocating device private pages without the need
+> for reserving physical address space.
 > 
-> Because the device private pages now live outside the physical address
-> space, they no longer have a normal PFN. This means that page_to_pfn(),
-> et al. are no longer meaningful.
-> 
-> Introduce helpers:
-> 
->   - device_private_page_to_offset()
->   - device_private_folio_to_offset()
-> 
-> to take a given device private page / folio and return its offset within
-> the device private address space.
-> 
-> Update the places where we previously converted a device private page to
-> a PFN to use these new helpers. When we encounter a device private
-> offset, instead of looking up its page within the pagemap use
-> device_private_offset_to_page() instead.
-> 
-> Update the existing users:
-> 
->  - lib/test_hmm.c
->  - ppc ultravisor
->  - drm/amd/amdkfd
->  - gpu/drm/xe
->  - gpu/drm/nouveau
-> 
-> to use the new memremap_device_private_pagemap() interface.
-> 
-> Acked-by: Felix Kuehling <felix.kuehling@amd.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com> # for MM changes
-> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> 
-> ---
-> v1:
-> - Include NUMA node paramater for memremap_device_private_pagemap()
-> - Add devm_memremap_device_private_pagemap() and friends
-> - Update existing users of memremap_pages():
->     - ppc ultravisor
->     - drm/amd/amdkfd
->     - gpu/drm/xe
->     - gpu/drm/nouveau
-> - Update for HMM huge page support
-> - Guard device_private_offset_to_page and friends with CONFIG_ZONE_DEVICE
-> 
-> v2:
-> - Make sure last member of struct dev_pagemap remains DECLARE_FLEX_ARRAY(struct range, ranges);
-> 
-> v3:
-> - Use numa_mem_id() if memremap_device_private_pagemap is called with
->   NUMA_NO_NODE. This fixes a null pointer deref in
->   lruvec_stat_mod_folio().
-> - drm/xe: Remove call to devm_release_mem_region() in xe_pagemap_destroy_work()
-> - s/VM_BUG/VM_WARN/
-> 
-> v4:
-> - Use devm_memunmap_device_private_pagemap() in
->   xe_pagemap_destroy_work()
-> - Replace ^ with != for PVMW_DEVICE_PRIVATE comparisions
-> - Minor style changes
-> - remove discussion of aarch64 from commit message - not relevant post
->   eeb8fdfcf090 ("arm64: Expose the end of the linear map in PHYSMEM_END")
-> 
-> v6:
-> - Fix maybe unused in kgd2kfd_init_zone_device()
-> - Replace division by PAGE_SIZE with DIV_ROUND_UP() when setting
->   nr_pages. This mirrors the align up that previously happened in
->   get_free_mem_region()
-> ---
+> By removing the device private pages from the physical address space,
+> this series also opens up the possibility to moving away from tracking
+> device private memory using struct pages in the future. This is
+> desirable as on systems with large amounts of memory these device
+> private struct pages use a signifiant amount of memory and take a
+> significant amount of time to initialize.
 
+I now went through all of the patches (skimming a bit over some parts
+that need splitting or rework).
 
-There is just too much in this patch to review it reasonably.
+In general, a noble goal and a reasonable approach.
 
-You should probably have a patch that just introduces the helpers and
-have them just do what we to today.
+But I get the sense that we are just hacking in yet another zone-device
+thing. This series certainly makes core-mm more complicated. I provided
+some inputs on how to make some things less hacky, and will provide
+further input as you move forward.
 
-E.g., device_private_page_to_offset() would just do a pfn_to_page().
+We really have to minimize the impact, otherwise we'll just keep
+breaking stuff all the time when we forget a single test for
+device-private pages in one magical path.
 
-Then you can convert individual core-mm pieces that I people can review
-them making their brain hurt.
-
-Afterwards, you can have a patch that does the real "mm: Remove device
-private pages from the physical address space" and doesn't have to touch
-too many core-mm pieces.
-
-[...]
-
-> diff --git a/mm/util.c b/mm/util.c
-> index 65e3f1a97d76..8482ebc5c394 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1244,7 +1244,10 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
->  	struct folio *foliop;
->  	int loops = 5;
->  
-> -	ps->pfn = page_to_pfn(page);
-> +	if (is_device_private_page(page))
-> +		ps->pfn = device_private_page_to_offset(page);
-> +	else
-> +		ps->pfn = page_to_pfn(page);
->  	ps->flags = PAGE_SNAPSHOT_FAITHFUL;
-
-Why is that not done by the caller?
+I am not 100% sure how much the additional tests for device-private
+pages all over the place will cost us. At least it can get compiled out,
+but most distros will just always have it compiled in.
 
 -- 
 Cheers,
