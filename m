@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17833-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17834-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMWLEgD7qmmcZAEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17833-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:04:16 +0100
+	id +G5jOkX7qmnlZAEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17834-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:05:25 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57073224843
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:04:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C7622488C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 06 Mar 2026 17:05:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fSB6g2bzJz3bfV;
-	Sat, 07 Mar 2026 03:04:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fSB813ykFz3bfV;
+	Sat, 07 Mar 2026 03:05:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772813051;
-	cv=none; b=XzrjwWY+o/9+3DLF/orvdeA0IG1lCPPUrHd++fiCdhOpG7XErSAfzij6LakUBDjj3FtxZl5Yz4h3MPFH1zcxuIP2DPgkbIqj8HPOgOhS2glHyWg+vXoDXg40zVeLSKvFwRHGtbMsb+KccePR6H0UtDe3KbMuRaNvpK8q7nyhDUFYam8CgmFfLI0wJRL55tzcApqL6iUkbmbapi5DyiZlNGInx+i05yZJJvYgSbbV0C2fgkoR3q74oT05L9GkI0C6hvUzP+i6yZpZhpuoExeP7jXh+dBSQjcUGhO2UNyVl8syCOr386SMtoTu1W6cFNV0ydcfdkPC/XfYxu8K6vLpyA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772813121;
+	cv=none; b=ODVNK2+q+iOKhW0wZPPW1gCUpdNVblIhlgT1hAeIbvhULfeMavRzAKanQRzaAa7Vgzuqm99PoEGYgYPvovWzZ11thaH77kAylZXRgYPPYUUq1UbqWWwlUn733BewMCceN8ay3zNc8zgydpy1wIPDkjAKUSN/IhwQyyvEg9tbTJZlOSncU14XYe16BTaiTInPtuX5yYO2vAdinDmi6AUb9oSRXfCG93i+Dd/xTsjxJKi0fhwELhTkEsorUOvFHUrCQ6zPJUdhC0D/l0IXdzdTGZ41PcHohPPCjCjFZc6tjht4KdHyxE9ib5nKj39HsD57yBN4va6Vw+ZToVWEgjAaKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772813051; c=relaxed/relaxed;
-	bh=9Sf674e62OrP6q7VHgZGXjlWjApvXfTWUBTCBNqcAPE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UifVE5kVuXag7iVq2BAcRk6iRSfZf2KSnMvf/PLZJUaoOy66QX+yVTV6tMutpsCm1q1zyhIZbW3iKw2UUst5BluDs/9SeJW2nt3qW/VojxhAfZYTvx8w17stYdIuoePg+S535yK/vXMdwEkZs0NWiQ11HnGqjK7DIohQ7xPH9URQ3Ls7yzJOORm0HowwHlBWIRwzvTr28nMdUc8YNx61/dorGfJK3ca0/evdDUXd0oDNIC0O/NR0CoQDZn62TamJclIQeoe86ucSLUlh3vk4vZArfDXs1cq44RlsK48t7JFaVU72gRgNVFMH0V7MGWJnFDalbXsfPUyEf3vc0APnbA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NyRMpeAc; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1772813121; c=relaxed/relaxed;
+	bh=wGI8hDv4KErIrKVrQXRYLcKUw1ZI2f6KMRRIbIJLUyg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NEafmZVqi/Tl7bmIhNEBmPpvIlZZNuMW6KKhb1/4LWuq1s9mjD6gxIt/JaXal6yU/+n1BHH2F7OydiPrYGhwy4sUMJeJhb9nBtmOogA2tl2+At0xrrG8LMGoQDd1UX4FSfDoTCIz7DAAWdpfaqB2dNC3R/NWl6RWr6pDZZfDH4xHwO8Bngx9oorIpkUa4KflQdsBc/DyAJNq5xZZx1DlIHCz3ECbdXECyi5ym+6qArwfFBvuQq3esIpvYqp3MVcyvPGiJf3Jq2CMEKjclw3zb8bvZpNSiwb9vE+eXgMtzSX5hkrf/pBNWc2uBRb527iIwe4v4U/IAxIK2oR6rvHBQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bJoQ2bvj; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NyRMpeAc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bJoQ2bvj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSB6f3tXfz2ySS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 03:04:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSB8017TRz2ySS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 03:05:20 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B30B341A7A;
-	Fri,  6 Mar 2026 16:04:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7B4C4CEF7;
-	Fri,  6 Mar 2026 16:04:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A63B40547;
+	Fri,  6 Mar 2026 16:05:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D320C4CEF7;
+	Fri,  6 Mar 2026 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772813048;
-	bh=rDwyViAwJBrWqHHIJBFX6WS4Aph53FS/v3jxwcha0Dg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=NyRMpeAc4u6y1bOweC+oL1pis1n9yLFuTtLwnaUrYwqVmS04JztDPODWebMOjtgHG
-	 8Fbr6g27cgQp5m17yZbh7JI8fGZ10S9y0Cr+pcX4HVLSzfam0/RHeiP22aiFXmTcSO
-	 m0JAkjjIdvcoeV0GjSXsbjx1PSem9FDJLdlR9l9XuQ7+JD77UCoo/+4blAoFrFHjtL
-	 4lmP/E5Rc6HT7h8C6PmXHl7OCQQzJE8sLKpJ3BhxpLtIzac0pBDjbI8v8Sn+lsg4pM
-	 tBbGfrIkl+EK0Z5f0OcPdpEvn/ccg8GzXxJT1Z9Fkm2SnytuuVu3o7hx2RjZi50Rbj
-	 AaMG4PpMzZF8w==
-Message-ID: <b4830560-4459-42eb-918f-23b35bb5cc2a@kernel.org>
-Date: Fri, 6 Mar 2026 17:03:57 +0100
+	s=k20201202; t=1772813117;
+	bh=TLRROmrsKI9S3nwfOkVUtHkXt6pvD2xr1+JIGTbR0qA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bJoQ2bvjxsIEpf4N/uM2reVOaClEKLQf6PDTK2nLQDlmHRDqimLETOChu2W31xBbx
+	 GApqfvO2XPzidk7ZfppUfpORlqHcBvATNMnUYvsWDEPeAaeHxvKXqkYZTfR3k5yeLV
+	 zWUyMmSUwhpmjnQ8kW/Sdn7ZqnlkpDshjThoMSCEACc/h94tOlJIbMhq04/eaFB5rw
+	 nI3nXE7f0kfL2b2g5O5GI1Lzm4pKmjuWPxFlcfajMe53Jpu1z4/MeEjmOe+l5ueo+N
+	 OqvnE/xehbo+kLBhr6Ea0wtvdH/0xTc2N7yWfvFqIgOMZ1KWqk5Y/68aNM9DykCBTV
+	 WsANCqZvIUYcg==
+Message-ID: <fa4d1fb6-8433-40c2-bd52-5e358a103035@kernel.org>
+Date: Fri, 6 Mar 2026 17:05:06 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,9 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 11/13] mm/util: Add flag to track device private pages
- in page snapshots
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v6 12/13] mm/hmm: Add flag to track device private pages
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -78,8 +76,8 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
  ying.huang@linux.alibaba.com
 References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-12-jniethe@nvidia.com>
- <e5374250-6fa6-4d39-8a0f-4b1804c35dbe@kernel.org>
+ <20260202113642.59295-13-jniethe@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -125,25 +123,25 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e5374250-6fa6-4d39-8a0f-4b1804c35dbe@kernel.org>
+In-Reply-To: <20260202113642.59295-13-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 57073224843
+X-Rspamd-Queue-Id: 41C7622488C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17833-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17834-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,oracle.com,redhat.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au,linux.alibaba.com];
@@ -163,91 +161,23 @@ X-Spamd-Result: default: False [-2.21 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email]
 X-Rspamd-Action: no action
 
-On 3/6/26 17:02, David Hildenbrand (Arm) wrote:
-> On 2/2/26 12:36, Jordan Niethe wrote:
->> A future change will remove device private pages from the physical
->> address space. This will mean that device private pages no longer have
->> normal pfns and must be handled separately.
->>
->> Add a new flag PAGE_SNAPSHOT_DEVICE_PRIVATE to track when the pfn of a
->> page snapshot is a device private page.
->>
->> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
->> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->> ---
->> v1:
->>   - No change
->> v2:
->>   - No change
->> v3:
->>   - No change
->> v4:
->>   - Move logical continuation to previous line
->> ---
->>  fs/proc/page.c     | 6 ++++--
->>  include/linux/mm.h | 7 ++++---
->>  mm/util.c          | 3 +++
->>  3 files changed, 11 insertions(+), 5 deletions(-)
->>
->> diff --git a/fs/proc/page.c b/fs/proc/page.c
->> index f9b2c2c906cd..bc14f7ebc369 100644
->> --- a/fs/proc/page.c
->> +++ b/fs/proc/page.c
->> @@ -191,10 +191,12 @@ u64 stable_page_flags(const struct page *page)
->>  	         folio_test_large_rmappable(folio)) {
->>  		/* Note: we indicate any THPs here, not just PMD-sized ones */
->>  		u |= 1 << KPF_THP;
->> -	} else if (is_huge_zero_pfn(ps.pfn)) {
->> +	} else if (!(ps.flags & PAGE_SNAPSHOT_DEVICE_PRIVATE) &&
->> +		   is_huge_zero_pfn(ps.pfn)) {
->>  		u |= 1 << KPF_ZERO_PAGE;
->>  		u |= 1 << KPF_THP;
->> -	} else if (is_zero_pfn(ps.pfn)) {
->> +	} else if (!(ps.flags & PAGE_SNAPSHOT_DEVICE_PRIVATE) &&
->> +		   is_zero_pfn(ps.pfn)) {
->>  		u |= 1 << KPF_ZERO_PAGE;
->>  	}
->>  
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index f0d5be9dc736..a52979536a5e 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -4627,9 +4627,10 @@ static inline bool page_pool_page_is_pp(const struct page *page)
->>  }
->>  #endif
->>  
->> -#define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
->> -#define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
->> -#define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
->> +#define PAGE_SNAPSHOT_FAITHFUL		(1 << 0)
->> +#define PAGE_SNAPSHOT_PG_BUDDY		(1 << 1)
->> +#define PAGE_SNAPSHOT_PG_IDLE		(1 << 2)
->> +#define PAGE_SNAPSHOT_DEVICE_PRIVATE	(1 << 3)
->>  
->>  struct page_snapshot {
->>  	struct folio folio_snapshot;
->> diff --git a/mm/util.c b/mm/util.c
->> index 97cae40c0209..65e3f1a97d76 100644
->> --- a/mm/util.c
->> +++ b/mm/util.c
->> @@ -1218,6 +1218,9 @@ static void set_ps_flags(struct page_snapshot *ps, const struct folio *folio,
->>  
->>  	if (folio_test_idle(folio))
->>  		ps->flags |= PAGE_SNAPSHOT_PG_IDLE;
->> +
->> +	if (is_device_private_page(page))
->> +		ps->flags |= PAGE_SNAPSHOT_DEVICE_PRIVATE;
+On 2/2/26 12:36, Jordan Niethe wrote:
+> A future change will remove device private pages from the physical
+> address space. This will mean that device private pages no longer have
+> normal pfns and must be handled separately.
 > 
-> stable_page_flags() has access to the page and can simply test that instead?
+> Prepare for this by adding a HMM_PFN_DEVICE_PRIVATE flag to indicate
+> that a hmm_pfn contains a PFN for a device private page.
 > 
+> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
-Or maybe even better, if the pfn has no meaning, set it to 0 or -1, or
-anything that will make the other code just ignore it.
+That makes sense to me.
 
 -- 
 Cheers,
