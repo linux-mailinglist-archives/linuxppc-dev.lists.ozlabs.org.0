@@ -1,75 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-17862-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLgfI+K1q2mzfwEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17862-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 06:21:38 +0100
+	id GCMyAfC1q2mzfwEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 06:21:52 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3882322A337
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 06:21:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1997422A345
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 07 Mar 2026 06:21:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fSWph3JYmz3cCK;
-	Sat, 07 Mar 2026 16:21:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fSWpl5BHLz3cGS;
+	Sat, 07 Mar 2026 16:21:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772860892;
-	cv=none; b=Wq2LExzGs0k2CqAkvgm0OzEUsKinXyltSC/Njbm3bN+L/lpL22tsWSvrf3ApsYjtn95Tr20Ldxnl1uRv+mwzvSW+6/OC/6ac+34Y7SWnWusZSGOuVFqpB8QEGdYhuOg6tPtA9vw4jidAh+Krb2YnIcjX+1HQoCILZKzkXz+GIe+ULVjSFRqbdxeg7s3QYKyFtn/zLRLDhFVW9Z1dJ2b/Fmm3VWPf7jzoIW7vaUok8OC3fGR72q6HlJP9NtyRqipxNmEEiQWnBMs2aUQRUMDwtEJ5CcPxadWvF7qtd/+KGxw/9LaIvkb1xTABu6PfNV9kC3KcWNi7GMEYrCsQWsvLGQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1772860895;
+	cv=none; b=cttC1ByupLD08mQ/p8j4/N2w7cdhbLuSb9QIWUQBCleT6ofNi04j37iM3sEqycJaXgmtvYl3goTxdOO1Jo4pla7CiECaMxeuY53CT36qTT6lZPOUk9cqbmIO53fjBjokXRM+dKIEiXsCSLTD+Na7FlAA0D6L39WBAWGroLIikLrNIE6uFcYE6GWlOW6U4duLyO+CtJDO1zMmVs1FCHVN1z/TvCfrw5GoenKDyjr/CnAMX8jC2oVANcctuDbMlrT0RWhfFakTLDAWi9KYWFZWBmzsIrytMNF61d7bHE085th6b7XzO5prL6ptu689aLpCxewvuFjdnTYxq6Y9ZjAFoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1772860892; c=relaxed/relaxed;
-	bh=beEzyBsCHPmer9tjGhYo66b2SfICE46PlfHILn1Irts=;
+	t=1772860895; c=relaxed/relaxed;
+	bh=+W9lBmTsaR9+Gs3U4A9bMNjRnEMZs8Qt9OGO3hl0zWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wy09+duKdpgnKe9BcfSoIXV78bsTpKvXICjA/BHSx3PsaFaWCdTFUaLH92BtHttVML1sHEQyWlgX+sXEBGL77+sEkkGtJbqyfoNOqFGL31GlGGGHi+hJhxIE3ZGtnVzTn1BzVZUN2ZTp5/STD30HZSA6VVFyUgBnfWdMjDTIvH5KHy+FZWdinz03RkengyaCPXPIuPGxFuUAuZIrUQJ+eKLR5ckcQnV0n8ECARtF2nckr9NLqGChHPJHhFKIo+xJAPs5O9oU2w75/6+pJkHQDQ/0TylOYYT8vWXlh4eVXmwqg7pyA3eGYb2i4HcgOnZ+6YO6YEI1n+yMuRcoubU1zQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DYAqMMYb; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=MlejjhkTrH6a8lSh90XRqMYBkjIc6Lz6DmUGSAuVV5AnJtxbPuwshF2dD3APB31PaIQJmO0ynMviZ9kS5MRbG7oQSIem+l8/lLcqehCRkIzXnEJRsaGKivkUWBqAyUyxueMuHGtfNxiE52jXGGJgWpWRZ4VE0N1+evky1Ro0f/Pvm1jjk6rvr116HvSfZbs0YiMk1ZkasHyVh8ORRIkE8dF1xT8kkPwrJ6b37HBDhBG8zULLltRNHrVRcK7B1cuI985U93JDSKoGsV9pQ0aSka0Gqd4qsPIsg+XRysOxAt6Fo3FZ8pzYVUSoG9WhH52HxTZXjBbHgvbzGWyiaL+ZJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YM60Yvey; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DYAqMMYb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YM60Yvey;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSWpg4m8Zz3c9y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 16:21:31 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6275KG0k1371484;
-	Sat, 7 Mar 2026 05:21:23 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fSWpk6pQYz3c9y
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 Mar 2026 16:21:34 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6274H0Gc948375;
+	Sat, 7 Mar 2026 05:21:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=beEzyB
-	sCHPmer9tjGhYo66b2SfICE46PlfHILn1Irts=; b=DYAqMMYbS0znA8ZD6/nbsH
-	VrPm4JR39Bl3hURF4l/j7Q2hE6p71IlZLuuJbRacABv+7km993GA4iB59UDfMe9m
-	qFAcvLSGp+aKl8oLubVItCdCPC+UrUH7NLe1ZB6Ccu3W+k2nlqEleEufV0m5Vf3C
-	gf+T/9axYqKYQnzd/LuRHoBd1dP1Ioi/PDh1rt2wcmS1qF5ZIl1vMUSkEhNXKCRb
-	nNjj99i7Z49seBzSamNCP5EwEIaj/A2VQ3eYaqpcjaJ24V5Ql1zkvGPfnM4aSDJ3
-	gnZdwl6o3JEOKOtBIOMG7jyLKKCsFrj2jNiScZb8tRH3rjLE2oKUAGHngNSV3nCw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcvm03xm-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=+W9lBmTsaR9+Gs3U4
+	A9bMNjRnEMZs8Qt9OGO3hl0zWk=; b=YM60YveyJX/eQaOk+ApL+FwEnUZMEd686
+	bISpjqo0MPVZ3t3Ut/XLsX9LpXj2cqWH0UqGqycIzfghPyCpKfAwb6Pc57iSZiY/
+	+gVp1L1TTm4ctyI92WIo9N3a9jn1eb/IAbbNWEwhowV9vssELUpp7wXkKGZl6QLM
+	75zqilRxCUwZbMiDR5y+MIt+mjMV3K8qHmksC77waOMVD/S55C72PoSqMQ81DPU+
+	2tgxhNHxpcVk4z2HN3MJEyj1kQPfHcNM/KZymOOaqZOAUTXnLRX2ZhBnm9I1SBVz
+	LFDEWbYg922Wuzc/9k6DvZxP3jzwGhDs904u/XiKXatcZS6cygSgg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcun03xg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 07 Mar 2026 05:21:23 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6274pdRJ003201;
-	Sat, 7 Mar 2026 05:21:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmb2yjtta-1
+	Sat, 07 Mar 2026 05:21:26 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6273C5kY028952;
+	Sat, 7 Mar 2026 05:21:25 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmapsjvhn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 07 Mar 2026 05:21:21 +0000
+	Sat, 07 Mar 2026 05:21:25 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6275LIRV42336744
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6275LMOR45023558
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 7 Mar 2026 05:21:18 GMT
+	Sat, 7 Mar 2026 05:21:22 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E6BA2004B;
-	Sat,  7 Mar 2026 05:21:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1D6722004B;
+	Sat,  7 Mar 2026 05:21:22 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C34220040;
-	Sat,  7 Mar 2026 05:21:15 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8E36B20040;
+	Sat,  7 Mar 2026 05:21:19 +0000 (GMT)
 Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.domain.name (unknown [9.124.213.92])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  7 Mar 2026 05:21:15 +0000 (GMT)
+	Sat,  7 Mar 2026 05:21:19 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
@@ -79,9 +78,9 @@ Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
         Shivang Upadhyay <shivangu@linux.ibm.com>
-Subject: [PATCH v2 1/2] powerpc/crash: fix backup region offset update to eflcorehdr
-Date: Sat,  7 Mar 2026 10:50:56 +0530
-Message-ID: <20260307052102.944952-2-sourabhjain@linux.ibm.com>
+Subject: [PATCH v2 2/2] powerpc/crash: Update backup region offset in elfcorehdr on memory hotplug
+Date: Sat,  7 Mar 2026 10:50:57 +0530
+Message-ID: <20260307052102.944952-3-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260307052102.944952-1-sourabhjain@linux.ibm.com>
 References: <20260307052102.944952-1-sourabhjain@linux.ibm.com>
@@ -98,93 +97,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: gZZ3MlAbXaSWp9HKxGdZ7jPQCeZPfk3s
-X-Proofpoint-ORIG-GUID: 4no6IEV6afsnzzU5-GbXXQOz8abKuOdo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA3MDA0MyBTYWx0ZWRfX0Wy3YtaoX+ra
- 4q0mlp49RAPWSVLy2rVOwN3YR9FTa0xsOWN+N3nJ6MCjnScxICaqCEnsljAuhtK3AKC0PrjkPEt
- 1y3ZzTuuUbPEZSYIG9fkudNHJ6ILnI5fizGDPE88gubj8jRQrep0w4ninnhMOlaauTEudX+i/Is
- NXlzfPtguU1cQqNES6XmItzPFsPA0whJGS2TlE+QmFWnSbcKfHHEcvpI9Gqo7Tj528mHnm0a66w
- gOjNR5RozpQh7Uow9DH55HD90cC1VUOYJFL3+dOyXsgN20PxAln97VYwcv0NqwMWyfPPd+toi/Y
- 561hoa7tCI6MZq6FQotBnNRUGAsKTCnnyDMcMrOIm14sqqVUBxR3JoIir7IJzJetXX+xMIwnN/H
- EQRyjajR4w0Ojju3dAsHVj5LB+lLGJmGjdfh3K9hR2h48XuBynzRWwpSERo9IynJiuaxSh0l1Hn
- NN2CprB1Ir5I+fu6LiA==
-X-Authority-Analysis: v=2.4 cv=B5q0EetM c=1 sm=1 tr=0 ts=69abb5d3 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=qf4gfuq51q0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=pGLkceISAAAA:8 a=tR4UYP6JrHl6jBHRX14A:9 a=3ZKOabzyN94A:10 a=k40Crp0UdiQA:10
+X-Proofpoint-GUID: lr02t08RRhqr_ppG2qcLwa2Zy5Ceo_2H
+X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69abb5d6 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
+ a=6h3uKJss54rF53--RuIA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA3MDA0MyBTYWx0ZWRfX97X16S+SYFNW
+ AzRSqwxasxuJKQceBVTXoXRTgX4TdVIqae29cjcmICzRkijv+W82TOts6JJwJQGpB055tzw+ZV+
+ Y/2zlRh4w+1L1/gdWFAjan7nT5kP7pMhs2qquAtCHwXNIOfjViRdnCxZxUNY6Z4lDde0SFmXX73
+ AIy2223kSkugFHcx3WihkAcYHvaBHTwjBjGg7JWyEv0/KmhJ30gtETtILVO8YkOZJ1n7nUCpAyj
+ Y29hNL8EJlW5J7/UgolCj2PTSX8U/4N6PUNmEHoWLFtgMgixH3KIkDf/mfrUIw21Lg/YmHqN2V3
+ w/692Lsmkb3Bf5OnccdT0fI5K5sp3WRsSCPj+W7AalxsgtClADpwOmBp7ydGTJkkBmyy18h37fu
+ vJngs7zMsh68s4KjNgjh7VjZGqxQIW7iUzSdw3mUQCumCmxMsrecJDHzlp5cWXi/rHQzj2345jX
+ XIxymnwZlnOScrNlUGw==
+X-Proofpoint-ORIG-GUID: K-fUWdupaVaVRY7i7jO6cKSquo2K5ZGS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-07_02,2026-03-06_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603070043
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 3882322A337
+X-Rspamd-Queue-Id: 1997422A345
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.29 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17862-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-17863-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ellerman.id.au:email];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-update_backup_region_phdr() in file_load_64.c iterates over all the
-program headers in the kdump kernel’s elfcorehdr and updates the
-p_offset of the program header whose physical address starts at 0.
+When elfcorehdr is prepared for kdump, the program header representing
+the first 64 KB of memory is expected to have its offset point to the
+backup region. This is required because purgatory copies the first 64 KB
+of the crashed kernel memory to this backup region following a kernel
+crash. This allows the capture kernel to use the first 64 KB of memory
+to place the exception vectors and other required data.
 
-However, the loop logic is incorrect because the program header pointer
-is not updated during iteration. Since elfcorehdr typically contains
-PT_NOTE entries first, the PT_LOAD program header with physical address
-0 is never reached. As a result, its p_offset is not updated to point to
-the backup region.
+When elfcorehdr is recreated due to memory hotplug, the offset of
+the program header representing the first 64 KB is not updated.
+As a result, the capture kernel exports the first 64 KB at offset
+0, even though the data actually resides in the backup region.
 
-Because of this behavior, the capture kernel exports the first 64 KB of
-the crashed kernel’s memory at offset 0, even though that memory
-actually lives in the backup region. When a crash happens, purgatory
-copies the first 64 KB of the crashed kernel’s memory into the backup
-region so the capture kernel can safely use it.
+Fix this by calling sync_backup_region_phdr() to update the program
+header offset in the elfcorehdr created during memory hotplug.
 
-This has not caused problems so far because the first 64 KB is usually
-identical in both the crashed and capture kernels. However, this is
-just an assumption and is not guaranteed to always hold true.
+sync_backup_region_phdr() works for images loaded via the
+kexec_file_load syscall. However, it does not work for kexec_load,
+because image->arch.backup_start is not initialized in that case.
+So introduce machine_kexec_post_load() to process the elfcorehdr
+prepared by kexec-tools and initialize image->arch.backup_start for
+kdump images loaded via kexec_load syscall.
 
-Fix update_backup_region_phdr() to correctly update the p_offset of the
-program header with a starting physical address of 0 by correcting the
-logic used to iterate over the program headers.
+Rename update_backup_region_phdr() to sync_backup_region_phdr() and
+extend it to synchronize the backup region offset between the kdump
+image and the ELF core header. The helper now supports updating either
+the kdump image from the ELF program header or updating the ELF program
+header from the kdump image, avoiding code duplication.
 
-Fixes: cb350c1f1f86 ("powerpc/kexec_file: Prepare elfcore header for crashing kernel")
+Define ARCH_HAS_KIMAGE_ARCH and struct kimage_arch when
+CONFIG_KEXEC_FILE or CONFIG_CRASH_DUMP is enabled so that
+kimage->arch.backup_start is available with the kexec_load system call.
+
+This patch depends on the patch titled
+"powerpc/crash: fix backup region offset update to elfcorehdr".
+
+Fixes: 849599b702ef ("powerpc/crash: add crash memory hotplug support")
 Cc: Hari Bathini <hbathini@linux.ibm.com>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
@@ -193,22 +203,192 @@ Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- arch/powerpc/kexec/file_load_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/kexec.h  | 14 ++++++--
+ arch/powerpc/kexec/crash.c        | 60 +++++++++++++++++++++++++++++++
+ arch/powerpc/kexec/file_load_64.c | 29 +--------------
+ 3 files changed, 72 insertions(+), 31 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index bd4a6c42a5f3..e02710d6a2e1 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -66,11 +66,9 @@ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_co
+ 			 unsigned long start_address) __noreturn;
+ void kexec_copy_flush(struct kimage *image);
+ 
+-#ifdef CONFIG_KEXEC_FILE
+-extern const struct kexec_file_ops kexec_elf64_ops;
+ 
++#if defined(CONFIG_KEXEC_FILE) || defined(CONFIG_CRASH_DUMP)
+ #define ARCH_HAS_KIMAGE_ARCH
+-
+ struct kimage_arch {
+ 	struct crash_mem *exclude_ranges;
+ 
+@@ -78,6 +76,10 @@ struct kimage_arch {
+ 	void *backup_buf;
+ 	void *fdt;
+ };
++#endif
++
++#ifdef CONFIG_KEXEC_FILE
++extern const struct kexec_file_ops kexec_elf64_ops;
+ 
+ char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+ 			  unsigned long cmdline_len);
+@@ -145,6 +147,10 @@ int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags);
+ 
+ unsigned int arch_crash_get_elfcorehdr_size(void);
+ #define crash_get_elfcorehdr_size arch_crash_get_elfcorehdr_size
++
++int machine_kexec_post_load(struct kimage *image);
++#define machine_kexec_post_load machine_kexec_post_load
++
+ #endif /* CONFIG_CRASH_HOTPLUG */
+ 
+ extern int crashing_cpu;
+@@ -159,6 +165,8 @@ extern void default_machine_crash_shutdown(struct pt_regs *regs);
+ extern void crash_kexec_prepare(void);
+ extern void crash_kexec_secondary(struct pt_regs *regs);
+ 
++extern void sync_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr,
++				    bool phdr_to_kimage);
+ static inline bool kdump_in_progress(void)
+ {
+ 	return crashing_cpu >= 0;
+diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+index a325c1c02f96..e8dd941e2159 100644
+--- a/arch/powerpc/kexec/crash.c
++++ b/arch/powerpc/kexec/crash.c
+@@ -27,6 +27,7 @@
+ #include <asm/debug.h>
+ #include <asm/interrupt.h>
+ #include <asm/kexec_ranges.h>
++#include <asm/crashdump-ppc64.h>
+ 
+ /*
+  * The primary CPU waits a while for all secondary CPUs to enter. This is to
+@@ -399,7 +400,64 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
+ 		ppc_md.kexec_cpu_down(1, 0);
+ }
+ 
++#ifdef CONFIG_CRASH_DUMP
++/**
++ * sync_backup_region_phdr - synchronize backup region offset between
++ *			    kexec image and ELF core header.
++ * @image: Kexec image.
++ * @ehdr: ELF core header.
++ * @phdr_to_kimage: If true, read the offset from the ELF program header
++ *		    and update the kimage backup region. If false, update
++ *		    the ELF program header offset from the kimage backup
++ *		    region.
++ *
++ * Returns nothing.
++ */
++void sync_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr, bool phdr_to_kimage)
++{
++	Elf64_Phdr *phdr;
++	unsigned int i;
++
++	phdr = (Elf64_Phdr *)(ehdr + 1);
++	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
++		if (phdr->p_paddr == BACKUP_SRC_START) {
++			if (phdr_to_kimage)
++				image->arch.backup_start = phdr->p_offset;
++			else
++				phdr->p_offset = image->arch.backup_start;
++
++			kexec_dprintk("Backup region offset updated to 0x%lx\n",
++				      image->arch.backup_start);
++			return;
++		}
++	}
++}
++#endif /* CONFIG_CRASH_DUMP */
++
+ #ifdef CONFIG_CRASH_HOTPLUG
++
++int machine_kexec_post_load(struct kimage *image)
++{
++	int i;
++	unsigned long mem;
++	unsigned char *ptr;
++
++	if (image->type != KEXEC_TYPE_CRASH)
++		return 0;
++
++	if (image->file_mode)
++		return 0;
++
++	for (i = 0; i < image->nr_segments; i++) {
++		mem = image->segment[i].mem;
++		ptr = (char *)__va(mem);
++
++		if (ptr && memcmp(ptr, ELFMAG, SELFMAG) == 0)
++			sync_backup_region_phdr(image, (Elf64_Ehdr *) ptr, true);
++	}
++	return 0;
++}
++
+ #undef pr_fmt
+ #define pr_fmt(fmt) "crash hp: " fmt
+ 
+@@ -474,6 +532,8 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
+ 		goto out;
+ 	}
+ 
++	sync_backup_region_phdr(image, (Elf64_Ehdr *) elfbuf, false);
++
+ 	ptr = __va(mem);
+ 	if (ptr) {
+ 		/* Temporarily invalidate the crash image while it is replaced */
 diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index e7ef8b2a2554..e631cf2eda2c 100644
+index e631cf2eda2c..502976a1823d 100644
 --- a/arch/powerpc/kexec/file_load_64.c
 +++ b/arch/powerpc/kexec/file_load_64.c
-@@ -391,7 +391,7 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
- 	unsigned int i;
+@@ -374,33 +374,6 @@ static int load_backup_segment(struct kimage *image, struct kexec_buf *kbuf)
+ 	return 0;
+ }
  
- 	phdr = (Elf64_Phdr *)(ehdr + 1);
--	for (i = 0; i < ehdr->e_phnum; i++) {
-+	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
- 		if (phdr->p_paddr == BACKUP_SRC_START) {
- 			phdr->p_offset = image->arch.backup_start;
- 			kexec_dprintk("Backup region offset updated to 0x%lx\n",
+-/**
+- * update_backup_region_phdr - Update backup region's offset for the core to
+- *                             export the region appropriately.
+- * @image:                     Kexec image.
+- * @ehdr:                      ELF core header.
+- *
+- * Assumes an exclusive program header is setup for the backup region
+- * in the ELF headers
+- *
+- * Returns nothing.
+- */
+-static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
+-{
+-	Elf64_Phdr *phdr;
+-	unsigned int i;
+-
+-	phdr = (Elf64_Phdr *)(ehdr + 1);
+-	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
+-		if (phdr->p_paddr == BACKUP_SRC_START) {
+-			phdr->p_offset = image->arch.backup_start;
+-			kexec_dprintk("Backup region offset updated to 0x%lx\n",
+-				      image->arch.backup_start);
+-			return;
+-		}
+-	}
+-}
+-
+ static unsigned int kdump_extra_elfcorehdr_size(struct crash_mem *cmem)
+ {
+ #if defined(CONFIG_CRASH_HOTPLUG) && defined(CONFIG_MEMORY_HOTPLUG)
+@@ -445,7 +418,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
+ 	}
+ 
+ 	/* Fix the offset for backup region in the ELF header */
+-	update_backup_region_phdr(image, headers);
++	sync_backup_region_phdr(image, headers, false);
+ 
+ 	kbuf->buffer = headers;
+ 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
 -- 
 2.52.0
 
