@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17904-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17905-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMWjKmPPrmnEIwIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17904-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 14:47:15 +0100
+	id 0LQhDh3YrmlhJAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17905-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:24:29 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD82F239F5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 14:47:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A851923A78A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:24:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fTyxD0TTgz3bnm;
-	Tue, 10 Mar 2026 00:47:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fTzm84Yycz3bnm;
+	Tue, 10 Mar 2026 01:24:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773064031;
-	cv=none; b=PMUK/lGkTMn0xeQAmPjAyFiho08OgC+rm7cooTCUsvw8x1+WQqgaoDxsWE5L5RJT8+ZpcpvuluUw3g3eqMU5gxOVezK/d5/NNnbYAWySQhUjrRns+J2SKJ4YwvvqUlP36jgdR6/MV/AiavgUryIo/iarMUrOR49mUyDVVnFsO4z2ADP7Gn/zKb7WbFkIMClBaFfXkVVwDwflJUu1M9e0JatJkCBV8x962ApVtoPJPlcMQfFqG+AuRyBZB5XpTBhAUdoG+oBUNwrO0UhA16TZCcdhBL+TTSXkzMOQo4hjTuYfQCRQUkcpXHg4s9gp1f8h65S/KzlXLmFUZ2m+9BxYew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773066264;
+	cv=none; b=aemAitCUyp5YU0YKQJ1S6AydbKq3+R868UZbwuJ5NcbFLD3S43gfDQzAjWb9L1/WxR/+0cjiiDylobNBDhV06OdH6IS9IOvWETBxXA214TVk+NGHUOw4M33Skr0VQppLr/CDPIKXYuzBAyZfYGRD13cl4wmdeO3DF6IaeT89+1A+lSKAnr9olkVTVuIIE35AxQLtuul8JmGpZh3jhd0OYInq6aFr8odVr5Y2R2X/g9mODauVgk3XrTp1vrJ7PsVHxqkdsCNfThPIWmUUjxLHUGNYJfQ9NNOMLDTbJAbLl1TgS0Bs2MpOXpFBqQGc1+tMv4FJwXhU+YnyO8l+ek437Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1773064031; c=relaxed/relaxed;
-	bh=Fuazgn5HJvq9KCmsOuAjco2sO0LoAGAhBZEoDoRj4V8=;
+	t=1773066264; c=relaxed/relaxed;
+	bh=lc/UuwyaWO6KCnC3rL42cIerK3ZFsb1f2U0ZgQgyuoo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i06Y99sG/2LMWtIXNBQ2SBE9YvtRo2hs8S7L27Q0ubgPK0HrK2ohBzFNULe9AdCA3PqRSM86IgJXRjhCWC9IH816BTeAgaI9JStF+Pv0M3xI5sH/ZAuP5hdUdMzwH5x+J2/4IEbdb3vD+0UfrHFdyMyeRH6yZKL4vAHTp5sm6rRc/yc5higUn3a3DjL/+gf8y5FQ7WrqvM848DKL4qLo3r3s87wOaub1Reh2WXvzsuxDFU6u2AuzJmsJB7uUjvbJ/nrWEvcLDKD+uTYqc+7PZFgfgvH/KyvHEVZ7W3M+/56K6UgEuyXnxjkR+GvsLz3DPnuhJkssjcprAW8P1y8b9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KqlTf+Xu; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=hOKfNfqDn2skkWOHxsSIzGHO5ffA3LWDDmKUxTDW16KKuU8YhH24115mpbfzSxkfKe8zHn9AmY28MddPQkOGfj+HRdF5b3Vq95oO8WBIHK785TY4KwUubCADVRR+BhvmlMBPwdRvME3Uo3fe7Po1M+4CF0vJ74FR+DC/OwMsnTfADmezx6U+gQgR//eBH8GD7kwbR+3JzyaxPxGUUPOJ0WoZQvbgzSUxVwfyjCbK7NAjgjHyU0fYnhdZQ1xSO2gBnBpSVCG70DoMawN2fXSPx8ek+MtTDKttx8ZswSE43l0311YHaS0MEzAoUXfaw1S8LhPFTl1GkuI5eukKRNyMKg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UqXMVbWu; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KqlTf+Xu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UqXMVbWu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fTyxC1PQrz2ySb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 00:47:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fTzm739r3z2ySb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 01:24:23 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 732C960133;
-	Mon,  9 Mar 2026 13:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA80EC4CEF7;
-	Mon,  9 Mar 2026 13:47:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CC8F40482;
+	Mon,  9 Mar 2026 14:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23E4C4CEF7;
+	Mon,  9 Mar 2026 14:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773064029;
-	bh=7piKZHhsIBIfKAmz0YNkAHG2fwGgdi8QiNaH5QjGJ3c=;
+	s=k20201202; t=1773066261;
+	bh=oa4RRj1MEmah1cQS47aOJoe0nWsaTGjlqRdSOhg0FW8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KqlTf+XuTDsfWF7nxx244vtdTmqtYiab/znRgfKYMAUmCHQpbMwn6npnKqw2qh9lm
-	 HPnBESsOgkY/l/oTJtCXVwQWx94HqSQkEaQMsoH08XCOrtDJfjJKWZDFwrxHVo2St4
-	 gttIAV8tZ1AGzulO9MnmQa7oA343ki4adG9EULbpJyMge2+P4cKFM78JVsCHiLM0BP
-	 0qh/3QNTDs09ZBooa2Wz30AIE/YR6hfjsbibHEiXhQVGlehE53bjbNGXNa0BqLUMWl
-	 D4BAYZ+FTNJOz/oL1fcQh59A6Ll7GPj5pxHx3X+G1tBdVqa78XdsBQ6yuVgmeqCazr
-	 TtenKHTchw+HA==
-Message-ID: <edd058dc-9d94-4c5d-a2b1-245a04b54eb0@kernel.org>
-Date: Mon, 9 Mar 2026 14:47:03 +0100
+	b=UqXMVbWuyO1mKN8QmPOeNP9hOTaqcAM60IFp9IDeplVsfMyDVjK+ypTiw204BDvc1
+	 wrEQhKDpTA407OK+JUGl47yuBAcfWuonoe8eOqOmjYbebinWXYH/zPFmT8fwPM+pwg
+	 orLj52+gU8HOgwSC4EbRNQgF62R03ZlXx00hKBm6gbdnx2YjUJrMKHDPsskFWB056P
+	 9HZJtjXiyNllbvDDZRatOa62Aw9M3jx3oE3kxW2gy3zMdWzDaHDzxDHVVZOQTJB13D
+	 n3QHiUfuN99wRtlghHyu4+JMhqAZJlidbitxIQtk86S0oFdf4vEpnXhx9rsez+lTMS
+	 1zQ+DOrVQ/hjA==
+Message-ID: <ef8732cc-ba6b-4577-a1c0-c99234e6aebe@kernel.org>
+Date: Mon, 9 Mar 2026 15:24:15 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,149 +64,143 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm: move vma_kernel_pagesize() from hugetlb to
- mm.h
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>
-References: <20260306101600.57355-1-david@kernel.org>
- <20260306101600.57355-2-david@kernel.org>
- <833950ef-e01d-4914-b5f9-bc1f6261b184@lucifer.local>
- <729e14d4-6949-4d46-9380-12331b5ad363@kernel.org>
- <d8cdf99b-3139-49b5-bc4f-dda139856021@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <d8cdf99b-3139-49b5-bc4f-dda139856021@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check from
+ switch case to if/else block
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linux-mm@kvack.org,
+ kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>,
+ Peter Xu <peterx@redhat.com>
+References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: BD82F239F5C
+X-Rspamd-Queue-Id: A851923A78A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:dan.j.williams@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17904-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17905-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,lists.ozlabs.org];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:ritesh.list@gmail.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:linux-mm@kvack.org,m:kvm@vger.kernel.org,m:alex@shazbot.org,m:peterx@redhat.com,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:url]
 X-Rspamd-Action: no action
 
-On 3/9/26 14:41, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 06, 2026 at 02:25:51PM +0100, David Hildenbrand (Arm) wrote:
->> On 3/6/26 12:07, Lorenzo Stoakes (Oracle) wrote:
->>>
->>> LGTM, but you need to fix up VMA tests, I attach a patch below to do this. Will
->>> this resolved:
->>
->> Thanks!
->>
->> I assume that should go into patch #2 instead?
->>
->>>
->>> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>
->>
->> [...]
->>
->>> ---
->>>  tools/testing/vma/include/dup.h | 7 +++++++
->>>  1 file changed, 7 insertions(+)
->>>
->>> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
->>> index 3078ff1487d3..65b1030a7fdf 100644
->>> --- a/tools/testing/vma/include/dup.h
->>> +++ b/tools/testing/vma/include/dup.h
->>> @@ -1318,3 +1318,10 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
->>>  	swap(vma->vm_file, file);
->>>  	fput(file);
->>>  }
->>> +
->>> +static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
->>> +{
->>> +	if (unlikely(vma->vm_ops && vma->vm_ops->pagesize))
->>> +		return vma->vm_ops->pagesize(vma);
->>> +	return PAGE_SIZE;
->>
->> Should we just KIS and use PAGE_SIZE for the test?
+
+
+Le 09/03/2026 à 13:38, Ritesh Harjani (IBM) a écrit :
+> Architectures like PowerPC uses runtime defined values for
+> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
+> at runtime using kernel cmdline. So the pXd_index_size is not known at
+> compile time. Without this fix, when we add huge pfn support on powerpc
+> in the next patch, vfio_pci_core driver compilation can fail with the
+> following errors.
 > 
-> Yeah that's fine, but then should go in tools/testing/vma/include/custom.h :>)
+>    CC [M]  drivers/vfio/vfio_main.o
+>    CC [M]  drivers/vfio/group.o
+>    CC [M]  drivers/vfio/container.o
+>    CC [M]  drivers/vfio/virqfd.o
+>    CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+>    CC [M]  drivers/vfio/pci/vfio_pci_core.o
+>    CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+>    CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+>    CC [M]  drivers/vfio/pci/vfio_pci_config.o
+>    CC [M]  drivers/vfio/pci/vfio_pci.o
+>    AR      kernel/built-in.a
+> ../drivers/vfio/pci/vfio_pci_core.c: In function ‘vfio_pci_vmf_insert_pfn’:
+> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not reduce to an integer constant
+>   1678 |         case PMD_ORDER:
+>        |         ^~~~
+> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not reduce to an integer constant
+>   1682 |         case PUD_ORDER:
+>        |         ^~~~
+> make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_core.o] Error 1
+> make[6]: *** Waiting for unfinished jobs....
+> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+> make[5]: *** Waiting for unfinished jobs....
+> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+> 
+> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-I'll place it in there, then, thanks.
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
--- 
-Cheers,
+> ---
+> v1 -> v2:
+> 1. addressed review comments from Christophe [1]
+> [1]: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flinuxppc-dev%2F0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list%40gmail.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C2525bc52e4e645e2fb0208de7dd8d236%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639086567353080039%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=DZuZX3hss7yYqBwYz61VgEY6J%2F7OuLViaTMYP43VoBY%3D&reserved=0
+> 
+>   drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
+>   1 file changed, 7 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index d43745fe4c84..0967307235b8 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+>   	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+>   		return VM_FAULT_SIGBUS;
+> 
+> -	switch (order) {
+> -	case 0:
+> +	if (!order)
+>   		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+> -	case PMD_ORDER:
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
+>   		return vmf_insert_pfn_pmd(vmf, pfn, false);
+> -#endif
+> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> -	case PUD_ORDER:
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
+>   		return vmf_insert_pfn_pud(vmf, pfn, false);
+> -		break;
+> -#endif
+> -	default:
+> -		return VM_FAULT_FALLBACK;
+> -	}
+> +
+> +	return VM_FAULT_FALLBACK;
+>   }
+>   EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
+> 
+> --
+> 2.39.5
+> 
 
-David
 
