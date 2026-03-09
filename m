@@ -1,151 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-17906-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DiTNm3ZrmmKJQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17906-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:30:05 +0100
+	id IG0NOAfcrmm/JQIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:41:11 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D8723A8AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBB523AB7A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:41:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fTztd5LsHz3bnm;
-	Tue, 10 Mar 2026 01:30:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fV07S02Zsz3bnm;
+	Tue, 10 Mar 2026 01:41:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::736"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773066601;
-	cv=none; b=Yn/q+tSX4uFUq12sqUYiDbHFzozTpbabhn0bX0pBMhA4HZ0ZNCJo+zq/CkTaQLBpLAJI2W65eNxuJTC+05ePe9idIRLdTm9OOg9+wHc9qiMZLzICCicfGL2NhM5I2BdqapVSQ6sYDoVoS9F5HGxqu0UoMJEf/oeu7VSmnsGMcIU4SX1uk+fyy87bLlISIZiql2e1tX/QFOoQY8ZcA9QSAEIMUYnFiBs0RTh6rVmoGgMBTOcNB7NtJtg6flyh7kzvXiVhlTaaReybIR3NTzpeaSa/G8FhU3t8oVWTztIW5DA7O3SCkRk7dk5vchN2I3rKRnECF3EdCdZbEXiAw1Z4qA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773067267;
+	cv=none; b=oK/wEH4PaqKfnMZ3Fw9Ob9FN8WeShlA7GFPhi1ncySBVZQto4t8U5wvii4UTtBZW1LmPx5/uWgZkY5Df9tqLFZPgxxdELVO6zsGeutkoy49UgkpfF1Roi+7/ta63u2cLUXCXQUyJi1bv/UZ3xxKEeJ+3eLf9XqJegfxbvnJSDsF02V9msmN2ZgQewE0p65r7RJIRsTthL3Ymwapi99QtF+Mv32wpwNbcxKGVkNAmx7fBtF8c+ldHWKv6GvRBkj80bFhGeDIuUJRCbr/N9dyr1nY63Z9JSyf83RjFv6rbMZbmPKjlt+ABFfXTwg8hC0k/+kKkPLLUzaiJD2TgwrA4NQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1773066601; c=relaxed/relaxed;
-	bh=0bCgFz4UpYVbBeKSYmRS1UHS00xtZH8a/t+DzU0dS+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fd91CHQgskBJ9eFRzr0ua4DXNS6XawKkLErynPSa2BL0tCg5+WXma3pMUlQfNEPn+40hR+YFU4Ml6h+qFjvUUHMJwHVhzDKc/bMqAOZOK3PeISTppMLAds5tLTYBrrfDXS/J86ihC686Rgf5MGYx0pyPyuS9WUMKzTRhT2C9G56dCGpNJmiXgLZ7qIXySKF+trCUajIqAa04vn1D3WdpEgdhFTaGDNy61S8rrm5N7w6D8R7hl+MPX1Z8AoPuKK8sapHwX/qKBRHgbH3g6uAw+Du/P5HNwKQVE6XEMbWGcVSbD1HlePrL5SUimSQZZhTD89zxS/RKGKrfg9w8T9mn2g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ov0EHpUR; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::736; helo=mail-qk1-x736.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+	t=1773067267; c=relaxed/relaxed;
+	bh=WMybaLJ1g6OpaWYjNvsRlqGDthhuaVaSCXgy/H4L5M8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=nVnd/lql/RZEe76+0bB16M51UVyYfgMZgM+oD89LhcH62Lcf+lmz1lyWh5B5NwIQDw7bpxFgkfrcKiqeXzK0RsN0TT6l8UCAQV8KvPmoaYpr5oiOmqxFNLPlESKQ7/yBEMab1AkL9Nstbq3W0W0TJOuajAKG8xBj/hw/2W5ZPIoJFOOouR1mekXnThtWAnv0MWvU+Mz+0saLZL3UKUTIQKkz/lJPhSIEVMJy99kjddKgFlNepeHq7G8RsYlD/tEXfosRVgXujOKg0xVsD1Jj5GQk96n0ZFC6N4ZYnjPULuLOrfMOEvZYQwcOM5loy1UXQQgluayxmMUi9+mDTEQ4lg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YJV4zGo5; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YJV4zGo5; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vmalik@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ov0EHpUR;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YJV4zGo5;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YJV4zGo5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::736; helo=mail-qk1-x736.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vmalik@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fTztb5zZFz2ySb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 01:29:59 +1100 (AEDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-8cd847b4b23so132432785a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2026 07:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773066596; x=1773671396; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0bCgFz4UpYVbBeKSYmRS1UHS00xtZH8a/t+DzU0dS+U=;
-        b=Ov0EHpURpht8NCSBk9Xz1ECA19x6LYMc3T35Em6tsIkqOL3oo389Q2ZxqJ+pGxwvTB
-         mIxgxIWKYJe94U5D59Kga0QJAhCGZFVdmU3N72j7kFN0XrXyKjpZm4iayZS+JxdSBj7A
-         X/APmYOb0/4j9j3ronv5J1oPy0Lu2o9CrNNeHn2Wbp/7L3FyS9p63wnOA0tnSQoTGdP9
-         V+3V8bH1v7rcNwLgwMzISdwonACY0bdXNPCJZoxZAX5fAvE1vTZj7kweeYPvfIrRT33p
-         E5ugrgleyJIjUDWwHlzCw7sL6PtGfgMOoVwytgay51zicC3GuuxRf2ZInggxFyggZhnW
-         IZrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773066596; x=1773671396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0bCgFz4UpYVbBeKSYmRS1UHS00xtZH8a/t+DzU0dS+U=;
-        b=g0Cb9UWhvf5DobQ4R4uoXG8M+xepcrJJ8t5EdZCqqZgR0pnoevxvzsHJytKfd8j2xs
-         /DNiZwPzsCB9nLII21u8NbK8dTcuwX9wIWNmYtCsuET5JQpk6kSWPz5oTwmma+49UmLy
-         7qE7RFQLmYTwY3kKsCGRdfZ5AwxcoOB4UA3OA3zyRboguvztxUuhSiZNMuXX3C1pr/1f
-         zgjMBJlrFFheA2wRZBaT3KFlTBwNcBcp4BVwqyPwI7EV/ac85ITsneEt7c1s4gfxN4Qk
-         TDUCKnp+0lAeUWmPKDGMe9D8CH2mVF91c7C+3y3GRPfiuowIYZ1uPck1zz6EBljJxxLd
-         09ng==
-X-Forwarded-Encrypted: i=1; AJvYcCWI22/tmr0lyCtYWhiPxK9JdCu3D3Q3w+Qzau7qUsvKHiuSIXxlLC5oiGPYsP3LgE4FW4twQYcFNa9EvFw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyJF4u7HIfS0laZbmlkj7gSMVRfiVNST+tr+d1xGgERvn6DCNU7
-	9PZiGCf4xQDorSU7MxLlNl7mYOtlZIRvyydR/0hecMWrOOLcmVC6Ohml8pTcd4IQXVI=
-X-Gm-Gg: ATEYQzxRGzV0YHAoF8smr45aieCI3UzaYp+frJaePkqWidfpex7TdoAzCcDqov7wpGd
-	dvQVmQ6gxV6TXi7Sxs9QeSU/ydrPOUL1ftIOuAg1Flz+wb0w3A0dk3bjFbs9ZuNJPf51cgB8nDm
-	y690hWI321sGmpAH4GF8pvll86Y6VKrFB1JU2TvJ0QoBbU4H5usGTa05ZjPmRX93jyYYOUUFcgM
-	UPuN8rf8qmoFhVTI0DjKMGUFlFfMTIzq3SnKe0vIyB58rd4HPQHRdCIuCx+KC08GvD+e1HqEcNt
-	6XFAoAKeP7SZuk2gm/gTpfq4rcRQW6ra+F7HdOfi7AYJfFOZFoFH2yGntXpgQ1iDrU5KLb1CPTj
-	eht+Y5kWZW2s0PKJLm8bcLAXFt7vQFWKKOXrMX2jumie+BJCeY+5iuRVi6Ew9qyY2T/4LG3D2A+
-	pYZMuEJuxsOmbXkAXjstqHEkhHkmCcPDQ5S95DBPjsoGfDzfDmIhqZywnwj6dCKRgqmwYI4kdUI
-	U1gwrXJ
-X-Received: by 2002:a05:620a:4809:b0:8ca:305b:749b with SMTP id af79cd13be357-8cd6d4d5456mr1426307785a.60.1773066595964;
-        Mon, 09 Mar 2026 07:29:55 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd8d4cad48sm148711185a.33.2026.03.09.07.29.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 07:29:55 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vzbcI-0000000GTxY-2R0b;
-	Mon, 09 Mar 2026 11:29:54 -0300
-Date: Mon, 9 Mar 2026 11:29:54 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fV07Q5clLz2xm3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 01:41:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773067261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WMybaLJ1g6OpaWYjNvsRlqGDthhuaVaSCXgy/H4L5M8=;
+	b=YJV4zGo5lEcrcRBKtliyhJ1ylnkS24ewFJoZ8h29qAslfbYR/v9TfFnO9hfh6nTUQ+M/dl
+	1XuZ/1RWhTwO7Y/euIqYhVVM037W+liniJhPu07wMbXlWNKBdemNlWrG6KBX0oTTU6f8Ew
+	kLK7Dq4hOXofc8qqGIJ1xJ8ypXUUbHw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773067261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WMybaLJ1g6OpaWYjNvsRlqGDthhuaVaSCXgy/H4L5M8=;
+	b=YJV4zGo5lEcrcRBKtliyhJ1ylnkS24ewFJoZ8h29qAslfbYR/v9TfFnO9hfh6nTUQ+M/dl
+	1XuZ/1RWhTwO7Y/euIqYhVVM037W+liniJhPu07wMbXlWNKBdemNlWrG6KBX0oTTU6f8Ew
+	kLK7Dq4hOXofc8qqGIJ1xJ8ypXUUbHw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-V_CeawzUPCSsTTzOUpp3KA-1; Mon,
+ 09 Mar 2026 10:40:57 -0400
+X-MC-Unique: V_CeawzUPCSsTTzOUpp3KA-1
+X-Mimecast-MFC-AGG-ID: V_CeawzUPCSsTTzOUpp3KA_1773067256
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 919BE18002C9;
+	Mon,  9 Mar 2026 14:40:55 +0000 (UTC)
+Received: from vmalik-fedora.redhat.com (unknown [10.45.225.182])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C36D0180035F;
+	Mon,  9 Mar 2026 14:40:50 +0000 (UTC)
+From: Viktor Malik <vmalik@redhat.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Leon Romanovsky <leon@kernel.org>,
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v1 16/16] mm/memory: support VM_MIXEDMAP in
- zap_special_vma_range()
-Message-ID: <20260309142954.GM1687929@ziepe.ca>
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-17-david@kernel.org>
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Viktor Malik <vmalik@redhat.com>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Paul Mackerras <paulus@ozlabs.org>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Subject: [PATCH v2] powerpc, perf: Check that current->mm is alive before getting user callchain
+Date: Mon,  9 Mar 2026 15:40:45 +0100
+Message-ID: <20260309144045.169427-1-vmalik@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -159,70 +96,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-17-david@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: CaU2MweukjJDzHGeqATAyFXTYBvOfEFv_zA3p4b-q-c_1773067256
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: F3D8723A8AB
+X-Rspamd-Queue-Id: 9BBB523AB7A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,oracle.com,kernel.org,google.com,suse.com,suse.de,linux.dev,infradead.org,linux.ibm.com,ellerman.id.au,redhat.com,alien8.de,linuxfoundation.org,android.com,mev.co.uk,visionengravers.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,hpe.com,arndb.de,iogearbox.net,arm.com,davemloft.net,lists.ozlabs.org,lists.freedesktop.org];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-17906-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:rientjes@google.com,m:shakeel.butt@linux.dev,m:willy@infradead.org,m:aliceryhl@google.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:jarkko@kernel.org,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:cmllamas@google.com,m:abbotti@mev.co.uk,m:hsweeten@visionengravers.com,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:leon@kerne
- l.org,m:dimitri.sivanich@hpe.com,m:arnd@arndb.de,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:peterz@infradead.org,m:acme@kernel.org,m:namhyung@kernel.org,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:edumazet@google.com,m:ncardwell@google.com,m:davem@davemloft.net,m:dsahern@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:ojeda@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linux-sgx@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-rdma@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:netdev@vger.kernel.org,m:rust-for-linux@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jgg@ziepe.ca,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-17907-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,redhat.com,kernel.crashing.org,ozlabs.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[ziepe.ca];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[vmalik@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCPT_COUNT_GT_50(0.00)[73];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:dkim,ziepe.ca:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-On Fri, Feb 27, 2026 at 09:08:47PM +0100, David Hildenbrand (Arm) wrote:
-> There is demand for also zapping page table entries by drivers in
-> VM_MIXEDMAP VMAs[1].
-> 
-> Nothing really speaks against supporting VM_MIXEDMAP for driver use. We
-> just don't want arbitrary drivers to zap in ordinary (non-special) VMAs.
-> 
-> [1] https://lore.kernel.org/r/aYSKyr7StGpGKNqW@google.com
+It may happen that mm is already released, which leads to kernel panic.
+This adds the NULL check for current->mm, similarly to 20afc60f892d
+("x86, perf: Check that current->mm is alive before getting user
+callchain").
 
-Are we sure about this?
+I was getting this panic when running a profiling BPF program
+(profile.py from bcc-tools):
 
-This whole function seems like a hack to support drivers that are not
-using an address_space.
+    [26215.051935] Kernel attempted to read user page (588) - exploit attempt? (uid: 0)
+    [26215.051950] BUG: Kernel NULL pointer dereference on read at 0x00000588
+    [26215.051952] Faulting instruction address: 0xc00000000020fac0
+    [26215.051957] Oops: Kernel access of bad area, sig: 11 [#1]
+    [...]
+    [26215.052049] Call Trace:
+    [26215.052050] [c000000061da6d30] [c00000000020fc10] perf_callchain_user_64+0x2d0/0x490 (unreliable)
+    [26215.052054] [c000000061da6dc0] [c00000000020f92c] perf_callchain_user+0x1c/0x30
+    [26215.052057] [c000000061da6de0] [c0000000005ab2a0] get_perf_callchain+0x100/0x360
+    [26215.052063] [c000000061da6e70] [c000000000573bc8] bpf_get_stackid+0x88/0xf0
+    [26215.052067] [c000000061da6ea0] [c008000000042258] bpf_prog_16d4ab9ab662f669_do_perf_event+0xf8/0x274
+    [...]
 
-I say that as one of the five driver authors who have made this
-mistake.
+In addition, move storing the top-level stack entry to generic
+perf_callchain_user to make sure the top-evel entry is always captured,
+even if current->mm is NULL.
 
-The locking to safely use this function is really hard to do properly,
-IDK if binder can shift to use address_space ??
+Fixes: 20002ded4d93 ("perf_counter: powerpc: Add callchain support")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+---
+Changes in v2:
+- Move call to perf_callchain_store() for the top-level stack entry to
+  common perf_callchain_user (Saket)
 
-Jason
+ arch/powerpc/perf/callchain.c    | 5 +++++
+ arch/powerpc/perf/callchain_32.c | 1 -
+ arch/powerpc/perf/callchain_64.c | 1 -
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+index 26aa26482c9a..992cc5c98214 100644
+--- a/arch/powerpc/perf/callchain.c
++++ b/arch/powerpc/perf/callchain.c
+@@ -103,6 +103,11 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
+ void
+ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
+ {
++	perf_callchain_store(entry, perf_arch_instruction_pointer(regs));
++
++	if (!current->mm)
++		return;
++
+ 	if (!is_32bit_task())
+ 		perf_callchain_user_64(entry, regs);
+ 	else
+diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callchain_32.c
+index ddcc2d8aa64a..0de21c5d272c 100644
+--- a/arch/powerpc/perf/callchain_32.c
++++ b/arch/powerpc/perf/callchain_32.c
+@@ -142,7 +142,6 @@ void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+ 	next_ip = perf_arch_instruction_pointer(regs);
+ 	lr = regs->link;
+ 	sp = regs->gpr[1];
+-	perf_callchain_store(entry, next_ip);
+ 
+ 	while (entry->nr < entry->max_stack) {
+ 		fp = (unsigned int __user *) (unsigned long) sp;
+diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
+index 115d1c105e8a..30fb61c5f0cb 100644
+--- a/arch/powerpc/perf/callchain_64.c
++++ b/arch/powerpc/perf/callchain_64.c
+@@ -77,7 +77,6 @@ void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+ 	next_ip = perf_arch_instruction_pointer(regs);
+ 	lr = regs->link;
+ 	sp = regs->gpr[1];
+-	perf_callchain_store(entry, next_ip);
+ 
+ 	while (entry->nr < entry->max_stack) {
+ 		fp = (unsigned long __user *) sp;
+-- 
+2.53.0
+
 
