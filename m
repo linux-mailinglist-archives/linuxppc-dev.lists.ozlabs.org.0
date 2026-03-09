@@ -1,67 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-17887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HjbEXOlrmkFHQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 11:48:19 +0100
+	id +L62I/qlrmkFHQIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 11:50:34 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBB7237580
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 11:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A64FD2375DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 11:50:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fTtyk6Qvrz3bnm;
-	Mon, 09 Mar 2026 21:48:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fTv1M05dGz3bnm;
+	Mon, 09 Mar 2026 21:50:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.121.94.185
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773053294;
-	cv=none; b=Ibqx1dNl9XzSee3ze6lWLOnK179Yv1WH81kk6e4tVsZ91ca0EGCU5jdoKPgtobdv9qvo/MKKJgf2Nmyqo0DExtUc2DR2Jro5/iW14f5t92LkIPrR30tSQiNekEaGv/h9Hq0ybyuAqysZ5uZjRaLQYhFeTGlAqOQlDThGUZS8NPoMUes23JEdBsnKpKc0C35Fcp1B1FrpDkD1+fV/tD/4GXlv6w/CkRMg1V2dBTgunQgRRBu4JdYz5muhmu3KTkdV+u+eLYwFb4Bm4R3DysIJb0aVD/TaTttxtwpfu4m3NsO7nkYmVcivMnopnTO/xPCZf4RvIUiBY+pqz3h8ZJC56Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.121.94.186
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773053430;
+	cv=none; b=fGrQcvyNRUj6BRTms8nU3cyoNo2+smZMB6CXcuIovOr/bH06UzcW9w8kSO9XG4M7x6TsCNNi5tGHbkmK18UobZN9bv2qiV1ous/NzKjnID9Xuqo+FLYTnb7KYL+xQbIdyJb+HdRY8q9G9+YO+s+9ILjN9Vb46iwb6I15Q/+moHu7MJQhrS+3bnCibfsODU/osmYvzwqtlFuUk0dw2+SVhMsCpDEjq3M+Qvl0GOMjOAfpeDShBbJaNzW/MDzlngj7b6naISHiZI0sPJwTYYaT7H0CpORNqAJHMLhlLuDYU0QjHm+PXA53+SaAE5unPQoGW8KN+5jVvvw0n9/r4oVDNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1773053294; c=relaxed/relaxed;
-	bh=HmkI4ZYSesCbvB6dUPORgUAUTCVqsvOzrc1uWwDIIf0=;
-	h=Date:From:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Ab4WLclXiK/NPk0rraDYkgNEVrMlsnmlWWl37PaAN2Txg6yMB07IHV7Yy0wAFGkFh/6F34Y55JEpAuneRdjpvXW1W+i324fs5F/gPWycx7+Zu4GgsjX1b9/gLd1ya9iIKEy6XiflOtbfpvdczA+npnVMrs5YeX9CbUJ9SL+5ewVsNm0d3eaCOAgHmHoypeFw9Od4/p1ayEqbToHYrad0y7dP0TcxIxNx6YdbEO5ps+SxhTEWJmMaMPEyNi0S6sN569JYzn/6avoJ0IiOF1fwgOVRDEm+1fYcApJ5GvrC3mNwsBPQsVsMx4jROCrg9Zh09fnqtDcKbJoHMO/k4RvSqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; dkim=pass (2048-bit key; secure) header.d=xs4all.nl header.i=@xs4all.nl header.a=rsa-sha256 header.s=xs4all01 header.b=meygX9Se; dkim-atps=neutral; spf=pass (client-ip=195.121.94.185; helo=ewsoutbound.kpnmail.nl; envelope-from=jkoolstra@xs4all.nl; receiver=lists.ozlabs.org) smtp.mailfrom=xs4all.nl
+	t=1773053430; c=relaxed/relaxed;
+	bh=4/dgxrnTnrLEGt/A2Bs8Fwqo/mGr5lGhtCb9SX8UaB4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=hn/1NB1DijrHqAi268EGSSLtbFlOz/QqO0ninXuMV+52loWGoYbOh6SLQJvJTlqIYgaumlF9eshiAtK5Wbldw7098yh2S1NvC7PPuQUzpJm2cWuEfZmRc1wfcO91KV1MfE6biGJQhhrzEA42Wy9/Revvkux/Bkv4lfRCeK25NnHZ6T7krdeCJcoCIGLqrGzm8Ok9jjNCoPllAmAPClrqbu9BRHwt08+p8fzzUrh/UeLlBbhutCNeGTcXFYUEo14A4WKuLWX8G+PCSjsJfqjZi1bYj9xNDxQzETW0yTNTWbsCxXm2fD2ycTC1Jar/gIwEYOTZtv5rsth697P90ezCvA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; dkim=pass (2048-bit key; secure) header.d=xs4all.nl header.i=@xs4all.nl header.a=rsa-sha256 header.s=xs4all01 header.b=jWftS7VA; dkim-atps=neutral; spf=pass (client-ip=195.121.94.186; helo=ewsoutbound.kpnmail.nl; envelope-from=jkoolstra@xs4all.nl; receiver=lists.ozlabs.org) smtp.mailfrom=xs4all.nl
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=xs4all.nl header.i=@xs4all.nl header.a=rsa-sha256 header.s=xs4all01 header.b=meygX9Se;
+	dkim=pass (2048-bit key; secure) header.d=xs4all.nl header.i=@xs4all.nl header.a=rsa-sha256 header.s=xs4all01 header.b=jWftS7VA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xs4all.nl (client-ip=195.121.94.185; helo=ewsoutbound.kpnmail.nl; envelope-from=jkoolstra@xs4all.nl; receiver=lists.ozlabs.org)
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.185])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xs4all.nl (client-ip=195.121.94.186; helo=ewsoutbound.kpnmail.nl; envelope-from=jkoolstra@xs4all.nl; receiver=lists.ozlabs.org)
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.186])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fTtyj5d9hz2yFY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2026 21:48:13 +1100 (AEDT)
-X-KPN-MessageId: 41867f6b-1ba5-11f1-8ff1-005056999439
-Received: from mta.kpnmail.nl (unknown [10.31.161.191])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fTv1L0mbWz2yFY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2026 21:50:29 +1100 (AEDT)
+X-KPN-MessageId: 92ef4384-1ba5-11f1-89dd-00505699b430
+Received: from mta.kpnmail.nl (unknown [10.31.161.189])
 	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 41867f6b-1ba5-11f1-8ff1-005056999439;
-	Mon, 09 Mar 2026 11:46:40 +0100 (CET)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
+	id 92ef4384-1ba5-11f1-89dd-00505699b430;
+	Mon, 09 Mar 2026 11:48:57 +0100 (CET)
+Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.189])
 	by mta.kpnmail.nl (Halon) with ESMTP
-	id 4184f572-1ba5-11f1-83d4-00505699891e;
-	Mon, 09 Mar 2026 11:46:40 +0100 (CET)
+	id 92f485ec-1ba5-11f1-b5cf-0050569981f5;
+	Mon, 09 Mar 2026 11:48:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:from:date;
-	bh=HmkI4ZYSesCbvB6dUPORgUAUTCVqsvOzrc1uWwDIIf0=;
-	b=meygX9SeH1/LyRvfc6j6WAy6nPf3bGEeEyZshObk5ksJyASOjEaKuqHm6wYlUEE3hvuIBzomKmtob
-	 L2wZKtu/xM8ZxQN+ntWb7E+h8uniDaUz0dMLc2HICaqe43ZudOyrzN/tY1Ycb30XV6Lsv1LvS23nBf
-	 tVYDHyqv1MSdYvu9kUU8faNU23Bc97CA/NieS1lhWbLeSe3hW+Avf3PPSWCJlsTbsP3Zbg5CfUnteM
-	 2S+wGrrvkEeTlGzW0iu2gN1+eEe0MchhUUlXpyArnpJznreRqE7eMkIHoZsJHKv9mEjsaXF+znf7l0
-	 5CLdy/XxKxTU3s/2IbKFkz1hbvuegZw==
-X-KPN-MID: 33|+mD3lgFDQyxsKCndsbrrNcxc5qEziRjOMcQ7pMj2zSyyTv6a6vvcO9T7Vj/xkQC
- ap40l6JevbOA5Vdc9Dgxfbg==
-X-CMASSUN: 33|l4+Xj1mfDUqc22EzMm7Fumkr+/CEGDV8Y5+CrNhxp8PzhcEJDQFhF6fpYuQ/eR7
- +BLCvTQ++KD46XLfd0qWe3A==
+	h=content-type:mime-version:subject:message-id:to:from:date;
+	bh=4/dgxrnTnrLEGt/A2Bs8Fwqo/mGr5lGhtCb9SX8UaB4=;
+	b=jWftS7VAN30uh6c3HLw6EGa5IffCTMHmjGlnfZDNe+AoOxMHDqBC9pLYkigx/VI7IjMYOSARvmaQe
+	 YP+iIPIDahRlTkh5BTTDn8V/7m/m0qqFNAEdIUiShhgkWPjQVIef8jASDrA+MDLlCZFJbtkTktYfsU
+	 HzT7gKzUtchRf+h6YO/6CgFl2tO8/SIiFXgKteZrXwwzEHoo4ObF3Ekk3vnEMDXZzyJXwIllnonHGF
+	 /3X6w+5sL69BMUTplT+rilPjuYK/KJ5ZcLsY5aLOhVwZ7BryQKBWnl2zeMZyOVTPJtOFn8Y7ZEqi8U
+	 LnyPwADxuPYtCs40JRBKLcizcTtdntw==
+X-KPN-MID: 33|tTvuX4lcQB8xRIuE0s7zVJyvXWzLbExFJPJqgnNDYk5zyuFOXZHzVNh2NCpweOm
+ vANmYeSIwt0O2S470ktrvs9RUtEUDuqnvmaQf5Xt2PUI=
+X-CMASSUN: 33|SeNBNwBLs7kS57k/i3P1QJF6J4PZyqX4IEJ6kmTMpK2C0YyCg0UJDjW7i8qIiYr
+ CEI0Yqto6ilW7gK3ajKbD5w==
 X-KPN-VerifiedSender: Yes
 Received: from cpxoxapps-mh05 (cpxoxapps-mh05.personalcloud.so.kpn.org [10.128.135.211])
 	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id 417a3b6a-1ba5-11f1-b8d7-005056995d6c;
-	Mon, 09 Mar 2026 11:46:40 +0100 (CET)
-Date: Mon, 9 Mar 2026 11:46:40 +0100 (CET)
+	id 92dde228-1ba5-11f1-94b1-00505699eff2;
+	Mon, 09 Mar 2026 11:48:57 +0100 (CET)
+Date: Mon, 9 Mar 2026 11:48:57 +0100 (CET)
 From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -72,7 +73,7 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Kees Cook <kees@kernel.org>, Shrikanth Hegde <sshegde@linux.ibm.com>,
 	"open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
  <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
-Message-ID: <712214329.914751.1773053200722@kpc.webmail.kpnmail.nl>
+Message-ID: <1304966204.915283.1773053337271@kpc.webmail.kpnmail.nl>
 In-Reply-To: <2026030924-penniless-hermit-ffc0@gregkh>
 References: <20260308214634.1215051-1-jkoolstra@xs4all.nl>
  <2026030924-penniless-hermit-ffc0@gregkh>
@@ -96,35 +97,35 @@ Content-Transfer-Encoding: 7bit
 X-Priority: 3
 Importance: Normal
 X-Originating-IP: 178.229.142.230
-X-Spam-Status: No, score=0.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: ECBB7237580
+X-Rspamd-Queue-Id: A64FD2375DA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	MISSING_TO(2.00)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[xs4all.nl,reject];
 	R_DKIM_ALLOW(-0.20)[xs4all.nl:s=xs4all01];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_X_PRIO_THREE(0.00)[3];
-	TO_DN_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-17887-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:haren@linux.ibm.com,m:srikar@linux.ibm.com,m:yonatan02greental@gmail.com,m:kees@kernel.org,m:sshegde@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jkoolstra@xs4all.nl,linuxppc-dev@lists.ozlabs.org];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TO_DN_ALL(0.00)[];
+	HAS_X_PRIO_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-17888-lists,linuxppc-dev=lfdr.de];
 	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:haren@linux.ibm.com,m:srikar@linux.ibm.com,m:yonatan02greental@gmail.com,m:kees@kernel.org,m:sshegde@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[jkoolstra@xs4all.nl,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[xs4all.nl];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	HAS_XOIP(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -132,19 +133,17 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	DKIM_TRACE(0.00)[xs4all.nl:+];
 	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[xs4all.nl];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,xs4all.nl:dkim,kpc.webmail.kpnmail.nl:mid,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo,linuxfoundation.org:email,xs4all.nl:dkim,kpc.webmail.kpnmail.nl:mid]
 X-Rspamd-Action: no action
 
 My bad, the earlier email went out to soon.
 
 > Op 09-03-2026 07:01 CET schreef Greg KH <gregkh@linuxfoundation.org>:
-> > 
 > >  arch/powerpc/platforms/book3s/vas-api.c | 34 +++++++++++++++++++------
 > >  1 file changed, 26 insertions(+), 8 deletions(-)
 > > 
@@ -230,10 +229,11 @@ you must update the cop_to_class()... but at least this is my line of thought.
 There is also a function static char *cop_to_str(int cop) that strangely takes
 an int instead of an enum vas_cop_type, and also misses an option I think.
 
+
 > thanks,
 > 
 > greg k-h
 
 Thanks,
-Jori
+Jori.
 
