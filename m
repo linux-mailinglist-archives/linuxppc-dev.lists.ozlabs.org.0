@@ -1,80 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-17922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCjcJC0Or2njNAIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 19:15:09 +0100
+	id IFMxEDQOr2njNAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 19:15:16 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8233223E6D3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 19:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8967123E6DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 19:15:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fV4tC0kGRz3cF6;
-	Tue, 10 Mar 2026 05:14:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fV4tG6YXVz3cGL;
+	Tue, 10 Mar 2026 05:15:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773080099;
-	cv=none; b=LoHD91zOsadcp3PF8wwQioLB2n/ckTFakiMjRhBp56x+1sDfAsvvp629Hho3aFsKlKFXAT94uampz+Qvn74AeIXsqEcQtlAJtbpffBrA65nm5hW3iBpybt0bu/p2RUprQStSyLhj8adrnIKlHffUiFY+/3p5LpbywiY3mMXlA9Dcyr2fAabhjhPebddruT0KbFsev3yocnkH3Mp1r2kGHlCdE00kao80L2AUVo/QQh9crGdihdwzHMB03UID0VMFhhQ4YsD6ynJgjLV/W5e4PWFImdAY1vdMh3qHOsYoq/zQs2NTvCVVj3dNh63ARayAj3Hiio5HeLWuz0sLd4bRvQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773080102;
+	cv=none; b=gEYBQNSknU3mdQHkVzNiIizgnDZ+bk+o6kC6IF37VoTLsjkm2RMO+LhZghD4X+j1bnB8RlziP6rUfaBdfPazCvLkvYqVI6N+UD/xWWkNYAGAj3bbLdJOE+gTBVBm67j48ExhzyvC996ph8lRUzAdiT3t1uOpnryTWmxNVD+xhJCVI/CyIBDZMjEJ4O2SuybYb/N9vz6+g2ocXGLb8c1YwE43E7oIsrK0DFs7uHwShaomnMIq+tINNyefNEH/2ImhwZRcKIqxXBe4TyhuWIzBXuL4LPSP195itHeK0AIfP+6kICHewhE9sEw4WRID+K14i7DG9V7raLiL19bjM94pjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1773080099; c=relaxed/relaxed;
-	bh=zNWDb1hTxmSoj/3ZXkkU29KgfcYG1qC/G5cIi3ndVgg=;
+	t=1773080102; c=relaxed/relaxed;
+	bh=58JlIixqdiS5VK0Y8iFt93l9NbthkLO1ZJ5xNB+HQfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3vaX4vgVj6a3tT5trHt083xftEpO1bA6wFKYE5/hDyjFVCBfkEp/6/NyJMxQLnuhiS/F6v46IxDWLFus0naw76dTQGbpfRVIq+3TFXxhkHqJhlg2TBgfYdum1SvXtRiW4GvXkYB9u9WUNa/jbhLwILy8TeBIVAM3ChCnf80VG7yGQMFqz3THWFGH2MkCxEcfOo+KWmR+NXSdZGMydvqJ2rlhs5rtORlI3aYOjBTjOhiamXhK/QTWBvwTOOMEbwpsvRkOKZUlJenqP5EZDZ76h2njEIV7KpeVT/Hij6FUXPXt3VqZRDh720X9t/fqN0XK8T+KWulccG5ILLhjkrs/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lhkCaiQB; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=LXsO684lJXmVl1B/3K5VtImbkDFoL9iA4iBd3G3N9Jl+sTZ+zURy9Er6IY0IIGiOZCpH2kNr0/JdRLyfnGNq3zP0tfMur+2xnjlF0ZPhQHiz4gB8oTIT7P+CnHtmBsmppSnETNYoTOo6jLcsqjeZ6YQnzMWQ+FMoa6kJNJSXiiRnCEUpsE3x1Wx22MXsVCYR1y9iDsY86Pg6YVTYxw14k+W4SVd0fZkArvNnKpX7rENAmqsYBqkH9hS9PbN7krvuswWGEEtMKKgEtvKhJG/qX+BJPiWraa3wHkdPChRPxeMIdrVdqxahC+WqaM6lrAJsZIlQbXdlUP6QWEZxjF1iAQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=A51yCXog; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lhkCaiQB;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=A51yCXog;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fV4tB24ydz3cF4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 05:14:58 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-8296d553142so2720767b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2026 11:14:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fV4tF73Grz3cF4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 05:15:01 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-8297c035d28so1791834b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2026 11:15:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773080096; x=1773684896; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1773080100; x=1773684900; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zNWDb1hTxmSoj/3ZXkkU29KgfcYG1qC/G5cIi3ndVgg=;
-        b=lhkCaiQBNJPol3LLQEzuKfTh7iJ69dyfA0XGkcYnUIQbysw6MLnCP11d4EtUa4TVqX
-         bosZGLryPaez4LHKUw79Wj+Ki/dUyq7wpn8t6jLG+hlTSBMuh6yk15X/KJQmGadQUBuI
-         epvQgH+k3lCq1HAGs/dHwFeIiROJibzUMktScLUZXv+VWrQ1JWUjkC468l5s3PTxaAHp
-         +/9LHKhW5yfsczcOcCYj34Sei6Mzu23Kc2sKKaMyocbLfMja2rbZSM0PbGiAH9lvt2UZ
-         1f04HvCuoH0k6IDgWcA+jpKqo8SVS7Nl34wG+pgnkUb6Rvgw0b1YhNf66bzAiXnCVW5p
-         r4QQ==
+        bh=58JlIixqdiS5VK0Y8iFt93l9NbthkLO1ZJ5xNB+HQfc=;
+        b=A51yCXoge5nZAMnZCA6IJZTU7s9lKAYrDR6udNofvBElMK/f4g0YUnhYnLWRG8J2Lq
+         y36GipSW4v40PGaLyGJtU++H2yl5VG09cJcjp6xasu3DdvV9NWbRrJf/Z/Nu7ENtkcj5
+         C0NB0oQlW9GiP+hFoha/Jc0OQE5ieEsZOmMKxVsOK7D9fH5dr+u9fm6Gp2Znym7ZPxXh
+         HM5eljfAJj8s4zX1AXZU9dTfCXzrKH3e0bF4G+P42DZ3vF8Fj1HSlRyDao3bkYPdCJZE
+         tCoMgiLPABb4hSIBncqcircfOkyLIvnHZkFyd6kyjumwDfmrz/2tboD7l9gJD/Cx21FH
+         IQLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773080096; x=1773684896;
+        d=1e100.net; s=20230601; t=1773080100; x=1773684900;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zNWDb1hTxmSoj/3ZXkkU29KgfcYG1qC/G5cIi3ndVgg=;
-        b=ou66cLQykd5NqQKWTsbNKeGxZH+NHi/Ww7GB7ZOqht8LvLG3rwuU7WYBd0O362JTiW
-         hQsKvwtjOBMLBP5mJMspWBfXToozPPPv2U/9s/Iq5rB2gwhoS4Q70TzT3PAIF2u0gC0u
-         ddb0Fr3fWPQ2lrFti51uggEOQYarygW5kJ8uPhQ2dCWgv3ustT+DY8V8ghH9Amn0Ps0M
-         Ug29J9OJA7t3jhJhZvLUzEiwMnBXsLVEhWq9zmASrsMArxnODc65YubI/pgR/r2pJxav
-         vzS4+iLSvePRYq/cwYj7fHaH/bDlF52i7KQmFK9p36jZbSmBXnZdiXg763eNWRtFm/u0
-         S4SA==
-X-Gm-Message-State: AOJu0YxU2OOXeCjTlo3VqT04SOFd3KYe8nRTVMxkc0ZXzqLBmvEMhDbJ
-	WsMrqqLEZRXkt4ZV8M+yus6l+o4Cx+KmyCtRLLwxD5aeqI80o5zMUszGy8JOOJ4t
-X-Gm-Gg: ATEYQzw0zngwO/JsY6CNQgkHJAq+fJBEU57xA2PBunK0mfnB2tMStR+a44/xG1jDhUN
-	TzekXSsWIZY8bsOIIFyZ4xWSZhtzlnzoGXJ24CTugpYzrwl8qbrXBGTC+sn/helIpcphDWUuddy
-	JbK1h8A7hC/nnI6wUS4TC+haNVO+OvPQXudATJNex6pBm1PyBr+iP+Eqg8WZdNJzRm4EyCZIusF
-	z6O1vI7SNYB54FrBnh+z4POpOnUeKHiFZhqqBUG/+WweZWztiHUOahP112nNGXzFKbuqY+GYkqJ
-	/WzaTsUpdZMKV5KQEpBVZbxkqxP5orwNxE1EZ09WtJ9kgy+S0F3TpI2mlPDWoq7U1e9UdSnWasI
-	iBBCEeIMMwUiN3vIOqqG9bWlHc+P+diGWm9Mqcsf0O9SzhXgMLvIjLNrWRbxyOU9pjvbjLrdWp6
-	OF5oR90N0HyvrXI5UTSqES0P6IlOmCGCRgb8DKvg8QSTH92OCsN05G3H+XbP/ShMQNf2rAxSOzM
-	n8=
-X-Received: by 2002:a05:6a00:1597:b0:829:8990:3f86 with SMTP id d2e1a72fcca58-829a2f425damr8431540b3a.35.1773080095578;
-        Mon, 09 Mar 2026 11:14:55 -0700 (PDT)
+        bh=58JlIixqdiS5VK0Y8iFt93l9NbthkLO1ZJ5xNB+HQfc=;
+        b=iFlTxBgz9mBCetmwza1gAIMsJoIk6X5fxSKLdv/Jo+WSU7PHJCxHDB2TZp0jCy8B1r
+         sE1ZVT4dGlmOGFPQiq0MIUH4OBazyTpxR6S6FzP7kdOtt2pWj4rihLOk95K/OVNJedCm
+         XbUWo8X3b6fqsa1OJlxZrrWYnYJJiBeJ/TPkXwgUFpU5fxkBohAfrcN2xuevVxybmjhU
+         Kx+B9HZItdv9r7AYOgwjojiQwrjxrBKna1nx5Whvk5TlbShaMww1c7O8h9mi/X5ESobq
+         KULbfGBIBt0SQGhUhal+AX0oUubLS4ZVA7D+2xr1Aba1B4VR5GB8XT+V+U79+aEjcVl7
+         YHqQ==
+X-Gm-Message-State: AOJu0Yx4fcnRLjIrEhenXdlOaEczny1G9KEN6/dHOnsL3E4lVRqaidq1
+	JqjAQNo33VyYWo6xY8CRmLBOF+gGJgitUvPT8Rdn6F6gZgBdpgXsU4FiWXzh+w5o
+X-Gm-Gg: ATEYQzz3GC2mISsnoMiIFpduGjIRMz80Vwf/1oZJhaS18WklziHQW0sHZvqIFYbE+VN
+	EgQT1onzLtjR2P2alo7YMhZxGIsD9Z0s+s+noHBDYx9IRhiju7O+4bA+ya1Z/rN8lbC2BsuCDrR
+	i/u9J/KE6K6l5tcnpKXvk0Nw+i4mDG2mf6EbmKYT7fSRtksqhKMvnYapgbwbLT1wwI0DIoT/b63
+	8j/T+xT2qJBkvH46HrBbZZiTUB1xMeNpfiTH+69j1Cn3ErC2rv5rJRZtHyv/peIEk8V1iJX5Au3
+	FnT9B7H3GGGxp1tXqikEHDF3zVLEWoCWwlfpypLu0TSt1tnlMlDxQlINlyXiAVjerTOyU6yGcgy
+	SfiGgw+R4V6Q9NZwCMuL2QsnGZlcjmXru0F6ZfipktqGOBXOpwmLtayoh2hi4th2JzNiRZBGLJ+
+	FWsAOkusgSyRGaFOdkun/ysK++KNxQb49aBijDIpS6pjASC0lnt0jUDIlbMZdyv23a
+X-Received: by 2002:a05:6a00:3021:b0:824:a8a9:e08e with SMTP id d2e1a72fcca58-829a2e1308fmr9763195b3a.14.1773080099409;
+        Mon, 09 Mar 2026 11:14:59 -0700 (PDT)
 Received: from localhost.localdomain ([2401:4900:1f29:53c8:742c:4036:d7c6:9024])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a46765a6sm10775477b3a.29.2026.03.09.11.14.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a46765a6sm10775477b3a.29.2026.03.09.11.14.55
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Mar 2026 11:14:55 -0700 (PDT)
+        Mon, 09 Mar 2026 11:14:58 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -84,11 +83,10 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sayali Patil <sayalip@linux.ibm.com>,
 	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Donet Tom <donettom@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
-Subject: [PATCH v2 02/10] powerpc/64s: Fix unmap race with PMD migration entries
-Date: Mon,  9 Mar 2026 23:44:25 +0530
-Message-ID: <9437e5ef28d1e2f5cbdd7f8286350ce93c1d43c5.1773078178.git.ritesh.list@gmail.com>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH v2 03/10] powerpc/64s: Fix _HPAGE_CHG_MASK to include _PAGE_SPECIAL bit
+Date: Mon,  9 Mar 2026 23:44:26 +0530
+Message-ID: <7416f5cdbcfeaad947860fcac488b483f1287172.1773078178.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1773078178.git.ritesh.list@gmail.com>
 References: <cover.1773078178.git.ritesh.list@gmail.com>
@@ -110,7 +108,7 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: 8233223E6D3
+X-Rspamd-Queue-Id: 8967123E6DA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.21 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -123,11 +121,11 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,linux.vnet.ibm.com];
+	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-17922-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17923-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
@@ -137,175 +135,77 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
 X-Rspamd-Action: no action
 
-The following race is possible with migration swap entries or
-device-private THP entries. e.g. when move_pages is called on a PMD THP
-page, then there maybe an intermediate state, where PMD entry acts as
-a migration swap entry (pmd_present() is true). Then if an munmap
-happens at the same time, then this VM_BUG_ON() can happen in
-pmdp_huge_get_and_clear_full().
+commit af38538801c6a ("mm/memory: factor out common code from vm_normal_page_*()"),
+added a VM_WARN_ON_ONCE for huge zero pfn.
 
-This patch fixes that.
-
-Thread A: move_pages() syscall
-  add_folio_for_migration()
-    mmap_read_lock(mm)
-    folio_isolate_lru(folio)
-    mmap_read_unlock(mm)
-
-  do_move_pages_to_node()
-    migrate_pages()
-      try_to_migrate_one()
-        spin_lock(ptl)
-        set_pmd_migration_entry()
-          pmdp_invalidate()     # PMD: _PAGE_INVALID | _PAGE_PTE | pfn
-          set_pmd_at()          # PMD: migration swap entry (pmd_present=0)
-        spin_unlock(ptl)
-        [page copy phase]       # <--- RACE WINDOW -->
-
-Thread B: munmap()
-  mmap_write_downgrade(mm)
-  unmap_vmas() -> zap_pmd_range()
-    zap_huge_pmd()
-      __pmd_trans_huge_lock()
-        pmd_is_huge():          # !pmd_present && !pmd_none -> TRUE (swap entry)
-        pmd_lock() -> 		# spin_lock(ptl), waits for Thread A to release ptl
-      pmdp_huge_get_and_clear_full()
-        VM_BUG_ON(!pmd_present(*pmdp))  # HITS!
-
-[  287.738700][ T1867] ------------[ cut here ]------------
-[  287.743843][ T1867] kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:187!
-cpu 0x0: Vector: 700 (Program Check) at [c00000044037f4f0]
-    pc: c000000000094ca4: pmdp_huge_get_and_clear_full+0x6c/0x23c
-    lr: c000000000645dec: zap_huge_pmd+0xb0/0x868
-    sp: c00000044037f790
-   msr: 800000000282b033
-  current = 0xc0000004032c1a00
-  paca    = 0xc000000004fe0000   irqmask: 0x03   irq_happened: 0x09
-    pid   = 1867, comm = a.out
-kernel BUG at :187!
-Linux version 6.19.0-12136-g14360d4f917c-dirty (powerpc64le-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #27 SMP PREEMPT Sun Feb 22 10:38:56 IST 2026
-enter ? for help
-[link register   ] c000000000645dec zap_huge_pmd+0xb0/0x868
-[c00000044037f790] c00000044037f7d0 (unreliable)
-[c00000044037f7d0] c000000000645dcc zap_huge_pmd+0x90/0x868
-[c00000044037f840] c0000000005724cc unmap_page_range+0x176c/0x1f40
-[c00000044037fa00] c000000000572ea0 unmap_vmas+0xb0/0x1d8
-[c00000044037fa90] c0000000005af254 unmap_region+0xb4/0x128
-[c00000044037fb50] c0000000005af400 vms_complete_munmap_vmas+0x138/0x310
-[c00000044037fbe0] c0000000005b0f1c do_vmi_align_munmap+0x1ec/0x238
-[c00000044037fd30] c0000000005b3688 __vm_munmap+0x170/0x1f8
-[c00000044037fdf0] c000000000587f74 sys_munmap+0x2c/0x40
-[c00000044037fe10] c000000000032668 system_call_exception+0x128/0x350
-[c00000044037fe50] c00000000000d05c system_call_vectored_common+0x15c/0x2ec
----- Exception: 3000 (System Call Vectored) at 0000000010064a2c
-SP (7fff9b1ee9c0) is in userspace
-0:mon> zh
-
-commit a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages"),
-enabled migration for device-private PMD entries. Hence this is one
-other path where this warning could get trigger from.
+This can lead to the following call stack.
 
  ------------[ cut here ]------------
- WARNING: arch/powerpc/mm/book3s64/hash_pgtable.c:199 at hash__pmd_hugepage_update+0x48/0x284, CPU#3: hmm-tests/1905
- Modules linked in: test_hmm
- CPU: 3 UID: 0 PID: 1905 Comm: hmm-tests Tainted: G    B   W    L   N  7.0.0-rc1-01438-g7e2f0ee7581c #21 PREEMPT
- Tainted: [B]=BAD_PAGE, [W]=WARN, [L]=SOFTLOCKUP, [N]=TEST
- Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
- NIP [c000000000096b70] hash__pmd_hugepage_update+0x48/0x284
- LR [c000000000096e7c] hash__pmdp_huge_get_and_clear+0xd0/0xd4
+ WARNING: mm/memory.c:735 at vm_normal_page_pmd+0xf0/0x140, CPU#19: hmm-tests/3366
+ NIP [c00000000078d0c0] vm_normal_page_pmd+0xf0/0x140
+ LR [c00000000078d060] vm_normal_page_pmd+0x90/0x140
  Call Trace:
- [c000000604707670] [c000000004e102b8] 0xc000000004e102b8 (unreliable)
- [c000000604707700] [c00000000064ec3c] set_pmd_migration_entry+0x414/0x498
- [c000000604707760] [c00000000063e5a4] migrate_vma_collect_pmd+0x12e8/0x16c4
- [c000000604707890] [c00000000059282c] walk_pgd_range+0x7fc/0xd2c
- [c000000604707990] [c000000000592e40] __walk_page_range+0xe4/0x2ac
- [c000000604707a10] [c000000000593534] walk_page_range_mm_unsafe+0x204/0x2a4
- [c000000604707ab0] [c00000000063af10] migrate_vma_setup+0x1dc/0x2e8
- [c000000604707b10] [c008000006a21838] dmirror_migrate_to_system.constprop.0+0x210/0x4b0 [test_hmm]
- [c000000604707c30] [c008000006a245b0] dmirror_fops_unlocked_ioctl+0x454/0xa5c [test_hmm]
- [c000000604707d20] [c0000000006aab84] sys_ioctl+0x4ec/0x1178
- [c000000604707e10] [c0000000000326a8] system_call_exception+0x128/0x350
- [c000000604707e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
- ---- interrupt: 3000 at 0x7fffbe44f50c
+ [c00000016f56f850] [c00000000078d060] vm_normal_page_pmd+0x90/0x140 (unreliable)
+ [c00000016f56f8a0] [c0000000008a9e30] change_huge_pmd+0x7c0/0x870
+ [c00000016f56f930] [c0000000007b2bc4] change_protection+0x17a4/0x1e10
+ [c00000016f56fba0] [c0000000007b3440] mprotect_fixup+0x210/0x4c0
+ [c00000016f56fc30] [c0000000007b3c3c] do_mprotect_pkey+0x54c/0x780
+ [c00000016f56fdb0] [c0000000007b3ed8] sys_mprotect+0x68/0x90
+ [c00000016f56fdf0] [c00000000003ae40] system_call_exception+0x190/0x500
+ [c00000016f56fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
 
-Fixes: 75358ea359e7c ("powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel page fault race")
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Reported-by: Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
+This happens when we call mprotect -> change_huge_pmd()
+mprotect()
+  change_pmd_range()
+    pmd_modify(oldpmd, newprot) 	# this clears _PAGE_SPECIAL for zero huge pmd
+	    pmdv = pmd_val(pmd);
+	    pmdv &= _HPAGE_CHG_MASK;	# -> gets cleared here
+	    return pmd_set_protbits(__pmd(pmdv), newprot);
+    can_change_pmd_writable(vma, vmf->address, pmd)
+      vm_normal_page_pmd(vma, addr, pmd)
+        __vm_normal_page()
+          VM_WARN_ON(is_zero_pfn(pfn) || is_huge_zero_pfn(pfn));  # this get hits as _PAGE_SPECIAL for zero huge pmd was cleared.
+
+It can be easily reproduced with the following testcase:
+	p = mmap(NULL, 2 * hpage_pmd_size, PROT_READ, MAP_PRIVATE |
+		 MAP_ANONYMOUS, -1, 0);
+	madvise((void *)p, 2 * hpage_pmd_size, MADV_HUGEPAGE);
+	aligned = (char*)(((unsigned long)p + hpage_pmd_size - 1) &
+				~(hpage_pmd_size - 1));
+	(void)(*(volatile char*)aligned);  // read fault, installs huge zero PMD
+	mprotect((void *)aligned, hpage_pmd_size, PROT_READ | PROT_WRITE);
+
+This patch adds _PAGE_SPECIAL to _HPAGE_CHG_MASK similar to
+_PAGE_CHG_MASK, as we don't want to clear this bit when calling
+pmd_modify() while changing protection bits.
+
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 15 +++++++++++++++
- arch/powerpc/mm/book3s64/pgtable.c           | 13 +++++++++----
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 639cbf34f752..43d442a80a23 100644
+index 43d442a80a23..6be7428fdde4 100644
 --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
 +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1336,12 +1336,27 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
- {
- 	pmd_t old_pmd;
- 
-+	/*
-+	 * Non-present PMDs can be migration entries or device-private THP
-+	 * entries. This can happen at 2 places:
-+	 * - When the address space is being unmapped zap_huge_pmd(), and we
-+	 *   encounter non-present pmds.
-+	 * - migrate_vma_collect_huge_pmd() could calls this during migration
-+	 *   of device-private pmd entries.
-+	 */
-+	if (!pmd_present(*pmdp)) {
-+		old_pmd = READ_ONCE(*pmdp);
-+		pmd_clear(pmdp);
-+		goto out;
-+	}
-+
- 	if (radix_enabled()) {
- 		old_pmd = radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
- 	} else {
- 		old_pmd = hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
- 	}
- 
-+out:
- 	page_table_check_pmd_clear(mm, addr, old_pmd);
- 
- 	return old_pmd;
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 4b09c04654a8..42c7906d0e43 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -209,16 +209,21 @@ pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
- 				   unsigned long addr, pmd_t *pmdp, int full)
- {
- 	pmd_t pmd;
-+	bool was_present = pmd_present(*pmdp);
-+
- 	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
--	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)) ||
--		   !pmd_present(*pmdp));
-+	VM_BUG_ON(was_present && !pmd_trans_huge(*pmdp));
-+	/*
-+	 * Check pmdp_huge_get_and_clear() for non-present pmd case.
-+	 */
- 	pmd = pmdp_huge_get_and_clear(vma->vm_mm, addr, pmdp);
- 	/*
- 	 * if it not a fullmm flush, then we can possibly end up converting
- 	 * this PMD pte entry to a regular level 0 PTE by a parallel page fault.
--	 * Make sure we flush the tlb in this case.
-+	 * Make sure we flush the tlb in this case. TLB flush not needed for
-+	 * non-present case.
- 	 */
--	if (!full)
-+	if (was_present && !full)
- 		flush_pmd_tlb_range(vma, addr, addr + HPAGE_PMD_SIZE);
- 	return pmd;
- }
+@@ -107,8 +107,8 @@
+  * in here, on radix we expect them to be zero.
+  */
+ #define _HPAGE_CHG_MASK (PTE_RPN_MASK | _PAGE_HPTEFLAGS | _PAGE_DIRTY | \
+-			 _PAGE_ACCESSED | H_PAGE_THP_HUGE | _PAGE_PTE | \
+-			 _PAGE_SOFT_DIRTY)
++			 _PAGE_ACCESSED | H_PAGE_THP_HUGE | _PAGE_SPECIAL | \
++			 _PAGE_PTE | _PAGE_SOFT_DIRTY)
+ /*
+  * user access blocked by key
+  */
 -- 
 2.50.1 (Apple Git-155)
 
