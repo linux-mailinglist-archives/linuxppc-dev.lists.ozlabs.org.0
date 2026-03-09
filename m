@@ -1,98 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-17908-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-17909-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMuuMZvcrmm/JQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-17908-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:43:39 +0100
+	id WFjsEmHirmmoJgIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-17909-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 16:08:17 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC2E23AC72
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 15:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7979623B48D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 09 Mar 2026 16:08:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4fV0BH3NXnz3bnm;
-	Tue, 10 Mar 2026 01:43:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4fV0kh26TBz3bnm;
+	Tue, 10 Mar 2026 02:08:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773067415;
-	cv=none; b=MseCmUFun+JJ2Hz3XGH29mKXaDFL92983PMcmGFZ4z1Eo8ew72hl/DxFf5+q1DUgw7aUmo/XwMpc2vU3jBPMwwuZq6ScmMwhXnjOwcLiJ/Uyu1jzKORbgFJVVOy2t0OUySretogA3YEKbhs/YRVrr7sHTNt8MACbfUtsqUnY4e4ooE6oDAVh0VAtfkdW8zaRwznQvOmu4fJKa3gWN6FMmFWcXFyNqHjbC2BFXjo92ioFbxnZCPmOMdoUzWkrMLtFX8E+qtnCyE5zGDIot2SdwhB8DxtP1qOHn80f7oKZMK0FZCNnlPAScRBnKgyQB6fwDQOussay3t4zqE+/sDYBJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1773068892;
+	cv=none; b=HX7Yq8fzo5mlT48aOgvc+q8L+ht4JjuzYy9HfmotB3Il9RNL3CuGtdhmI2CcgJuNcSS0W1k8NLUAKFSm3M3Xs0ho/h8m3245f1loVHelTlTm9snvr6K4YktSPmD78IbfLukzAVXNwslwdQ6Ceaskcp+IHd24KKZQZImNV54OwiK2/+EWbPVuYLziIdv7xnBCiVVmoo74uhhDr+9keed1GcFvUKmJTf43+R3L0zexPFca3A17SSyfBAk7kav51tOdHs/rO5nZZz8/kn/lgP/7dsthNl4itj1tRWHQiPzGAg8kzeujxEU3+n8MYrjmXwoh3wy6RX9+p8VxvrEQfMd7iQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1773067415; c=relaxed/relaxed;
-	bh=DaKhYXczwtijwhMhNK50Qi+Imd2B6nrC4erR8UlvNrQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=VUEtQyto28xnbQBMyesdangvA0sGpkTiv+fIGjfiefu//b583lsKCxUkr0fkMXjjeys1epFqgXUKAWe30cgyfPcesQpcREDGUMbixZWb3/nuIb71Gvve50bwWcIQhtA0z5sQtql40xjV5PMpC3rQY+LL0K1drPKpE8OD6hme1w5e3ausCEgoByvAkMfqEhDyPV+Lc8QrigPSAwUTx7uzFQMiSINJbKXXKYoDFITgQmGrkLmfT3MgwG+Se8+PBLyrGtf8bWmAkkvNuwcwgwUH2kqtpvRAwZQA29YXLWNUdKj4SazzBcZeL1c5tjD9ef8cNFgW60BLUMdBecF8vYpZyA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CivCS4Dz; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L8JU4RsU; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vmalik@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1773068892; c=relaxed/relaxed;
+	bh=HIyblTcTCK0uZPcwGzldd12E/Bsn5L9DN0VPrRm/rfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NHEn10UqhA987zyw+y7Los1rWBp/jMDU1//uurSvbDgbkGpqQe6Rnwqoe3VttZ157sYFSeK6uNBDtYdsbM3uX9nMhJfUI+h1walaB7L1Czk73o+U8cjS/qsx9zDO/O9LjCyQqHbuKFa0SWIGcPwn8A5s93HPYg3ixNv0B+lxQfVXJ/d6z8i8kwDByp0mbyg0ckohPOQByNRiGi/9+hdsCVZ4CMGtZVH2eaBOvWKD+e0O53qsX+FpYxisUdP35J6D63DTlnjWQZw24XCOUppzNXclaeom3LBT96qUOgSLqTf+z4RNWxSqkgapBQe9EhIsQ5T8pH739oKnuHdtn7kisw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LaeYYRkY; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CivCS4Dz;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L8JU4RsU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LaeYYRkY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vmalik@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4fV0BF31lFz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 01:43:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773067409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DaKhYXczwtijwhMhNK50Qi+Imd2B6nrC4erR8UlvNrQ=;
-	b=CivCS4Dz9jJp2Yi78B7go+mtYkcc7Pzfqa6KCamzDSqerng/gqDVX2cf7w6h9bysIjErla
-	cTKtgz4x1rYe44x5kLX6RrZ3HvnFDvKH9mbtQQMQd2LTJ86tuPvWfKGHcO5Cs/SsrxkwBf
-	5371gxTBYq1c3y145sM6tmijO0Nta4Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773067410;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DaKhYXczwtijwhMhNK50Qi+Imd2B6nrC4erR8UlvNrQ=;
-	b=L8JU4RsUpi/jLwqBG98rl4va+bVDK9Z/bDPaSBiVFx+SsikXT4VEFmWK5U2HnKGSUbSPXB
-	2S3mgrUzFMKCa4AJLsKVum3WzdxFKftapz6sF3IcCKHRx/8wW18JM43wEM31vjG7y/D903
-	hJ7bUskdTxXSgAoppy9k/QN0FBRrnOA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-UuBeEZawMjG20ZIcGtUpbA-1; Mon, 09 Mar 2026 10:43:28 -0400
-X-MC-Unique: UuBeEZawMjG20ZIcGtUpbA-1
-X-Mimecast-MFC-AGG-ID: UuBeEZawMjG20ZIcGtUpbA_1773067407
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b9360e9f43bso1388529866b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Mar 2026 07:43:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773067407; x=1773672207;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DaKhYXczwtijwhMhNK50Qi+Imd2B6nrC4erR8UlvNrQ=;
-        b=D64ybKrT5cfthJ4OkeHe7iNDVId9GfjLpZ5SNj9njU7IBgDoboKls+ZuQlnxlMuQkI
-         30pLdDriulsid3HtkqqfDK1oUXMnvoMIbo4iq0h+viUBwcVEGp2x4/yHKetsP3nQFqsC
-         KZgUKs1w8cSC/GfVheczIhm6qTpqXy7eCBAT82xtBVcLjvRMxF8JQvH99dMBWLUCITe/
-         keQa6TA+CPg3JlS8iuAQIfaJjodQlxl8VMeJ1TsVoAsK5sj6r9aHILKn/eUmS71oAvfr
-         JRIBa/vPcLMP9CXQF18rIRsOeHEL5GoisVJC+bx3qG6/Y9ZwhgWPjo8wLL0+rOLT5SCI
-         znfg==
-X-Gm-Message-State: AOJu0Yw7Sm6tfFb0ZsXGogZpMCzdgkr0eeaHwArfguN779YJowB6ggAo
-	Y/+8JphUWNF3kP6IWBG0HEFH0ouzBfuibSf39/PwdHmynkHseHYO5NfkhBTl8zmPCRJhAG+Gyu5
-	MNYF/prQQ6RtvCR7+yv3ovd96P4V9f0+LJYWTGh/ntK7gOedB9Uve/gI/kK1+6lu/Og==
-X-Gm-Gg: ATEYQzyjKqOeYm2LKC9p07aY67iig+9ef/2O7hWl9/E8MsN6QZ9koeJ3g017uA35ul5
-	C52Ev1vQ+o6//8KpzaTwpaP5Umjm7N5IwCa/TIEINZbaXB6sxsnSxzrsW743+4YUGlwvtDatIBV
-	Bep4t5p+UgIl2z7IXsFioxo5OwxVRJonpdqaSttc+mG6V2yTPMSd55jxFqKfB8XGhGXVaE8KhVP
-	ZBcuv7ZTJgMuAm/ebsQEYDfjL2NWtcHgkfQPjaDBTzg99IWXCHr0lhG5l4uJ8i06TYUpxLMKPdw
-	qYpE1fhG6D/bEc3dpDmCs5RWX8kLS6rImNAbirvOc44Tu/zyftziJEDWF8Ktb8nTEgVsjZB+gFb
-	j7GUO6rOCMUWUnTGGQj78uw8niZPZGK5oIsMLKWyjaAg4QXxKKQlPH00i
-X-Received: by 2002:a17:907:7fa4:b0:b96:eb7e:bc3b with SMTP id a640c23a62f3a-b96eb7ec9a3mr256773566b.49.1773067406721;
-        Mon, 09 Mar 2026 07:43:26 -0700 (PDT)
-X-Received: by 2002:a17:907:7fa4:b0:b96:eb7e:bc3b with SMTP id a640c23a62f3a-b96eb7ec9a3mr256771866b.49.1773067406195;
-        Mon, 09 Mar 2026 07:43:26 -0700 (PDT)
-Received: from [192.168.0.135] (185-219-167-205-static.vivo.cz. [185.219.167.205])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b942f189de1sm382893266b.63.2026.03.09.07.43.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Mar 2026 07:43:25 -0700 (PDT)
-Message-ID: <100385b1-afd0-4c17-831a-6cd45a02f6f3@redhat.com>
-Date: Mon, 9 Mar 2026 15:43:23 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4fV0kg00QLz2xm3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Mar 2026 02:08:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8329760054;
+	Mon,  9 Mar 2026 15:08:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4762C2BC86;
+	Mon,  9 Mar 2026 15:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773068887;
+	bh=65GSxxooaBqszDjKBnb0vU9DG3G6+qZJ6mCafUsf7R0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LaeYYRkYa9q+TNllAPbXuuj70SMvm16G8E5XC/95eepCWcxJpjEDl5XBrbSBoyyoL
+	 zdy1G/VjWK/6nX8w+2+NDj5H5WwvQgRIscDUFcwpJjGtJyCpMq6jWIKoApr8+baIKu
+	 F9vv4/uGLj+VP8Fqkr6Y5HiH98/3QjvTK4qDjvinOLd/1nqKfDDDfD5vdeSVtUZxEL
+	 uApOQbCXNw2JLNJ5y6iY8lZQSN7q3Zhz2MJAaxINXWmNbbuYSFmlQIQ54HHOGkAAKS
+	 zFWyGb8U92HlS3dtFLkefFQzfl0XTf547taI9QWlX/hE4vdVNTTPzhK7Sixc7TE133
+	 3lcRlM17NcPSg==
+Message-ID: <19fdac31-0d2e-4662-b3a4-02555d8e4221@kernel.org>
+Date: Mon, 9 Mar 2026 16:07:58 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -107,185 +64,138 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc, perf: Check that current->mm is alive before
- getting user callchain
-From: Viktor Malik <vmalik@redhat.com>
-To: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+Subject: Re: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of
+ hugetlb.c
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
  "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Joe Perches <joe@perches.com>, Paul Mackerras <paulus@ozlabs.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, atrajeev@linux.ibm.com,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260227082502.1882395-1-vmalik@redhat.com>
- <aab3EW1LfDcjSzzy@linux.ibm.com>
- <80766050-c745-411b-8ee6-8141d2cfe4ff@redhat.com>
- <aa6pZaDySMl9JGKf@linux.ibm.com>
- <f40b2ccd-2d71-4089-bd28-3adbc70f0a1d@redhat.com>
-In-Reply-To: <f40b2ccd-2d71-4089-bd28-3adbc70f0a1d@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: i5TcHZueNq2Mh9HjsL4jbEJmv0eA-jCvPsV8MzQunkw_1773067407
-X-Mimecast-Originator: redhat.com
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20260306101600.57355-1-david@kernel.org>
+ <4rzf46kw6hq3b5ivv7cvgyza4yfrvk2shrncytobabxef644nm@wzu2bw63co37>
+ <371cf0f7-4b30-4d8c-99e7-ae0543f8be23@lucifer.local>
+ <5eae6c52-c3f9-407e-8fb8-01a950b282bf@kernel.org>
+ <9172a09f-f014-4a76-b813-8f0c79fbe2f4@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <9172a09f-f014-4a76-b813-8f0c79fbe2f4@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Rspamd-Queue-Id: CBC2E23AC72
+X-Rspamd-Queue-Id: 7979623B48D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,perches.com,ozlabs.org,kernel.crashing.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-17908-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[vmalik@redhat.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_RECIPIENTS(0.00)[m:skb99@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:joe@perches.com,m:paulus@ozlabs.org,m:benh@kernel.crashing.org,m:atrajeev@linux.ibm.com,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-17909-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:pfalcato@suse.de,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:Liam.Howlett@oracle.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pbonzini@redhat.com,m:dan.j.williams@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[suse.de,vger.kernel.org,kvack.org,lists.ozlabs.org,linux-foundation.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,linux.dev,oracle.com,google.com,suse.com,redhat.com,intel.com];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vmalik@redhat.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-0.995];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On 3/9/26 13:17, Viktor Malik wrote:
-> On 3/9/26 12:05, Saket Kumar Bhaskar wrote:
->> On Thu, Mar 05, 2026 at 01:45:44PM +0100, Viktor Malik wrote:
->>> On 3/3/26 15:58, Saket Kumar Bhaskar wrote:
->>>> On Fri, Feb 27, 2026 at 09:25:02AM +0100, Viktor Malik wrote:
->>>>> It may happen that mm is already released, which leads to kernel panic.
->>>>> This adds the NULL check for current->mm, similarly to 20afc60f892d
->>>>> ("x86, perf: Check that current->mm is alive before getting user
->>>>> callchain").
->>>>>
->>>>> I was getting this panic when running a profiling BPF program
->>>>> (profile.py from bcc-tools):
->>>>>
->>>>>     [26215.051935] Kernel attempted to read user page (588) - exploit attempt? (uid: 0)
->>>>>     [26215.051950] BUG: Kernel NULL pointer dereference on read at 0x00000588
->>>>>     [26215.051952] Faulting instruction address: 0xc00000000020fac0
->>>>>     [26215.051957] Oops: Kernel access of bad area, sig: 11 [#1]
->>>>>     [...]
->>>>>     [26215.052049] Call Trace:
->>>>>     [26215.052050] [c000000061da6d30] [c00000000020fc10] perf_callchain_user_64+0x2d0/0x490 (unreliable)
->>>>>     [26215.052054] [c000000061da6dc0] [c00000000020f92c] perf_callchain_user+0x1c/0x30
->>>>>     [26215.052057] [c000000061da6de0] [c0000000005ab2a0] get_perf_callchain+0x100/0x360
->>>>>     [26215.052063] [c000000061da6e70] [c000000000573bc8] bpf_get_stackid+0x88/0xf0
->>>>>     [26215.052067] [c000000061da6ea0] [c008000000042258] bpf_prog_16d4ab9ab662f669_do_perf_event+0xf8/0x274
->>>>>     [...]
->>>>>
->>>>> Fixes: 20002ded4d93 ("perf_counter: powerpc: Add callchain support")
->>>>> Signed-off-by: Viktor Malik <vmalik@redhat.com>
->>>>> ---
->>>>>  arch/powerpc/perf/callchain_32.c | 3 +++
->>>>>  arch/powerpc/perf/callchain_64.c | 3 +++
->>>>>  2 files changed, 6 insertions(+)
->>>>>
->>>>> diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callchain_32.c
->>>>> index ddcc2d8aa64a..b46e21679566 100644
->>>>> --- a/arch/powerpc/perf/callchain_32.c
->>>>> +++ b/arch/powerpc/perf/callchain_32.c
->>>>> @@ -144,6 +144,9 @@ void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
->>>>>  	sp = regs->gpr[1];
->>>>>  	perf_callchain_store(entry, next_ip);
->>>>>  
->>>>> +	if (!current->mm)
->>>>> +		return;
->>>>> +
->>>>>  	while (entry->nr < entry->max_stack) {
->>>>>  		fp = (unsigned int __user *) (unsigned long) sp;
->>>>>  		if (invalid_user_sp(sp) || read_user_stack_32(fp, &next_sp))
->>>>> diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
->>>>> index 115d1c105e8a..eaaadd6fa81b 100644
->>>>> --- a/arch/powerpc/perf/callchain_64.c
->>>>> +++ b/arch/powerpc/perf/callchain_64.c
->>>>> @@ -79,6 +79,9 @@ void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
->>>>>  	sp = regs->gpr[1];
->>>>>  	perf_callchain_store(entry, next_ip);
->>>>>  
->>>>> +	if (!current->mm)
->>>>> +		return;
->>>>> +
->>>>>  	while (entry->nr < entry->max_stack) {
->>>>>  		fp = (unsigned long __user *) sp;
->>>>>  		if (invalid_user_sp(sp) || read_user_stack_64(fp, &next_sp))
->>>>> -- 
->>>>> 2.53.0
->>>>>
->>>> Sorry, I missed adding cc list for the last conversation so adding this for reference:
->>>>
->>>>> Wouldn't be good if we check this in perf_callchain_user() as it will
->>>>> cover both cases.
->>>>
->>>> to which Viktor replied:
->>>> I considered it but in that case, we'd also miss the top-level stack
->>>> frame (the perf_callchain_store call above). Other arches include it so
->>>> I followed the behavior for powerpc.
->>>>
->>>> Viktor, agreed with your first point. I have another concern:
->>>>
->>>> I was hitting this issue with stacktrace_build_id_nmi in bpf and
->>>> applied this patch https://lore.kernel.org/bpf/20260126074331.815684-1-chen.dylane@linux.dev/T/#mf901967ebe77506f1bd6e3d876c2a85824d9519d
->>>>
->>>> Wondering if the above generic fix is working do we need to add this
->>>> check in powerpc specific code?
+On 3/9/26 14:42, Lorenzo Stoakes (Oracle) wrote:
+> On Fri, Mar 06, 2026 at 02:12:50PM +0100, David Hildenbrand (Arm) wrote:
+>> On 3/6/26 12:19, Lorenzo Stoakes (Oracle) wrote:
 >>>
->>> I tried to apply that patch series but, unfortunately, keep getting the
->>> panic when running the BCC profile tool.
->>>
->>> Also, looking at the patch, it seems that it would only solve the issue
->>> when perf_callchain_user is called from a BPF context, however, I assume
->>> that it may be called from other contexts, too.
->>>
->>> Since perf_callchain_user_{32,64} are dereferencing current->mm while
->>> walking the stack, I think that an explicit protection against
->>> current->mm being NULL makes sense here, even in the presence of the
->>> above patch. Especially since other arches have it, too.
->>>
->>> Viktor
->>>
->> Ok that looks convincing then, another thing is that, how about moving perf_callchain_store
->> to perf_callchain_user and checking current->mm == NULL there for both perf_callchain_user_32/64.
->> next_ip, lr and sp can be passed to perf_callchain_user_32/64.
-> 
-> Yeah, that should be possible. I'll send v2.
-
-v2 sent:
-
-https://lore.kernel.org/linuxppc-dev/20260309144045.169427-1-vmalik@redhat.com/T/#u
-
-Viktor
-
-> 
-> Viktor
-> 
+>>> Yeah I noticed this also :>) Assumed it was a new way of doing things somehow?
+>>> :P
 >>
->> Thanks,
->> Saket
+>> "--cc-cover" is apparently not the git default on my new machine.
 >>
+>> "See, I CCed you, I totally did not try to sneak something in. Oh, I
+>> messed up my tooling, stupid me ...". :)
 > 
+> ;)
+> 
+> Wasn't aware of that option actually, handy!
 
+On my old setup I had a script that would, in addition, also CC anybody
+CC'ed on individual patches on the cover letter. Was quite useful for
+larger series where you don't want to spam people with unrelated patches.
+
+Still have to set that back up.
+
+-- 
+Cheers,
+
+David
 
